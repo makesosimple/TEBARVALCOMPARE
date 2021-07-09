@@ -29,7 +29,8 @@
 
                 <div class="row">
                     <div class="col-12 col-xl-5">
-                        
+                        <div asp-validation-summary="All" class="text-danger"></div>
+
                         <form id="createUser" class="mb-4" asp-route-returnUrl="@Model.ReturnUrl" method="post">
 
                             <div class="form-group row">
