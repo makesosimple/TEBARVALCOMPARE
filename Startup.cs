@@ -1,4 +1,5 @@
 using IBBPortal.Data;
+using IBBPortal.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -67,10 +68,12 @@ namespace IBBPortal
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
+
+            services.AddTransient<UserSeed>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserSeed seeder)
         {
             if (env.IsDevelopment())
             {
@@ -90,6 +93,8 @@ namespace IBBPortal
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            seeder.SeedAdminUser();
 
             app.UseEndpoints(endpoints =>
             {
