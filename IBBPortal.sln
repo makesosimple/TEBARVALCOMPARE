@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBBPortal", "IBBPortal.csproj", "{73CE7C60-8653-4651-9323-6B8A8FB9CE0D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{73CE7C60-8653-4651-9323-6B8A8FB9CE0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73CE7C60-8653-4651-9323-6B8A8FB9CE0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73CE7C60-8653-4651-9323-6B8A8FB9CE0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73CE7C60-8653-4651-9323-6B8A8FB9CE0D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {44452382-F126-460A-9E4B-CAA4FC95D41A}
+	EndGlobalSection
+EndGlobal

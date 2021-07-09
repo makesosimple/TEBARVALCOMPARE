@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <partial name="../LayoutComponents/_Meta.cshtml" />
+
+    <title>@ViewData["Title"] - IBB Portal</title>
+
+    <!-- Custom fonts for this template -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="~/lib/fontawesome-free/css/all.min.css" />
+
+    <!-- Datatables -->
+    <link rel="stylesheet" href="~/lib/datatables/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" href="~/lib/datatables/buttons.bootstrap4.min.css" />
+    <link rel="stylesheet" href="~/lib/datatables/scroller.bootstrap4.min.css" />
+    <link rel="stylesheet" href="~/lib/datatables/fixedHeader.bootstrap4.min.css" />
+
+    <!-- Form Components -->
+    <link rel="stylesheet" href="~/lib/select2/select2.min.css" />
+    <link rel="stylesheet" href="~/lib/select2/select2-bootstrap4.min.css" />
+    <link rel="stylesheet" href="~/lib/datepicker/bootstrap-datepicker.min.css" />
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="~/css/sb-admin-2.min.css" />
+</head>
+<body class="bg-gradient-white min-vh-100 d-flex flex-column justify-content-center align-items-center">
+
+    <div class="container">
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="p-5">
+                                    @RenderBody()
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer py-3 text-center">
+        <img src="~/images/ibb-logo.svg" alt="IBB Logo" height="100">
+    </footer>
+
+    <!-- jQuery -->
+    <script src="~/lib/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- jQuery Easing -->
+    <script src="~/lib/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Datatables -->
+    <script src="~/lib/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatables/dataTables.fixedHeader.min.js"></script>
+    <script src="~/lib/datatables/dataTables.scroller.min.js"></script>
+    <script src="~/lib/datatables/dataTables.buttons.min.js"></script>
+    <script src="~/lib/datatables/buttons.colVis.min.js"></script>
+
+    <!-- Form Components -->
+    <script src="~/lib/select2/select2.min.js"></script>
+    <script src="~/lib/datepicker/bootstrap-datepicker.min.js"></script>
+    <script src="~/lib/datepicker/locales/bootstrap-datepicker.tr.min.js"></script>
+    <script src="~/js/forms.min.js"></script>
+
+    <script src="~/js/sb-admin-2.min.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
