@@ -15,8 +15,8 @@ npm install
 
 ## Installation for ASP.NET Core MVC
 
-###!Warning (All of the names can be customized but we highly encourage to use it this way as it is the current best approach to Git Flow)  
-###!Warning (It is OK to use Visual Studio Git property)  
+### !Warning (All of the names can be customized but we highly encourage to use it this way as it is the current best approach to Git Flow)  
+### !Warning (It is OK to use Visual Studio Git property)  
 
 1. First create an empty directory in your computer either from CLI or Graphical Interface.
 
