@@ -1,59 +1,58 @@
 ﻿@model IEnumerable<IBBPortal.Models.Contractor>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Yüklenici Yönetimi";
 }
 
-<h1>Index</h1>
+<h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdateDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeletionDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdateDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeletionDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ContractorID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ContractorID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ContractorID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<a class="btn btn-success btn-circle btn-lg" id="add" asp-action="Create"><i class="fas fa-plus"></i></a>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive position-relative">
+            <table class="table table-hover display" id="dataTable" width="100%">
+                <thead class="bg-navy-blue">
+                    <tr class="filter h-100 bg-white">
+                    </tr>
+                    <tr id="tableLabels">
+                        <th scope="col" class="text-white text-sm" data-search-type="text">Başlık</th>
+                        <th scope="col" class="text-white text-sm" data-search-type="text">Açıklama</th>
+                        <th scope="col" class="text-white text-sm" data-search-type="text">Oluşturma Tarihi</th>
+                        <th scope="col" class="text-white text-sm" data-search-type="text">Güncelleme Tarihi</th>
+                        <th scope="col" class="text-white text-sm" data-search-type="none"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreationDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UpdateDate)
+                            </td>
+                            <td>
+                                <a class="btn btn-success btn-circle" asp-action="Edit" asp-route-id="@item.ContractorID"><i class="fas fa-edit"></i></a>
+                                <a class="btn btn-warning btn-circle" asp-action="Details" asp-route-id="@item.ContractorID"><i class="fas fa-info"></i></a>
+                                <a class="btn btn-danger btn-circle" asp-action="Delete" asp-route-id="@item.ContractorID"><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+
+                </tfoot>
+
+            </table>
+        </div>
+    </div>
+</div>
