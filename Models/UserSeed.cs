@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
 {
-    [Keyless]
     public class UserSeed
     {
         private ApplicationDbContext _context;

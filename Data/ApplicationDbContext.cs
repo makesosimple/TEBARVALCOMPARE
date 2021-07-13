@@ -13,6 +13,18 @@ namespace IBBPortal.Data
             : base(options)
         {
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Contractor>()
+                .Property(c => c.CreationDate)
+                .HasDefaultValueSql("getdate()");
+
+        }
+
+        public DbSet<IBBPortal.Models.Contractor> Contractor { get; set; }
     }
 
 

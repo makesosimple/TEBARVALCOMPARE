@@ -7,6 +7,10 @@
     "mssql2": {
       "type": "mssql.local",
       "connectionId": "IBBPortalContextConnection"
+    },
+    "mssql3": {
+      "type": "mssql.local",
+      "connectionId": "IBBPortalContext"
     }
   }
 }
