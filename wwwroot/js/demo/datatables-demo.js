@@ -67,7 +67,6 @@
     */
 
 //Set index to 0. Even if there is a search-type: none, we should always start with 0 and go to end of the length.
-alert("ben daha önce yüklendim");
     let index = 0;
     $('#dataTable thead #tableLabels th').each(function () {
         const columnSearchType = $(this).attr('data-search-type');

@@ -10,6 +10,7 @@ using IBBPortal.Models;
 
 namespace IBBPortal.Controllers
 {
+    [Produces("application/json")]
     public class ContractorController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,6 +24,57 @@ namespace IBBPortal.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult LoadData()
+        {
+            try
+            {
+                var draw = HttpContext.Request.Form["draw"].FirstOrDefault();
+                // Skiping number of Rows count  
+                var start = Request.Form["start"].FirstOrDefault();
+                // Paging Length 10,20  
+                var length = Request.Form["length"].FirstOrDefault();
+                // Sort Column Name  
+                var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
+                // Sort Column Direction ( asc ,desc)  
+                var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
+                // Search Value from (Search box)  
+                var searchValue = Request.Form["search[value]"].FirstOrDefault();
+
+                //Paging Size (10,20,50,100)  
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+                int recordsTotal = 0;
+
+                // Getting all Customer data  
+                var contractorData = from tempcustomer in _context.Contractor
+                                    select tempcustomer;
+
+                //Sorting  
+                if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
+                {
+                    contractorData = contractorData.OrderBy(e => e.Title);
+                }
+                //Search  
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    contractorData = contractorData.Where(m => m.Title == searchValue);
+                }
+
+                //total number of rows count   
+                recordsTotal = contractorData.Count();
+                //Paging   
+                var data = contractorData.Skip(skip).Take(pageSize).ToList();
+                //Returning Json Data  
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
         }
 
         // GET: Contractor/Details/5
