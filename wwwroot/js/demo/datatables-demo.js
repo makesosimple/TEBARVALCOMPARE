@@ -1,61 +1,61 @@
-// Call the dataTables jQuery plugin
-const icons =
-    `<div class="d-flex align-items-center cem">
-    <a href="#" class="dtActionButton" id="createFolder"><i class="far fa-folder"></i></a>
-    <a href="#" class="dtActionButton" id="seeImages"><i class="far fa-image"></i></a>
-    <a href="#" class="dtActionButton" id="seeStatistics"><i class="fas fa-chart-line"></i></a>
-    <a href="#" class="dtActionButton" id="exportProject"><i class="fas fa-sign-out-alt"></i></a>
-    <a href="#" class="dtActionButton" id="addShortcut"></i><i class="fas fa-heart"></i></a>
-  </div>`;
+////// Call the dataTables jQuery plugin
+////const icons =
+////    `<div class="d-flex align-items-center">
+////    <a href="#" class="dtActionButton" id="createFolder"><i class="far fa-folder"></i></a>
+////    <a href="#" class="dtActionButton" id="seeImages"><i class="far fa-image"></i></a>
+////    <a href="#" class="dtActionButton" id="seeStatistics"><i class="fas fa-chart-line"></i></a>
+////    <a href="#" class="dtActionButton" id="exportProject"><i class="fas fa-sign-out-alt"></i></a>
+////    <a href="#" class="dtActionButton" id="addShortcut"></i><i class="fas fa-heart"></i></a>
+////  </div>`;
 
-$(document).ready(function () {
+////$(document).ready(function () {
 
-    /* Primary Buttons for DataTable. Must be common on all tables. */
-    $.fn.dataTable.ext.buttons.alert = {
-        className: 'btn btn-primary btn-circle border-0',
+////    /* Primary Buttons for DataTable. Must be common on all tables. */
+////    $.fn.dataTable.ext.buttons.alert = {
+////        className: 'btn btn-primary btn-circle border-0',
 
-        action: function (e, dt, node, config) {
-            alert("Buton çalışıyor!");
-        }
-    };
+////        action: function (e, dt, node, config) {
+////            alert("Buton çalışıyor!");
+////        }
+////    };
 
-    /* Initiate Table */
-    let table = $("#dataTable").DataTable({
-        searching: true,
-        dom: '<"top d-flex justify-content-start my-2"B>rt<"d-flex justify-content-between flex-column align-items-baseline flex-md-row mt-3"ipl><"clear">',
-        buttons: [
-            {
-                extend: 'alert',
-                text: '<i class="fas fa-eye-slash"></i>',
-                className: 'bg-primary pt-2',
-            },
-            {
-                extend: 'alert',
-                text: '<i class="fas fa-map-marker-alt"></i>',
-                className: 'bg-success pt-2',
-            },
-            {
-                extend: 'alert',
-                text: '<i class="fas fa-file-export"></i>',
-                className: 'bg-info pt-2 pr-2',
-            }
-        ],
-        language: {
-            url: "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Turkish.json",
-        },
+////    /* Initiate Table */
+////    let table = $("#dataTable").DataTable({
+////        searching: true,
+////        dom: '<"top d-flex justify-content-start my-2"B>rt<"d-flex justify-content-between flex-column align-items-baseline flex-md-row mt-3"ipl><"clear">',
+////        buttons: [
+////            {
+////                extend: 'alert',
+////                text: '<i class="fas fa-eye-slash"></i>',
+////                className: 'bg-primary pt-2',
+////            },
+////            {
+////                extend: 'alert',
+////                text: '<i class="fas fa-map-marker-alt"></i>',
+////                className: 'bg-success pt-2',
+////            },
+////            {
+////                extend: 'alert',
+////                text: '<i class="fas fa-file-export"></i>',
+////                className: 'bg-info pt-2 pr-2',
+////            }
+////        ],
+////        language: {
+////            url: "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Turkish.json",
+////        },
 
-        initComplete: function () {
-            this.api()
-                .columns()
-                .every(function () {
-                    let column = this;
-                    column
-                        .data()
-                        .unique()
-                        .sort()
-                });
-        },
-    });
+////        initComplete: function () {
+////            this.api()
+////                .columns()
+////                .every(function () {
+////                    let column = this;
+////                    column
+////                        .data()
+////                        .unique()
+////                        .sort()
+////                });
+////        },
+////    });
 
     /* 
     Create individual search inputs for each column. We use custom template strings to initialize dynamic search fields.
@@ -66,7 +66,8 @@ $(document).ready(function () {
     data-search-type: specify search type. select, input, datetime etc.
     */
 
-    //Set index to 0. Even if there is a search-type: none, we should always start with 0 and go to end of the length.
+//Set index to 0. Even if there is a search-type: none, we should always start with 0 and go to end of the length.
+alert("ben daha önce yüklendim");
     let index = 0;
     $('#dataTable thead #tableLabels th').each(function () {
         const columnSearchType = $(this).attr('data-search-type');
@@ -111,13 +112,12 @@ $(document).ready(function () {
 
     index = 0;
 
-    //Here we initialize search for the specific column with that column's index.
-    $('#dataTable thead input, #dataTable thead select').on('keyup change clear', function () {
-        let columnIndex = $(this).attr('data-index');
-        table
-            .columns(columnIndex)
-            .search(this.value)
-            .draw();
-    });
+    ////Here we initialize search for the specific column with that column's index.
+    //$('#dataTable thead input, #dataTable thead select').on('keyup change clear', function () {
+    //    let columnIndex = $(this).attr('data-index');
+    //    table
+    //        .columns(columnIndex)
+    //        .search(this.value)
+    //        .draw();
+    //});
 
-});

@@ -1,6 +1,4 @@
-﻿@model IEnumerable<IBBPortal.Models.Contractor>
-
-@{
+﻿@{
     ViewData["Title"] = "Yüklenici Yönetimi";
 }
 
@@ -25,28 +23,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Title)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Description)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CreationDate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.UpdateDate)
-                            </td>
-                            <td>
-                                <a class="btn btn-success btn-circle" asp-action="Edit" asp-route-id="@item.ContractorID"><i class="fas fa-edit"></i></a>
-                                <a class="btn btn-warning btn-circle" asp-action="Details" asp-route-id="@item.ContractorID"><i class="fas fa-info"></i></a>
-                                <a class="btn btn-danger btn-circle" asp-action="Delete" asp-route-id="@item.ContractorID"><i class="fas fa-trash-alt"></i></a>
-                            </td>
-                        </tr>
-                    }
                 </tbody>
                 <tfoot>
 
@@ -56,3 +32,11 @@
         </div>
     </div>
 </div>
+@section Scripts
+{
+    <script type="text/javascript">
+
+        alert("Yüklendim");
+
+    </script>
+}

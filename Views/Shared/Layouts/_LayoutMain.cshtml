@@ -25,6 +25,35 @@
 
     <!-- Main Stylesheet -->
     <link rel="stylesheet" href="~/css/sb-admin-2.min.css" />
+
+    <!-- jQuery -->
+    <script src="~/lib/jquery/jquery.min.js" defer></script>
+
+    <!-- Bootstrap -->
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js" defer></script>
+
+    <!-- jQuery Easing -->
+    <script src="~/lib/jquery-easing/jquery.easing.min.js" defer></script>
+
+    <!-- Datatables -->
+    <script src="~/lib/datatables/jquery.dataTables.min.js" defer></script>
+    <script src="~/lib/datatables/dataTables.bootstrap4.min.js" defer></script>
+    <script src="~/lib/datatables/dataTables.fixedHeader.min.js" defer></script>
+    <script src="~/lib/datatables/dataTables.scroller.min.js" defer></script>
+    <script src="~/lib/datatables/dataTables.buttons.min.js" defer></script>
+    <script src="~/lib/datatables/buttons.colVis.min.js" defer></script>
+    <script src="~/js/demo/datatables-demo.js" defer></script>
+
+    @RenderSection("Scripts", required: false)
+
+    <!-- Form Components -->
+    <script src="~/lib/select2/select2.min.js" defer></script>
+    <script src="~/lib/datepicker/bootstrap-datepicker.min.js" defer></script>
+    <script src="~/lib/datepicker/locales/bootstrap-datepicker.tr.min.js" defer></script>
+    <script src="~/js/forms.min.js" defer></script>
+
+    <script src="~/js/sb-admin-2.min.js" asp-append-version="true" defer></script>
+
 </head>
 <body id="page-top">
 
@@ -59,32 +88,5 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-
-    <!-- jQuery -->
-    <script src="~/lib/jquery/jquery.min.js"></script>
-
-    <!-- Bootstrap -->
-    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- jQuery Easing -->
-    <script src="~/lib/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Datatables -->
-    <script src="~/lib/datatables/jquery.dataTables.min.js"></script>
-    <script src="~/lib/datatables/dataTables.bootstrap4.min.js"></script>
-    <script src="~/lib/datatables/dataTables.fixedHeader.min.js"></script>
-    <script src="~/lib/datatables/dataTables.scroller.min.js"></script>
-    <script src="~/lib/datatables/dataTables.buttons.min.js"></script>
-    <script src="~/lib/datatables/buttons.colVis.min.js"></script>
-    <script src="~/js/demo/datatables-demo.js"></script>
-
-    <!-- Form Components -->
-    <script src="~/lib/select2/select2.min.js"></script>
-    <script src="~/lib/datepicker/bootstrap-datepicker.min.js"></script>
-    <script src="~/lib/datepicker/locales/bootstrap-datepicker.tr.min.js"></script>
-    <script src="~/js/forms.min.js"></script>
-
-    <script src="~/js/sb-admin-2.min.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -20,9 +20,9 @@ namespace IBBPortal.Controllers
         }
 
         // GET: Contractor
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Contractor.ToListAsync());
+            return View();
         }
 
         // GET: Contractor/Details/5
