@@ -4,65 +4,24 @@
 
         $(document).ready(function () {
             $("#dataTable").DataTable({
-                "processing": true, // for show progress bar
+                "dom": 'rt<"d-flex justify-content-between flex-column align-items-baseline flex-md-row mt-3"ipl><"clear">',
+                //"language": {
+                //    "url": "https://cdn.datatables.net/plug-ins/1.10.25/i18n/turkish.json",
+                //},
+                "processing": false, // for show progress bar
                 "serverSide": true, // for process server side
                 "filter": true, // this is for disable filter (search box)
+                "searching": true,
                 "orderMulti": false, // for disable multiple column at once
-                "ajax": {
-                    "url": "/Contractor/LoadData",
-                    "type": "POST",
-                    "datatype": "json"
-                },
-                "columnDefs": [{
-                    "targets": [0],
-                    "visible": false,
-                    "searchable": false
-                }],
+                "ajax": "/Contractor/JSONTest",
                 "columns": [
-                    { "data": "CustomerID", "name": "CustomerID", "autoWidth": true },
-                    { "data": "Name", "name": "Name", "autoWidth": true },
-                    { "data": "Address", "name": "Address", "autoWidth": true },
-                    { "data": "Country", "name": "Country", "autoWidth": true },
-                    { "data": "City", "name": "City", "autoWidth": true },
-                    { "data": "Phoneno", "name": "Phoneno", "autoWidth": true },
-                    {
-                        "render": function (data, type, full, meta) { return '<a class="btn btn-info" href="/DemoGrid/Edit/' + full.CustomerID + '">Edit</a>'; }
-                    },
-                    {
-                        data: null,
-                        render: function (data, type, row) {
-                            return "<a href='#' class='btn btn-danger' onclick=DeleteData('" + row.CustomerID + "'); >Delete</a>";
-                        }
-                    },
-                ]
-
+                    { "data": "title", "autoWidth": true },
+                    { "data": "description", "autoWidth": true },
+                    { "data": "creationDate", "autoWidth": true },
+                    { "data": "updateDate", "autoWidth": true }
+                ],
             });
         });
-
-
-        function DeleteData(CustomerID) {
-            if (confirm("Are you sure you want to delete ...?")) {
-                Delete(CustomerID);
-            } else {
-                return false;
-            }
-        }
-
-
-        function Delete(CustomerID) {
-            var url = '/' + "DemoGrid/Delete";
-
-            $.post(url, { ID: CustomerID }, function (data) {
-                if (data) {
-                    oTable = $('#example').DataTable();
-                    oTable.draw();
-                } else {
-                    alert("Something Went Wrong!");
-                }
-            });
-        }
-
-
 
     </script>
 }
@@ -87,7 +46,6 @@
                         <th scope="col" class="text-white text-sm" data-search-type="text">Açıklama</th>
                         <th scope="col" class="text-white text-sm" data-search-type="text">Oluşturma Tarihi</th>
                         <th scope="col" class="text-white text-sm" data-search-type="text">Güncelleme Tarihi</th>
-                        <th scope="col" class="text-white text-sm" data-search-type="none"></th>
                     </tr>
                 </thead>
                 <tbody>

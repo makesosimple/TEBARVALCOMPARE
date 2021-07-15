@@ -10,7 +10,6 @@ using IBBPortal.Models;
 
 namespace IBBPortal.Controllers
 {
-    [Produces("application/json")]
     public class ContractorController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -21,60 +20,59 @@ namespace IBBPortal.Controllers
         }
 
         // GET: Contractor
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            return View(await _context.Contractor.ToListAsync());
         }
 
-        public IActionResult LoadData()
+        public IActionResult JSONTest()
         {
             try
             {
-                var draw = HttpContext.Request.Form["draw"].FirstOrDefault();
+                var draw = HttpContext.Request.Query["draw"].FirstOrDefault();
                 // Skiping number of Rows count  
-                var start = Request.Form["start"].FirstOrDefault();
+                var start = Request.Query["start"].FirstOrDefault();
                 // Paging Length 10,20  
-                var length = Request.Form["length"].FirstOrDefault();
+                var length = Request.Query["length"].FirstOrDefault();
                 // Sort Column Name  
-                var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
+                var sortColumn = Request.Query["columns[" + Request.Query["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
                 // Sort Column Direction ( asc ,desc)  
-                var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
+                var sortColumnDirection = Request.Query["order[0][dir]"].FirstOrDefault();
                 // Search Value from (Search box)  
-                var searchValue = Request.Form["search[value]"].FirstOrDefault();
+                var searchValue = Request.Query["search[value]"].FirstOrDefault();
 
-                //Paging Size (10,20,50,100)  
+                //Paging Size (10, 20, 50,100)  
                 int pageSize = length != null ? Convert.ToInt32(length) : 0;
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                // Getting all Customer data  
-                var contractorData = from tempcustomer in _context.Contractor
-                                    select tempcustomer;
+                var data = from x in _context.Contractor select x;
 
                 //Sorting  
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
                 {
-                    contractorData = contractorData.OrderBy(e => e.Title);
+                    var searchProp = sortColumn + " " + sortColumnDirection;
+                    data = data.OrderBy(e => e.Description);
                 }
+
                 //Search  
                 if (!string.IsNullOrEmpty(searchValue))
                 {
-                    contractorData = contractorData.Where(m => m.Title == searchValue);
+                    data = data.Where(m => m.Title.Contains(searchValue));
                 }
 
                 //total number of rows count   
-                recordsTotal = contractorData.Count();
+                recordsTotal = data.Count();
                 //Paging   
-                var data = contractorData.Skip(skip).Take(pageSize).ToList();
+                var passData = data.ToList();
                 //Returning Json Data  
-                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data });
-
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = passData });
             }
-            catch (Exception)
+
+            catch(Exception)
             {
                 throw;
             }
-
         }
 
         // GET: Contractor/Details/5
