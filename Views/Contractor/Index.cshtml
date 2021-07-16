@@ -3,7 +3,7 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            $("#dataTable").DataTable({
+            let table = $("#dataTable").DataTable({
                 "dom": 'rt<"d-flex justify-content-between flex-column align-items-baseline flex-md-row mt-3"ipl><"clear">',
                 //"language": {
                 //    "url": "https://cdn.datatables.net/plug-ins/1.10.25/i18n/turkish.json",
@@ -11,7 +11,6 @@
                 "processing": false, // for show progress bar
                 "serverSide": true, // for process server side
                 "filter": true, // this is for disable filter (search box)
-                "searching": true,
                 "orderMulti": false, // for disable multiple column at once
                 "ajax": "/Contractor/JSONTest",
                 "columns": [
@@ -21,6 +20,12 @@
                     { "data": "updateDate", "autoWidth": true }
                 ],
             });
+
+            $('#dataTable thead input, #dataTable thead select').on('keyup change clear', function () {
+                table
+                    .search(this.value)
+                    .draw();
+                });
         });
 
     </script>

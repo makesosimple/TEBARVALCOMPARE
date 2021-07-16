@@ -111,12 +111,3 @@
 
     index = 0;
 
-    ////Here we initialize search for the specific column with that column's index.
-    //$('#dataTable thead input, #dataTable thead select').on('keyup change clear', function () {
-    //    let columnIndex = $(this).attr('data-index');
-    //    table
-    //        .columns(columnIndex)
-    //        .search(this.value)
-    //        .draw();
-    //});
-
