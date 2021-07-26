@@ -123,11 +123,27 @@
         </a>
     </li>
 
+    <!-- Contractor Management-->
     <li class="nav-item">
         <a class="nav-link" asp-controller="Contractor" asp-action="Index">
             <i class="fas fa-hard-hat"></i>
             <span>Yüklenici Yönetimi</span>
         </a>
+    </li>
+
+    <!-- Nav Item - General Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCityDistrict"
+           aria-expanded="true" aria-controls="collapseCityDistrict">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>İl/İlçe Yönetimi</span>
+        </a>
+        <div id="collapseCityDistrict" class="collapse" aria-labelledby="headingCityDistrict"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" asp-controller="City" asp-action="Index">İller</a>
+            </div>
+        </div>
     </li>
 
     <!-- Divider -->
