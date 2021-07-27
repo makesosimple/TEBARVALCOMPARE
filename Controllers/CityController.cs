@@ -80,6 +80,41 @@ namespace IBBPortal.Controllers
             }
         }
 
+        [HttpGet]
+        public JsonResult JsonSelectData(string term)
+        {
+            try
+            {
+                
+                var CityData = _context.City
+                                    .Select(x => new {
+                                        id = x.CityID.ToString(),
+                                        text = x.CityName
+                                    });
+
+                if(!String.IsNullOrEmpty(term))
+                {
+                    CityData = CityData.Where(m => m.text.Contains(term));
+                }
+
+                //Count 
+                var totalCount = CityData.Count();
+
+                //Paging   
+                var passData = CityData.ToList();
+
+
+                //Returning Json Data  
+                return Json(new { results = passData, totalCount = totalCount });
+
+            }
+
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public IActionResult Details(int? id)
         {
             if (id == null)
