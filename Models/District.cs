@@ -20,6 +20,8 @@ namespace IBBPortal.Models
         public string DistrictName { get; set; }
 
         public int CityID { get; set; }
+        [ForeignKey("CityID")]
+        public City City { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreationDate { get; set; }

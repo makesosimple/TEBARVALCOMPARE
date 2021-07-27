@@ -128,7 +128,7 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var district = await _context.District.FindAsync(id);
+            var district = await _context.District.Include(city => city.City).FirstOrDefaultAsync(i => i.DistrictID == id);
             if (district == null)
             {
                 return NotFound();
