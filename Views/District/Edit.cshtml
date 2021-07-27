@@ -40,6 +40,17 @@
                             </div>
                         </div>
 
+                        <!-- City ID -->
+                        <div class="form-group row">
+                            <label asp-for="CityID" class="col-12 col-xl-4 col-form-label">İl</label>
+                            <div class="col-12 col-xl-8">
+                                <select asp-for="CityID" class="form-control" id="selectCity" style="width: 100%;">
+                                    <option>İl Seçiniz</option>
+                                </select>
+                                <span asp-validation-for="CityID" class="text-danger"></span>
+                            </div>
+                        </div>
+
                         <!-- Default Values for the Database Date Part-->
                         <input type="hidden" asp-for="UpdateDate" id="currentDate" />
 
@@ -57,4 +68,22 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <!-- Select2 for City -->
+    <script>
+        $('#selectCity').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/City/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
+        });
+    </script>
 }
