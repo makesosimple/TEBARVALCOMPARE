@@ -10,23 +10,23 @@ using IBBPortal.Models;
 
 namespace IBBPortal.Controllers
 {
-    public class ContractorController : Controller
+    public class CityController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ContractorController(ApplicationDbContext context)
+        public CityController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Contractor
+        // GET: City
         public IActionResult Index()
         {
             return View();
         }
 
 
-        public JsonResult JSONData(string title, string description, string creationDate, string updateDate)
+        public JsonResult JSONData(string creationDate, string updateDate)
         {
             try
             {
@@ -48,19 +48,19 @@ namespace IBBPortal.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var data = from x in _context.Contractor select x;
+                var data = from x in _context.City select x;
 
                 //Sorting  
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
                 {
                     var searchProp = sortColumn + " " + sortColumnDirection;
-                    data = data.OrderBy(e => e.Description);
+                    data = data.OrderBy(e => e.CityName);
                 }
 
                 //Search  
                 if (!string.IsNullOrEmpty(searchValue))
                 {
-                    data = data.Where(m => m.Title.Contains(searchValue));
+                    data = data.Where(m => m.CityName.Contains(searchValue));
                 }
 
                 //total number of rows count   
@@ -80,7 +80,6 @@ namespace IBBPortal.Controllers
             }
         }
 
-        // GET: Contractor/Details/5
         public IActionResult Details(int? id)
         {
             if (id == null)
@@ -88,8 +87,8 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var contractor =  _context.Contractor
-                .Where(m => m.ContractorID == id).FirstOrDefault();
+            var contractor = _context.City
+                .Where(m => m.CityID == id).FirstOrDefault();
             if (contractor == null)
             {
                 return NotFound();
@@ -98,29 +97,29 @@ namespace IBBPortal.Controllers
             return PartialView("_DetailsModal", contractor);
         }
 
-        // GET: Contractor/Create
+        // GET: City/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Contractor/Create
+        // POST: City/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ContractorID,Title,TaxCode,TaxOffice,CityID,DistrictID,PhoneNumber,Description,Address,Email,Website,CreationDate,UpdateDate,DeletionDate")] Contractor contractor)
+        public async Task<IActionResult> Create([Bind("CityID,CityCode,CityName,CreationDate,UpdateDate,DeletionDate")] City city)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(contractor);
+                _context.Add(city);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(contractor);
+            return View(city);
         }
 
-        // GET: Contractor/Edit/5
+        // GET: City/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -128,22 +127,22 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var contractor = await _context.Contractor.FindAsync(id);
-            if (contractor == null)
+            var city = await _context.City.FindAsync(id);
+            if (city == null)
             {
                 return NotFound();
             }
-            return View(contractor);
+            return View(city);
         }
 
-        // POST: Contractor/Edit/5
+        // POST: City/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ContractorID,Title,TaxCode,TaxOffice,CityID,DistrictID,PhoneNumber,Description,Address,Email,Website,CreationDate,UpdateDate,DeletionDate")] Contractor contractor)
+        public async Task<IActionResult> Edit(int id, [Bind("CityID,CityCode,CityName,CreationDate,UpdateDate,DeletionDate")] City city)
         {
-            if (id != contractor.ContractorID)
+            if (id != city.CityID)
             {
                 return NotFound();
             }
@@ -152,12 +151,12 @@ namespace IBBPortal.Controllers
             {
                 try
                 {
-                    _context.Update(contractor);
+                    _context.Update(city);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ContractorExists(contractor.ContractorID))
+                    if (!CityExists(city.CityID))
                     {
                         return NotFound();
                     }
@@ -168,10 +167,10 @@ namespace IBBPortal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(contractor);
+            return View(city);
         }
 
-        // GET: Contractor/Delete/5
+        // GET: City/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -179,30 +178,30 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var contractor = await _context.Contractor
-                .FirstOrDefaultAsync(m => m.ContractorID == id);
-            if (contractor == null)
+            var city = await _context.City
+                .FirstOrDefaultAsync(m => m.CityID == id);
+            if (city == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DeleteModal", contractor);
+            return PartialView("_DeleteModal", city);
         }
 
-        // POST: Contractor/Delete/5
+        // POST: City/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var contractor = await _context.Contractor.FindAsync(id);
-            _context.Contractor.Remove(contractor);
+            var city = await _context.City.FindAsync(id);
+            _context.City.Remove(city);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ContractorExists(int id)
+        private bool CityExists(int id)
         {
-            return _context.Contractor.Any(e => e.ContractorID == id);
+            return _context.City.Any(e => e.CityID == id);
         }
     }
 }

@@ -1,43 +1,147 @@
 ﻿@model IBBPortal.Models.Contractor
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Yüklenici Düzenle";
 }
 
-<h1>Edit</h1>
+<h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
+<form asp-action="Edit">
+    <input type="hidden" asp-for="ContractorID" />
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
+            <ul class="nav nav-pills" id="formTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="false">Genel</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-pane fade active show" id="general" role="tabpanel" aria-labelledby="general-tab">
+                <div class="row">
+                    <div class="col-12 col-xl-6">
+                        <!-- Validation Part. Must be still for all views!! -->
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<h4>Contractor</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ContractorID" />
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                        <!-- Title -->
+                        <div class="form-group row">
+                            <label asp-for="Title" class="col-12 col-xl-4 col-form-label">Başlık</label>
+                            <div class="col-12 col-xl-8">
+                                <input asp-for="Title" type="text" class="form-control" required>
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="form-group row">
+                            <label asp-for="Description" class="col-12 col-xl-4 col-form-label">Açıklama</label>
+                            <div class="col-12 col-xl-8">
+                                <textarea class="form-control" asp-for="Description" rows="3"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <!-- Tax Code -->
+                        <div class="form-group row">
+                            <label asp-for="TaxCode" class="col-12 col-xl-4 col-form-label">Vergi Numarası</label>
+                            <div class="col-12 col-xl-8">
+                                <input asp-for="TaxCode" type="text" class="form-control" required>
+                                <span asp-validation-for="TaxCode" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Tax Office -->
+                        <div class="form-group row">
+                            <label asp-for="TaxOffice" class="col-12 col-xl-4 col-form-label">Vergi Dairesi</label>
+                            <div class="col-12 col-xl-8">
+                                <input asp-for="TaxOffice" type="text" class="form-control" required>
+                                <span asp-validation-for="TaxOffice" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <!-- City ID -->
+                        <div class="form-group row">
+                            <label asp-for="CityID" class="col-12 col-xl-4 col-form-label">İl</label>
+                            <div class="col-12 col-xl-8">
+                                <select asp-for="CityID" class="form-control initialize-select2" style="width: 100%;">
+                                    <option value="1">Örnek 1</option>
+                                    <option value="2">Örnek 2</option>
+                                    <option value="3">Örnek 3</option>
+                                    <option value="4">Örnek 4</option>
+                                </select>
+                                <span asp-validation-for="CityID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- District ID -->
+                        <div class="form-group row">
+                            <label asp-for="DistrictID" class="col-12 col-xl-4 col-form-label">İlçe</label>
+                            <div class="col-12 col-xl-8">
+                                <select asp-for="DistrictID" class="form-control initialize-select2" style="width: 100%;">
+                                    <option value="1">Örnek 1</option>
+                                    <option value="2">Örnek 2</option>
+                                    <option value="3">Örnek 3</option>
+                                    <option value="4">Örnek 4</option>
+                                </select>
+                                <span asp-validation-for="DistrictID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="form-group row">
+                            <label asp-for="Address" class="col-12 col-xl-4 col-form-label">Adres</label>
+                            <div class="col-12 col-xl-8">
+                                <textarea class="form-control" asp-for="Address" rows="3"></textarea>
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <!-- Phone Number -->
+                        <div class="form-group row">
+                            <label asp-for="PhoneNumber" class="col-12 col-xl-4 col-form-label">Telefon Numarası</label>
+                            <div class="col-12 col-xl-8">
+                                <input asp-for="PhoneNumber" type="text" class="form-control phoneField" required>
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group row">
+                            <label asp-for="Email" class="col-12 col-xl-4 col-form-label">E-Posta</label>
+                            <div class="col-12 col-xl-8">
+                                <input asp-for="Email" type="email" class="form-control">
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Website -->
+                        <div class="form-group row">
+                            <label asp-for="Website" class="col-12 col-xl-4 col-form-label">Web Sitesi</label>
+                            <div class="col-12 col-xl-8">
+                                <input asp-for="Website" type="text" class="form-control">
+                                <span asp-validation-for="Website" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Default Values for the Database Date Part-->
+                        <input type="hidden" asp-for="UpdateDate" id="currentDate" />
+
+                        <div class="buttons mt-3 my-md-0">
+                            <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
+                            <a asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
+                        </div>
+
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreationDate" class="control-label"></label>
-                <input asp-for="CreationDate" class="form-control" />
-                <span asp-validation-for="CreationDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

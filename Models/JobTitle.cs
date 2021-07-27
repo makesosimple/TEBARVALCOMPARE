@@ -8,41 +8,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
 {
-    [Index(nameof(CityID))]
-    [Index(nameof(DistrictID))]
-    public class Contractor
+    
+    public class JobTitle
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ContractorID { get; set; }
+        public int JobTitleID { get; set; }
 
-        [MaxLength(256)]
+        [MaxLength(50)]
         public string Title { get; set; }
 
-        [MaxLength(32)]
-        public string TaxCode { get; set; }
-
-        [MaxLength(32)]
-        public string TaxOffice { get; set; }
-
-        public int CityID { get; set; }
-
-        public int DistrictID { get; set; }
-
-        [MaxLength(32)]
-        public string PhoneNumber { get; set; }
-
-        #nullable enable
         [MaxLength(256)]
-        public string? Description { get; set; }
-
-        [MaxLength(256)]
-        public string? Address { get; set; }
-
-        [MaxLength(128)]
-        public string? Email { get; set; }
-
-        [MaxLength(256)]
-        public string? Website { get; set; }
+        public string JobDescription { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreationDate { get; set; }
