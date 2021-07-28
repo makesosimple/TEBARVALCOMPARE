@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IBBPortal.Data;
 using IBBPortal.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace IBBPortal.Controllers
 {
     public class CityController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public CityController(ApplicationDbContext context)
+        public CityController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: City
@@ -135,6 +138,7 @@ namespace IBBPortal.Controllers
         // GET: City/Create
         public IActionResult Create()
         {
+            ViewBag.UserID = _userManager.GetUserId(HttpContext.User);
             return View();
         }
 
@@ -143,7 +147,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CityID,CityCode,CityName,CreationDate,UpdateDate,DeletionDate")] City city)
+        public async Task<IActionResult> Create([Bind("CityID,CityCode,CityName,UserID,CreationDate,UpdateDate,DeletionDate")] City city)
         {
             if (ModelState.IsValid)
             {

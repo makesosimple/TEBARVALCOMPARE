@@ -66,9 +66,15 @@
 
 <div id="GeneralModal"></div>
 
-<h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
-
-<a class="btn btn-success btn-circle btn-lg" id="add" asp-action="Create"><i class="fas fa-plus"></i></a>
+<!-- Create Button-->
+<div class="row">
+    <div class="justify-content-between py-2 col-12 d-flex">
+        <h1 class="h3 mb-4 text-gray-800">Proje Merkezi</h1>
+        <a asp-action="Create" class="btn btn-success shadow mb-4">
+            <i class="fas fa-plus mr-2"></i> EKLE
+        </a>
+    </div>
+</div>
 
 <!-- DataTales Example -->
 <div class="card shadow mb-4">

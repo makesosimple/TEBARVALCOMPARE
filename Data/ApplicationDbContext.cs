@@ -18,10 +18,6 @@ namespace IBBPortal.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Contractor>()
-                .Property(c => c.CreationDate)
-                .HasDefaultValueSql("getdate()");
-
         }
 
         public DbSet<IBBPortal.Models.Bidding> Bidding { get; set; }

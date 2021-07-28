@@ -4,14 +4,16 @@ using IBBPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IBBPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210728112746_UserForeignKey")]
+    partial class UserForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,12 +113,7 @@ namespace IBBPortal.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserID")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("BoardID");
-
-                    b.HasIndex("UserID");
 
                     b.ToTable("Board");
                 });
@@ -175,7 +172,8 @@ namespace IBBPortal.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<DateTime?>("DeletionDate")
                         .ValueGeneratedOnAddOrUpdate()
@@ -212,9 +210,6 @@ namespace IBBPortal.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserID")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Website")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -224,8 +219,6 @@ namespace IBBPortal.Migrations
                     b.HasIndex("CityID");
 
                     b.HasIndex("DistrictID");
-
-                    b.HasIndex("UserID");
 
                     b.ToTable("Contractor");
                 });
@@ -292,14 +285,9 @@ namespace IBBPortal.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserID")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("DistrictID");
 
                     b.HasIndex("CityID");
-
-                    b.HasIndex("UserID");
 
                     b.ToTable("District");
                 });
@@ -1327,25 +1315,7 @@ namespace IBBPortal.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("IBBPortal.Models.Board", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("IBBPortal.Models.City", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("IBBPortal.Models.Contractor", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
@@ -1362,13 +1332,7 @@ namespace IBBPortal.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID");
-
                     b.Navigation("City");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

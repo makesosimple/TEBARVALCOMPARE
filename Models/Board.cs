@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
@@ -14,12 +15,19 @@ namespace IBBPortal.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int BoardID { get; set; }
 
+        [Required]
         [MaxLength(50)]
         public string BoardTitle { get; set; }
 
         [MaxLength(256)]
         public string BoardDescription { get; set; }
 
+        [Required]
+        public string UserID { get; set; }
+        [ForeignKey("UserID")]
+        public IdentityUser User { get; set; }
+
+        [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreationDate { get; set; }
 

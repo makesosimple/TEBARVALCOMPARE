@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IBBPortal.Data;
 using IBBPortal.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace IBBPortal.Controllers
 {
     public class BoardController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public BoardController(ApplicationDbContext context)
+        public BoardController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Board
@@ -101,6 +104,7 @@ namespace IBBPortal.Controllers
         // GET: Board/Create
         public IActionResult Create()
         {
+            ViewBag.UserID = _userManager.GetUserId(HttpContext.User);
             return View();
         }
 
@@ -109,7 +113,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BoardID,BoardTitle,BoardDescription,CreationDate,UpdateDate,DeletionDate")] Board board)
+        public async Task<IActionResult> Create([Bind("BoardID,BoardTitle,BoardDescription,UserID,CreationDate,UpdateDate,DeletionDate")] Board board)
         {
             if (ModelState.IsValid)
             {
