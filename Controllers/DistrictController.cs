@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IBBPortal.Data;
 using IBBPortal.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace IBBPortal.Controllers
 {
     public class DistrictController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public DistrictController(ApplicationDbContext context)
+        public DistrictController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: District
@@ -101,6 +104,7 @@ namespace IBBPortal.Controllers
         // GET: District/Create
         public IActionResult Create()
         {
+            ViewBag.UserID = _userManager.GetUserId(HttpContext.User);
             return View();
         }
 
@@ -109,7 +113,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DistrictID,DistrictCode,DistrictName,CityID,CreationDate,UpdateDate,DeletionDate")] District district)
+        public async Task<IActionResult> Create([Bind("DistrictID,DistrictCode,DistrictName,CityID,UserID,CreationDate,UpdateDate,DeletionDate")] District district)
         {
             if (ModelState.IsValid)
             {

@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IBBPortal.Data;
 using IBBPortal.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace IBBPortal.Controllers
 {
     public class ContractorController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public ContractorController(ApplicationDbContext context)
+        public ContractorController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Contractor
@@ -101,6 +104,7 @@ namespace IBBPortal.Controllers
         // GET: Contractor/Create
         public IActionResult Create()
         {
+            ViewBag.UserID = _userManager.GetUserId(HttpContext.User);
             return View();
         }
 
@@ -109,7 +113,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ContractorID,Title,TaxCode,TaxOffice,CityID,DistrictID,PhoneNumber,Description,Address,Email,Website,CreationDate,UpdateDate,DeletionDate")] Contractor contractor)
+        public async Task<IActionResult> Create([Bind("ContractorID,Title,TaxCode,TaxOffice,CityID,DistrictID,UserID,PhoneNumber,Description,Address,Email,Website,CreationDate,UpdateDate,DeletionDate")] Contractor contractor)
         {
             if (ModelState.IsValid)
             {

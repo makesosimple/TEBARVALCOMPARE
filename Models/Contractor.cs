@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
@@ -15,6 +16,7 @@ namespace IBBPortal.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ContractorID { get; set; }
 
+        [Required]
         [MaxLength(256)]
         public string Title { get; set; }
 
@@ -27,6 +29,11 @@ namespace IBBPortal.Models
         public int CityID { get; set; }
 
         public int DistrictID { get; set; }
+
+        [Required]
+        public string UserID { get; set; }
+        [ForeignKey("UserID")]
+        public IdentityUser User { get; set; }
 
         [MaxLength(32)]
         public string PhoneNumber { get; set; }
@@ -44,6 +51,7 @@ namespace IBBPortal.Models
         [MaxLength(256)]
         public string? Website { get; set; }
 
+        [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreationDate { get; set; }
 

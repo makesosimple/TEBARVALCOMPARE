@@ -15,15 +15,20 @@ namespace IBBPortal.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CityID { get; set; }
+
+        [Required]
         public int CityCode { get; set; }
 
+        [Required]
         [MaxLength(50)]
         public string CityName { get; set; }
 
+        [Required]
         public string UserID { get; set; }
         [ForeignKey("UserID")]
-        public IdentityUser User { get; set; } 
+        public IdentityUser User { get; set; }
 
+        [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreationDate { get; set; }
 

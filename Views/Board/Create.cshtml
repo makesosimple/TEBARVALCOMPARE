@@ -41,6 +41,8 @@
 
                         <!-- Default Values for the Database Date Part-->
                         <input type="hidden" asp-for="CreationDate" id="currentDate" />
+                        <!-- User ID for the Creation -->
+                        <input type="hidden" asp-for="UserID" value="@ViewBag.UserID" />
 
                         <div class="buttons mt-3 my-md-0">
                             <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
