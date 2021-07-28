@@ -7,6 +7,46 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Views\Board\Create.cshtml" />
+    <None Include="Views\Board\Edit.cshtml" />
+    <None Include="Views\Board\Index.cshtml" />
+    <None Include="Views\Board\_DeleteModal.cshtml" />
+    <None Include="Views\Board\_DetailsModal.cshtml" />
+    <None Include="Views\City\Create.cshtml" />
+    <None Include="Views\City\Edit.cshtml" />
+    <None Include="Views\City\Index.cshtml" />
+    <None Include="Views\City\_DeleteModal.cshtml" />
+    <None Include="Views\City\_DetailsModal.cshtml" />
+    <None Include="Views\Contractor\Create.cshtml" />
+    <None Include="Views\Contractor\Edit.cshtml" />
+    <None Include="Views\Contractor\Index.cshtml" />
+    <None Include="Views\Contractor\_DeleteModal.cshtml" />
+    <None Include="Views\Contractor\_DetailsModal.cshtml" />
+    <None Include="Views\District\Create.cshtml" />
+    <None Include="Views\District\Edit.cshtml" />
+    <None Include="Views\District\Index.cshtml" />
+    <None Include="Views\District\_DeleteModal.cshtml" />
+    <None Include="Views\District\_DetailsModal.cshtml" />
+    <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Home\Privacy.cshtml" />
+    <None Include="Views\JobTitle\Create.cshtml" />
+    <None Include="Views\JobTitle\Edit.cshtml" />
+    <None Include="Views\JobTitle\Index.cshtml" />
+    <None Include="Views\JobTitle\_DeleteModal.cshtml" />
+    <None Include="Views\JobTitle\_DetailsModal.cshtml" />
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\LayoutComponents\_Footer.cshtml" />
+    <None Include="Views\Shared\LayoutComponents\_Header.cshtml" />
+    <None Include="Views\Shared\LayoutComponents\_Meta.cshtml" />
+    <None Include="Views\Shared\LayoutComponents\_Sidebar.cshtml" />
+    <None Include="Views\Shared\Layouts\_LayoutLogin.cshtml" />
+    <None Include="Views\Shared\Layouts\_LayoutMain.cshtml" />
+    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Views\_ViewImports.cshtml" />
+    <None Include="Views\_ViewStart.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.6" />

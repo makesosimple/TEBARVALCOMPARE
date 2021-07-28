@@ -22,7 +22,6 @@ namespace IBBPortal.Models
         [MaxLength(50)]
         public string DistrictName { get; set; }
 
-        [Required]
         public int CityID { get; set; }
         [ForeignKey("CityID")]
         public City City { get; set; }

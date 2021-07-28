@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace IBBPortal.Migrations
 {
-    public partial class CreatedContractor : Migration
+    public partial class IBBPortalSchemaVol12 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,23 +44,6 @@ namespace IBBPortal.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Contractor",
-                columns: table => new
-                {
-                    ContractorID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DeletionDate = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Contractor", x => x.ContractorID);
                 });
 
             migrationBuilder.CreateTable(
@@ -169,6 +152,141 @@ namespace IBBPortal.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Board",
+                columns: table => new
+                {
+                    BoardID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BoardTitle = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    BoardDescription = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletionDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Board", x => x.BoardID);
+                    table.ForeignKey(
+                        name: "FK_Board_AspNetUsers_UserID",
+                        column: x => x.UserID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "City",
+                columns: table => new
+                {
+                    CityID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CityCode = table.Column<int>(type: "int", nullable: false),
+                    CityName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletionDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_City", x => x.CityID);
+                    table.ForeignKey(
+                        name: "FK_City_AspNetUsers_UserID",
+                        column: x => x.UserID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Contractor",
+                columns: table => new
+                {
+                    ContractorID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    TaxCode = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
+                    TaxOffice = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
+                    CityID = table.Column<int>(type: "int", nullable: false),
+                    DistrictID = table.Column<int>(type: "int", nullable: false),
+                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
+                    Website = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletionDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contractor", x => x.ContractorID);
+                    table.ForeignKey(
+                        name: "FK_Contractor_AspNetUsers_UserID",
+                        column: x => x.UserID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "JobTitle",
+                columns: table => new
+                {
+                    JobTitleID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    JobDescription = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletionDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_JobTitle", x => x.JobTitleID);
+                    table.ForeignKey(
+                        name: "FK_JobTitle_AspNetUsers_UserID",
+                        column: x => x.UserID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "District",
+                columns: table => new
+                {
+                    DistrictID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DistrictCode = table.Column<int>(type: "int", nullable: false),
+                    DistrictName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    CityID = table.Column<int>(type: "int", nullable: false),
+                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletionDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_District", x => x.DistrictID);
+                    table.ForeignKey(
+                        name: "FK_District_AspNetUsers_UserID",
+                        column: x => x.UserID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_District_City_CityID",
+                        column: x => x.CityID,
+                        principalTable: "City",
+                        principalColumn: "CityID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -207,6 +325,51 @@ namespace IBBPortal.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Board_UserID",
+                table: "Board",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_City_CityCode",
+                table: "City",
+                column: "CityCode");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_City_UserID",
+                table: "City",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contractor_CityID",
+                table: "Contractor",
+                column: "CityID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contractor_DistrictID",
+                table: "Contractor",
+                column: "DistrictID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contractor_UserID",
+                table: "Contractor",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_District_CityID",
+                table: "District",
+                column: "CityID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_District_UserID",
+                table: "District",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JobTitle_UserID",
+                table: "JobTitle",
+                column: "UserID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -227,10 +390,22 @@ namespace IBBPortal.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Board");
+
+            migrationBuilder.DropTable(
                 name: "Contractor");
 
             migrationBuilder.DropTable(
+                name: "District");
+
+            migrationBuilder.DropTable(
+                name: "JobTitle");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "City");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

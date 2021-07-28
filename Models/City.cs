@@ -23,7 +23,6 @@ namespace IBBPortal.Models
         [MaxLength(50)]
         public string CityName { get; set; }
 
-        [Required]
         public string UserID { get; set; }
         [ForeignKey("UserID")]
         public IdentityUser User { get; set; }

@@ -22,7 +22,6 @@ namespace IBBPortal.Models
         [MaxLength(256)]
         public string BoardDescription { get; set; }
 
-        [Required]
         public string UserID { get; set; }
         [ForeignKey("UserID")]
         public IdentityUser User { get; set; }
