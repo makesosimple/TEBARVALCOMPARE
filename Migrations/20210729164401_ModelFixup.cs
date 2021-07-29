@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace IBBPortal.Migrations
 {
-    public partial class Test : Migration
+    public partial class ModelFixup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

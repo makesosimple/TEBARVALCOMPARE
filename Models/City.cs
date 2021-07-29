@@ -11,6 +11,7 @@ namespace IBBPortal.Models
 {
 
     [Index(nameof(CityCode))]
+    [Index(nameof(UserID))]
     public class City
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -28,13 +29,10 @@ namespace IBBPortal.Models
         public IdentityUser User { get; set; }
 
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreationDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? UpdateDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? DeletionDate { get; set; }
 
     }
