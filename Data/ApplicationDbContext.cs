@@ -30,6 +30,8 @@ namespace IBBPortal.Data
 
         public DbSet<IBBPortal.Models.JobTitle> JobTitle { get; set; }
 
+        public DbSet<IBBPortal.Models.Department> Department { get; set; }
+
     }
 
 

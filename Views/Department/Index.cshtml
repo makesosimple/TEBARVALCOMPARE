@@ -1,0 +1,65 @@
+﻿@model IEnumerable<IBBPortal.Models.Department>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DepartmentTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParentDepartment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeletionDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartmentTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParentDepartment.DepartmentTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeletionDate)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.DepartmentID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.DepartmentID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.DepartmentID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

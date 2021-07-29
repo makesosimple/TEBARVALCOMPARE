@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
@@ -15,12 +16,19 @@ namespace IBBPortal.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int DepartmentID { get; set; }
         
-
+        [Required]
         [MaxLength(128)]
         public string DepartmentTitle { get; set; }
 
-        public int ParentDepartmentID { get; set; }
+        public int? ParentDepartmentID { get; set; }
+        [ForeignKey("ParentDepartmentID")]
+        public Department ParentDepartment { get; set; }
 
+        public string UserID { get; set; }
+        [ForeignKey("UserID")]
+        public IdentityUser User { get; set; }
+
+        [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreationDate { get; set; }
 
