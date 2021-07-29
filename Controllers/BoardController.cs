@@ -72,7 +72,7 @@ namespace IBBPortal.Controllers
                     
                     if (!string.IsNullOrEmpty(columnName) && !string.IsNullOrEmpty(searchValue))
                     {
-                        data = data.Where($"{columnName}.Contains(@0)", searchValue);
+                        data = data.Where($"{columnName}.ToString().Contains(@0)", searchValue);
                     }
                 }   
 
