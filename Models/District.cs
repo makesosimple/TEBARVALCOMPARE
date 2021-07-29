@@ -26,7 +26,6 @@ namespace IBBPortal.Models
         [ForeignKey("CityID")]
         public City City { get; set; }
 
-        [Required]
         public string UserID { get; set; }
         [ForeignKey("UserID")]
         public IdentityUser User { get; set; }

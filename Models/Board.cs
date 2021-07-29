@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
 {
-    
+    [Index(nameof(UserID))]
     public class Board
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
