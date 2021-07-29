@@ -9,6 +9,7 @@ using IBBPortal.Data;
 using IBBPortal.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Linq.Dynamic.Core;
+using System.Globalization;
 
 namespace IBBPortal.Controllers
 {
@@ -50,17 +51,18 @@ namespace IBBPortal.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var data = _context.Board.Select( c => new { c.BoardID, c.BoardTitle, c.BoardDescription, c.CreationDate, c.UpdateDate, UserName = c.User.UserName});
+                var data = _context.Board.Select( c => new { c.BoardID, c.BoardTitle, c.CreationDate, c.UpdateDate, Description = c.BoardDescription.Length > 20 ? c.BoardDescription.Substring(0,20) + "..." : c.BoardDescription, UserName = c.User.UserName});
 
-                //Sorting  
+                //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
                 {
                     var sortProp = sortColumn + " " + sortColumnDirection;
                     data = data.OrderBy(sortProp);
                 }
 
-                //Search Functionality = Programmer will always know how many columns will be shown to the user. So we will use that to check every column if they are searchable and if they have search value.
-                //If control checks out, search. If not continue search until the loop ends.
+                //Search Functionality = Programmer will always know how many columns will be shown to the user.
+                //So we will use that to check every column if they have a search value.
+                //If control checks out, search. If not loop goes on until the end.
                 string columnName, searchValue;
 
                 for (int i = 0; i < 5; i++)
@@ -111,6 +113,8 @@ namespace IBBPortal.Controllers
         // GET: Board/Create
         public IActionResult Create()
         {
+            var culture = new CultureInfo("tr-TR");
+            ViewBag.CurrentDate = DateTime.Now.ToString(culture);
             ViewBag.UserID = _userManager.GetUserId(HttpContext.User);
             return View();
         }
@@ -144,6 +148,8 @@ namespace IBBPortal.Controllers
             {
                 return NotFound();
             }
+
+           
             return View(board);
         }
 
@@ -152,7 +158,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BoardID,BoardTitle,BoardDescription,CreationDate,UpdateDate,DeletionDate")] Board board)
+        public async Task<IActionResult> Edit(int id, [Bind("BoardID,BoardTitle,BoardDescription,UserID,CreationDate,UpdateDate,DeletionDate")] Board board)
         {
             if (id != board.BoardID)
             {
@@ -163,6 +169,9 @@ namespace IBBPortal.Controllers
             {
                 try
                 {
+                    var CurrentDate = DateTime.Now;
+                    board.UpdateDate = CurrentDate;
+
                     _context.Update(board);
                     await _context.SaveChangesAsync();
                 }
