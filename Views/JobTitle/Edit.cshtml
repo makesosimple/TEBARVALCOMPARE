@@ -40,8 +40,12 @@
                             </div>
                         </div>
 
-                        <!-- Default Values for the Database Date Part-->
-                        <input type="hidden" asp-for="UpdateDate" id="currentDate" />
+                        <!-- Default Values for the Database Date Part -->
+                        <input type="hidden" asp-for="CreationDate" />
+                        <input type="hidden" asp-for="UpdateDate" />
+
+                        <!-- User ID for the Update -->
+                        <input type="hidden" asp-for="UserID" />
 
                         <div class="buttons mt-3 my-md-0">
                             <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>

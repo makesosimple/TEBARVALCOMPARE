@@ -1,6 +1,4 @@
-﻿@model IEnumerable<IBBPortal.Models.JobTitle>
-
-@{
+﻿@{
     ViewData["Title"] = "Meslek Yönetimi";
 }
 
@@ -25,43 +23,36 @@
                 },
                 "columns": [
                     { "data": "title", "autoWidth": true },
-                    { "data": "jobDescription", "autoWidth": true },
-                    { "data": "creationDate", "autoWidth": true },
-                    { "data": "updateDate", "autoWidth": true },
+                    { "data": "userName", "autoWidth": true },
                     {
                         "data": null,
                         "render": function (data, type, full, meta, row) {
                             return `<a class="btn btn-circle bg-turqoise text-white" href="/JobTitle/Edit/${full.jobTitleID}"><i class="fas fa-edit"></i></a>\
-                                            <button type="button" class="btn btn-circle bg-warning text-white" onclick="modalScript(this)" data-url="/JobTitle/Details/${full.jobTitleID}"><i class="fas fa-info-circle"></i></button>\
-                                            <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/JobTitle/Delete/${full.jobTitleID}" ><i class="fas fa-trash-alt"></i></button>`;
+                                    <button type="button" class="btn btn-circle bg-warning text-white" onclick="modalScript(this)" data-url="/JobTitle/Details/${full.jobTitleID}"><i class="fas fa-info-circle"></i></button>\
+                                    <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/JobTitle/Delete/${full.jobTitleID}" ><i class="fas fa-trash-alt"></i></button>`;
                         }
                     },
                 ],
                 "columnDefs": [
                     { "targets": -1, "orderable": false },
                 ],
-            });
+                "initComplete": function () {
+                    let api = this.api();
 
-            $('#dataTable thead input, #dataTable thead select').on('input clear', function () {
-                $.ajax({
-                    url: '/JobTitle/JSONData',
-                    type: 'post',
-                    data: $(this).serialize(),
-                    //success: function () {
-                    //    console.log($(this));
-                    //}
-                });
-
-                $.get("/JobTitle/JSONData", function (data) {
-                    console.log(data);
-                });
+                    $('input.searchInput').on('input', function () {
+                        let columnIndex = $(this).data("index");
+                        let desiredColumn = api.columns(columnIndex);
+                        if (desiredColumn.search() !== this.value) {
+                            desiredColumn
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                }
             });
         });
     </script>
 
-}
-@{
-    ViewData["Title"] = "Meslek Yönetimi";
 }
 
 <div id="GeneralModal"></div>
@@ -83,17 +74,13 @@
             <table class="table table-hover display" id="dataTable" width="100%">
                 <thead class="bg-navy-blue">
                     <tr class="filter h-100 bg-white">
-                        <th scope="col"><form asp-action="JSONData" method="post"><input class="form-control w-100" data-index="0" type="text" placeholder="Ara..." id="title" name="title" value="" /></form></th>
-                        <th scope="col"><form asp-action="JSONData" method="post"><input class="form-control w-100" data-index="1" type="text" placeholder="Ara..." id="jobDescription" name="jobDescription" value="" /></form></th>
-                        <th scope="col"><form asp-action="JSONData" method="post"><input class="form-control w-100" data-index="2" type="text" placeholder="Ara..." id="creationDate" name="creationDate" value="" /></form></th>
-                        <th scope="col"><form asp-action="JSONData" method="post"><input class="form-control w-100" data-index="3" type="text" placeholder="Ara..." id="updateDate" name="updateDate" value="" /></form></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="title" name="title" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="userName" name="userName" value="" /></th>
                         <th scope="col"></th>
                     </tr>
                     <tr id="tableLabels">
-                        <th scope="col" class="text-white text-sm" data-search-type="text">Meslek Adı</th>
-                        <th scope="col" class="text-white text-sm" data-search-type="text">Meslek Açıklaması</th>
-                        <th scope="col" class="text-white text-sm" data-search-type="text">Oluşturma Tarihi</th>
-                        <th scope="col" class="text-white text-sm" data-search-type="text">Güncelleme Tarihi</th>
+                        <th scope="col" class="text-white text-sm" data-search-type="text">Meslek İsmi</th>
+                        <th scope="col" class="text-white text-sm" data-search-type="text">Oluşturan</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>

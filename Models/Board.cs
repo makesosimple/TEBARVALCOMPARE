@@ -27,7 +27,6 @@ namespace IBBPortal.Models
         public IdentityUser User { get; set; }
 
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreationDate { get; set; }
 
         public DateTime? UpdateDate { get; set; }

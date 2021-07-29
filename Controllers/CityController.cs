@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using IBBPortal.Data;
 using IBBPortal.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Linq.Dynamic.Core;
+using System.Globalization;
 
 namespace IBBPortal.Controllers
 {
@@ -29,7 +31,7 @@ namespace IBBPortal.Controllers
         }
 
 
-        public JsonResult JSONData(string creationDate, string updateDate)
+        public JsonResult JSONData()
         {
             try
             {
@@ -40,30 +42,38 @@ namespace IBBPortal.Controllers
                 // Paging Length 10,20  
                 var length = Request.Query["length"].FirstOrDefault();
                 // Sort Column Name  
-                var sortColumn = Request.Query["columns[" + Request.Query["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
+                var sortColumn = Request.Query["columns[" + Request.Query["order[0][column]"].FirstOrDefault() + "][data]"].FirstOrDefault();
                 // Sort Column Direction ( asc ,desc)  
-                var sortColumnDirection = Request.Query["order[0][dir]"].FirstOrDefault();
-                // Search Value from (Search box)  
-                var searchValue = Request.Query["search[value]"].FirstOrDefault();
+                var sortColumnDirection = Request.Query["order[0][dir]"].FirstOrDefault().ToUpper();
 
                 //Paging Size (10, 20, 50,100)  
                 int pageSize = length != null ? Convert.ToInt32(length) : 0;
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var data = from x in _context.City select x;
+                var data = _context.City.Select(c => new { c.CityID, c.CityName, c.CityCode, c.CreationDate, c.UpdateDate, UserName = c.User.UserName });
 
-                //Sorting  
+                //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
                 {
-                    var searchProp = sortColumn + " " + sortColumnDirection;
-                    data = data.OrderBy(e => e.CityName);
+                    var sortProp = sortColumn + " " + sortColumnDirection;
+                    data = data.OrderBy(sortProp);
                 }
 
-                //Search  
-                if (!string.IsNullOrEmpty(searchValue))
+                //Search Functionality = Programmer will always know how many columns will be shown to the user.
+                //So we will use that to check every column if they have a search value.
+                //If control checks out, search. If not loop goes on until the end.
+                string columnName, searchValue;
+
+                for (int i = 0; i < 5; i++)
                 {
-                    data = data.Where(m => m.CityName.Contains(searchValue));
+                    columnName = Request.Query[$"columns[{i}][data]"].FirstOrDefault();
+                    searchValue = Request.Query[$"columns[{i}][search][value]"].FirstOrDefault();
+
+                    if (!string.IsNullOrEmpty(columnName) && !string.IsNullOrEmpty(searchValue))
+                    {
+                        data = data.Where($"{columnName}.Contains(@0)", searchValue);
+                    }
                 }
 
                 //total number of rows count   
@@ -71,7 +81,6 @@ namespace IBBPortal.Controllers
                 //Paging   
                 var passData = data.ToList();
 
-                var test = HttpContext.Request.Query;
                 //Returning Json Data  
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = passData });
 
@@ -138,6 +147,8 @@ namespace IBBPortal.Controllers
         // GET: City/Create
         public IActionResult Create()
         {
+            var culture = new CultureInfo("tr-TR");
+            ViewBag.CurrentDate = DateTime.Now.ToString(culture);
             ViewBag.UserID = _userManager.GetUserId(HttpContext.User);
             return View();
         }
@@ -179,7 +190,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CityID,CityCode,CityName,CreationDate,UpdateDate,DeletionDate")] City city)
+        public async Task<IActionResult> Edit(int id, [Bind("CityID,CityCode,CityName,UserID,CreationDate,UpdateDate,DeletionDate")] City city)
         {
             if (id != city.CityID)
             {
@@ -190,6 +201,9 @@ namespace IBBPortal.Controllers
             {
                 try
                 {
+                    var CurrentDate = DateTime.Now;
+                    city.UpdateDate = CurrentDate;
+
                     _context.Update(city);
                     await _context.SaveChangesAsync();
                 }

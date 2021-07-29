@@ -24,7 +24,7 @@
 
                         <!-- Board Title -->
                         <div class="form-group row">
-                            <label asp-for="BoardTitle" class="col-12 col-xl-4 col-form-label">İl İsmi</label>
+                            <label asp-for="BoardTitle" class="col-12 col-xl-4 col-form-label">Kurul Adı</label>
                             <div class="col-12 col-xl-8">
                                 <input asp-for="BoardTitle" type="text" class="form-control" required>
                                 <span asp-validation-for="BoardTitle" class="text-danger"></span>
@@ -33,7 +33,7 @@
 
                         <!-- Description -->
                         <div class="form-group row">
-                            <label asp-for="BoardDescription" class="col-12 col-xl-4 col-form-label">Açıklama</label>
+                            <label asp-for="BoardDescription" class="col-12 col-xl-4 col-form-label">Kurul Açıklaması</label>
                             <div class="col-12 col-xl-8">
                                 <textarea class="form-control" asp-for="BoardDescription" rows="3"></textarea>
                                 <span asp-validation-for="BoardDescription" class="text-danger"></span>

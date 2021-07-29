@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IBBPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210729163206_Test")]
-    partial class Test
+    [Migration("20210729164401_ModelFixup")]
+    partial class ModelFixup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,7 +38,6 @@ namespace IBBPortal.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("CreationDate")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletionDate")
@@ -73,15 +72,12 @@ namespace IBBPortal.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("CreationDate")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletionDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("UpdateDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserID")
@@ -111,11 +107,9 @@ namespace IBBPortal.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreationDate")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletionDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -147,7 +141,6 @@ namespace IBBPortal.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<DateTime?>("UpdateDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserID")
@@ -176,11 +169,9 @@ namespace IBBPortal.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreationDate")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletionDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DepartmentTitle")
@@ -192,7 +183,6 @@ namespace IBBPortal.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdateDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserID")
@@ -218,11 +208,9 @@ namespace IBBPortal.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreationDate")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletionDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<int>("DistrictCode")
@@ -234,7 +222,6 @@ namespace IBBPortal.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("UpdateDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserID")
@@ -257,11 +244,9 @@ namespace IBBPortal.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreationDate")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletionDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("JobDescription")
@@ -274,7 +259,6 @@ namespace IBBPortal.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("UpdateDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserID")
