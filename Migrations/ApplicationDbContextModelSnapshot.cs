@@ -40,11 +40,9 @@ namespace IBBPortal.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletionDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("UpdateDate")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserID")
