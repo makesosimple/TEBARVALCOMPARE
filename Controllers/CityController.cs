@@ -10,6 +10,7 @@ using IBBPortal.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Linq.Dynamic.Core;
 using System.Globalization;
+using IBBPortal.Helpers;
 
 namespace IBBPortal.Controllers
 {
@@ -64,15 +65,17 @@ namespace IBBPortal.Controllers
                 //So we will use that to check every column if they have a search value.
                 //If control checks out, search. If not loop goes on until the end.
                 string columnName, searchValue;
+                int numberValue;
+                //DateTime dateValue;
 
                 for (int i = 0; i < 5; i++)
                 {
                     columnName = Request.Query[$"columns[{i}][data]"].FirstOrDefault();
                     searchValue = Request.Query[$"columns[{i}][search][value]"].FirstOrDefault();
 
-                    if (!string.IsNullOrEmpty(columnName) && !string.IsNullOrEmpty(searchValue))
+                    if (!(string.IsNullOrEmpty(columnName) && string.IsNullOrEmpty(searchValue)))
                     {
-                        data = data.Where($"{columnName}.ToString().Contains(@0)", searchValue);
+                        data = data.WhereContains(columnName, searchValue);
                     }
                 }
 
