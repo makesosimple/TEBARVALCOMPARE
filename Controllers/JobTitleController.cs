@@ -10,6 +10,7 @@ using IBBPortal.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Linq.Dynamic.Core;
 using System.Globalization;
+using IBBPortal.Helpers;
 
 namespace IBBPortal.Controllers
 {
@@ -50,7 +51,7 @@ namespace IBBPortal.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var data = _context.JobTitle.Select(c => new { c.JobTitleID, c.Title, UserName = c.User.UserName });
+                var data = _context.JobTitle.Select(c => new { c.JobTitleID, c.Title, UserName = c.User.UserName }).AsQueryable();
 
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
@@ -61,7 +62,7 @@ namespace IBBPortal.Controllers
 
                 //Search Functionality = Programmer will always know how many columns will be shown to the user.
                 //So we will use that to check every column if they have a search value.
-                //If control checks out, search. If not loop goes on until the end.
+                //If control checks out, search. If not, loop goes on until the end.
                 string columnName, searchValue;
 
                 for (int i = 0; i < 2; i++)
@@ -69,9 +70,9 @@ namespace IBBPortal.Controllers
                     columnName = Request.Query[$"columns[{i}][data]"].FirstOrDefault();
                     searchValue = Request.Query[$"columns[{i}][search][value]"].FirstOrDefault();
 
-                    if (!string.IsNullOrEmpty(columnName) && !string.IsNullOrEmpty(searchValue))
+                    if (!(string.IsNullOrEmpty(columnName) && string.IsNullOrEmpty(searchValue)))
                     {
-                        data = data.Where($"{columnName}.ToString().Contains(@0)", searchValue);
+                        data = data.WhereContains(columnName, searchValue);
                     }
                 }
 
