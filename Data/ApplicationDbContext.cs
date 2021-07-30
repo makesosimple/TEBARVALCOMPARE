@@ -17,7 +17,6 @@ namespace IBBPortal.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
         }
 
         public DbSet<IBBPortal.Models.Board> Board { get; set; }

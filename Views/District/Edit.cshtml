@@ -22,18 +22,18 @@
                         <!-- Validation Part. Must be still for all views!! -->
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                        <!-- City Name -->
+                        <!-- District Name -->
                         <div class="form-group row">
-                            <label asp-for="DistrictName" class="col-12 col-xl-4 col-form-label">İl İsmi</label>
+                            <label asp-for="DistrictName" class="col-12 col-xl-4 col-form-label">İlçe İsmi</label>
                             <div class="col-12 col-xl-8">
                                 <input asp-for="DistrictName" type="text" class="form-control" required>
                                 <span asp-validation-for="DistrictName" class="text-danger"></span>
                             </div>
                         </div>
 
-                        <!-- City Code -->
+                        <!-- District Code -->
                         <div class="form-group row">
-                            <label asp-for="DistrictCode" class="col-12 col-xl-4 col-form-label">İl Kodu</label>
+                            <label asp-for="DistrictCode" class="col-12 col-xl-4 col-form-label">İlçe Kodu</label>
                             <div class="col-12 col-xl-8">
                                 <input asp-for="DistrictCode" type="number" class="form-control" required>
                                 <span asp-validation-for="DistrictCode" class="text-danger"></span>
@@ -42,7 +42,7 @@
 
                         <!-- City ID -->
                         <div class="form-group row">
-                            <label asp-for="CityID" class="col-12 col-xl-4 col-form-label">İl</label>
+                            <label asp-for="CityID" class="col-12 col-xl-4 col-form-label">Bağlı Olduğu İl</label>
                             <div class="col-12 col-xl-8">
                                 <select asp-for="CityID" class="form-control" id="selectCity" style="width: 100%;">
                                     <option value="@Model.City.CityID">@Model.City.CityName</option>

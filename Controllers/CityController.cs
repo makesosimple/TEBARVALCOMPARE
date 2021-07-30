@@ -65,8 +65,6 @@ namespace IBBPortal.Controllers
                 //So we will use that to check every column if they have a search value.
                 //If control checks out, search. If not loop goes on until the end.
                 string columnName, searchValue;
-                int numberValue;
-                //DateTime dateValue;
 
                 for (int i = 0; i < 5; i++)
                 {
@@ -138,6 +136,7 @@ namespace IBBPortal.Controllers
             }
 
             var contractor = _context.City
+                .Include(d => d.User)
                 .Where(m => m.CityID == id).FirstOrDefault();
             if (contractor == null)
             {

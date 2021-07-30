@@ -103,6 +103,7 @@ namespace IBBPortal.Controllers
             }
 
             var contractor =  _context.Contractor
+                .Include(d => d.User)
                 .Where(m => m.ContractorID == id).FirstOrDefault();
             if (contractor == null)
             {

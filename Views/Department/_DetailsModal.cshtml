@@ -1,6 +1,6 @@
-﻿@model IBBPortal.Models.City
+﻿@model IBBPortal.Models.Department
 <!-- Modal -->
-<div class="modal fade" id="CityModal" tabindex="-1" aria-labelledby="CityModalLabel" aria-hidden="true">
+<div class="modal fade" id="DepartmentModal" tabindex="-1" aria-labelledby="DepartmentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
@@ -18,13 +18,16 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">İl</p></div>
-                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.CityName</p></div>
+                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Departman İsmi</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.DepartmentTitle</p></div>
                     </div>
-                    <div class="row">
-                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">İl Kodu</p></div>
-                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.CityCode</p></div>
-                    </div>
+                    @if (Model.ParentDepartment is not null)
+                    {
+                        <div class="row">
+                            <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Bağlı Olduğu Departman</p></div>
+                            <div class="col-12 col-xl-8"><p class="text-primary">@Model.ParentDepartment.DepartmentTitle</p></div>
+                        </div>
+                    }
                     <hr />
                     <div class="row">
                         <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Oluşturan</p></div>

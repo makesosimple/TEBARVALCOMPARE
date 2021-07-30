@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IBBPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210729164401_ModelFixup")]
-    partial class ModelFixup
+    [Migration("20210730123430_IBBPortalSchemaVol1.2.1")]
+    partial class IBBPortalSchemaVol121
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
