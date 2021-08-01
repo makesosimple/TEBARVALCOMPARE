@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,18 +9,17 @@ using Microsoft.EntityFrameworkCore;
 using IBBPortal.Data;
 using IBBPortal.Models;
 using Microsoft.AspNetCore.Identity;
-using System.Linq.Dynamic.Core;
-using System.Globalization;
 using IBBPortal.Helpers;
+using System.Globalization;
 
 namespace IBBPortal.Controllers
 {
-    public class BoardController : Controller
+    public class PhaseController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public BoardController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public PhaseController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -30,7 +30,6 @@ namespace IBBPortal.Controllers
         {
             return View();
         }
-
 
         public JsonResult JSONData()
         {
@@ -52,7 +51,7 @@ namespace IBBPortal.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var data = _context.Board.Select( c => new { c.BoardID, c.BoardTitle, c.CreationDate, c.UpdateDate, Description = c.BoardDescription.Length > 20 ? c.BoardDescription.Substring(0,20) + "..." : c.BoardDescription, UserName = c.User.UserName});
+                var data = _context.Phase.Select(c => new { c.PhaseID, c.PhaseTitle, UserName = c.User.UserName });
 
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
@@ -66,7 +65,7 @@ namespace IBBPortal.Controllers
                 //If control checks out, search. If not loop goes on until the end.
                 string columnName, searchValue;
 
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     columnName = Request.Query[$"columns[{i}][data]"].FirstOrDefault();
                     searchValue = Request.Query[$"columns[{i}][search][value]"].FirstOrDefault();
@@ -93,26 +92,26 @@ namespace IBBPortal.Controllers
             }
         }
 
-        // GET: Board/Details/5
-        public IActionResult Details(int? id)
+        // GET: Phase/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var contractor = _context.Board
-                .Include(d => d.User)
-                .Where(m => m.BoardID == id).FirstOrDefault();
-            if (contractor == null)
+            var phase = await _context.Phase
+                .Include(p => p.User)
+                .FirstOrDefaultAsync(m => m.PhaseID == id);
+            if (phase == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DetailsModal", contractor);
+            return PartialView("_DetailsModal", phase);
         }
 
-        // GET: Board/Create
+        // GET: Phase/Create
         public IActionResult Create()
         {
             var culture = new CultureInfo("tr-TR");
@@ -121,23 +120,23 @@ namespace IBBPortal.Controllers
             return View();
         }
 
-        // POST: Board/Create
+        // POST: Phase/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BoardID,BoardTitle,BoardDescription,UserID,CreationDate,UpdateDate,DeletionDate")] Board board)
+        public async Task<IActionResult> Create([Bind("PhaseID,PhaseTitle,PhaseDescription,PreviousPhaseID,UserID,CreationDate,UpdateDate,DeletionDate")] Phase phase)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(board);
+                _context.Add(phase);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(board);
+            return View(phase);
         }
 
-        // GET: Board/Edit/5
+        // GET: Phase/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -145,24 +144,22 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var board = await _context.Board.FindAsync(id);
-            if (board == null)
+            var phase = await _context.Phase.FindAsync(id);
+            if (phase == null)
             {
                 return NotFound();
             }
-
-           
-            return View(board);
+            return View(phase);
         }
 
-        // POST: Board/Edit/5
+        // POST: Phase/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BoardID,BoardTitle,BoardDescription,UserID,CreationDate,UpdateDate,DeletionDate")] Board board)
+        public async Task<IActionResult> Edit(int id, [Bind("PhaseID,PhaseTitle,PhaseDescription,PreviousPhaseID,UserID,CreationDate,UpdateDate,DeletionDate")] Phase phase)
         {
-            if (id != board.BoardID)
+            if (id != phase.PhaseID)
             {
                 return NotFound();
             }
@@ -172,14 +169,14 @@ namespace IBBPortal.Controllers
                 try
                 {
                     var CurrentDate = DateTime.Now;
-                    board.UpdateDate = CurrentDate;
+                    phase.UpdateDate = CurrentDate;
 
-                    _context.Update(board);
+                    _context.Update(phase);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BoardExists(board.BoardID))
+                    if (!PhaseExists(phase.PhaseID))
                     {
                         return NotFound();
                     }
@@ -190,10 +187,10 @@ namespace IBBPortal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(board);
+            return View(phase);
         }
 
-        // GET: Board/Delete/5
+        // GET: Phase/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -201,30 +198,31 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var board = await _context.Board
-                .FirstOrDefaultAsync(m => m.BoardID == id);
-            if (board == null)
+            var phase = await _context.Phase
+                .Include(p => p.User)
+                .FirstOrDefaultAsync(m => m.PhaseID == id);
+            if (phase == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DeleteModal", board);
+            return PartialView("_DeleteModal", phase);
         }
 
-        // POST: Board/Delete/5
+        // POST: Phase/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var board = await _context.Board.FindAsync(id);
-            _context.Board.Remove(board);
+            var phase = await _context.Phase.FindAsync(id);
+            _context.Phase.Remove(phase);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BoardExists(int id)
+        private bool PhaseExists(int id)
         {
-            return _context.Board.Any(e => e.BoardID == id);
+            return _context.Phase.Any(e => e.PhaseID == id);
         }
     }
 }

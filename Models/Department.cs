@@ -25,6 +25,8 @@ namespace IBBPortal.Models
         [ForeignKey("ParentDepartmentID")]
         public Department ParentDepartment { get; set; }
 
+        public List<Department> Departments { get; set; }
+
         public string UserID { get; set; }
         [ForeignKey("UserID")]
         public IdentityUser User { get; set; }

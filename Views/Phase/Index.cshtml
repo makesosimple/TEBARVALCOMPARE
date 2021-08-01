@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Departman Yönetimi";
+    ViewData["Title"] = "Faz Yönetimi";
 }
 
 @section Scripts
@@ -18,19 +18,18 @@
                 "filter": true, // this is for disable filter (search box)
                 "orderMulti": false, // for disable multiple column at once
                 "ajax": {
-                    "url": "/Department/JSONData",
+                    "url": "/Phase/JSONData",
                     "type": "GET"
                 },
                 "columns": [
-                    { "data": "departmentTitle", "autoWidth": true },
-                    { "data": "parentDepartmentTitle", "autoWidth": true },
+                    { "data": "phaseTitle", "autoWidth": true },
                     { "data": "userName", "autoWidth": true },
                     {
                         "data": null,
                         "render": function (data, type, full, meta, row) {
-                            return `<a class="btn btn-circle bg-turqoise text-white" href="/Department/Edit/${full.departmentID}"><i class="fas fa-edit"></i></a>\
-                                        <button type="button" class="btn btn-circle bg-warning text-white" onclick="modalScript(this)" data-url="/Department/Details/${full.departmentID}"><i class="fas fa-info-circle"></i></button>\
-                                        <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/Department/Delete/${full.departmentID}" ><i class="fas fa-trash-alt"></i></button>`;
+                            return `<a class="btn btn-circle bg-turqoise text-white" href="/Phase/Edit/${full.phaseID}"><i class="fas fa-edit"></i></a>\
+                                    <button type="button" class="btn btn-circle bg-warning text-white" onclick="modalScript(this)" data-url="/Phase/Details/${full.phaseID}"><i class="fas fa-info-circle"></i></button>\
+                                    <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/Phase/Delete/${full.phaseID}" ><i class="fas fa-trash-alt"></i></button>`;
                         }
                     },
                 ],
@@ -75,14 +74,12 @@
             <table class="table table-hover display" id="dataTable" width="100%">
                 <thead class="bg-navy-blue">
                     <tr class="filter h-100 bg-white">
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="departmentTitle" name="departmentTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="parentDepartmentTitle" name="parentDepartmentTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="userName" name="userName" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="phaseTitle" name="phaseTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="userName" name="userName" value="" /></th>
                         <th scope="col"></th>
                     </tr>
                     <tr id="tableLabels">
-                        <th scope="col" class="text-white text-sm">Departman İsmi</th>
-                        <th scope="col" class="text-white text-sm">Bağlı Olduğu Şehir</th>
+                        <th scope="col" class="text-white text-sm">Faz İsmi</th>
                         <th scope="col" class="text-white text-sm">Oluşturan</th>
                         <th scope="col"></th>
                     </tr>

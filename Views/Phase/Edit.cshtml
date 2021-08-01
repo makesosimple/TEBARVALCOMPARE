@@ -1,12 +1,12 @@
-﻿@model IBBPortal.Models.Department
+﻿@model IBBPortal.Models.Phase
 
 @{
-    ViewData["Title"] = "Departman Düzenle";
+    ViewData["Title"] = "Faz Düzenle";
 }
 
 <h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
 <form asp-action="Edit">
-    <input type="hidden" asp-for="DepartmentID" />
+    <input type="hidden" asp-for="PhaseID" />
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
             <ul class="nav nav-pills" id="formTabs" role="tablist">
@@ -22,24 +22,21 @@
                         <!-- Validation Part. Must be still for all views!! -->
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                        <!-- Department Name -->
+                        <!-- Phase Title -->
                         <div class="form-group row">
-                            <label asp-for="DepartmentTitle" class="col-12 col-xl-4 col-form-label">Departman İsmi</label>
+                            <label asp-for="PhaseTitle" class="col-12 col-xl-4 col-form-label">Faz İsmi</label>
                             <div class="col-12 col-xl-8">
-                                <input asp-for="DepartmentTitle" type="text" class="form-control" required>
-                                <span asp-validation-for="DepartmentTitle" class="text-danger"></span>
+                                <input asp-for="PhaseTitle" type="text" class="form-control" required>
+                                <span asp-validation-for="PhaseTitle" class="text-danger"></span>
                             </div>
                         </div>
 
-
-                        <!-- Parent Department ID -->
+                        <!-- Phase Description -->
                         <div class="form-group row">
-                            <label asp-for="ParentDepartmentID" class="col-12 col-xl-4 col-form-label">Bağlı Olduğu Departman</label>
+                            <label asp-for="PhaseDescription" class="col-12 col-xl-4 col-form-label">Faz Açıklaması</label>
                             <div class="col-12 col-xl-8">
-                                <select asp-for="ParentDepartmentID" class="form-control" id="selectDepartment" style="width: 100%;">
-                                    <option value="@Model.ParentDepartment.DepartmentID">@Model.ParentDepartment.DepartmentTitle</option>
-                                </select>
-                                <span asp-validation-for="ParentDepartmentID" class="text-danger"></span>
+                                <textarea asp-for="PhaseDescription" type="number" class="form-control"></textarea>
+                                <span asp-validation-for="PhaseDescription" class="text-danger"></span>
                             </div>
                         </div>
 
@@ -64,22 +61,4 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-    <!-- Select2 for City -->
-    <script>
-        $('#selectDepartment').select2({
-            theme: "ibb",
-            language: "tr",
-            ajax: {
-                url: '/Department/JsonSelectData',
-                dataType: 'json',
-                processResults: function (response) {
-
-                    return {
-                        results: response.results,
-                    };
-                }
-            }
-        });
-    </script>
 }

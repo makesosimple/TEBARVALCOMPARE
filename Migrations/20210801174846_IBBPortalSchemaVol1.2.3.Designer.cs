@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IBBPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210729164401_ModelFixup")]
-    partial class ModelFixup
+    [Migration("20210801174846_IBBPortalSchemaVol1.2.3")]
+    partial class IBBPortalSchemaVol123
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -501,7 +501,7 @@ namespace IBBPortal.Migrations
             modelBuilder.Entity("IBBPortal.Models.Department", b =>
                 {
                     b.HasOne("IBBPortal.Models.Department", "ParentDepartment")
-                        .WithMany()
+                        .WithMany("Departments")
                         .HasForeignKey("ParentDepartmentID");
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
@@ -588,6 +588,11 @@ namespace IBBPortal.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.Department", b =>
+                {
+                    b.Navigation("Departments");
                 });
 #pragma warning restore 612, 618
         }

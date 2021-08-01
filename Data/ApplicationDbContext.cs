@@ -17,7 +17,6 @@ namespace IBBPortal.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
         }
 
         public DbSet<IBBPortal.Models.Board> Board { get; set; }
@@ -31,6 +30,12 @@ namespace IBBPortal.Data
         public DbSet<IBBPortal.Models.JobTitle> JobTitle { get; set; }
 
         public DbSet<IBBPortal.Models.Department> Department { get; set; }
+
+        public DbSet<IBBPortal.Models.Phase> Phase { get; set; }
+
+        public DbSet<IBBPortal.Models.Management> Management { get; set; }
+
+        public DbSet<IBBPortal.Models.ZoningPlanStatus> ZoningPlanStatus { get; set; }
 
     }
 

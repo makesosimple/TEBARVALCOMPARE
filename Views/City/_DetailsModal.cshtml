@@ -25,6 +25,19 @@
                         <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">İl Kodu</p></div>
                         <div class="col-12 col-xl-8"><p class="text-primary">@Model.CityCode</p></div>
                     </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Oluşturan</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.User.UserName</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Oluşturma Tarihi</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.CreationDate</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Güncelleme Tarihi</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.UpdateDate</p></div>
+                    </div>
                 </div>
             </div>
         </div>

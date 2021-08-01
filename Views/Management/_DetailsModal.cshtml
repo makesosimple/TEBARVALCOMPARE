@@ -1,6 +1,6 @@
-﻿@model IBBPortal.Models.JobTitle
+﻿@model IBBPortal.Models.Management
 <!-- Modal -->
-<div class="modal fade" id="JobTitleModal" tabindex="-1" aria-labelledby="JobTitleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ManagementModal" tabindex="-1" aria-labelledby="ManagementModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
@@ -18,12 +18,12 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Meslek</p></div>
-                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.Title</p></div>
+                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">İşletme</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.ManagementTitle</p></div>
                     </div>
                     <div class="row">
-                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Açıklama</p></div>
-                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.JobDescription</p></div>
+                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Vergi Kodu</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.TaxCode</p></div>
                     </div>
                     <hr />
                     <div class="row">

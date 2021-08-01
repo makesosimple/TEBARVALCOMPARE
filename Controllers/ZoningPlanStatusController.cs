@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,29 +9,27 @@ using Microsoft.EntityFrameworkCore;
 using IBBPortal.Data;
 using IBBPortal.Models;
 using Microsoft.AspNetCore.Identity;
-using System.Linq.Dynamic.Core;
-using System.Globalization;
 using IBBPortal.Helpers;
+using System.Globalization;
 
 namespace IBBPortal.Controllers
 {
-    public class BoardController : Controller
+    public class ZoningPlanStatusController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public BoardController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public ZoningPlanStatusController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-        // GET: Board
+        // GET: City
         public IActionResult Index()
         {
             return View();
         }
-
 
         public JsonResult JSONData()
         {
@@ -52,7 +51,7 @@ namespace IBBPortal.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var data = _context.Board.Select( c => new { c.BoardID, c.BoardTitle, c.CreationDate, c.UpdateDate, Description = c.BoardDescription.Length > 20 ? c.BoardDescription.Substring(0,20) + "..." : c.BoardDescription, UserName = c.User.UserName});
+                var data = _context.ZoningPlanStatus.Select(c => new { c.ZoningPlanStatusID, c.ZoningPlanStatusTitle, UserName = c.User.UserName });
 
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
@@ -66,7 +65,7 @@ namespace IBBPortal.Controllers
                 //If control checks out, search. If not loop goes on until the end.
                 string columnName, searchValue;
 
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     columnName = Request.Query[$"columns[{i}][data]"].FirstOrDefault();
                     searchValue = Request.Query[$"columns[{i}][search][value]"].FirstOrDefault();
@@ -93,26 +92,26 @@ namespace IBBPortal.Controllers
             }
         }
 
-        // GET: Board/Details/5
-        public IActionResult Details(int? id)
+        // GET: ZoningPlanStatus/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var contractor = _context.Board
-                .Include(d => d.User)
-                .Where(m => m.BoardID == id).FirstOrDefault();
-            if (contractor == null)
+            var zoningPlanStatus = await _context.ZoningPlanStatus
+                .Include(z => z.User)
+                .FirstOrDefaultAsync(m => m.ZoningPlanStatusID == id);
+            if (zoningPlanStatus == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DetailsModal", contractor);
+            return PartialView("_DetailsModal", zoningPlanStatus);
         }
 
-        // GET: Board/Create
+        // GET: ZoningPlanStatus/Create
         public IActionResult Create()
         {
             var culture = new CultureInfo("tr-TR");
@@ -121,23 +120,23 @@ namespace IBBPortal.Controllers
             return View();
         }
 
-        // POST: Board/Create
+        // POST: ZoningPlanStatus/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BoardID,BoardTitle,BoardDescription,UserID,CreationDate,UpdateDate,DeletionDate")] Board board)
+        public async Task<IActionResult> Create([Bind("ZoningPlanStatusID,ZoningPlanStatusTitle,UserID,CreationDate,UpdateDate,DeletionDate")] ZoningPlanStatus zoningPlanStatus)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(board);
+                _context.Add(zoningPlanStatus);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(board);
+            return View(zoningPlanStatus);
         }
 
-        // GET: Board/Edit/5
+        // GET: ZoningPlanStatus/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -145,24 +144,22 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var board = await _context.Board.FindAsync(id);
-            if (board == null)
+            var zoningPlanStatus = await _context.ZoningPlanStatus.FindAsync(id);
+            if (zoningPlanStatus == null)
             {
                 return NotFound();
             }
-
-           
-            return View(board);
+            return View(zoningPlanStatus);
         }
 
-        // POST: Board/Edit/5
+        // POST: ZoningPlanStatus/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BoardID,BoardTitle,BoardDescription,UserID,CreationDate,UpdateDate,DeletionDate")] Board board)
+        public async Task<IActionResult> Edit(int id, [Bind("ZoningPlanStatusID,ZoningPlanStatusTitle,UserID,CreationDate,UpdateDate,DeletionDate")] ZoningPlanStatus zoningPlanStatus)
         {
-            if (id != board.BoardID)
+            if (id != zoningPlanStatus.ZoningPlanStatusID)
             {
                 return NotFound();
             }
@@ -172,14 +169,14 @@ namespace IBBPortal.Controllers
                 try
                 {
                     var CurrentDate = DateTime.Now;
-                    board.UpdateDate = CurrentDate;
+                    zoningPlanStatus.UpdateDate = CurrentDate;
 
-                    _context.Update(board);
+                    _context.Update(zoningPlanStatus);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BoardExists(board.BoardID))
+                    if (!ZoningPlanStatusExists(zoningPlanStatus.ZoningPlanStatusID))
                     {
                         return NotFound();
                     }
@@ -190,10 +187,10 @@ namespace IBBPortal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(board);
+            return View(zoningPlanStatus);
         }
 
-        // GET: Board/Delete/5
+        // GET: ZoningPlanStatus/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -201,30 +198,31 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var board = await _context.Board
-                .FirstOrDefaultAsync(m => m.BoardID == id);
-            if (board == null)
+            var zoningPlanStatus = await _context.ZoningPlanStatus
+                .Include(z => z.User)
+                .FirstOrDefaultAsync(m => m.ZoningPlanStatusID == id);
+            if (zoningPlanStatus == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DeleteModal", board);
+            return PartialView("_DeleteModal", zoningPlanStatus);
         }
 
-        // POST: Board/Delete/5
+        // POST: ZoningPlanStatus/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var board = await _context.Board.FindAsync(id);
-            _context.Board.Remove(board);
+            var zoningPlanStatus = await _context.ZoningPlanStatus.FindAsync(id);
+            _context.ZoningPlanStatus.Remove(zoningPlanStatus);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BoardExists(int id)
+        private bool ZoningPlanStatusExists(int id)
         {
-            return _context.Board.Any(e => e.BoardID == id);
+            return _context.ZoningPlanStatus.Any(e => e.ZoningPlanStatusID == id);
         }
     }
 }

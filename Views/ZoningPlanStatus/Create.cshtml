@@ -1,7 +1,7 @@
-﻿@model IBBPortal.Models.Department
+﻿@model IBBPortal.Models.ZoningPlanStatus
 
 @{
-    ViewData["Title"] = "Departman Ekle";
+    ViewData["Title"] = "İmar Planı Durumu Ekle";
 }
 
 <h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
@@ -21,24 +21,12 @@
                         <!-- Validation Part. Must be still for all views!! -->
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                        <!-- Department Name -->
+                        <!-- Zoning Plan Status Title -->
                         <div class="form-group row">
-                            <label asp-for="DepartmentTitle" class="col-12 col-xl-4 col-form-label">Departman İsmi</label>
+                            <label asp-for="ZoningPlanStatusTitle" class="col-12 col-xl-4 col-form-label">Durum İsmi</label>
                             <div class="col-12 col-xl-8">
-                                <input asp-for="DepartmentTitle" type="text" class="form-control" required>
-                                <span asp-validation-for="DepartmentTitle" class="text-danger"></span>
-                            </div>
-                        </div>
-
-
-                        <!-- Parent Department ID -->
-                        <div class="form-group row">
-                            <label asp-for="ParentDepartmentID" class="col-12 col-xl-4 col-form-label">Bağlı Olduğu Departman</label>
-                            <div class="col-12 col-xl-8">
-                                <select asp-for="ParentDepartmentID" class="form-control" id="selectDepartment" style="width: 100%;">
-                                    <option>Departman Seçin</option>
-                                </select>
-                                <span asp-validation-for="ParentDepartmentID" class="text-danger"></span>
+                                <input asp-for="ZoningPlanStatusTitle" type="text" class="form-control" required>
+                                <span asp-validation-for="ZoningPlanStatusTitle" class="text-danger"></span>
                             </div>
                         </div>
 
@@ -49,7 +37,7 @@
                         <input type="hidden" asp-for="UserID" value="@ViewBag.UserID" />
 
                         <div class="buttons mt-3 my-md-0">
-                            <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
+                            <button type="submit" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
                             <a asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
                         </div>
 
@@ -62,22 +50,4 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-    <!-- Select2 for City -->
-    <script>
-        $('#selectDepartment').select2({
-            theme: "ibb",
-            language: "tr",
-            ajax: {
-                url: '/Department/JsonSelectData',
-                dataType: 'json',
-                processResults: function (response) {
-
-                    return {
-                        results: response.results,
-                    };
-                }
-            }
-        });
-    </script>
 }

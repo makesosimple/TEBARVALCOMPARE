@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,29 +9,27 @@ using Microsoft.EntityFrameworkCore;
 using IBBPortal.Data;
 using IBBPortal.Models;
 using Microsoft.AspNetCore.Identity;
-using System.Linq.Dynamic.Core;
-using System.Globalization;
 using IBBPortal.Helpers;
+using System.Globalization;
 
 namespace IBBPortal.Controllers
 {
-    public class BoardController : Controller
+    public class ManagementController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public BoardController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public ManagementController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-        // GET: Board
+        // GET: City
         public IActionResult Index()
         {
             return View();
         }
-
 
         public JsonResult JSONData()
         {
@@ -52,7 +51,7 @@ namespace IBBPortal.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var data = _context.Board.Select( c => new { c.BoardID, c.BoardTitle, c.CreationDate, c.UpdateDate, Description = c.BoardDescription.Length > 20 ? c.BoardDescription.Substring(0,20) + "..." : c.BoardDescription, UserName = c.User.UserName});
+                var data = _context.Management.Select(c => new { c.ManagementID, c.ManagementTitle, c.TaxCode, UserName = c.User.UserName });
 
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
@@ -66,7 +65,7 @@ namespace IBBPortal.Controllers
                 //If control checks out, search. If not loop goes on until the end.
                 string columnName, searchValue;
 
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     columnName = Request.Query[$"columns[{i}][data]"].FirstOrDefault();
                     searchValue = Request.Query[$"columns[{i}][search][value]"].FirstOrDefault();
@@ -93,26 +92,26 @@ namespace IBBPortal.Controllers
             }
         }
 
-        // GET: Board/Details/5
-        public IActionResult Details(int? id)
+        // GET: Management/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var contractor = _context.Board
-                .Include(d => d.User)
-                .Where(m => m.BoardID == id).FirstOrDefault();
-            if (contractor == null)
+            var management = await _context.Management
+                .Include(m => m.User)
+                .FirstOrDefaultAsync(m => m.ManagementID == id);
+            if (management == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DetailsModal", contractor);
+            return PartialView("_DetailsModal", management);
         }
 
-        // GET: Board/Create
+        // GET: Management/Create
         public IActionResult Create()
         {
             var culture = new CultureInfo("tr-TR");
@@ -121,23 +120,23 @@ namespace IBBPortal.Controllers
             return View();
         }
 
-        // POST: Board/Create
+        // POST: Management/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BoardID,BoardTitle,BoardDescription,UserID,CreationDate,UpdateDate,DeletionDate")] Board board)
+        public async Task<IActionResult> Create([Bind("ManagementID,ManagementTitle,ManagementDescription,TaxCode,UserID,CreationDate,UpdateDate,DeletionDate")] Management management)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(board);
+                _context.Add(management);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(board);
+            return View(management);
         }
 
-        // GET: Board/Edit/5
+        // GET: Management/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -145,24 +144,22 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var board = await _context.Board.FindAsync(id);
-            if (board == null)
+            var management = await _context.Management.FindAsync(id);
+            if (management == null)
             {
                 return NotFound();
             }
-
-           
-            return View(board);
+            return View(management);
         }
 
-        // POST: Board/Edit/5
+        // POST: Management/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BoardID,BoardTitle,BoardDescription,UserID,CreationDate,UpdateDate,DeletionDate")] Board board)
+        public async Task<IActionResult> Edit(int id, [Bind("ManagementID,ManagementTitle,ManagementDescription,TaxCode,UserID,CreationDate,UpdateDate,DeletionDate")] Management management)
         {
-            if (id != board.BoardID)
+            if (id != management.ManagementID)
             {
                 return NotFound();
             }
@@ -171,15 +168,16 @@ namespace IBBPortal.Controllers
             {
                 try
                 {
-                    var CurrentDate = DateTime.Now;
-                    board.UpdateDate = CurrentDate;
 
-                    _context.Update(board);
+                    var CurrentDate = DateTime.Now;
+                    management.UpdateDate = CurrentDate;
+
+                    _context.Update(management);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BoardExists(board.BoardID))
+                    if (!ManagementExists(management.ManagementID))
                     {
                         return NotFound();
                     }
@@ -190,10 +188,10 @@ namespace IBBPortal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(board);
+            return View(management);
         }
 
-        // GET: Board/Delete/5
+        // GET: Management/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -201,30 +199,31 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var board = await _context.Board
-                .FirstOrDefaultAsync(m => m.BoardID == id);
-            if (board == null)
+            var management = await _context.Management
+                .Include(m => m.User)
+                .FirstOrDefaultAsync(m => m.ManagementID == id);
+            if (management == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DeleteModal", board);
+            return PartialView("_DeleteModal", management);
         }
 
-        // POST: Board/Delete/5
+        // POST: Management/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var board = await _context.Board.FindAsync(id);
-            _context.Board.Remove(board);
+            var management = await _context.Management.FindAsync(id);
+            _context.Management.Remove(management);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BoardExists(int id)
+        private bool ManagementExists(int id)
         {
-            return _context.Board.Any(e => e.BoardID == id);
+            return _context.Management.Any(e => e.ManagementID == id);
         }
     }
 }
