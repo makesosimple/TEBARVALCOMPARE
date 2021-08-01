@@ -1,0 +1,96 @@
+﻿@{
+    ViewData["Title"] = "Faz Yönetimi";
+}
+
+@section Scripts
+{
+    <!-- Table Script -->
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            let table = $("#dataTable").DataTable({
+                "dom": 'rt<"d-flex justify-content-between flex-column align-items-baseline flex-md-row mt-3"ipl><"clear">',
+                //"language": {
+                //    "url": "https://cdn.datatables.net/plug-ins/1.10.25/i18n/turkish.json",
+                //},
+                "processing": false, // for show progress bar
+                "serverSide": true, // for process server side
+                "filter": true, // this is for disable filter (search box)
+                "orderMulti": false, // for disable multiple column at once
+                "ajax": {
+                    "url": "/Phase/JSONData",
+                    "type": "GET"
+                },
+                "columns": [
+                    { "data": "phaseTitle", "autoWidth": true },
+                    { "data": "userName", "autoWidth": true },
+                    {
+                        "data": null,
+                        "render": function (data, type, full, meta, row) {
+                            return `<a class="btn btn-circle bg-turqoise text-white" href="/Phase/Edit/${full.phaseID}"><i class="fas fa-edit"></i></a>\
+                                    <button type="button" class="btn btn-circle bg-warning text-white" onclick="modalScript(this)" data-url="/Phase/Details/${full.phaseID}"><i class="fas fa-info-circle"></i></button>\
+                                    <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/Phase/Delete/${full.phaseID}" ><i class="fas fa-trash-alt"></i></button>`;
+                        }
+                    },
+                ],
+                "columnDefs": [
+                    { "targets": -1, "orderable": false },
+                ],
+                "initComplete": function () {
+                    let api = this.api();
+
+                    $('input.searchInput').on('input', function () {
+                        let columnIndex = $(this).data("index");
+                        let desiredColumn = api.columns(columnIndex);
+                        if (desiredColumn.search() !== this.value) {
+                            desiredColumn
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+}
+
+<div id="GeneralModal"></div>
+
+<!-- Create Button-->
+<div class="row">
+    <div class="justify-content-between py-2 col-12 d-flex">
+        <h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
+        <a asp-action="Create" class="btn btn-success shadow mb-4">
+            <i class="fas fa-plus mr-2"></i> EKLE
+        </a>
+    </div>
+</div>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive position-relative">
+            <table class="table table-hover display" id="dataTable" width="100%">
+                <thead class="bg-navy-blue">
+                    <tr class="filter h-100 bg-white">
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="phaseTitle" name="phaseTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="userName" name="userName" value="" /></th>
+                        <th scope="col"></th>
+                    </tr>
+                    <tr id="tableLabels">
+                        <th scope="col" class="text-white text-sm">Faz İsmi</th>
+                        <th scope="col" class="text-white text-sm">Oluşturan</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+
+                </tfoot>
+
+            </table>
+        </div>
+    </div>
+</div>

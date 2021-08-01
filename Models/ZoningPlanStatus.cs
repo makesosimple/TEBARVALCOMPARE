@@ -4,28 +4,31 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
 {
+    [Index(nameof(UserID))]
 
-    
     public class ZoningPlanStatus
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ZoningPlanStatusID { get; set; }
-        
+        public int ZoningPlanStatusID { get; set; }     
 
+        [Required]
         [MaxLength(50)]
         public string ZoningPlanStatusTitle { get; set; }
+
+        public string UserID { get; set; }
+        [ForeignKey("UserID")]
+        public IdentityUser User { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreationDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? UpdateDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? DeletionDate { get; set; }
 
     }
