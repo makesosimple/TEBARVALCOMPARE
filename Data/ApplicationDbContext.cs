@@ -41,6 +41,8 @@ namespace IBBPortal.Data
 
         public DbSet<IBBPortal.Models.FileCategory> FileCategory { get; set; }
 
+        public DbSet<IBBPortal.Models.ServiceArea> ServiceArea { get; set; }
+
     }
 
 

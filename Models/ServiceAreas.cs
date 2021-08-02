@@ -4,20 +4,34 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
 {
 
-    [Index(nameof(ServiceAreaParentID))]
-    public class ServiceAreas
-    {   
+    [Index(nameof(ParentServiceAreaID))]
+    [Index(nameof(UserID))]
+    public class ServiceArea
+    {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
         public int ServiceAreaID { get; set; }
-        public int ServiceAreaTitle { get; set; }
 
-        public int ServiceAreaParentID { get; set; }
+        [Required]
+        [MaxLength(50)]
+        public string ServiceAreaTitle { get; set; }
+
+        [MaxLength(256)]
+        public string? ServiceAreaDescription { get; set; }
+
+        public int? ParentServiceAreaID { get; set; }
+        [ForeignKey("ParentServiceAreaID")]
+        public ServiceArea ParentServiceArea { get; set; }
+
+        public string UserID { get; set; }
+        [ForeignKey("UserID")]
+
+        public IdentityUser User { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreationDate { get; set; }
