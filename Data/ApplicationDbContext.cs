@@ -39,10 +39,13 @@ namespace IBBPortal.Data
 
         public DbSet<IBBPortal.Models.ProjectTeamCategory> ProjectTeamCategory { get; set; }
 
+        public DbSet<IBBPortal.Models.ProjectStatus> ProjectStatus { get; set; }
+
+        public DbSet<IBBPortal.Models.ProjectPhaseStatus> ProjectPhaseStatus { get; set; }
+
         public DbSet<IBBPortal.Models.FileCategory> FileCategory { get; set; }
 
         public DbSet<IBBPortal.Models.ServiceArea> ServiceArea { get; set; }
-
     }
 
 
