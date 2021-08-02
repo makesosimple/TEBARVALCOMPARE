@@ -79,7 +79,7 @@ namespace IBBPortal.Controllers
                 //total number of rows count   
                 recordsTotal = data.Count();
                 //Paging   
-                var passData = data.ToList();
+                var passData = data.Skip(skip).Take(pageSize).ToList();
 
                 //Returning Json Data  
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = passData });
