@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <title>
+            Harita Deneme
+        </title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="/js/IBBMap.js"></script>
+    </head>
+    <body>
+        <iframe id="mapFrame" src="http://sehirharitasi.ibb.gov.tr" style="height:100%; width:100%; border:0px;"></iframe>  
+        <script>
+            var ibbMAP = new SehirHaritasiAPI({mapFrame:"mapFrame",apiKey:"ac0dc0e622b442c293ffb1694dacf072"}, function(){ 
+                ibbMAP.Map.FixExtent({
+                    minLat: 41.06084458,
+                    minLon: 28.87739182,
+                    maxLat: 41.00801397,
+                    maxLon: 28.96356583,
+                    drag: true,
+                    zoom: 15,
+                    maxZoom: 16,
+                    minZoom: 14
+                });
+
+                ibbMAP.Map.Toolbar({
+                    network: true,
+                    panorama: false,
+                    menu: false,
+                    layers: false,
+                    search: false,
+                    mapSwitch: false,
+                    traffic: false
+                });  
+
+                ibbMAP.Draw.WKT(
+                {
+                    style:
+                    {
+                        strokeColor: '#ff0000',
+                        strokeOpacity: 1,
+                        fillColor: '#ff0000',
+                        fillOpacity: 0.7,
+                        strokeWidth: 4,
+                        strokeDashStyle: '8 10'
+                    },
+                    wkt: "POLYGON ((29.145469344 40.85195596, 29.145536353 40.851863473, 29.145564568 40.851812375, 29.145855754 40.851924604, 29.145748349 40.852081624, 29.145469344 40.85195596))",
+                    tag: "cizim",
+                    zoom: true,
+                    effect:true
+                },
+                function(id, tag){
+                    //alert("id:" + id + ", tag:" + tag);
+                });
+   
+   
+
+                });
+        </script>
+    </body>
+</html>
