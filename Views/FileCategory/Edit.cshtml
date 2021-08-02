@@ -1,12 +1,12 @@
-﻿@model IBBPortal.Models.Department
+﻿@model IBBPortal.Models.FileCategory
 
 @{
-    ViewData["Title"] = "Departman Düzenle";
+    ViewData["Title"] = "Dosya Kategorisi Düzenle";
 }
 
 <h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
 <form asp-action="Edit">
-    <input type="hidden" asp-for="DepartmentID" />
+    <input type="hidden" asp-for="FileCategoryID" />
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
             <ul class="nav nav-pills" id="formTabs" role="tablist">
@@ -22,32 +22,50 @@
                         <!-- Validation Part. Must be still for all views!! -->
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                        <!-- Department Name -->
+                        <!-- Category Title -->
                         <div class="form-group row">
-                            <label asp-for="DepartmentTitle" class="col-12 col-xl-4 col-form-label">Departman İsmi</label>
+                            <label asp-for="FileCategoryTitle" class="col-12 col-xl-4 col-form-label">Kategori İsmi</label>
                             <div class="col-12 col-xl-8">
-                                <input asp-for="DepartmentTitle" type="text" class="form-control" required>
-                                <span asp-validation-for="DepartmentTitle" class="text-danger"></span>
+                                <input asp-for="FileCategoryTitle" type="text" class="form-control" required>
+                                <span asp-validation-for="FileCategoryTitle" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Folder Name -->
+                        <div class="form-group row">
+                            <label asp-for="FileCategoryFolderName" class="col-12 col-xl-4 col-form-label">Klasör İsmi</label>
+                            <div class="col-12 col-xl-8">
+                                <input asp-for="FileCategoryFolderName" type="text" class="form-control">
+                                <span asp-validation-for="FileCategoryFolderName" class="text-danger"></span>
                             </div>
                         </div>
 
 
-                        <!-- Parent Department ID -->
+                        <!-- Parent File Category ID -->
                         <div class="form-group row">
-                            <label asp-for="ParentDepartmentID" class="col-12 col-xl-4 col-form-label">Bağlı Olduğu Departman</label>
+                            <label asp-for="ParentFileCategoryID" class="col-12 col-xl-4 col-form-label">Bağlı Olduğu Kategori</label>
                             <div class="col-12 col-xl-8">
-                                <select asp-for="ParentDepartmentID" class="form-control" id="selectDepartment" style="width: 100%;">
-                                    @if (Model.ParentDepartment is not null)
+                                <select asp-for="ParentFileCategoryID" class="form-control" id="selectFileCategory" style="width: 100%;">
+                                    @if (Model.ParentFileCategory is not null)
                                     {
-                                        <option value="@Model.ParentDepartment.DepartmentID">@Model.ParentDepartment.DepartmentTitle</option>
+                                        <option value="@Model.ParentFileCategory.FileCategoryID">@Model.ParentFileCategory.FileCategoryTitle</option>
                                     }
 
                                     else
                                     {
-                                        <option selected value="">Departman Seçin</option>
+                                        <option selected value="">Dosya Kategorisi Seçin</option>
                                     }
                                 </select>
-                                <span asp-validation-for="ParentDepartmentID" class="text-danger"></span>
+                                <span asp-validation-for="FileCategoryID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- File Category Description -->
+                        <div class="form-group row">
+                            <label asp-for="FileCategoryDescription" class="col-12 col-xl-4 col-form-label">Kategori Açıklaması</label>
+                            <div class="col-12 col-xl-8">
+                                <textarea asp-for="FileCategoryDescription" type="number" class="form-control"></textarea>
+                                <span asp-validation-for="FileCategoryDescription" class="text-danger"></span>
                             </div>
                         </div>
 
@@ -75,11 +93,11 @@
 
     <!-- Select2 for City -->
     <script>
-        $('#selectDepartment').select2({
+        $('#selectFileCategory').select2({
             theme: "ibb",
             language: "tr",
             ajax: {
-                url: '/Department/JsonSelectData',
+                url: '/FileCategory/JsonSelectData',
                 dataType: 'json',
                 processResults: function (response) {
 

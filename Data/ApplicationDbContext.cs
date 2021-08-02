@@ -39,6 +39,8 @@ namespace IBBPortal.Data
 
         public DbSet<IBBPortal.Models.ProjectTeamCategory> ProjectTeamCategory { get; set; }
 
+        public DbSet<IBBPortal.Models.FileCategory> FileCategory { get; set; }
+
     }
 
 

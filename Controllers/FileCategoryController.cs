@@ -14,12 +14,12 @@ using System.Globalization;
 
 namespace IBBPortal.Controllers
 {
-    public class DepartmentController : Controller
+    public class FileCategoryController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public DepartmentController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public FileCategoryController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -51,7 +51,7 @@ namespace IBBPortal.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var data = _context.Department.Select(c => new { c.DepartmentID, c.DepartmentTitle, ParentDepartmentTitle = c.ParentDepartment.DepartmentTitle, UserName = c.User.UserName});
+                var data = _context.FileCategory.Select(c => new { c.FileCategoryID, c.FileCategoryTitle, ParentFileCategoryTitle = c.ParentFileCategory.FileCategoryTitle, c.FileCategoryFolderName,  UserName = c.User.UserName });
 
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
@@ -65,7 +65,7 @@ namespace IBBPortal.Controllers
                 //If control checks out, search. If not loop goes on until the end.
                 string columnName, searchValue;
 
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 4; i++)
                 {
                     columnName = Request.Query[$"columns[{i}][data]"].FirstOrDefault();
                     searchValue = Request.Query[$"columns[{i}][search][value]"].FirstOrDefault();
@@ -98,22 +98,22 @@ namespace IBBPortal.Controllers
             try
             {
 
-                var DepartmentData = _context.Department
+                var FileCategoryData = _context.FileCategory
                                     .Select(x => new {
-                                        id = x.DepartmentID.ToString(),
-                                        text = x.DepartmentTitle
+                                        id = x.FileCategoryID.ToString(),
+                                        text = x.FileCategoryTitle
                                     });
 
                 if (!String.IsNullOrEmpty(term))
                 {
-                    DepartmentData = DepartmentData.Where(m => m.text.Contains(term));
+                    FileCategoryData = FileCategoryData.Where(m => m.text.Contains(term));
                 }
 
                 //Count 
-                var totalCount = DepartmentData.Count();
+                var totalCount = FileCategoryData.Count();
 
                 //Paging   
-                var passData = DepartmentData.ToList();
+                var passData = FileCategoryData.ToList();
 
 
                 //Returning Json Data  
@@ -127,7 +127,7 @@ namespace IBBPortal.Controllers
             }
         }
 
-        // GET: Department/Details/5
+        // GET: FileCategory/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -135,19 +135,19 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var department = await _context.Department
-                .Include(d => d.ParentDepartment)
-                .Include(d => d.User)
-                .FirstOrDefaultAsync(m => m.DepartmentID == id);
-            if (department == null)
+            var fileCategory = await _context.FileCategory
+                .Include(f => f.ParentFileCategory)
+                .Include(f => f.User)
+                .FirstOrDefaultAsync(m => m.FileCategoryID == id);
+            if (fileCategory == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DetailsModal", department);
+            return PartialView("_DetailsModal", fileCategory);
         }
 
-        // GET: Department/Create
+        // GET: FileCategory/Create
         public IActionResult Create()
         {
             var culture = new CultureInfo("tr-TR");
@@ -156,24 +156,24 @@ namespace IBBPortal.Controllers
             return View();
         }
 
-        // POST: Department/Create
+        // POST: FileCategory/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DepartmentID,DepartmentTitle,ParentDepartmentID,UserID,CreationDate,UpdateDate,DeletionDate")] Department department)
+        public async Task<IActionResult> Create([Bind("FileCategoryID,FileCategoryTitle,FileCategoryFolderName,FileCategoryDescription,ParentFileCategoryID,UserID,CreationDate,UpdateDate,DeletionDate")] FileCategory fileCategory)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(department);
+                _context.Add(fileCategory);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(department);
+            return View(fileCategory);
         }
 
-        // GET: Department/Edit/5
+        // GET: FileCategory/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -181,22 +181,23 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var department = await _context.Department.FindAsync(id);
-            if (department == null)
+            var fileCategory = await _context.FileCategory.FindAsync(id);
+            if (fileCategory == null)
             {
                 return NotFound();
             }
-            return View(department);
+
+            return View(fileCategory);
         }
 
-        // POST: Department/Edit/5
+        // POST: FileCategory/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DepartmentID,DepartmentTitle,ParentDepartmentID,CreationDate,UpdateDate,DeletionDate")] Department department)
+        public async Task<IActionResult> Edit(int id, [Bind("FileCategoryID,FileCategoryTitle,FileCategoryFolderName,FileCategoryDescription,ParentFileCategoryID,UserID,CreationDate,UpdateDate,DeletionDate")] FileCategory fileCategory)
         {
-            if (id != department.DepartmentID)
+            if (id != fileCategory.FileCategoryID)
             {
                 return NotFound();
             }
@@ -206,14 +207,14 @@ namespace IBBPortal.Controllers
                 try
                 {
                     var CurrentDate = DateTime.Now;
-                    department.UpdateDate = CurrentDate;
+                    fileCategory.UpdateDate = CurrentDate;
 
-                    _context.Update(department);
+                    _context.Update(fileCategory);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DepartmentExists(department.DepartmentID))
+                    if (!FileCategoryExists(fileCategory.FileCategoryID))
                     {
                         return NotFound();
                     }
@@ -224,10 +225,11 @@ namespace IBBPortal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(department);
+
+            return View(fileCategory);
         }
 
-        // GET: Department/Delete/5
+        // GET: FileCategory/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -235,32 +237,32 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var department = await _context.Department
-                .Include(d => d.ParentDepartment)
-                .Include(d => d.User)
-                .FirstOrDefaultAsync(m => m.DepartmentID == id);
-            if (department == null)
+            var fileCategory = await _context.FileCategory
+                .Include(f => f.ParentFileCategory)
+                .Include(f => f.User)
+                .FirstOrDefaultAsync(m => m.FileCategoryID == id);
+            if (fileCategory == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DeleteModal", department);
+            return PartialView("_DeleteModal", fileCategory);
         }
 
-        // POST: Department/Delete/5
+        // POST: FileCategory/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var department = await _context.Department.FindAsync(id);
-            _context.Department.Remove(department);
+            var fileCategory = await _context.FileCategory.FindAsync(id);
+            _context.FileCategory.Remove(fileCategory);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DepartmentExists(int id)
+        private bool FileCategoryExists(int id)
         {
-            return _context.Department.Any(e => e.DepartmentID == id);
+            return _context.FileCategory.Any(e => e.FileCategoryID == id);
         }
     }
 }
