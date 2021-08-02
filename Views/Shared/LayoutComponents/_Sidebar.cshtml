@@ -155,14 +155,6 @@
         </a>
     </li>
 
-    <!-- Phase Management-->
-    <li class="nav-item">
-        <a class="nav-link" asp-controller="Phase" asp-action="Index">
-            <i class="fas fa-tasks"></i>
-            <span>Faz Yönetimi</span>
-        </a>
-    </li>
-
     <!-- Management Management-->
     <li class="nav-item">
         <a class="nav-link" asp-controller="Management" asp-action="Index">
@@ -171,7 +163,39 @@
         </a>
     </li>
 
-    <!-- Nav Item - General Collapse Menu -->
+    <!-- Status Management -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStatus"
+           aria-expanded="true" aria-controls="collapseStatus">
+            <i class="fas fa-tasks"></i>
+            <span>Durum Yönetimi</span>
+        </a>
+        <div id="collapseStatus" class="collapse" aria-labelledby="headingStatus"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" asp-controller="Phase" asp-action="Index">Fazlar</a>
+                <a class="collapse-item" asp-controller="ZoningPlanStatus" asp-action="Index">İmar Planı Durumları</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Category Management -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCategory"
+           aria-expanded="true" aria-controls="collapseCategory">
+            <i class="fas fa-tags"></i>
+            <span>Kategori Yönetimi</span>
+        </a>
+        <div id="collapseCategory" class="collapse" aria-labelledby="headingCategory"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" asp-controller="ProjectTeamCategory" asp-action="Index">Proje Ekibi Kategorileri</a>
+                <a class="collapse-item" asp-controller="FileCategory" asp-action="Index">Dosya Kategorileri</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- City/Distrit Management -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCityDistrict"
            aria-expanded="true" aria-controls="collapseCityDistrict">
