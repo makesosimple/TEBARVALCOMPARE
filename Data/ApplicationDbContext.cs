@@ -37,6 +37,8 @@ namespace IBBPortal.Data
 
         public DbSet<IBBPortal.Models.ZoningPlanStatus> ZoningPlanStatus { get; set; }
 
+        public DbSet<IBBPortal.Models.ProjectTeamCategory> ProjectTeamCategory { get; set; }
+
     }
 
 
