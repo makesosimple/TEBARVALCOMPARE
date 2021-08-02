@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IBBPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210802162157_IBBPortalSchemaVol1.8")]
-    partial class IBBPortalSchemaVol18
+    [Migration("20210802174134_IBBPortalSchemaVol.1.9")]
+    partial class IBBPortalSchemaVol19
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -236,6 +236,50 @@ namespace IBBPortal.Migrations
                     b.ToTable("District");
                 });
 
+            modelBuilder.Entity("IBBPortal.Models.FileCategory", b =>
+                {
+                    b.Property<int>("FileCategoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FileCategoryDescription")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("FileCategoryFolderName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("FileCategoryTitle")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("ParentFileCategoryID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("FileCategoryID");
+
+                    b.HasIndex("ParentFileCategoryID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("FileCategory");
+                });
+
             modelBuilder.Entity("IBBPortal.Models.JobTitle", b =>
                 {
                     b.Property<int>("JobTitleID")
@@ -453,6 +497,47 @@ namespace IBBPortal.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("ProjectTeamCategory");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.ServiceArea", b =>
+                {
+                    b.Property<int>("ServiceAreaID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ParentServiceAreaID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ServiceAreaDescription")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("ServiceAreaTitle")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ServiceAreaID");
+
+                    b.HasIndex("ParentServiceAreaID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("ServiceArea");
                 });
 
             modelBuilder.Entity("IBBPortal.Models.ZoningPlanStatus", b =>
@@ -746,6 +831,21 @@ namespace IBBPortal.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("IBBPortal.Models.FileCategory", b =>
+                {
+                    b.HasOne("IBBPortal.Models.FileCategory", "ParentFileCategory")
+                        .WithMany()
+                        .HasForeignKey("ParentFileCategoryID");
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID");
+
+                    b.Navigation("ParentFileCategory");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("IBBPortal.Models.JobTitle", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
@@ -796,6 +896,21 @@ namespace IBBPortal.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
                         .HasForeignKey("UserID");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.ServiceArea", b =>
+                {
+                    b.HasOne("IBBPortal.Models.ServiceArea", "ParentServiceArea")
+                        .WithMany()
+                        .HasForeignKey("ParentServiceAreaID");
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID");
+
+                    b.Navigation("ParentServiceArea");
 
                     b.Navigation("User");
                 });
