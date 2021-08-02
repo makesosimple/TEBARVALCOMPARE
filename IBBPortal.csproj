@@ -62,4 +62,6 @@
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.11" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
 </Project>
