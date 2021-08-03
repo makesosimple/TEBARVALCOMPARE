@@ -1177,30 +1177,150 @@
                                     <div class="tab-pane fade" id="function" role="tabpanel" aria-labelledby="function-tab">
 
                                         <div class="row">
-                                            <div class="col-12 col-xl-5">
+                                            <div class="col-12 col-xl-12">
 
                                                 <!-- FUNCTION FORM -->
-                                                <form class="mb-4">
+                                                <div class="table-responsive position-relative">
+                                                    <table class="table table-hover display" id="dataTableFunction" width="100%" cellspacing="20">
+                                                        <thead class="bg-navy-blue">
+                                                            <tr class="filter h-100 bg-white">
+                                                                <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="user" name="user" value="" /></th>
+                                                                <th scope="col">
+                                                                    <select class="form-control initialize-select2 searchInput" data-index="1" style="width: 100%;" id="assignmentInProject" name="assignmentInProject">
+                                                                        <option value="İbadethane">İbadethane</option>
+                                                                        <option value="Otopark">Otopark</option>
+                                                                        <option value="Park">Park</option>
+                                                                        <option value="Lunapark">Lunapark</option>
+                                                                    </select>
+                                                                </th>
+                                                                <th scope="col">
+                                                                    <input type="text" class="form-control" id="assignmentInProject">
+                                                                </th>
+                                                                <th scope="col">
+                                                                    <input class="form-control w-100 searchInput" data-index="3" type="text" placeholder="Ara..." id="organization" name="organization" value="" />
+                                                                </th>
 
-                                                    <!-- Example Select - Single Choice -->
-                                                    <div class="form-group row">
-                                                        <label for="sub-function" class="col-12 col-xl-4 col-form-label">Alt Fonksiyon</label>
-                                                        <div class="col-12 col-xl-8">
-                                                            <select class="form-control initialize-select2" style="width: 100%;" id="district" name="district">
-                                                                <option value="1">Cami</option>
-                                                                <option value="2">Pazar</option>
-                                                                <option value="2">Anaokulu</option>
-                                                                <option value="2">Kapalı Otopark</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
+                                                                <th scope="col">
+                                                                    <input class="form-control w-100 searchInput" data-index="3" type="text" placeholder="Ara..." id="classRoom" name="classRoom" value="" />
+                                                                </th>
+                                                                <th scope="col">
+                                                                    <input class="form-control w-100 searchInput" data-index="3" type="text" placeholder="Ara..." id="totalUnits" name="totalUnits" value="" />
+                                                                </th>
+                                                                <th scope="col">
+                                                                    <input class="form-control w-100 searchInput" data-index="3" type="text" placeholder="Ara..." id="totalLength" name="totalLength" value="" />
+                                                                </th>
+                                                                <th scope="col">
+                                                                    <input class="form-control w-100 searchInput" data-index="3" type="text" placeholder="Ara..." id="totalWidth" name="totalWidth" value="" />
+                                                                </th>
+                                                                <th scope="col">
+                                                                    <button type="button" class="btn btn-success shadow d-block w-100" data-toggle="modal" data-target="#functionModal">
+                                                                        <i class="fas fa-plus mr-2"></i> EKLE
+                                                                    </button>
 
+                                                                    <!-- Modal -->
+                                                                    <div class="modal fade" id="functionModal" tabindex="-1" aria-labelledby="functionModalLabel" aria-hidden="true">
+                                                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title" id="exampleModalLabel">Fonksiyon Ekle</h5>
+                                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                        <span aria-hidden="true">&times;</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <form class="mb-4">
+                                                                                        <div class="form-group row">
+                                                                                            <label for="user" class="col-12 col-xl-4 col-form-label">Alt Fonksiyon</label>
+                                                                                            <div class="col-12 col-xl-8">
+                                                                                                <select class="form-control initialize-select2" style="width: 100%;" id="user" name="user">
+                                                                                                    <option value="1">Cami</option>
+                                                                                                    <option value="2">Anaokulu</option>
+                                                                                                    <option value="3">Kapalı Otopark</option>
+                                                                                                    <option value="4">Açık Otopark</option>
+                                                                                                    <option value="4">Cadde</option>
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group row">
+                                                                                            <label for="assignmentInProject" class="col-12 col-xl-4 col-form-label">Alan</label>
+                                                                                            <div class="col-12 col-xl-8">
+                                                                                                <input type="text" class="form-control" id="assignmentInProject">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group row">
+                                                                                            <label for="field" class="col-12 col-xl-4 col-form-label">Kapasite (Kişi)</label>
+                                                                                            <div class="col-12 col-xl-8">
+                                                                                                <input type="text" class="form-control" id="field">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group row">
+                                                                                            <label for="organization" class="col-12 col-xl-4 col-form-label">Kapasite (Araç)</label>
+                                                                                            <div class="col-12 col-xl-8">
+                                                                                                <input type="text" class="form-control" id="organization">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group row">
+                                                                                            <label for="classRoom" class="col-12 col-xl-4 col-form-label">Kapasite (Derslik)</label>
+                                                                                            <div class="col-12 col-xl-8">
+                                                                                                <input type="text" class="form-control" id="classRoom">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group row">
+                                                                                            <label for="totalUnits" class="col-12 col-xl-4 col-form-label">Adet</label>
+                                                                                            <div class="col-12 col-xl-8">
+                                                                                                <input type="text" class="form-control" id="totalUnits">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group row">
+                                                                                            <label for="totalWidth" class="col-12 col-xl-4 col-form-label">Genişlik</label>
+                                                                                            <div class="col-12 col-xl-8">
+                                                                                                <input type="text" class="form-control" id="totalWidth">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group row">
+                                                                                            <label for="totalLength" class="col-12 col-xl-4 col-form-label">Uzunluk</label>
+                                                                                            <div class="col-12 col-xl-8">
+                                                                                                <input type="text" class="form-control" id="totalLength">
+                                                                                            </div>
+                                                                                        </div>
 
-                                                </form>
+                                                                                    </form>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <div class="buttons">
+                                                                                        <button type="submit" value="Delete" class="btn bg-success text-white"><i class="fas fa-save"></i> Kaydet</button>
+                                                                                        <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close"><i class="fas fa-ban"></i> Vazgeç</button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </th>
+                                                            </tr>
+                                                            <tr id="tableLabels">
+                                                                <th scope="col" class="text-white text-sm" data-search-type="text">Alt Fonksiyon</th>
+                                                                <th scope="col" class="text-white text-sm" data-search-type="text">Alan (m<sup>2</sup>)</th>
+                                                                <th scope="col" class="text-white text-sm" data-search-type="text">Kapasite (Kişi)</th>
+                                                                <th scope="col" class="text-white text-sm" data-search-type="text">Kapasite (Araç)</th>
+                                                                <th scope="col" class="text-white text-sm" data-search-type="text">Kapasite (Derslik)</th>
+                                                                <th scope="col" class="text-white text-sm" data-search-type="text">Adet</th>
+                                                                <th scope="col" class="text-white text-sm" data-search-type="text">Genişlik</th>
+                                                                <th scope="col" class="text-white text-sm" data-search-type="text">Uzunluk</th>
+                                                                <th scope="col" data-search-type="none"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                        <tfoot>
+
+                                                        </tfoot>
+
+                                                    </table>
+                                                </div>
 
                                             </div>
 
-                                            <div class="col-12 col-xl-7">
+                                            <div class="col-12 col-xl-12">
 
                                             </div>
                                         </div>
@@ -1260,6 +1380,7 @@
         <script src="/lib/datatables/dataTables.buttons.min.js"></script>
         <script src="/lib/datatables/buttons.colVis.min.js"></script>
         <script src="/js/demo/datatables-demo-user.js"></script>
+        <script src="/js/demo/datatables-demo-function.js"></script>
 
         <!-- Form Components -->
         <script src="/lib/select2/select2.min.js"></script>
