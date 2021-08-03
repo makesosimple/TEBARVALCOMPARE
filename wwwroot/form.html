@@ -213,41 +213,35 @@
 
                         <!-- DataTales Example -->
                         <div class="card shadow mb-4">
+                            <div class="card-header py-3 d-flex align-items-center justify-content-between">
+                                <ul class="nav nav-pills" id="formTabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link active" id="summary-tab" data-toggle="tab" href="#summary" role="tab" aria-controls="summary" aria-selected="true">Proje Özeti</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="tag-tab" data-toggle="tab" href="#tag" role="tab" aria-controls="tag" aria-selected="false">Künye</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="associates-tab" data-toggle="tab" href="#associates" role="tab" aria-controls="associates" aria-selected="false">Kişiler</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="project-field-tab" data-toggle="tab" href="#project-field" role="tab" aria-controls="project-field" aria-selected="false">Proje Alanı</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="function-tab" data-toggle="tab" href="#function" role="tab" aria-controls="function" aria-selected="false">Fonksiyon</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="schedule-tab" data-toggle="tab" href="#schedule" role="tab" aria-controls="schedule" aria-selected="false">Takvim</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="cost-tab" data-toggle="tab" href="#cost" role="tab" aria-controls="cost" aria-selected="false">Maliyet</a>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <a class="nav-link" id="documents-tab" data-toggle="tab" href="#documents" role="tab" aria-controls="documents" aria-selected="false">Dökümanlar</a>
+                                    </li>
+                                </ul>
+                            </div>
                             <div class="card-body">
-                                <!-- Navigation Wrapper -->
-                                <div class="d-flex justify-content-between flex-column flex-xl-row">
-                                    <!-- Navigation Tabs for the Form -->
-                                    <ul class="nav nav-tabs border-0" id="formTabs" role="tablist">
-                                        <li class="nav-item" role="presentation">
-                                            <a class="nav-link active" id="summary-tab" data-toggle="tab" href="#summary" role="tab" aria-controls="summary" aria-selected="true">Proje Özeti</a>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <a class="nav-link" id="tag-tab" data-toggle="tab" href="#tag" role="tab" aria-controls="tag" aria-selected="false">Künye</a>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <a class="nav-link" id="associates-tab" data-toggle="tab" href="#associates" role="tab" aria-controls="associates" aria-selected="false">Kişiler</a>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <a class="nav-link" id="project-field-tab" data-toggle="tab" href="#project-field" role="tab" aria-controls="project-field" aria-selected="false">Proje Alanı</a>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <a class="nav-link" id="function-tab" data-toggle="tab" href="#function" role="tab" aria-controls="function" aria-selected="false">Fonksiyon</a>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <a class="nav-link" id="schedule-tab" data-toggle="tab" href="#schedule" role="tab" aria-controls="schedule" aria-selected="false">Takvim</a>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <a class="nav-link" id="cost-tab" data-toggle="tab" href="#cost" role="tab" aria-controls="cost" aria-selected="false">Maliyet</a>
-                                        </li>
-                                        <li class="nav-item" role="presentation">
-                                            <a class="nav-link" id="documents-tab" data-toggle="tab" href="#documents" role="tab" aria-controls="documents" aria-selected="false">Dökümanlar</a>
-                                        </li>
-                                    </ul>
-                                    <div class="buttons mt-3 my-xl-0">
-                                        <button type="submit" form="tag-form" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
-                                        <button type="submit" form="tag-form" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</button>
-                                    </div>
-                                </div>
 
                                 <div class="tab-content my-3" id="formContent">
                                     <div class="tab-pane fade active show" id="summary" role="tabpanel" aria-labelledby="summary-tab">
@@ -363,11 +357,11 @@
                                                         </div>
                                                     </div>
                                                     <!--<div class="form-group form-horizontal row">
-                                                    <label for="project-name" class="col-12 col-lg-2 col-form-label vertically-aligned-label"><b>Temel Alan</b></label>
-                                                    <div class="col-12 col-lg-5">
-                                                      <span>Vizyon</span>
-                                                    </div>
-                                                </div>-->
+                                <label for="project-name" class="col-12 col-lg-2 col-form-label vertically-aligned-label"><b>Temel Alan</b></label>
+                                <div class="col-12 col-lg-5">
+                                  <span>Vizyon</span>
+                                </div>
+                            </div>-->
                                                 </form>
                                             </div>
                                             <div class="col-md-4  col-sm-12">
@@ -593,19 +587,19 @@
 
                                             <!-- Example Switch / Yes - No -->
                                             <!--<div class="form-group row">
-                                            <label for="monthly-report-check" class="col-form-label col-12 col-lg-2">Aylık Rapora Ekle</label>
-                                            <div class="col-12 col-lg-5">
-                                                <div class="text-center d-inline-block col-form-label">
-                                                    <div class="vc-toggle-container">
-                                                      <label class="vc-switch">
-                                                        <input type="checkbox" class="vc-switch-input" id="monthly-report-check" name="monthly-report-check">
-                                                        <span data-on="Evet" data-off="Hayır" class="vc-switch-label"></span>
-                                                        <span class="vc-handle"></span>
-                                                      </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>-->
+        <label for="monthly-report-check" class="col-form-label col-12 col-lg-2">Aylık Rapora Ekle</label>
+        <div class="col-12 col-lg-5">
+            <div class="text-center d-inline-block col-form-label">
+                <div class="vc-toggle-container">
+                  <label class="vc-switch">
+                    <input type="checkbox" class="vc-switch-input" id="monthly-report-check" name="monthly-report-check">
+                    <span data-on="Evet" data-off="Hayır" class="vc-switch-label"></span>
+                    <span class="vc-handle"></span>
+                  </label>
+                </div>
+            </div>
+        </div>
+    </div>-->
                                             <!-- Example Switch / Yes - No -->
                                             <div class="form-group row">
                                                 <label id="sub-project-check" name="monthly-report-check" class="col-form-label col-12 col-lg-2">Alt Projeleri Var mı?</label>
@@ -634,16 +628,16 @@
                                                     </select>
                                                 </div>
                                             </div>
+                                            <div class="buttons mt-3 my-md-0">
+                                                <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
+                                                <a asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
+                                            </div>
                                         </form>
                                     </div>
 
                                     <!-- Associates Form Tab -->
                                     <div class="tab-pane fade" id="associates" role="tabpanel" aria-labelledby="associates-tab">
-                                        <div class="form-header row">
-                                            <div class="col-12 col-lg-6">
-                                                <p class="text-md text-primary border-bottom">Kişiler</p>
-                                            </div>
-                                        </div>
+                                        <h4 class="text-primary border-bottom pb-2">Kişiler</h4>
 
                                         <div class="table-responsive position-relative">
                                             <table class="table table-hover display" id="dataTable" width="100%" cellspacing="20">
@@ -1170,6 +1164,10 @@
                                             <div class="col-12 col-xl-6">
                                                 <div id="map" class="h-100"></div>
                                             </div>
+                                        </div>
+                                        <div class="buttons mt-3 my-md-0">
+                                            <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
+                                            <a asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
                                         </div>
                                     </div>
 
