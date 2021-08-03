@@ -150,9 +150,11 @@ $(document).ready(function () {
         {
           "data": null,
           "render": function (data, type, full, meta, row) {
-              return `<a class="btn btn-circle bg-turqoise text-white" href="#"><i class="fas fa-edit"></i></a>\
-                      <button type="button" class="btn btn-circle bg-warning text-white"><i class="fas fa-info-circle"></i></button>\
-                      <button type="button" class="btn btn-circle bg-danger text-white"><i class="fas fa-trash-alt"></i></button>`;
+              return `<div class="d-flex align-items-center justify-content-end">\
+                        <a class="btn btn-circle bg-turqoise text-white mr-1" href="#"><i class="fas fa-edit"></i></a>\
+                        <button type="button" class="btn btn-circle bg-warning text-white mr-1"><i class="fas fa-info-circle"></i></button>\
+                        <button type="button" class="btn btn-circle bg-danger text-white"><i class="fas fa-trash-alt"></i></button>\
+                      </div>`;
           }
       },
     ],
