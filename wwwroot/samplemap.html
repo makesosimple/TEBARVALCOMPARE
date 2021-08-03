@@ -79,43 +79,43 @@
 
                     <!-- Topbar Search -->
                     <!-- <form
-            class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-            <div class="input-group">
-                <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                    aria-label="Search" aria-describedby="basic-addon2">
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="button">
-                        <i class="fas fa-search fa-sm"></i>
-                    </button>
-                </div>
-            </div>
-        </form> -->
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
-
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <!-- <li class="nav-item dropdown no-arrow d-sm-none">
-                <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-search fa-fw"></i>
-                </a>
-                Dropdown - Messages
-                <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                    aria-labelledby="searchDropdown">
-                    <form class="form-inline mr-auto w-100 navbar-search">
+                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small"
-                                placeholder="Search for..." aria-label="Search"
-                                aria-describedby="basic-addon2">
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                                aria-label="Search" aria-describedby="basic-addon2">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button">
                                     <i class="fas fa-search fa-sm"></i>
                                 </button>
                             </div>
                         </div>
-                    </form>
-                </div>
-            </li> -->
+                    </form> -->
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <!-- <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            Dropdown - Messages
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                            placeholder="Search for..." aria-label="Search"
+                                            aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li> -->
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
@@ -131,16 +131,16 @@
                                     Bildirim Merkezi
                                 </h6>
                                 <!--<a class="dropdown-item d-flex align-items-center" href="#">
-                        <div class="mr-3">
-                            <div class="icon-circle bg-primary">
-                                <i class="fas fa-file-alt text-white"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="small text-black fw-bold">Aralık 12, 2019</div>
-                            <span class="font-weight-bold">Üstyapı Malzeme Müdürlüğü, Arnavutköy Projesi için rapor oluşturdu!</span>
-                        </div>
-                    </a>-->
+                                    <div class="mr-3">
+                                        <div class="icon-circle bg-primary">
+                                            <i class="fas fa-file-alt text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="small text-black fw-bold">Aralık 12, 2019</div>
+                                        <span class="font-weight-bold">Üstyapı Malzeme Müdürlüğü, Arnavutköy Projesi için rapor oluşturdu!</span>
+                                    </div>
+                                </a>-->
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="mr-3">
                                         <div class="icon-circle bg-success">
@@ -204,18 +204,120 @@
                     </ul>
 
                 </nav>
-                <div id="map" style="height: 100vh; width:100%"></div>
+                <!-- End of Topbar -->
+                <!-- Begin Page Content -->
+                <div class="container-fluid position-relative m-0 p-0">
+
+                    <div id="mapSearch">
+                        <div class="table-responsive position-relative bg-white px-2 pt-2">
+                            <table class="table table-hover display mb-0" width="100%" cellspacing="20">
+                                <thead class="bg-navy-blue">
+                                    <tr class="filter h-100 bg-white">
+                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="3" type="text" placeholder="Ara..." id="code" name="code" value="" /></th>
+                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="3" type="text" placeholder="Ara..." id="projectName" name="projectName" value="" /></th>
+                                        <th scope="col">
+                                            <select class="form-control initialize-select2 searchInput" data-index="1" style="width: 100%;" id="district" name="district">
+                                                <option value="Adalar">Adalar</option>
+                                                <option value="Arnavutköy">Arnavutköy</option>
+                                                <option value="Ataşehir">Ataşehir</option>
+                                                <option value="Avcılar">Avcılar</option>
+                                                <option value="Bağcılar">Bağcılar</option>
+                                                <option value="Bahçelievler">Bahçelievler</option>
+                                                <option value="Bakırköy">Bakırköy</option>
+                                                <option value="Başakşehir">Başakşehir</option>
+                                                <option value="Bayrampaşa">Bayrampaşa</option>
+                                                <option value="Beşiktaş">Beşiktaş</option>
+                                                <option value="Beykoz">Beykoz</option>
+                                                <option value="Beylikdüzü">Beylikdüzü</option>
+                                                <option value="Beyoğlu">Beyoğlu</option>
+                                                <option value="Büyükçekmece">Büyükçekmece</option>
+                                                <option value="Çatalca">Çatalca</option>
+                                                <option value="Çekmeköy">Çekmeköy</option>
+                                                <option value="Esenler">Esenler</option>
+                                                <option value="Esenyurt">Esenyurt</option>
+                                                <option value="Eyüp">Eyüp</option>
+                                                <option value="Fatih">Fatih</option>
+                                                <option value="Gaziosmanpaşa">Gaziosmanpaşa</option>
+                                                <option value="Güngören">Güngören</option>
+                                                <option value="Kadıköy">Kadıköy</option>
+                                                <option value="Kâğıthane">Kâğıthane</option>
+                                                <option value="Kartal">Kartal</option>
+                                                <option value="Küçükçekmece">Küçükçekmece</option>
+                                                <option value="Maltepe">Maltepe</option>
+                                                <option value="Pendik">Pendik</option>
+                                                <option value="Sancaktepe">Sancaktepe</option>
+                                                <option value="Sarıyer">Sarıyer</option>
+                                                <option value="Silivri">Silivri</option>
+                                                <option value="Sultanbeyli">Sultanbeyli</option>
+                                                <option value="Sultangazi">Sultangazi</option>
+                                                <option value="Şile">Şile</option>
+                                                <option value="Şişli">Şişli</option>
+                                                <option value="Tuzla">Tuzla</option>
+                                                <option value="Ümraniye">Ümraniye</option>
+                                                <option value="Üsküdar">Üsküdar</option>
+                                                <option value="Zeytinburnu">Zeytinburnu</option>
+                                            </select>
+                                        </th>
+                                        <th scope="col">
+                                            <select class="form-control initialize-select2 searchInput" data-index="1" style="width: 100%;" id="function" name="function">
+                                                <option value="Anaokulu">Anaokulu</option>
+                                                <option value="Bakkal">Bakkal</option>
+                                                <option value="Cami">Cami</option>
+                                            </select>
+                                        </th>
+                                        <th scope="col">
+                                            <select class="form-control initialize-select2 searchInput" data-index="1" style="width: 100%;" id="projectOwner" name="projectOwner">
+                                                <option value="Bilge Kobaş">Bilge Kobaş</option>
+                                                <option value="Bakkal">Selçuk Orhan</option>
+                                                <option value="Ömer Kıvanç">Ömer Kıvanç</option>
+                                            </select>
+                                        </th>
+                                        <th scope="col">
+                                            <select class="form-control initialize-select2 searchInput" data-index="1" style="width: 100%;" id="responsible" name="responsible">
+                                                <option value="Bilge Kobaş">Bilge Kobaş</option>
+                                                <option value="Bakkal">Selçuk Orhan</option>
+                                                <option value="Ömer Kıvanç">Ömer Kıvanç</option>
+                                            </select>
+                                        </th>
+                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="3" type="text" placeholder="Ara..." id="projectCost" name="projectCost" value="" /></th>
+
+                                        <th scope="col">
+                                            <select class="form-control initialize-select2 searchInput" data-index="1" style="width: 100%;" id="architect" name="architect">
+                                                <option value="Bilge Kobaş">Bilge Kobaş</option>
+                                                <option value="Bakkal">Selçuk Orhan</option>
+                                                <option value="Ömer Kıvanç">Ömer Kıvanç</option>
+                                            </select>
+                                        </th>
+                                    </tr>
+                                    <tr id="tableLabels">
+                                        <th scope="col" class="text-white text-sm" data-search-type="text">KOD</th>
+                                        <th scope="col" class="text-white text-sm" data-search-type="text">PROJE ADI</th>
+                                        <th scope="col" class="text-white text-sm" data-search-type="select">İLÇE</th>
+                                        <th scope="col" class="text-white text-sm" data-search-type="text">FONKSİYON</th>
+                                        <th scope="col" class="text-white text-sm" data-search-type="text">PROJE SAHİBİ</th>
+                                        <th scope="col" class="text-white text-sm" data-search-type="text">SORUMLU</th>
+                                        <th scope="col" class="text-white text-sm" data-search-type="text">PROJE BEDELİ</th>
+                                        <th scope="col" class="text-white text-sm" data-search-type="text">TASARIMCI</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="map" style="height: 100vh; width: 100%;"></div>
+
+                </div>
+                <!-- /.container-fluid -->
 
             </div>
             <!-- End of Main Content -->
             <!-- Footer -->
-            <!--<footer class="sticky-footer bg-white">
+            <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
                         <span>Copyright &copy; IBB Portal 2021</span>
                     </div>
                 </div>
-            </footer>-->
+            </footer>
             <!-- End of Footer -->
 
         </div>
