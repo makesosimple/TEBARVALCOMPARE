@@ -421,7 +421,7 @@ $(document).ready(function () {
         className: 'btn btn-primary btn-circle border-0',
 
         action: function (e, dt, node, config) {
-            $("#GeneralModal").modal("show");
+            window.location = '/samplemap.html';
         }
     };
 
