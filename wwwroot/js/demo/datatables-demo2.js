@@ -421,7 +421,15 @@ $(document).ready(function () {
         className: 'btn btn-primary btn-circle border-0',
 
         action: function (e, dt, node, config) {
-            alert("Buton çalışıyor!");
+            $("#GeneralModal").modal("show");
+        }
+    };
+
+    $.fn.dataTable.ext.buttons.none = {
+        className: 'btn btn-primary btn-circle border-0',
+
+        action: function (e, dt, node, config) {
+            alert("Buton Kontrol!");
         }
     };
 
@@ -433,18 +441,18 @@ $(document).ready(function () {
         buttons: [
             {
                 extend: 'alert',
-                text: '<i class="fas fa-eye-slash"></i>',
-                className: 'bg-primary pt-2',
-            },
-            {
-                extend: 'alert',
                 text: '<i class="fas fa-map-marker-alt"></i>',
-                className: 'bg-success pt-2',
+                className: 'bg-primary',
             },
             {
-                extend: 'alert',
-                text: '<i class="fas fa-file-export"></i>',
-                className: 'bg-info pt-2 pr-2',
+                extend: 'none',
+                text: '<i class="fas fa-table"></i>',
+                className: 'bg-success',
+            },
+            {
+                extend: 'none',
+                text: '<i class="fas fa-file-excel"></i>',
+                className: 'bg-info',
             }
         ],
         columns: [

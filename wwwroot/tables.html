@@ -37,29 +37,27 @@
 
         <!-- Page Wrapper -->
         <div id="wrapper">
-    
+
             <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            </ul>
+            <!-- End of Sidebar -->
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
 
-        </ul>
-        <!-- End of Sidebar -->
+                <!-- Main Content -->
+                <div id="content">
 
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+                    <!-- Topbar -->
+                    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-            <!-- Main Content -->
-            <div id="content">
+                        <!-- Sidebar Toggle (Topbar) -->
+                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                            <i class="fa fa-bars"></i>
+                        </button>
 
-                <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                    <!-- Sidebar Toggle (Topbar) -->
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-
-                    <!-- Topbar Search -->
-                    <!-- <form
+                        <!-- Topbar Search -->
+                        <!-- <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
@@ -71,12 +69,11 @@
                             </div>
                         </div>
                     </form> -->
+                        <!-- Topbar Navbar -->
+                        <ul class="navbar-nav ml-auto">
 
-                    <!-- Topbar Navbar -->
-                    <ul class="navbar-nav ml-auto">
-
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <!-- <li class="nav-item dropdown no-arrow d-sm-none">
+                            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                            <!-- <li class="nav-item dropdown no-arrow d-sm-none">
                             <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-search fa-fw"></i>
@@ -98,211 +95,204 @@
                                 </form>
                             </div>
                         </li> -->
-
-                        <!-- Nav Item - Alerts -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell fa-fw"></i>
-                                <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
-                            </a>
-                            <!-- Dropdown - Alerts -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="alertsDropdown">
-                                <h6 class="dropdown-header">
-                                    Bildirim Merkezi
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
+                            <!-- Nav Item - Alerts -->
+                            <li class="nav-item dropdown no-arrow mx-1">
+                                <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-bell fa-fw"></i>
+                                    <!-- Counter - Alerts -->
+                                    <span class="badge badge-danger badge-counter">3+</span>
+                                </a>
+                                <!-- Dropdown - Alerts -->
+                                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                     aria-labelledby="alertsDropdown">
+                                    <h6 class="dropdown-header">
+                                        Bildirim Merkezi
+                                    </h6>
+                                    <a class="dropdown-item d-flex align-items-center" href="#">
+                                        <div class="mr-3">
+                                            <div class="icon-circle bg-primary">
+                                                <i class="fas fa-file-alt text-white"></i>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-black fw-bold">Aralık 12, 2019</div>
-                                        <span class="font-weight-bold">Üstyapı Malzeme Müdürlüğü, Arnavutköy Projesi için rapor oluşturdu!</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-project-diagram text-white"></i>
+                                        <div>
+                                            <div class="small text-black fw-bold">Aralık 12, 2019</div>
+                                            <span class="font-weight-bold">Üstyapı Malzeme Müdürlüğü, Arnavutköy Projesi için rapor oluşturdu!</span>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-black fw-bold">Ocak 8, 2021</div>
-                                        <span>Bilge Kobaş, Beyoğlu Hizmet Binası Projesinde değişiklik yaptı.</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
+                                    </a>
+                                    <a class="dropdown-item d-flex align-items-center" href="#">
+                                        <div class="mr-3">
+                                            <div class="icon-circle bg-success">
+                                                <i class="fas fa-project-diagram text-white"></i>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-black fw-bold">Haziran 15, 2022</div>
-                                        <span>Cem Üstün, X Projesi'yle sınırları çakışan bir parsel oluşturmaya çalıştı!</span>
-                                    </div>
+                                        <div>
+                                            <div class="small text-black fw-bold">Ocak 8, 2021</div>
+                                            <span>Bilge Kobaş, Beyoğlu Hizmet Binası Projesinde değişiklik yaptı.</span>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item d-flex align-items-center" href="#">
+                                        <div class="mr-3">
+                                            <div class="icon-circle bg-warning">
+                                                <i class="fas fa-exclamation-triangle text-white"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="small text-black fw-bold">Haziran 15, 2022</div>
+                                            <span>Cem Üstün, X Projesi'yle sınırları çakışan bir parsel oluşturmaya çalıştı!</span>
+                                        </div>
+                                    </a>
+                                    <a class="dropdown-item text-center small text-gray-500" href="#">Bütün Bildirimleri Göster</a>
+                                </div>
+                            </li>
+
+                            <div class="topbar-divider d-none d-sm-block"></div>
+
+                            <!-- Nav Item - User Information -->
+                            <li class="nav-item dropdown no-arrow">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Bilge Kobaş</span>
+                                    <img class="img-profile rounded-circle"
+                                         src="/images/undraw_profile.svg">
                                 </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Bütün Bildirimleri Göster</a>
-                            </div>
-                        </li>
+                                <!-- Dropdown - User Information -->
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                     aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Profil
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Ayarlar
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Aktivite Logları
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <!-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal"> -->
+                                    <a class="dropdown-item" href="index.html">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Çıkış Yap
+                                    </a>
+                                </div>
+                            </li>
 
-                        <div class="topbar-divider d-none d-sm-block"></div>
+                        </ul>
 
-                        <!-- Nav Item - User Information -->
-                        <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Bilge Kobaş</span>
-                                <img class="img-profile rounded-circle"
-                                    src="/images/undraw_profile.svg">
-                            </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profil
+                    </nav>
+                    <!-- End of Topbar -->
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid">
+
+                        <!-- Page Heading -->
+                        <div class="row">
+                            <div class="justify-content-between py-2 col-12 d-flex">
+                                <h1 class="h3 mb-4 text-gray-800">Proje Merkezi</h1>
+                                <a href="/form.html" class="btn btn-success shadow mb-4">
+                                    <i class="fas fa-plus mr-2"></i> EKLE
                                 </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Ayarlar
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Aktivite Logları
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <!-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal"> -->
-                                <a class="dropdown-item" href="index.html">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Çıkış Yap
-                                </a>
-                            </div>
-                        </li>
-
-                    </ul>
-
-                </nav>
-                <!-- End of Topbar -->
-
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">Proje Merkezi</h1>
-
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-body">
-                            <div class="table-responsive position-relative">
-                                <table class="table table-hover display" id="dataTable" width="100%" cellspacing="20">
-                                    <thead class="bg-navy-blue">
-                                        <tr class="filter h-100 bg-white"> 
-                                            
-                                        </tr>
-                                        <tr id="tableLabels">
-                                            <th scope="col" class="text-white text-sm" data-search-type="none">MEVDES</th>
-                                            <th scope="col" class="text-white text-sm" data-search-type="text">KOD</th>
-                                            <th scope="col" class="text-white text-sm" data-search-type="text">PROJE ADI</th>
-                                            <th scope="col" class="text-white text-sm" data-search-type="select">İLÇE</th>
-                                            <th scope="col" class="text-white text-sm" data-search-type="text">FONKSİYON</th>
-                                            <th scope="col" class="text-white text-sm" data-search-type="text">PROJE SAHİBİ</th>
-                                            <th scope="col" class="text-white text-sm" data-search-type="text">SORUMLU</th>
-                                            <th scope="col" class="text-white text-sm" data-search-type="text">PROJE BEDELİ</th>
-                                            <th scope="col" class="text-white text-sm" data-search-type="date">YIL</th>
-                                            <th scope="col" class="text-white text-sm" data-search-type="text">PROJE ALANI</th>
-                                            <th scope="col" class="text-white text-sm" data-search-type="text">İNŞAAT ALANI</th>
-                                            <th scope="col" class="text-white text-sm" data-search-type="text">TASARIMCI</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    </tbody>
-                                    <tfoot>
-
-                                    </tfoot>
-
-                                </table>
                             </div>
                         </div>
+
+                        <!-- DataTales Example -->
+                        <div class="card shadow mb-4">
+                            <div class="card-body">
+                                <div class="table-responsive position-relative">
+                                    <table class="table table-hover display" id="dataTable" width="100%" cellspacing="20">
+                                        <thead class="bg-navy-blue">
+                                            <tr class="filter h-100 bg-white">
+                                            </tr>
+                                            <tr id="tableLabels">
+                                                <th scope="col" class="text-white text-sm" data-search-type="none">MEVDES</th>
+                                                <th scope="col" class="text-white text-sm" data-search-type="text">KOD</th>
+                                                <th scope="col" class="text-white text-sm" data-search-type="text">PROJE ADI</th>
+                                                <th scope="col" class="text-white text-sm" data-search-type="select">İLÇE</th>
+                                                <th scope="col" class="text-white text-sm" data-search-type="text">FONKSİYON</th>
+                                                <th scope="col" class="text-white text-sm" data-search-type="text">PROJE SAHİBİ</th>
+                                                <th scope="col" class="text-white text-sm" data-search-type="text">SORUMLU</th>
+                                                <th scope="col" class="text-white text-sm" data-search-type="text">PROJE BEDELİ</th>
+                                                <th scope="col" class="text-white text-sm" data-search-type="date">YIL</th>
+                                                <th scope="col" class="text-white text-sm" data-search-type="text">PROJE ALANI</th>
+                                                <th scope="col" class="text-white text-sm" data-search-type="text">İNŞAAT ALANI</th>
+                                                <th scope="col" class="text-white text-sm" data-search-type="text">TASARIMCI</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                        <tfoot>
+
+                                        </tfoot>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
+                    <!-- /.container-fluid -->
 
                 </div>
-                <!-- /.container-fluid -->
+                <!-- End of Main Content -->
+                <!-- Footer -->
+                <footer class="sticky-footer bg-white">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <span>Copyright &copy; IBB Portal 2021</span>
+                        </div>
+                    </div>
+                </footer>
+                <!-- End of Footer -->
 
             </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; IBB Portal 2021</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
+            <!-- End of Content Wrapper -->
 
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- End of Page Wrapper -->
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
 
-    </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+        <!-- Modal -->
+        <div class="modal fade" id="GeneralModal" tabindex="-1" aria-labelledby="GeneralModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+                <div class="modal-content">
+                    <div id="map" class="w-100" style="height: 700px;"></div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="/lib/jquery/jquery.min.js"></script>
-    <script src="/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="/lib/jquery-easing/jquery.easing.min.js"></script>
+        <!-- Bootstrap core JavaScript-->
+        <script src="/lib/jquery/jquery.min.js"></script>
+        <script src="/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="/js/common.min.js"></script>
+        <!-- Core plugin JavaScript-->
+        <script src="/lib/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="/js/sb-admin-2.min.js"></script>
+        <!-- Custom scripts for all pages-->
+        <script src="/js/common.min.js"></script>
 
-    <!-- Page level plugins -->
-    <script src="/lib/datatables/jquery.dataTables.min.js"></script>
-    <script src="/lib/datatables/dataTables.bootstrap4.min.js"></script>
-    <script src="/lib/datatables/dataTables.fixedHeader.min.js"></script>
-    <script src="/lib/datatables/dataTables.scroller.min.js"></script>
-    <script src="/lib/datatables/dataTables.buttons.min.js"></script>
-    <script src="/lib/datatables/buttons.colVis.min.js"></script>
+        <!-- Custom scripts for all pages-->
+        <script src="/js/sb-admin-2.min.js"></script>
 
-    <!-- Page level custom scripts -->
-    <script src="/js/demo/datatables-demo2.js"></script>
+        <!-- Page level plugins -->
+        <script src="/lib/datatables/jquery.dataTables.min.js"></script>
+        <script src="/lib/datatables/dataTables.bootstrap4.min.js"></script>
+        <script src="/lib/datatables/dataTables.fixedHeader.min.js"></script>
+        <script src="/lib/datatables/dataTables.scroller.min.js"></script>
+        <script src="/lib/datatables/dataTables.buttons.min.js"></script>
+        <script src="/lib/datatables/buttons.colVis.min.js"></script>
 
-    <!-- Datatable Plugins -->
-</body>
+        <!-- Page level custom scripts -->
+        <script src="/js/demo/datatables-demo2.js"></script>
+
+        <!-- Google Map API -->
+        <script src="/js/map.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMYG7cNdDYUUxT8FSVxCtaxvSv9Ic2UZw&callback=initMap&libraries=&v=weekly"></script>
+    </body>
 
 </html>
