@@ -1,7 +1,7 @@
 ﻿@model IBBPortal.Models.Management
 
 @{
-    ViewData["Title"] = "İşletme Ekle";
+    ViewData["Title"] = "Müdürlük Ekle";
 }
 
 <h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
@@ -23,7 +23,7 @@
 
                         <!-- Management Title -->
                         <div class="form-group row">
-                            <label asp-for="ManagementTitle" class="col-12 col-xl-4 col-form-label">İşletme İsmi</label>
+                            <label asp-for="ManagementTitle" class="col-12 col-xl-4 col-form-label">Müdürlük İsmi</label>
                             <div class="col-12 col-xl-8">
                                 <input asp-for="ManagementTitle" type="text" class="form-control" required>
                                 <span asp-validation-for="ManagementTitle" class="text-danger"></span>
@@ -41,7 +41,7 @@
 
                         <!-- Management Description -->
                         <div class="form-group row">
-                            <label asp-for="ManagementDescription" class="col-12 col-xl-4 col-form-label">İşletme Açıklaması</label>
+                            <label asp-for="ManagementDescription" class="col-12 col-xl-4 col-form-label">Müdürlük Açıklaması</label>
                             <div class="col-12 col-xl-8">
                                 <textarea asp-for="ManagementDescription" type="number" class="form-control"></textarea>
                                 <span asp-validation-for="ManagementDescription" class="text-danger"></span>
