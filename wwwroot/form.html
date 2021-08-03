@@ -639,11 +639,98 @@
 
                                     <!-- Associates Form Tab -->
                                     <div class="tab-pane fade" id="associates" role="tabpanel" aria-labelledby="associates-tab">
+                                        <div class="form-header row">
+                                            <div class="col-12 col-lg-6">
+                                                <p class="text-md text-primary border-bottom">Kişiler</p>
+                                            </div>
+                                        </div>
 
                                         <div class="table-responsive position-relative">
                                             <table class="table table-hover display" id="dataTable" width="100%" cellspacing="20">
                                                 <thead class="bg-navy-blue">
                                                     <tr class="filter h-100 bg-white">
+                                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="user" name="user" value="" /></th>
+                                                        <th scope="col">
+                                                            <select class="form-control initialize-select2 searchInput" data-index="1" style="width: 100%;" id="assignmentInProject" name="assignmentInProject">
+                                                                <option value="İnşaat Mühendisi">İnşaat Mühendisi</option>
+                                                                <option value="Endüstri Mühendisi">Endüstri Mühendisi</option>
+                                                                <option value="Tekniker">Tekniker</option>
+                                                                <option value="Mimar">Mimar</option>
+                                                            </select>
+                                                        </th>
+                                                        <th scope="col">
+                                                            <select class="form-control initialize-select2 searchInput" data-index="2" style="width: 100%;" id="field" name="field">
+                                                                <option value="Yapım">Yapım</option>
+                                                                <option value="Proje">Proje</option>
+                                                            </select>
+                                                        </th>
+                                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="3" type="text" placeholder="Ara..." id="organization" name="organization" value="" /></th>
+                                                        <th scope="col">
+                                                            <button type="button" class="btn btn-success shadow d-block w-100" data-toggle="modal" data-target="#userModal">
+                                                                <i class="fas fa-plus mr-2"></i> EKLE
+                                                            </button>
+
+                                                            <!-- Modal -->
+                                                            <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title" id="exampleModalLabel">Kişi Ekle</h5>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <form class="mb-4">
+                                                                                <div class="form-group row">
+                                                                                    <label for="user" class="col-12 col-xl-4 col-form-label">Kişi</label>
+                                                                                    <div class="col-12 col-xl-8">
+                                                                                        <select class="form-control initialize-select2" style="width: 100%;" id="user" name="user">
+                                                                                            <option value="1">Selçuk Orhan</option>
+                                                                                            <option value="2">Bilge Kobaş</option>
+                                                                                            <option value="3">Cem Üstün</option>
+                                                                                            <option value="4">Aydın Karabulut</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group row">
+                                                                                    <label for="assignmentInProject" class="col-12 col-xl-4 col-form-label">Projedeki Görevi</label>
+                                                                                    <div class="col-12 col-xl-8">
+                                                                                        <select class="form-control initialize-select2" style="width: 100%;" id="assignmentInProject" name="assignmentInProject">
+                                                                                            <option value="İnşaat Mühendisi">İnşaat Mühendisi</option>
+                                                                                            <option value="Endüstri Mühendisi">Endüstri Mühendisi</option>
+                                                                                            <option value="Tekniker">Tekniker</option>
+                                                                                            <option value="Mimar">Mimar</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group row">
+                                                                                    <label for="field" class="col-12 col-xl-4 col-form-label">Alan</label>
+                                                                                    <div class="col-12 col-xl-8">
+                                                                                        <select class="form-control initialize-select2" style="width: 100%;" id="field" name="field">
+                                                                                            <option value="Yapım">Yapım</option>
+                                                                                            <option value="Proje">Proje</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group row">
+                                                                                    <label for="organization" class="col-12 col-xl-4 col-form-label">Organizasyon</label>
+                                                                                    <div class="col-12 col-xl-8">
+                                                                                        <input type="text" class="form-control" id="organization">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <div class="buttons">
+                                                                                <button type="submit" value="Delete" class="btn bg-success text-white"><i class="fas fa-save"></i> Kaydet</button>
+                                                                                <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close"><i class="fas fa-ban"></i> Vazgeç</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </th>
                                                     </tr>
                                                     <tr id="tableLabels">
                                                         <th scope="col" class="text-white text-sm" data-search-type="text">Kişi</th>
@@ -661,252 +748,6 @@
 
                                             </table>
                                         </div>
-                                        <!-- INSTUTION INNER (PROJECT) -->
-                                        <form class="mb-4">
-                                            <div class="form-header row">
-                                                <div class="col-12 col-lg-7">
-                                                    <p class="text-md text-primary border-bottom">KURUM İÇİ (PROJE)</p>
-                                                </div>
-                                            </div>
-
-                                            <!-- Example Select - Single Choice -->
-                                            <div class="form-group row">
-                                                <label for="assistant-director" class="col-12 col-lg-2 col-form-label">Müdür Yardımcısı</label>
-                                                <div class="col-12 col-lg-5">
-                                                    <select class="form-control initialize-select2" style="width: 100%;" id="assistant-director" name="assistant-director">
-                                                        <option value="1">Bilge Kobaş</option>
-                                                        <option value="2">Selçuk Orhan</option>
-                                                        <option value="3">Cem Üstün</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <!-- Example Select - Single Choice -->
-                                            <div class="form-group row">
-                                                <label for="chief" class="col-12 col-lg-2 col-form-label">Şef</label>
-                                                <div class="col-12 col-lg-5">
-                                                    <select class="form-control initialize-select2" style="width: 100%;" id="cheif" name="chief">
-                                                        <option value="1">Bilge Kobaş</option>
-                                                        <option value="2">Selçuk Orhan</option>
-                                                        <option value="3">Cem Üstün</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <!-- Example Select - Single Choice -->
-                                            <div class="form-group row">
-                                                <label for="coordinator" class="col-12 col-lg-2 col-form-label">Koordinatör</label>
-                                                <div class="col-12 col-lg-5">
-                                                    <select class="form-control initialize-select2" style="width: 100%;" id="coordinator" name="coordinator">
-                                                        <option value="1">Bilge Kobaş</option>
-                                                        <option value="2">Selçuk Orhan</option>
-                                                        <option value="3">Cem Üstün</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <!-- Example Select - Single Choice -->
-                                            <div class="form-group row">
-                                                <label for="construction-engineer" class="col-12 col-lg-2 col-form-label">İnşaat Mühendisi</label>
-                                                <div class="col-12 col-lg-5">
-                                                    <select class="form-control initialize-select2" style="width: 100%;" id="construction-engineer" name="construction-engineer">
-                                                        <option value="1">Bilge Kobaş</option>
-                                                        <option value="2">Selçuk Orhan</option>
-                                                        <option value="3">Cem Üstün</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <!-- Example Select - Single Choice -->
-                                            <div class="form-group row">
-                                                <label for="architect" class="col-12 col-lg-2 col-form-label">Mimar</label>
-                                                <div class="col-12 col-lg-5">
-                                                    <select class="form-control initialize-select2" style="width: 100%;" id="architect" name="architect">
-                                                        <option value="1">Bilge Kobaş</option>
-                                                        <option value="2">Selçuk Orhan</option>
-                                                        <option value="3">Cem Üstün</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <!-- Example Select - Single Choice -->
-                                            <div class="form-group row">
-                                                <label for="landscape-architect" class="col-12 col-lg-2 col-form-label">Peyzaj Mimarı</label>
-                                                <div class="col-12 col-lg-5">
-                                                    <select class="form-control initialize-select2" style="width: 100%;" id="landscape-architect" name="landscape-architect">
-                                                        <option value="1">Bilge Kobaş</option>
-                                                        <option value="2">Selçuk Orhan</option>
-                                                        <option value="3">Cem Üstün</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <!-- Example Select - Single Choice -->
-                                            <div class="form-group row">
-                                                <label for="electrical-engineer" class="col-12 col-lg-2 col-form-label">Elektrik Mühendisi</label>
-                                                <div class="col-12 col-lg-5">
-                                                    <select class="form-control initialize-select2" style="width: 100%;" id="electrical-engineer" name="electrical-engineer">
-                                                        <option value="1">Bilge Kobaş</option>
-                                                        <option value="2">Selçuk Orhan</option>
-                                                        <option value="3">Cem Üstün</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <!-- Example Select - Single Choice -->
-                                            <div class="form-group row">
-                                                <label for="mechanical-engineer" class="col-12 col-lg-2 col-form-label">Makine Mühendisi</label>
-                                                <div class="col-12 col-lg-5">
-                                                    <select class="form-control initialize-select2" style="width: 100%;" id="mechanical-engineer" name="mechanical-engineer">
-                                                        <option value="1">Bilge Kobaş</option>
-                                                        <option value="2">Selçuk Orhan</option>
-                                                        <option value="3">Cem Üstün</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <!-- Example Select - Single Choice -->
-                                            <div class="form-group row">
-                                                <label for="city-planner" class="col-12 col-lg-2 col-form-label">Şehir Plancısı</label>
-                                                <div class="col-12 col-lg-5">
-                                                    <select class="form-control initialize-select2" style="width: 100%;" id="city-planner" name="city-planner">
-                                                        <option value="1">Bilge Kobaş</option>
-                                                        <option value="2">Selçuk Orhan</option>
-                                                        <option value="3">Cem Üstün</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <!-- Example Select - Single Choice -->
-                                            <div class="form-group row">
-                                                <label for="environmental-engineer" class="col-12 col-lg-2 col-form-label">Çevre Mühendisi</label>
-                                                <div class="col-12 col-lg-5">
-                                                    <select class="form-control initialize-select2" style="width: 100%;" id="environmental-engineer" name="environmental-engineer">
-                                                        <option value="1">Bilge Kobaş</option>
-                                                        <option value="2">Selçuk Orhan</option>
-                                                        <option value="3">Cem Üstün</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <!-- Example Select - Single Choice -->
-                                            <div class="form-group row">
-                                                <label for="topographical-engineer" class="col-12 col-lg-2 col-form-label">Harita Mühendisi</label>
-                                                <div class="col-12 col-lg-5">
-                                                    <select class="form-control initialize-select2" style="width: 100%;" id="topographical-engineer" name="topographical-engineer">
-                                                        <option value="1">Bilge Kobaş</option>
-                                                        <option value="2">Selçuk Orhan</option>
-                                                        <option value="3">Cem Üstün</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <!-- Example Select - Single Choice -->
-                                            <div class="form-group row">
-                                                <label for="geological-engineer" class="col-12 col-lg-2 col-form-label">Jeoloji Mühendisi</label>
-                                                <div class="col-12 col-lg-5">
-                                                    <select class="form-control initialize-select2" style="width: 100%;" id="geological-engineer" name="geological-engineer">
-                                                        <option value="1">Bilge Kobaş</option>
-                                                        <option value="2">Selçuk Orhan</option>
-                                                        <option value="3">Cem Üstün</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <!-- Example Select - Single Choice -->
-                                            <div class="form-group row">
-                                                <label for="geophysical-engineer" class="col-12 col-lg-2 col-form-label">Jeofizik Mühendisi</label>
-                                                <div class="col-12 col-lg-5">
-                                                    <select class="form-control initialize-select2" style="width: 100%;" id="geophysical-engineer" name="geophysical-engineer">
-                                                        <option value="1">Bilge Kobaş</option>
-                                                        <option value="2">Selçuk Orhan</option>
-                                                        <option value="3">Cem Üstün</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </form>
-
-                                        <!-- INSTUTION INNER (CONSTRUCTION) -->
-                                        <form class="mb-4">
-
-                                            <!-- Form Header -->
-                                            <div class="form-header row">
-                                                <div class="col-12 col-lg-7">
-                                                    <p class="text-md text-primary border-bottom">KURUM İÇİ (YAPIM)</p>
-                                                </div>
-                                            </div>
-
-                                            <!-- Example Select - Single Choice -->
-                                            <div class="form-group row">
-                                                <label for="assistant-director-construction" class="col-12 col-lg-2 col-form-label">Müdür Yardımcısı</label>
-                                                <div class="col-12 col-lg-5">
-                                                    <select class="form-control initialize-select2" style="width: 100%;" id="assistant-director-construction" name="assistant-director-construction">
-                                                        <option value="1">Bilge Kobaş</option>
-                                                        <option value="2">Selçuk Orhan</option>
-                                                        <option value="3">Cem Üstün</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <!-- Example Select - Single Choice -->
-                                            <div class="form-group row">
-                                                <label for="coordinator-construction" class="col-12 col-lg-2 col-form-label">Koordinatör</label>
-                                                <div class="col-12 col-lg-5">
-                                                    <select class="form-control initialize-select2" style="width: 100%;" id="coordinator-construction" name="coordinator">
-                                                        <option value="1">Bilge Kobaş</option>
-                                                        <option value="2">Selçuk Orhan</option>
-                                                        <option value="3">Cem Üstün</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </form>
-
-                                        <!-- INSTUTION OUTER -->
-                                        <form>
-
-                                            <!-- Form Header -->
-                                            <div class="form-header row">
-                                                <div class="col-12 col-lg-7">
-                                                    <p class="text-md text-primary border-bottom">KURUM DIŞI</p>
-                                                </div>
-                                            </div>
-
-                                            <!-- Example Select - Single Choice -->
-                                            <div class="form-group row">
-                                                <label for="designer-project" class="col-12 col-lg-2 col-form-label">Tasarımcı (Proje)</label>
-                                                <div class="col-12 col-lg-5">
-                                                    <select class="form-control initialize-select2" style="width: 100%;" id="designer-project" name="designer-project">
-                                                        <option value="1">Bilge Kobaş</option>
-                                                        <option value="2">Selçuk Orhan</option>
-                                                        <option value="3">Cem Üstün</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <!-- Example Select - Single Choice -->
-                                            <div class="form-group row">
-                                                <label for="constructor-feasebility" class="col-12 col-lg-2 col-form-label">Yüklenici Firma (Fizibilite)</label>
-                                                <div class="col-12 col-lg-5">
-                                                    <select class="form-control initialize-select2" style="width: 100%;" id="constructor-feasebility" name="constructor-feasebility">
-                                                        <option value="1">Bilge Kobaş</option>
-                                                        <option value="2">Selçuk Orhan</option>
-                                                        <option value="3">Cem Üstün</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <!-- Example Select - Single Choice -->
-                                            <div class="form-group row">
-                                                <label for="constructor-construction" class="col-12 col-lg-2 col-form-label">Yüklenici Firma (Yapım)</label>
-                                                <div class="col-12 col-lg-5">
-                                                    <select class="form-control initialize-select2" style="width: 100%;" id="constructor-construction" name="constructor-construction">
-                                                        <option value="1">Bilge Kobaş</option>
-                                                        <option value="2">Selçuk Orhan</option>
-                                                        <option value="3">Cem Üstün</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </form>
                                     </div>
 
                                     <!-- Project Field Form Tab -->
