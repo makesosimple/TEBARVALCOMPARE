@@ -20,7 +20,7 @@ namespace IBBPortal.Models
         public string SubfunctionTitle { get; set; }
 
         [MaxLength(256)]
-        public string SubfunctionDescription { get; set; }
+        public string? SubfunctionDescription { get; set; }
 
         public string UserID { get; set; }
         [ForeignKey("UserID")]
