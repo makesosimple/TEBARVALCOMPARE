@@ -111,6 +111,22 @@
         </a>
     </li>
 
+    <!-- Subfunction Management -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSubfunction"
+           aria-expanded="true" aria-controls="collapseSubfunction">
+            <i class="fas fa-city"></i>
+            <span>Fonksiyon Yönetimi</span>
+        </a>
+        <div id="collapseSubfunction" class="collapse" aria-labelledby="headingSubfunction"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" asp-controller="Subfunction" asp-action="Index">Fonksiyonlar</a>
+                <a class="collapse-item" asp-controller="SubfunctionFeature" asp-action="Index">Fonksiyon Özellikleri</a>
+            </div>
+        </div>
+    </li>
+
     <!-- Status Management -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStatus"

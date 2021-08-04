@@ -21,10 +21,14 @@ namespace IBBPortal.Models
         public string SubfunctionFeatureTitle { get; set; }
 
         [MaxLength(256)]
-        public string SubfunctionFeatureDescription { get; set; }
+        public string? SubfunctionFeatureDescription { get; set; }
+
+        [Required]
         public string SubfunctionMeasurementUnit { get; set; }
 
-        public int SubfunctionID { get; set; }
+        public int? SubfunctionID { get; set; }
+        [ForeignKey("SubfunctionID")]
+        public Subfunction Subfunction { get; set; }
 
         public string UserID { get; set; }
         [ForeignKey("UserID")]
