@@ -7,11 +7,11 @@ var ctx = document.getElementById("myPieChart");
 var myPieChart = new Chart(ctx, {
   type: 'doughnut',
   data: {
-    labels: ["Genel", "Proje", "İptal"],
+    labels: ["Ulaşım", "Kent Estetiği", "Kültür Yapıları", "Hizmet Yapıları", "Diğer"],
     datasets: [{
-      data: [55, 30, 15],
-      backgroundColor: ['#0a1a33', '#1cc88a', '#36b9cc'],
-      hoverBackgroundColor: ['#030c1a', '#17a673', '#2c9faf'],
+      data: [55, 30, 15, 88, 43],
+        backgroundColor: ['#0a1a33', '#1cc88a', '#36b9cc', "#f6c23e", "#e74a3b"],
+        hoverBackgroundColor: ['#030c1a', '#17a673', '#2c9faf', "#c79e38",  "#e74a3b"],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
     }],
   },
