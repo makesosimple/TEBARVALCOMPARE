@@ -19,7 +19,7 @@ namespace IBBPortal.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ApplicationUser>(b =>
+            modelBuilder.Entity<IdentityUser>(b =>
             {
                 b.ToTable("ApplicationUser");
             });
@@ -54,6 +54,10 @@ namespace IBBPortal.Data
                 b.ToTable("ApplicationUserRole");
             });
         }
+
+        public DbSet<IBBPortal.Models.ApplicationUser> ApplicationUser { get; set; }
+
+        public DbSet<IBBPortal.Models.ApplicationRole> ApplicationRole { get; set; }
 
         public DbSet<IBBPortal.Models.Board> Board { get; set; }
 

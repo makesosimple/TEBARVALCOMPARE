@@ -63,12 +63,19 @@
         Uygulama Ayarları
     </div>
 
-    <!-- Nav Item - Project Collapse Menu -->
+    <!-- User Management -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
+           aria-expanded="true" aria-controls="collapseUser">
             <i class="fas fa-user"></i>
             <span>Kullanıcı Yönetimi</span>
         </a>
+        <div id="collapseUser" class="collapse" aria-labelledby="headingUser"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" asp-controller="User" asp-action="Index">Kullanıcılar</a>
+            </div>
+        </div>
     </li>
 
     <!-- Contractor Management-->

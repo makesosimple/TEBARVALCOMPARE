@@ -8,21 +8,15 @@
 <h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
 
 <div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
+        <ul class="nav nav-pills" id="formTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="false">Genel</a>
+            </li>
+        </ul>
+    </div>
     <div class="card-body">
 
-        <!-- Navigation Wrapper -->
-        <div class="d-flex justify-content-between flex-column flex-xl-row">
-            <!-- Navigation Tabs for the Form -->
-            <ul class="nav nav-tabs" id="formTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">Genel</a>
-                </li>
-            </ul>
-            <div class="buttons mt-3 my-xl-0">
-                <button type="submit" form="createUser" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
-                <button type="button" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</button>
-            </div>
-        </div>
         <div class="tab-content my-3" id="formContent">
             <!-- Project Field Form Tab -->
             <div class="tab-pane fade active show" id="general" role="tabpanel" aria-labelledby="general-tab">
@@ -31,7 +25,20 @@
                     <div class="col-12 col-xl-5">
                         <div asp-validation-summary="All" class="text-danger"></div>
 
-                        <form id="createUser" class="mb-4" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <form class="mb-4" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                            <div class="form-group row">
+                                <label asp-for="Input.FirstName" class="col-12 col-lg-4 col-form-label">İsim / Soyisim</label>
+                                <div class="col-12 col-lg-8">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <input asp-for="Input.FirstName" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-6">
+                                            <input asp-for="Input.LastName" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="form-group row">
                                 <label asp-for="Input.Email" class="col-12 col-xl-4 col-form-label">E-Posta Adresi</label>
@@ -55,6 +62,11 @@
                                     <input asp-for="Input.ConfirmPassword" type="password" class="form-control">
                                     <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                                 </div>
+                            </div>
+
+                            <div class="buttons mt-3 my-md-0">
+                                <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
+                                <a asp-controller="Home" asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
                             </div>
 
                         </form>

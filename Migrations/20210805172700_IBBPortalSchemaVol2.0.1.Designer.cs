@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IBBPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210805155424_IBBPortalSchemaVol2.0.1")]
+    [Migration("20210805172700_IBBPortalSchemaVol2.0.1")]
     partial class IBBPortalSchemaVol201
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -93,7 +93,7 @@ namespace IBBPortal.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("ApplicationUser");
+                    b.ToTable("AspNetUsers");
                 });
 
             modelBuilder.Entity("IBBPortal.Models.Board", b =>
@@ -750,7 +750,7 @@ namespace IBBPortal.Migrations
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("ApplicationRole");
+                    b.ToTable("AspNetRoles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -774,7 +774,7 @@ namespace IBBPortal.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("ApplicationRoleClaim");
+                    b.ToTable("AspNetRoleClaims");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -798,7 +798,7 @@ namespace IBBPortal.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ApplicationUserClaim");
+                    b.ToTable("AspNetUserClaims");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -822,7 +822,7 @@ namespace IBBPortal.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ApplicationUserLogin");
+                    b.ToTable("AspNetUserLogins");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
@@ -837,7 +837,7 @@ namespace IBBPortal.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("ApplicationUserRole");
+                    b.ToTable("AspNetUserRoles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -858,7 +858,7 @@ namespace IBBPortal.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("ApplicationUserToken");
+                    b.ToTable("AspNetUserTokens");
                 });
 
             modelBuilder.Entity("IBBPortal.Models.Board", b =>

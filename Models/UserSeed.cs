@@ -33,11 +33,11 @@ namespace IBBPortal.Models
                 SecurityStamp = Guid.NewGuid().ToString()
             };
 
-            var roleStore = new RoleStore<IdentityRole>(_context);
+            var roleStore = new RoleStore<ApplicationRole>(_context);
 
-            if (!_context.Roles.Any(r => r.Name == "admin"))
+            if (!_context.ApplicationRole.Any(r => r.Name == "admin"))
             {
-                await roleStore.CreateAsync(new IdentityRole { Name = "admin", NormalizedName = "admin" });
+                await roleStore.CreateAsync(new ApplicationRole { Name = "admin", NormalizedName = "admin" });
             }
 
             if (!_context.Users.Any(u => u.UserName == user.UserName))
