@@ -24,7 +24,7 @@ namespace IBBPortal.Models
         public string UserID { get; set; }
         [ForeignKey("UserID")]
 
-        public IdentityUser User { get; set; }
+        public ApplicationUser User { get; set; }
 
         public DateTime CreationDate { get; set; }
 

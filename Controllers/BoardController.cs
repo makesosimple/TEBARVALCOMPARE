@@ -17,9 +17,9 @@ namespace IBBPortal.Controllers
     public class BoardController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public BoardController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public BoardController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;

@@ -20,8 +20,10 @@ namespace IBBPortal.Models
 
         public async void SeedAdminUser()
         {
-            var user = new IdentityUser
+            var user = new ApplicationUser
             {
+                FirstName = "John",
+                LastName = "Doe",
                 UserName = "email@email.com",
                 NormalizedUserName = "EMAIL@EMAIL.COM",
                 Email = "email@email.com",
@@ -40,10 +42,10 @@ namespace IBBPortal.Models
 
             if (!_context.Users.Any(u => u.UserName == user.UserName))
             {
-                var password = new PasswordHasher<IdentityUser>();
+                var password = new PasswordHasher<ApplicationUser>();
                 var hashed = password.HashPassword(user, "Esc86tuo8*");
                 user.PasswordHash = hashed;
-                var userStore = new UserStore<IdentityUser>(_context);
+                var userStore = new UserStore<ApplicationUser>(_context);
                 await userStore.CreateAsync(user);
                 await userStore.AddToRoleAsync(user, "admin");
             }
