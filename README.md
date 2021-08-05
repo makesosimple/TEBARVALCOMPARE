@@ -5,6 +5,21 @@ Will be designed and developed in MVC Pattern of Microsoft.NET. Core objective f
 ## Version
 0.0.0
 
+## Table of Contents
+[Installation](#installation)
+
+[Git Actions](#git-actions)
+
+[How does Git Flow Work?](#how-does-git-flow-work)
+
+[How to Add Simple CRUDS](#how-to-add-simple-cruds)
+
+[Warnings](#private-repo-warning)
+
+[Author](#author)
+
+[License](#license)
+
 ## Installation
 
 Use the package manager [npm](https://www.npmjs.com/package/npm) to install static frontend files.
@@ -13,7 +28,7 @@ Use the package manager [npm](https://www.npmjs.com/package/npm) to install stat
 npm install
 ```
 
-## Installation for ASP.NET Core MVC
+## Git Actions
 
 ### !Warning (All of the names can be customized but we highly encourage to use it this way as it is the current best approach to Git Flow)  
 ### !Warning (It is OK to use Visual Studio Git property)  
@@ -64,19 +79,6 @@ git push origin (new-branch)
 
 8. Wait for the Repository Manager to examine your code. If all is OK, congratulations!
 
-## Author
-Project Author: makesosimple
-
-## Private Repo Warning!!
-- Initially this repository is started as a closed-source project. Unless the author says otherwise, it will be closed for public access. 
-- Only repository manager can merge pull requests so it is restricted for Contributers to merge a request. 
-- Any database change should be commented on the pull request. (If migration is available, comment it too.)
-
-## Git Flow Warning!!
-- Project workflow framework is based on the original Git Flow
-- Developer should never change master. Access is restricted to dev branch only!
-- Repository manager must follow changes and update dev and master branches simultaneouslty!! (This is the most important warning!)
-
 ## How does Git Flow Work?
 1. Pull the dev branch first.
 2. Check the config file and change it if it is in production mode!
@@ -93,6 +95,26 @@ Project Author: makesosimple
 - If it is a minor update: x.1.x (Edit the second number)
 - If it is a major update: 1.x.x (Edit the first number)
 12. ### Always check live after the merge with master branch!
+
+## How to Add Simple CRUDS
+1. Find the "Models" folder in the Solution Explorer and open the .cs file you are going to work with. Make necessary changes.
+2. Create a controller for the model. To create it, right click on the "Controllers" folder -> Add -> Controller. Choose the "MVC Controller with views, using Entity Framework" option. Choose the model you're working on. Change the name of the controller from plural to singular. For ex: Change "ProjectTeamCategoriesController" to "ProjectTeamCategoryController"
+3. Open the "Views" folder and edit "Index.cshtml", "Edit.cshtml", "Create.cshtml", "Delete.cshtml" and "Detail.cshtml" files. Change the names of "Delete.cshtml" and "Detail.cshtml" files to "_DeleteModal.cshtml" and "_DetailModal.cshtml" respectively.
+4. Run the project and test it. 
+5. Follow the items 6, 7 and 8 of [Git Actions](#git-actions)
+
+## Author
+Project Author: makesosimple
+
+## Private Repo Warning!!
+- Initially this repository is started as a closed-source project. Unless the author says otherwise, it will be closed for public access. 
+- Only repository manager can merge pull requests so it is restricted for Contributers to merge a request. 
+- Any database change should be commented on the pull request. (If migration is available, comment it too.)
+
+## Git Flow Warning!!
+- Project workflow framework is based on the original Git Flow
+- Developer should never change master. Access is restricted to dev branch only!
+- Repository manager must follow changes and update dev and master branches simultaneouslty!! (This is the most important warning!)
 
 ## License
 Not licensed yet
