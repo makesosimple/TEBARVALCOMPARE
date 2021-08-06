@@ -6,6 +6,7 @@ Will be designed and developed in MVC Pattern of Microsoft.NET. Core objective f
 0.0.0
 
 ## Table of Contents
+
 [Installation](#installation)
 
 [Git Actions](#git-actions)
@@ -14,11 +15,18 @@ Will be designed and developed in MVC Pattern of Microsoft.NET. Core objective f
 
 [How to Add Simple CRUDS](#how-to-add-simple-cruds)
 
+[Used Technologies](#used-technologies)
+
+  - [Frontend Libraries](#frontend-libraries)
+    
+  - [Backend Libraries](#backend-libraries)
+
 [Warnings](#private-repo-warning)
 
 [Author](#author)
 
 [License](#license)
+
 
 ## Installation
 
@@ -58,26 +66,35 @@ git remote add origin https://github.com/makesosimple/ibbportal/
 git pull origin dev
 ```
 
-5. Open Visual Studio and migrate the database!!!!! To migrate database, open Tools -> NuGet Package Manager -> Package Manager Console. Then type the following code. (This is important)
+5. Open SQL Server Management Studio and copy the server name. Find the "appsettings.json" file and change the server name in the ConnectionStrings with the copied server name. Comment out other lines of code.
+
+```cs
+"ConnectionStrings": {
+    "DefaultConnection": "Server=[YOUR_SERVER_NAME];Database=IBBPortal;Trusted_Connection=True;MultipleActiveResultSets=true"
+    //"DefaultConnection": "Server=[DEV'S_SERVER_NAME];Database=IBBPortal;Trusted_Connection=True;MultipleActiveResultSets=true"
+ }
+ ```
+
+6. Open Visual Studio and migrate the database!!!!! To migrate database, open Tools -> NuGet Package Manager -> Package Manager Console. Then type the following code. (This is important)
 
 ```bash
 Update-Database
 ```
 
-6. After the assignments are finished, add and commit your changes.
+7. After the assignments are finished, add and commit your changes.
 
 ```bash
 git add .
 git commit -m "Your Header for the Commit."
 ```
 
-7. Push your commit to a new branch and create a pull request from Github. Please read the "How does Git Flow Work?" chapter and name your branches according to the 5. item!
+8. Push your commit to a new branch and create a pull request from Github. Please read the "How does Git Flow Work?" chapter and name your branches according to the 5. item!
 
 ```bash
 git push origin (new-branch)
 ```
 
-8. Wait for the Repository Manager to examine your code. If all is OK, congratulations!
+9. Wait for the Repository Manager to examine your code. If all is OK, congratulations!
 
 ## How does Git Flow Work?
 1. Pull the dev branch first.
@@ -101,10 +118,24 @@ git push origin (new-branch)
 2. Create a controller for the model. To create it, right click on the "Controllers" folder -> Add -> Controller. Choose the "MVC Controller with views, using Entity Framework" option. Choose the model you're working on. Change the name of the controller from plural to singular. For ex: Change "ProjectTeamCategoriesController" to "ProjectTeamCategoryController"
 3. Open the "Views" folder and edit "Index.cshtml", "Edit.cshtml", "Create.cshtml", "Delete.cshtml" and "Detail.cshtml" files. Change the names of "Delete.cshtml" and "Detail.cshtml" files to "_DeleteModal.cshtml" and "_DetailModal.cshtml" respectively.
 4. Run the project and test it. 
-5. Follow the items 6, 7 and 8 of [Git Actions](#git-actions)
+5. Follow the items 7, 8 and 9 of [Git Actions](#git-actions).
 
-## Author
-Project Author: makesosimple
+## Used Technologies
+
+### Frontend Libraries
+
+[![fontawesome](https://i.imgur.com/O5bm78y.jpeg)](https://fontawesome.com/)
+[![bootstrap](https://i.imgur.com/7Lw2qzH.png)](https://getbootstrap.com/)
+[![chartjs](https://i.imgur.com/BdBfPVW.png)](https://www.chartjs.org/)
+[![datatables](https://i.imgur.com/MIQK70Y.png)](https://datatables.net/)
+[![frappegantt](https://i.imgur.com/Hp2j8NT.png)](https://frappe.io/gantt)
+[![jquery](https://i.imgur.com/KbcCCYy.png)](https://jquery.com/)
+[![select2](https://i.imgur.com/UMEa0yE.png)](https://select2.org/)
+    
+### Backend Libraries
+[![aspnetcoremvc](https://i.imgur.com/ScPS229.png)](https://docs.microsoft.com/en-us/aspnet/core/mvc/overview?view=aspnetcore-5.0)
+[![efcore](https://i.imgur.com/QenHW8P.png)](https://docs.microsoft.com/en-us/ef/core/)
+[![identityframework](https://i.imgur.com/3gauB2D.png)](https://docs.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-5.0&tabs=visual-studio)
 
 ## Private Repo Warning!!
 - Initially this repository is started as a closed-source project. Unless the author says otherwise, it will be closed for public access. 
@@ -115,6 +146,9 @@ Project Author: makesosimple
 - Project workflow framework is based on the original Git Flow
 - Developer should never change master. Access is restricted to dev branch only!
 - Repository manager must follow changes and update dev and master branches simultaneouslty!! (This is the most important warning!)
+
+## Author
+Project Author: makesosimple
 
 ## License
 Not licensed yet
