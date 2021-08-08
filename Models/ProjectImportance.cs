@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace IBBPortal.Models
 {
 
-    
+    [Index(nameof(UserID))]
     public class ProjectImportance
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -21,6 +21,10 @@ namespace IBBPortal.Models
 
         [MaxLength(256)]
         public string? ProjectImportanceDescription { get; set; }
+
+        public string UserID { get; set; }
+        [ForeignKey("UserID")]
+        public ApplicationUser User { get; set; }
 
         public DateTime CreationDate { get; set; }
 

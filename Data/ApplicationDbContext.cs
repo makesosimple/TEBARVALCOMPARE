@@ -94,6 +94,8 @@ namespace IBBPortal.Data
         public DbSet<IBBPortal.Models.ContractorType> ContractorType { get; set; }
 
         public DbSet<IBBPortal.Models.ZoningPlanModificationStatus> ZoningPlanModificationStatus { get; set; }
+
+        public DbSet<IBBPortal.Models.ProjectImportance> ProjectImportance { get; set; }
     }
 
 

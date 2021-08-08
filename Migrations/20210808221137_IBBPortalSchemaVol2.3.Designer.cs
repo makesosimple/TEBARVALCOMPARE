@@ -4,14 +4,16 @@ using IBBPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IBBPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210808221137_IBBPortalSchemaVol2.3")]
+    partial class IBBPortalSchemaVol23
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -538,12 +540,7 @@ namespace IBBPortal.Migrations
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserID")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("ProjectImportanceID");
-
-                    b.HasIndex("UserID");
 
                     b.ToTable("ProjectImportance");
                 });
@@ -1166,15 +1163,6 @@ namespace IBBPortal.Migrations
                 });
 
             modelBuilder.Entity("IBBPortal.Models.Phase", b =>
-                {
-                    b.HasOne("IBBPortal.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("IBBPortal.Models.ProjectImportance", b =>
                 {
                     b.HasOne("IBBPortal.Models.ApplicationUser", "User")
                         .WithMany()
