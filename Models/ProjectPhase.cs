@@ -24,10 +24,18 @@ namespace IBBPortal.Models
         public DateTime ProjectPhaseStart { get; set; }
         public DateTime ProjectPhaseFinish { get; set; }
 
+        public DateTime? ProjectPhaseRecordedStart { get; set; }
+        public DateTime? ProjectPhaseRecordedFinish { get; set; }
+
+        public int? ProjectPhaseTimeExtension { get; set; }
+
+        public DateTime? ProjectPhaseTimeExtentedFinish { get; set; }
+
+        [MaxLength(256)]
+        public string? ProjectPhaseExtensionReason { get; set; }
+
         [MaxLength(256)]
         public string ProjectPhaseStatusDescription { get; set; }
-
-        public int PhaseOrder { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreationDate { get; set; }

@@ -12,6 +12,7 @@ namespace IBBPortal.Models
     [Index(nameof(ProjectID))]
     [Index(nameof(ProjectID))]
     [Index(nameof(RelatedProjectID))]
+    [Index(nameof(RelationTypeID))]
     public class ProjectRelation
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -20,8 +21,11 @@ namespace IBBPortal.Models
 
        
         public int RelatedProjectID { get; set; }
-        public int RelationType { get; set; }
-        
+        public int RelationTypeID { get; set; }
+
+        [ForeignKey("RelationTypeID")]
+        public RelationType RelationType { get; set; }
+
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreationDate { get; set; }

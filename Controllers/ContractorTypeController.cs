@@ -11,20 +11,20 @@ using Microsoft.AspNetCore.Identity;
 using System.Linq.Dynamic.Core;
 using System.Globalization;
 using IBBPortal.Helpers;
-
 namespace IBBPortal.Controllers
 {
-    public class DistrictController : Controller
+    public class ContractorTypeController : Controller
     {
+
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public DistrictController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public ContractorTypeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-        // GET: District
+        // GET: City
         public IActionResult Index()
         {
             return View();
@@ -51,7 +51,7 @@ namespace IBBPortal.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var data = _context.District.Select(c => new { c.DistrictID, c.DistrictName, c.DistrictCode, CityName = c.City.CityName, UserName = c.User.UserName });
+                var data = _context.ContractorType.Select(c => new { c.ContractorTypeID, c.ContractorTypeTitle, UserName = c.User.UserName });
 
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
@@ -65,7 +65,7 @@ namespace IBBPortal.Controllers
                 //If control checks out, search. If not loop goes on until the end.
                 string columnName, searchValue;
 
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     columnName = Request.Query[$"columns[{i}][data]"].FirstOrDefault();
                     searchValue = Request.Query[$"columns[{i}][search][value]"].FirstOrDefault();
@@ -93,33 +93,27 @@ namespace IBBPortal.Controllers
         }
 
         [HttpGet]
-        public JsonResult JsonSelectData(string? term, int cityID)
+        public JsonResult JsonSelectData(string term)
         {
             try
             {
 
-                var DistrictData = _context.District
+                var ContractorTypeData = _context.ContractorType
                                     .Select(x => new {
-                                        id = x.DistrictID.ToString(),
-                                        text = x.DistrictName,
-                                        city = x.CityID
+                                        id = x.ContractorTypeID.ToString(),
+                                        text = x.ContractorTypeTitle
                                     });
 
                 if (!String.IsNullOrEmpty(term))
                 {
-                    DistrictData = DistrictData.Where(m => m.text.Contains(term));
-                }
-
-                if (!String.IsNullOrEmpty(cityID.ToString()))
-                {
-                    DistrictData = DistrictData.Where(m => m.city == cityID);
+                    ContractorTypeData = ContractorTypeData.Where(m => m.text.Contains(term));
                 }
 
                 //Count 
-                var totalCount = DistrictData.Count();
+                var totalCount = ContractorTypeData.Count();
 
                 //Paging   
-                var passData = DistrictData.ToList();
+                var passData = ContractorTypeData.ToList();
 
 
                 //Returning Json Data  
@@ -133,26 +127,26 @@ namespace IBBPortal.Controllers
             }
         }
 
-        // GET: District/Details/5
-        public IActionResult Details(int? id)
+        // GET: ContractorType/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var contractor = _context.District
-                .Include(d => d.User)
-                .Where(m => m.DistrictID == id).FirstOrDefault();
-            if (contractor == null)
+            var contractorType = await _context.ContractorType
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(m => m.ContractorTypeID == id);
+            if (contractorType == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DetailsModal", contractor);
+            return PartialView("_DetailsModal", contractorType);
         }
 
-        // GET: District/Create
+        // GET: ContractorType/Create
         public IActionResult Create()
         {
             var culture = new CultureInfo("tr-TR");
@@ -161,23 +155,23 @@ namespace IBBPortal.Controllers
             return View();
         }
 
-        // POST: District/Create
+        // POST: ContractorType/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DistrictID,DistrictCode,DistrictName,CityID,UserID,CreationDate,UpdateDate,DeletionDate")] District district)
+        public async Task<IActionResult> Create([Bind("ContractorTypeID,ContractorTypeTitle,ContractorTypeDescription,UserID,CreationDate,UpdateDate,DeletionDate")] ContractorType contractorType)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(district);
+                _context.Add(contractorType);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(district);
+            return View(contractorType);
         }
 
-        // GET: District/Edit/5
+        // GET: ContractorType/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -185,22 +179,22 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var district = await _context.District.Include(city => city.City).FirstOrDefaultAsync(i => i.DistrictID == id);
-            if (district == null)
+            var contractorType = await _context.ContractorType.FindAsync(id);
+            if (contractorType == null)
             {
                 return NotFound();
             }
-            return View(district);
+            return View(contractorType);
         }
 
-        // POST: District/Edit/5
+        // POST: ContractorType/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DistrictID,DistrictCode,DistrictName,CityID,UserID,CreationDate,UpdateDate,DeletionDate")] District district)
+        public async Task<IActionResult> Edit(int id, [Bind("ContractorTypeID,ContractorTypeTitle,ContractorTypeDescription,UserID,CreationDate,UpdateDate,DeletionDate")] ContractorType contractorType)
         {
-            if (id != district.DistrictID)
+            if (id != contractorType.ContractorTypeID)
             {
                 return NotFound();
             }
@@ -210,14 +204,14 @@ namespace IBBPortal.Controllers
                 try
                 {
                     var CurrentDate = DateTime.Now;
-                    district.UpdateDate = CurrentDate;
+                    contractorType.UpdateDate = CurrentDate;
 
-                    _context.Update(district);
+                    _context.Update(contractorType);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DistrictExists(district.DistrictID))
+                    if (!ContractorTypeExists(contractorType.ContractorTypeID))
                     {
                         return NotFound();
                     }
@@ -228,10 +222,10 @@ namespace IBBPortal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(district);
+            return View(contractorType);
         }
 
-        // GET: District/Delete/5
+        // GET: ContractorType/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -239,30 +233,31 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var district = await _context.District
-                .FirstOrDefaultAsync(m => m.DistrictID == id);
-            if (district == null)
+            var contractorType = await _context.ContractorType
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(m => m.ContractorTypeID == id);
+            if (contractorType == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DeleteModal", district);
+            return PartialView("_DeleteModal", contractorType);
         }
 
-        // POST: District/Delete/5
+        // POST: ContractorType/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var district = await _context.District.FindAsync(id);
-            _context.District.Remove(district);
+            var contractorType = await _context.ContractorType.FindAsync(id);
+            _context.ContractorType.Remove(contractorType);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DistrictExists(int id)
+        private bool ContractorTypeExists(int id)
         {
-            return _context.District.Any(e => e.DistrictID == id);
+            return _context.ContractorType.Any(e => e.ContractorTypeID == id);
         }
     }
 }

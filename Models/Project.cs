@@ -32,6 +32,7 @@ namespace IBBPortal.Models
         public string ProjectIBBCode { get; set; }
 
         [MaxLength(256)]
+        [Required]
         public string ProjectTitle { get; set; }
 
         public int ProjectStatusID { get; set; }
@@ -45,6 +46,14 @@ namespace IBBPortal.Models
         public int ProjectImportanceID { get; set; }
 
         public int RequestingManagementID { get; set; }
+
+        [ForeignKey("RequestingManagementID")]
+        public Management RequestingManagement { get; set; }
+
+        public int ResponsibleManagementID { get; set; }
+
+        [ForeignKey("ResponsibleManagementID")]
+        public Management ResponsibleManagement { get; set; }
 
         public bool IsProjectInIstanbul { get; set; }
         public int DistrictID { get; set; }

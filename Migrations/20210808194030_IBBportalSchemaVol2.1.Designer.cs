@@ -4,14 +4,16 @@ using IBBPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IBBPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210808194030_IBBportalSchemaVol2.1")]
+    partial class IBBportalSchemaVol21
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,10 +178,7 @@ namespace IBBPortal.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int?>("CityID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ContractorTypeID")
+                    b.Property<int>("CityID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreationDate")
@@ -192,7 +191,7 @@ namespace IBBPortal.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int?>("DistrictID")
+                    b.Property<int>("DistrictID")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -229,8 +228,6 @@ namespace IBBPortal.Migrations
                     b.HasKey("ContractorID");
 
                     b.HasIndex("CityID");
-
-                    b.HasIndex("ContractorTypeID");
 
                     b.HasIndex("DistrictID");
 
@@ -990,29 +987,9 @@ namespace IBBPortal.Migrations
 
             modelBuilder.Entity("IBBPortal.Models.Contractor", b =>
                 {
-                    b.HasOne("IBBPortal.Models.City", "City")
-                        .WithMany()
-                        .HasForeignKey("CityID");
-
-                    b.HasOne("IBBPortal.Models.ContractorType", "ContractorType")
-                        .WithMany()
-                        .HasForeignKey("ContractorTypeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("IBBPortal.Models.District", "District")
-                        .WithMany()
-                        .HasForeignKey("DistrictID");
-
                     b.HasOne("IBBPortal.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserID");
-
-                    b.Navigation("City");
-
-                    b.Navigation("ContractorType");
-
-                    b.Navigation("District");
 
                     b.Navigation("User");
                 });

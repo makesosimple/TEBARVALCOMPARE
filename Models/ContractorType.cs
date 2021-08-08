@@ -11,33 +11,28 @@ namespace IBBPortal.Models
 {
 
     [Index(nameof(UserID))]
-    public class Phase
-    {   
+    public class ContractorType
+    {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int PhaseID { get; set; }
+        public int ContractorTypeID { get; set; }
 
         [Required]
         [MaxLength(50)]
-        public string PhaseTitle { get; set; }
+        public string ContractorTypeTitle { get; set; }
 
-        public int PhaseOrder { get; set; }
-
-        [MaxLength(256)]
-        public string? PhaseDescription { get; set; }
-
-        public int? PreviousPhaseID { get; set; }
-
-        public bool isPresentation { get; set; }
+        [MaxLength(50)]
+        public string? ContractorTypeDescription { get; set; }
 
         public string UserID { get; set; }
         [ForeignKey("UserID")]
         public ApplicationUser User { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public DateTime CreationDate { get; set; }
 
         public DateTime? UpdateDate { get; set; }
 
         public DateTime? DeletionDate { get; set; }
+
     }
 }

@@ -15,12 +15,11 @@ namespace IBBPortal.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int BoardID { get; set; }
 
-        [Required]
-        [MaxLength(50)]
+        [Required, RegularExpression(@"^[A-Z]+[a-zA-Z0-9""'\s-]*$"), MaxLength(50)]
         public string BoardTitle { get; set; }
 
         [MaxLength(256)]
-        public string BoardDescription { get; set; }
+        public string? BoardDescription { get; set; }
 
         public string UserID { get; set; }
         [ForeignKey("UserID")]

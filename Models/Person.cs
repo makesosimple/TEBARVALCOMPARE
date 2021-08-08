@@ -28,14 +28,13 @@ namespace IBBPortal.Models
         [MaxLength(256)]
         public string PersonEmail { get; set; }
 
-        public bool PersonInternal
-        { get; set; }
+        public bool PersonInternal { get; set; }
 
         public int JobTitleID { get; set; }
 
         public int DepartmentID { get; set; }
 
-        public int ContractorID { get; set; }
+        public int? ContractorID { get; set; }
 
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

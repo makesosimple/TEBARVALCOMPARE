@@ -30,6 +30,17 @@
                             </div>
                         </div>
 
+                        <!-- Contractor Type ID -->
+                        <div class="form-group row">
+                            <label asp-for="ContractorTypeID" class="col-12 col-xl-4 col-form-label">Yüklenici Tipi</label>
+                            <div class="col-12 col-xl-8">
+                                <select asp-for="ContractorTypeID" class="form-control" id="selectContractorType" style="width: 100%;">
+                                    <option value="">Yüklenici Tipi Seçin</option>
+                                </select>
+                                <span asp-validation-for="ContractorTypeID" class="text-danger"></span>
+                            </div>
+                        </div>
+
                         <!-- Description -->
                         <div class="form-group row">
                             <label asp-for="Description" class="col-12 col-xl-4 col-form-label">Açıklama</label>
@@ -63,27 +74,21 @@
 
                         <!-- City ID -->
                         <div class="form-group row">
-                            <label asp-for="CityID" class="col-12 col-xl-4 col-form-label">İl</label>
+                            <label asp-for="CityID" class="col-12 col-xl-4 col-form-label">Bağlı Olduğu İl</label>
                             <div class="col-12 col-xl-8">
-                                <select asp-for="CityID" class="form-control initialize-select2" style="width: 100%;">
-                                    <option value="1">Örnek 1</option>
-                                    <option value="2">Örnek 2</option>
-                                    <option value="3">Örnek 3</option>
-                                    <option value="4">Örnek 4</option>
+                                <select asp-for="CityID" class="form-control" id="selectCity" style="width: 100%;">
+                                    <option value="">İl Seçin</option>
                                 </select>
                                 <span asp-validation-for="CityID" class="text-danger"></span>
                             </div>
                         </div>
 
                         <!-- District ID -->
-                        <div class="form-group row">
-                            <label asp-for="DistrictID" class="col-12 col-xl-4 col-form-label">İlçe</label>
+                        <div class="form-group row" data-dependent-on="selectCity">
+                            <label asp-for="DistrictID" class="col-12 col-xl-4 col-form-label">Bağlı Olduğu İlçe</label>
                             <div class="col-12 col-xl-8">
-                                <select asp-for="DistrictID" class="form-control initialize-select2" style="width: 100%;">
-                                    <option value="1">Örnek 1</option>
-                                    <option value="2">Örnek 2</option>
-                                    <option value="3">Örnek 3</option>
-                                    <option value="4">Örnek 4</option>
+                                <select asp-for="DistrictID" class="form-control" id="selectDistrict" style="width: 100%;">
+                                    <option selected value="">İlçe Seçin</option>
                                 </select>
                                 <span asp-validation-for="DistrictID" class="text-danger"></span>
                             </div>
@@ -147,4 +152,81 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <!-- Select2 for City -->
+    <script>
+        $('#selectCity').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/City/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
+        });
+
+        //Get City Field Value and if not empty or undefined, open up the District Field
+        //First Version of dependent Field on the Project. Will be updated.
+
+        //Initial Position for District Field
+        $("[data-dependent-on=selectCity").hide();
+
+        //Check on Edit Form
+        let tempValue = $('#selectCity').val();
+        if (tempValue && tempValue !== "") {
+            $("[data-dependent-on=selectCity").show();
+        }
+
+        $('#selectCity').on('input', function () {
+            cityValue = $(this).val();
+
+            if (cityValue && cityValue !== "") {
+                $("[data-dependent-on=selectCity").show();
+                $('#selectDistrict').select2({
+                    theme: "ibb",
+                    language: "tr",
+                    ajax: {
+                        url: '/District/JsonSelectData',
+                        data: function () {
+
+                            //Get the cityID from the user
+                            const cityID = $("#selectCity").val();
+
+                            let query = {
+                                cityID: cityID,
+                            }
+                            return query;
+                        },
+                        dataType: 'json',
+                        processResults: function (response) {
+
+                            return {
+                                results: response.results,
+                            };
+                        }
+                    }
+                });
+            }
+        });
+
+        $('#selectContractorType').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/ContractorType/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
+        });
+    </script>
 }

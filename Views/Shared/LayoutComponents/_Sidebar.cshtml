@@ -80,10 +80,18 @@
 
     <!-- Contractor Management-->
     <li class="nav-item">
-        <a class="nav-link" asp-controller="Contractor" asp-action="Index">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseContractor"
+           aria-expanded="true" aria-controls="collapseContractor">
             <i class="fas fa-hard-hat"></i>
             <span>Yüklenici Yönetimi</span>
         </a>
+        <div id="collapseContractor" class="collapse" aria-labelledby="headingContractor"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" asp-controller="Contractor" asp-action="Index">Yükleniciler</a>
+                <a class="collapse-item" asp-controller="ContractorType" asp-action="Index">Yüklenici Tipleri</a>
+            </div>
+        </div>
     </li>
 
     <!-- Department Management-->

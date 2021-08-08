@@ -102,6 +102,7 @@ namespace IBBPortal.Controllers
             }
 
             var contractor =  _context.Contractor
+                .Include(city => city.City)
                 .Include(d => d.User)
                 .Where(m => m.ContractorID == id).FirstOrDefault();
             if (contractor == null)
@@ -126,7 +127,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ContractorID,Title,TaxCode,TaxOffice,CityID,DistrictID,UserID,PhoneNumber,Description,Address,Email,Website,CreationDate,UpdateDate,DeletionDate")] Contractor contractor)
+        public async Task<IActionResult> Create([Bind("ContractorID,Title,TaxCode,TaxOffice,CityID,DistrictID,ContractorTypeID,UserID,PhoneNumber,Description,Address,Email,Website,CreationDate,UpdateDate,DeletionDate")] Contractor contractor)
         {
             if (ModelState.IsValid)
             {
@@ -145,7 +146,7 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var contractor = await _context.Contractor.FindAsync(id);
+            var contractor = await _context.Contractor.Include(city => city.City).Include(contractorType => contractorType.ContractorType).Include(district => district.District).FirstOrDefaultAsync(i => i.ContractorID == id);
             if (contractor == null)
             {
                 return NotFound();
@@ -158,7 +159,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ContractorID,Title,TaxCode,TaxOffice,CityID,DistrictID,PhoneNumber,Description,Address,Email,Website,UserID,CreationDate,UpdateDate,DeletionDate")] Contractor contractor)
+        public async Task<IActionResult> Edit(int id, [Bind("ContractorID,Title,TaxCode,TaxOffice,CityID,DistrictID,ContractorTypeID,PhoneNumber,Description,Address,Email,Website,UserID,CreationDate,UpdateDate,DeletionDate")] Contractor contractor)
         {
             if (id != contractor.ContractorID)
             {

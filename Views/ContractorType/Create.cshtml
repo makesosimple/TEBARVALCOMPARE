@@ -1,11 +1,11 @@
-﻿@model IBBPortal.Models.Board
+﻿@model IBBPortal.Models.ContractorType
 
 @{
-    ViewData["Title"] = "Kurul Ekle";
+    ViewData["Title"] = "Yüklenici Tipi Ekle";
 }
 
 <h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
-<form asp-action="Create" method="post">
+<form asp-action="Create">
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
             <ul class="nav nav-pills" id="formTabs" role="tablist">
@@ -21,21 +21,21 @@
                         <!-- Validation Part. Must be still for all views!! -->
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                        <!-- Board Title -->
+                        <!-- Contractor Type Title -->
                         <div class="form-group row">
-                            <label asp-for="@Model.BoardTitle" class="col-12 col-xl-4 col-form-label">Kurul İsmi</label>
+                            <label asp-for="ContractorTypeTitle" class="col-12 col-xl-4 col-form-label">Yüklenici Tipi İsmi</label>
                             <div class="col-12 col-xl-8">
-                                <input asp-for="@Model.BoardTitle" class="form-control" required>
-                                <span asp-validation-for="@Model.BoardTitle" class="text-danger"></span>
+                                <input asp-for="ContractorTypeTitle" type="text" class="form-control" required>
+                                <span asp-validation-for="ContractorTypeTitle" class="text-danger"></span>
                             </div>
                         </div>
 
-                        <!-- Description -->
+                        <!-- Contractor Type Description -->
                         <div class="form-group row">
-                            <label asp-for="@Model.BoardDescription" class="col-12 col-xl-4 col-form-label">Kurul Açıklaması</label>
+                            <label asp-for="ContractorTypeDescription" class="col-12 col-xl-4 col-form-label">Yüklenici Tipi Açıklaması</label>
                             <div class="col-12 col-xl-8">
-                                <textarea class="form-control" asp-for="@Model.BoardDescription" rows="3"></textarea>
-                                <span asp-validation-for="@Model.BoardDescription" class="text-danger"></span>
+                                <textarea class="form-control" asp-for="ContractorTypeDescription" rows="3"></textarea>
+                                <span asp-validation-for="ContractorTypeDescription" class="text-danger"></span>
                             </div>
                         </div>
 
@@ -46,7 +46,7 @@
                         <input type="hidden" asp-for="UserID" value="@ViewBag.UserID" />
 
                         <div class="buttons mt-3 my-md-0">
-                            <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
+                            <button type="submit" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
                             <a asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
                         </div>
 

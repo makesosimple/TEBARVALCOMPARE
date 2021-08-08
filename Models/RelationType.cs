@@ -4,36 +4,28 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
 {
-
     [Index(nameof(UserID))]
-    public class Phase
+    public class RelationType
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int PhaseID { get; set; }
+        public int RelationTypeID { get; set; }
 
         [Required]
         [MaxLength(50)]
-        public string PhaseTitle { get; set; }
-
-        public int PhaseOrder { get; set; }
+        public string RelationTypeTitle { get; set; }
 
         [MaxLength(256)]
-        public string? PhaseDescription { get; set; }
-
-        public int? PreviousPhaseID { get; set; }
-
-        public bool isPresentation { get; set; }
+        public string? RelationTypeDescription { get; set; }
 
         public string UserID { get; set; }
         [ForeignKey("UserID")]
         public ApplicationUser User { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public DateTime CreationDate { get; set; }
 
         public DateTime? UpdateDate { get; set; }

@@ -12,6 +12,7 @@ namespace IBBPortal.Models
     [Index(nameof(CityID))]
     [Index(nameof(DistrictID))]
     [Index(nameof(UserID))]
+    [Index(nameof(ContractorTypeID))]
     public class Contractor
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -27,9 +28,17 @@ namespace IBBPortal.Models
         [MaxLength(32)]
         public string TaxOffice { get; set; }
 
-        public int CityID { get; set; }
+        public int? CityID { get; set; }
+        [ForeignKey("CityID")]
+        public City City { get; set; }
 
-        public int DistrictID { get; set; }
+        public int? DistrictID { get; set; }
+        [ForeignKey("DistrictID")]
+        public District District { get; set; }
+
+        public int ContractorTypeID { get; set; }
+        [ForeignKey("ContractorTypeID")]
+        public ContractorType ContractorType { get; set; }
 
         public string UserID { get; set; }
         [ForeignKey("UserID")]
