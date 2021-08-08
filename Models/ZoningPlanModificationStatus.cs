@@ -9,23 +9,27 @@ using Microsoft.EntityFrameworkCore;
 namespace IBBPortal.Models
 {
 
-    
+    [Index(nameof(UserID))]
     public class ZoningPlanModificationStatus
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ZoningPlanModificationStatusID { get; set; }
-        
 
+        [Required]
         [MaxLength(50)]
         public string ZoningPlanModificationStatusTitle { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [MaxLength(256)]
+        public string? ZoningPlanModificationStatusDescription { get; set; }
+
+        public string UserID { get; set; }
+        [ForeignKey("UserID")]
+        public ApplicationUser User { get; set; }
+
         public DateTime CreationDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? UpdateDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? DeletionDate { get; set; }
 
     }

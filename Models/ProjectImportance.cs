@@ -15,18 +15,17 @@ namespace IBBPortal.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProjectImportanceID { get; set; }
 
+        [Required]
         [MaxLength(50)]
         public string ProjectImportanceTitle { get; set; }
-        [MaxLength(50)]
-        public string ProjectImportanceDescription { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [MaxLength(256)]
+        public string? ProjectImportanceDescription { get; set; }
+
         public DateTime CreationDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? UpdateDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? DeletionDate { get; set; }
 
     }

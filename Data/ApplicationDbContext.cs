@@ -92,6 +92,8 @@ namespace IBBPortal.Data
         public DbSet<IBBPortal.Models.SubfunctionFeature> SubfunctionFeature { get; set; }
 
         public DbSet<IBBPortal.Models.ContractorType> ContractorType { get; set; }
+
+        public DbSet<IBBPortal.Models.ZoningPlanModificationStatus> ZoningPlanModificationStatus { get; set; }
     }
 
 

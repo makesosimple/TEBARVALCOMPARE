@@ -4,14 +4,16 @@ using IBBPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IBBPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210808212843_IBBPortalSchemaVol2.1.2")]
+    partial class IBBPortalSchemaVol212
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -738,41 +740,6 @@ namespace IBBPortal.Migrations
                     b.ToTable("SubfunctionFeature");
                 });
 
-            modelBuilder.Entity("IBBPortal.Models.ZoningPlanModificationStatus", b =>
-                {
-                    b.Property<int>("ZoningPlanModificationStatusID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ZoningPlanModificationStatusDescription")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("ZoningPlanModificationStatusTitle")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("ZoningPlanModificationStatusID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("ZoningPlanModificationStatus");
-                });
-
             modelBuilder.Entity("IBBPortal.Models.ZoningPlanStatus", b =>
                 {
                     b.Property<int>("ZoningPlanStatusID")
@@ -1201,15 +1168,6 @@ namespace IBBPortal.Migrations
                         .HasForeignKey("UserID");
 
                     b.Navigation("Subfunction");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("IBBPortal.Models.ZoningPlanModificationStatus", b =>
-                {
-                    b.HasOne("IBBPortal.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID");
 
                     b.Navigation("User");
                 });

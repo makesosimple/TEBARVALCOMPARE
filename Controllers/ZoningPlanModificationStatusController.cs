@@ -14,11 +14,11 @@ using System.Globalization;
 
 namespace IBBPortal.Controllers
 {
-    public class ZoningPlanStatusController : Controller
+    public class ZoningPlanModificationStatusController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public ZoningPlanStatusController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public ZoningPlanModificationStatusController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -50,7 +50,7 @@ namespace IBBPortal.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var data = _context.ZoningPlanStatus.Select(c => new { c.ZoningPlanStatusID, c.ZoningPlanStatusTitle, UserName = c.User.UserName });
+                var data = _context.ZoningPlanModificationStatus.Select(c => new { c.ZoningPlanModificationStatusID, c.ZoningPlanModificationStatusTitle, UserName = c.User.UserName });
 
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
@@ -91,7 +91,7 @@ namespace IBBPortal.Controllers
             }
         }
 
-        // GET: ZoningPlanStatus/Details/5
+        // GET: ZoningPlanModificationStatus/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -99,18 +99,18 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var zoningPlanStatus = await _context.ZoningPlanStatus
+            var zoningPlanModificationStatus = await _context.ZoningPlanModificationStatus
                 .Include(z => z.User)
-                .FirstOrDefaultAsync(m => m.ZoningPlanStatusID == id);
-            if (zoningPlanStatus == null)
+                .FirstOrDefaultAsync(m => m.ZoningPlanModificationStatusID == id);
+            if (zoningPlanModificationStatus == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DetailsModal", zoningPlanStatus);
+            return PartialView("_DetailsModal", zoningPlanModificationStatus);
         }
 
-        // GET: ZoningPlanStatus/Create
+        // GET: ZoningPlanModificationStatus/Create
         public IActionResult Create()
         {
             var culture = new CultureInfo("tr-TR");
@@ -119,23 +119,23 @@ namespace IBBPortal.Controllers
             return View();
         }
 
-        // POST: ZoningPlanStatus/Create
+        // POST: ZoningPlanModificationStatus/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ZoningPlanStatusID,ZoningPlanStatusTitle,ZoningPlanStatusDescription,UserID,CreationDate,UpdateDate,DeletionDate")] ZoningPlanStatus zoningPlanStatus)
+        public async Task<IActionResult> Create([Bind("ZoningPlanModificationStatusID,ZoningPlanModificationStatusTitle,ZoningPlanModificationStatusDescription,UserID,CreationDate,UpdateDate,DeletionDate")] ZoningPlanModificationStatus zoningPlanModificationStatus)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(zoningPlanStatus);
+                _context.Add(zoningPlanModificationStatus);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(zoningPlanStatus);
+            return View(zoningPlanModificationStatus);
         }
 
-        // GET: ZoningPlanStatus/Edit/5
+        // GET: ZoningPlanModificationStatus/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -143,22 +143,22 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var zoningPlanStatus = await _context.ZoningPlanStatus.FindAsync(id);
-            if (zoningPlanStatus == null)
+            var zoningPlanModificationStatus = await _context.ZoningPlanModificationStatus.FindAsync(id);
+            if (zoningPlanModificationStatus == null)
             {
                 return NotFound();
             }
-            return View(zoningPlanStatus);
+            return View(zoningPlanModificationStatus);
         }
 
-        // POST: ZoningPlanStatus/Edit/5
+        // POST: ZoningPlanModificationStatus/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ZoningPlanStatusID,ZoningPlanStatusTitle,ZoningPlanStatusDescription,UserID,CreationDate,UpdateDate,DeletionDate")] ZoningPlanStatus zoningPlanStatus)
+        public async Task<IActionResult> Edit(int id, [Bind("ZoningPlanModificationStatusID,ZoningPlanModificationStatusTitle,ZoningPlanModificationStatusDescription,UserID,CreationDate,UpdateDate,DeletionDate")] ZoningPlanModificationStatus zoningPlanModificationStatus)
         {
-            if (id != zoningPlanStatus.ZoningPlanStatusID)
+            if (id != zoningPlanModificationStatus.ZoningPlanModificationStatusID)
             {
                 return NotFound();
             }
@@ -168,14 +168,14 @@ namespace IBBPortal.Controllers
                 try
                 {
                     var CurrentDate = DateTime.Now;
-                    zoningPlanStatus.UpdateDate = CurrentDate;
+                    zoningPlanModificationStatus.UpdateDate = CurrentDate;
 
-                    _context.Update(zoningPlanStatus);
+                    _context.Update(zoningPlanModificationStatus);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ZoningPlanStatusExists(zoningPlanStatus.ZoningPlanStatusID))
+                    if (!ZoningPlanModificationStatusExists(zoningPlanModificationStatus.ZoningPlanModificationStatusID))
                     {
                         return NotFound();
                     }
@@ -186,10 +186,10 @@ namespace IBBPortal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(zoningPlanStatus);
+            return View(zoningPlanModificationStatus);
         }
 
-        // GET: ZoningPlanStatus/Delete/5
+        // GET: ZoningPlanModificationStatus/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -197,31 +197,31 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var zoningPlanStatus = await _context.ZoningPlanStatus
+            var zoningPlanModificationStatus = await _context.ZoningPlanModificationStatus
                 .Include(z => z.User)
-                .FirstOrDefaultAsync(m => m.ZoningPlanStatusID == id);
-            if (zoningPlanStatus == null)
+                .FirstOrDefaultAsync(m => m.ZoningPlanModificationStatusID == id);
+            if (zoningPlanModificationStatus == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DeleteModal", zoningPlanStatus);
+            return PartialView("_DeleteModal", zoningPlanModificationStatus);
         }
 
-        // POST: ZoningPlanStatus/Delete/5
+        // POST: ZoningPlanModificationStatus/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var zoningPlanStatus = await _context.ZoningPlanStatus.FindAsync(id);
-            _context.ZoningPlanStatus.Remove(zoningPlanStatus);
+            var zoningPlanModificationStatus = await _context.ZoningPlanModificationStatus.FindAsync(id);
+            _context.ZoningPlanModificationStatus.Remove(zoningPlanModificationStatus);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ZoningPlanStatusExists(int id)
+        private bool ZoningPlanModificationStatusExists(int id)
         {
-            return _context.ZoningPlanStatus.Any(e => e.ZoningPlanStatusID == id);
+            return _context.ZoningPlanModificationStatus.Any(e => e.ZoningPlanModificationStatusID == id);
         }
     }
 }

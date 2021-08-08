@@ -1,12 +1,12 @@
-﻿@model IBBPortal.Models.ZoningPlanStatus
+﻿@model IBBPortal.Models.ZoningPlanModificationStatus
 
 @{
-    ViewData["Title"] = "İmar Planı Durumu Düzenle";
+    ViewData["Title"] = "İmar Planı Değişiklik Durumu Düzenle";
 }
 
 <h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
 <form asp-action="Edit">
-    <input type="hidden" asp-for="ZoningPlanStatusID" />
+    <input type="hidden" asp-for="ZoningPlanModificationStatusID" />
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
             <ul class="nav nav-pills" id="formTabs" role="tablist">
@@ -24,19 +24,19 @@
 
                         <!-- Zoning Plan Status Title -->
                         <div class="form-group row">
-                            <label asp-for="ZoningPlanStatusTitle" class="col-12 col-xl-4 col-form-label">Durum İsmi</label>
+                            <label asp-for="ZoningPlanModificationStatusTitle" class="col-12 col-xl-4 col-form-label">Durum İsmi</label>
                             <div class="col-12 col-xl-8">
-                                <input asp-for="ZoningPlanStatusTitle" type="text" class="form-control" required>
-                                <span asp-validation-for="ZoningPlanStatusTitle" class="text-danger"></span>
+                                <input asp-for="ZoningPlanModificationStatusTitle" type="text" class="form-control" required>
+                                <span asp-validation-for="ZoningPlanModificationStatusTitle" class="text-danger"></span>
                             </div>
                         </div>
 
-                        <!-- Zoning Plan Status Description -->
+                        <!-- Zoning Plan Modification Status Description -->
                         <div class="form-group row">
-                            <label asp-for="ZoningPlanStatusDescription" class="col-12 col-xl-4 col-form-label">Özellik Açıklaması</label>
+                            <label asp-for="ZoningPlanModificationStatusDescription" class="col-12 col-xl-4 col-form-label">Durum Açıklaması</label>
                             <div class="col-12 col-xl-8">
-                                <textarea asp-for="ZoningPlanStatusDescription" class="form-control"></textarea>
-                                <span asp-validation-for="ZoningPlanStatusDescription" class="text-danger"></span>
+                                <textarea asp-for="ZoningPlanModificationStatusDescription" class="form-control"></textarea>
+                                <span asp-validation-for="ZoningPlanModificationStatusDescription" class="text-danger"></span>
                             </div>
                         </div>
 

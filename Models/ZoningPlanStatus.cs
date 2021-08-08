@@ -20,6 +20,9 @@ namespace IBBPortal.Models
         [MaxLength(50)]
         public string ZoningPlanStatusTitle { get; set; }
 
+        [MaxLength(256)]
+        public string? ZoningPlanStatusDescription { get; set; }
+
         public string UserID { get; set; }
         [ForeignKey("UserID")]
         public ApplicationUser User { get; set; }

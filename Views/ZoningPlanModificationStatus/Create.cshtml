@@ -1,12 +1,11 @@
-﻿@model IBBPortal.Models.ZoningPlanStatus
+﻿@model IBBPortal.Models.ZoningPlanModificationStatus
 
 @{
-    ViewData["Title"] = "İmar Planı Durumu Düzenle";
+    ViewData["Title"] = "İmar Planı Değişiklik Durumu Ekle";
 }
 
 <h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
-<form asp-action="Edit">
-    <input type="hidden" asp-for="ZoningPlanStatusID" />
+<form asp-action="Create">
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
             <ul class="nav nav-pills" id="formTabs" role="tablist">
@@ -24,32 +23,30 @@
 
                         <!-- Zoning Plan Status Title -->
                         <div class="form-group row">
-                            <label asp-for="ZoningPlanStatusTitle" class="col-12 col-xl-4 col-form-label">Durum İsmi</label>
+                            <label asp-for="ZoningPlanModificationStatusTitle" class="col-12 col-xl-4 col-form-label">Durum İsmi</label>
                             <div class="col-12 col-xl-8">
-                                <input asp-for="ZoningPlanStatusTitle" type="text" class="form-control" required>
-                                <span asp-validation-for="ZoningPlanStatusTitle" class="text-danger"></span>
+                                <input asp-for="ZoningPlanModificationStatusTitle" type="text" class="form-control" required>
+                                <span asp-validation-for="ZoningPlanModificationStatusTitle" class="text-danger"></span>
                             </div>
                         </div>
 
-                        <!-- Zoning Plan Status Description -->
+                        <!-- Zoning Plan Modification Status Description -->
                         <div class="form-group row">
-                            <label asp-for="ZoningPlanStatusDescription" class="col-12 col-xl-4 col-form-label">Özellik Açıklaması</label>
+                            <label asp-for="ZoningPlanModificationStatusDescription" class="col-12 col-xl-4 col-form-label">Durum Açıklaması</label>
                             <div class="col-12 col-xl-8">
-                                <textarea asp-for="ZoningPlanStatusDescription" class="form-control"></textarea>
-                                <span asp-validation-for="ZoningPlanStatusDescription" class="text-danger"></span>
+                                <textarea asp-for="ZoningPlanModificationStatusDescription" class="form-control"></textarea>
+                                <span asp-validation-for="ZoningPlanModificationStatusDescription" class="text-danger"></span>
                             </div>
                         </div>
 
+                        <!-- Default Values for the Database Date Part-->
+                        <input type="hidden" asp-for="CreationDate" value="@ViewBag.CurrentDate" />
 
-                        <!-- Default Values for the Database Date Part -->
-                        <input type="hidden" asp-for="CreationDate" />
-                        <input type="hidden" asp-for="UpdateDate" />
-
-                        <!-- User ID for the Update -->
-                        <input type="hidden" asp-for="UserID" />
+                        <!-- User ID for the Creation -->
+                        <input type="hidden" asp-for="UserID" value="@ViewBag.UserID" />
 
                         <div class="buttons mt-3 my-md-0">
-                            <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
+                            <button type="submit" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
                             <a asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
                         </div>
 

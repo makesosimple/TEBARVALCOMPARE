@@ -30,6 +30,15 @@
                             </div>
                         </div>
 
+                        <!-- Zoning Plan Status Description -->
+                        <div class="form-group row">
+                            <label asp-for="ZoningPlanStatusDescription" class="col-12 col-xl-4 col-form-label">Özellik Açıklaması</label>
+                            <div class="col-12 col-xl-8">
+                                <textarea asp-for="ZoningPlanStatusDescription" class="form-control"></textarea>
+                                <span asp-validation-for="ZoningPlanStatusDescription" class="text-danger"></span>
+                            </div>
+                        </div>
+
                         <!-- Default Values for the Database Date Part-->
                         <input type="hidden" asp-for="CreationDate" value="@ViewBag.CurrentDate" />
 
