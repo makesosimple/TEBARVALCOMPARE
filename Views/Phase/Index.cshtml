@@ -23,6 +23,25 @@
                 },
                 "columns": [
                     { "data": "phaseTitle", "autoWidth": true },
+                    { "data": "phaseOrder", "autoWidth": true },
+                    {
+                        "data": "isPresentation",
+                        "render": function (data) {
+
+                            let itemToRender;
+                            switch (data) {
+                                case true:
+                                    itemToRender = `<a href="#" class="shadow btn btn-success">EVET</a>`;
+                                    break;
+                                case false:
+                                    itemToRender = `<a href="#" class="shadow btn btn-danger">HAYIR</a>`;
+                                    break;
+                            }
+                            return itemToRender;
+                        },
+                        "autoWidth": true
+                    },
+                    { "data": "previousPhaseTitle", "autoWidth": true },
                     { "data": "userName", "autoWidth": true },
                     {
                         "data": null,
@@ -75,11 +94,17 @@
                 <thead class="bg-navy-blue">
                     <tr class="filter h-100 bg-white">
                         <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="phaseTitle" name="phaseTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="userName" name="userName" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="phaseOrder" name="phaseOrder" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="isPresentation" name="isPresentation" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="3" type="text" placeholder="Ara..." id="previousPhaseTitle" name="previousPhaseTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="4" type="text" placeholder="Ara..." id="userName" name="userName" value="" /></th>
                         <th scope="col"></th>
                     </tr>
                     <tr id="tableLabels">
                         <th scope="col" class="text-white text-sm">Faz İsmi</th>
+                        <th scope="col" class="text-white text-sm">Faz Sırası</th>
+                        <th scope="col" class="text-white text-sm">Sunum mu?</th>
+                        <th scope="col" class="text-white text-sm">Önceki Faz</th>
                         <th scope="col" class="text-white text-sm">Oluşturan</th>
                         <th scope="col"></th>
                     </tr>
