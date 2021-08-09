@@ -28,9 +28,11 @@
                     {
                         "data": null,
                         "render": function (data, type, full, meta, row) {
-                            return `<a class="btn btn-circle bg-turqoise text-white" href="/ServiceArea/Edit/${full.serviceAreaID}"><i class="fas fa-edit"></i></a>\
+                            return `<div class="d-flex align-items-center justify-content-end>\
+                                        <a class="btn btn-circle bg-turqoise text-white" href="/ServiceArea/Edit/${full.serviceAreaID}"><i class="fas fa-edit"></i></a>\
                                         <button type="button" class="btn btn-circle bg-warning text-white" onclick="modalScript(this)" data-url="/ServiceArea/Details/${full.serviceAreaID}"><i class="fas fa-info-circle"></i></button>\
-                                        <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/ServiceArea/Delete/${full.serviceAreaID}" ><i class="fas fa-trash-alt"></i></button>`;
+                                        <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/ServiceArea/Delete/${full.serviceAreaID}" ><i class="fas fa-trash-alt"></i></button>
+                                    </div>`;
                         }
                     },
                 ],
