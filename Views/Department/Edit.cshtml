@@ -24,7 +24,7 @@
 
                         <!-- Department Name -->
                         <div class="form-group row">
-                            <label asp-for="DepartmentTitle" class="col-12 col-xl-4 col-form-label">Departman İsmi</label>
+                            <label asp-for="DepartmentTitle" class="col-12 col-xl-4 col-form-label">Departman İsmi<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <input asp-for="DepartmentTitle" type="text" class="form-control" required>
                                 <span asp-validation-for="DepartmentTitle" class="text-danger"></span>

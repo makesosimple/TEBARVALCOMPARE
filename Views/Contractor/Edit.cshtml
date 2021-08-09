@@ -24,7 +24,7 @@
 
                         <!-- Title -->
                         <div class="form-group row">
-                            <label asp-for="Title" class="col-12 col-xl-4 col-form-label">Başlık</label>
+                            <label asp-for="Title" class="col-12 col-xl-4 col-form-label">Başlık<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <input asp-for="Title" type="text" class="form-control" required>
                                 <span asp-validation-for="Title" class="text-danger"></span>
@@ -33,7 +33,7 @@
 
                         <!-- Contractor Type ID -->
                         <div class="form-group row">
-                            <label asp-for="ContractorTypeID" class="col-12 col-xl-4 col-form-label">Yüklenici Tipi</label>
+                            <label asp-for="ContractorTypeID" class="col-12 col-xl-4 col-form-label">Yüklenici Tipi<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <select asp-for="ContractorTypeID" class="form-control" id="selectContractorType" style="width: 100%;">
                                     @if (Model.ContractorType is not null)
@@ -63,7 +63,7 @@
 
                         <!-- Tax Code -->
                         <div class="form-group row">
-                            <label asp-for="TaxCode" class="col-12 col-xl-4 col-form-label">Vergi Numarası</label>
+                            <label asp-for="TaxCode" class="col-12 col-xl-4 col-form-label">Vergi Numarası<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <input asp-for="TaxCode" type="number" class="form-control" required>
                                 <span asp-validation-for="TaxCode" class="text-danger"></span>
@@ -72,7 +72,7 @@
 
                         <!-- Tax Office -->
                         <div class="form-group row">
-                            <label asp-for="TaxOffice" class="col-12 col-xl-4 col-form-label">Vergi Dairesi</label>
+                            <label asp-for="TaxOffice" class="col-12 col-xl-4 col-form-label">Vergi Dairesi<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <input asp-for="TaxOffice" type="text" class="form-control" required>
                                 <span asp-validation-for="TaxOffice" class="text-danger"></span>
@@ -132,7 +132,7 @@
 
                         <!-- Phone Number -->
                         <div class="form-group row">
-                            <label asp-for="PhoneNumber" class="col-12 col-xl-4 col-form-label">Telefon Numarası</label>
+                            <label asp-for="PhoneNumber" class="col-12 col-xl-4 col-form-label">Telefon Numarası<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <input asp-for="PhoneNumber" type="text" class="form-control phoneField" required>
                                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>

@@ -24,7 +24,7 @@
 
                         <!-- City Name -->
                         <div class="form-group row">
-                            <label asp-for="CityName" class="col-12 col-xl-4 col-form-label">İl İsmi</label>
+                            <label asp-for="CityName" class="col-12 col-xl-4 col-form-label">İl İsmi<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <input asp-for="CityName" type="text" class="form-control" required>
                                 <span asp-validation-for="CityName" class="text-danger"></span>
@@ -33,7 +33,7 @@
 
                         <!-- City Code -->
                         <div class="form-group row">
-                            <label asp-for="CityCode" class="col-12 col-xl-4 col-form-label">İl Kodu</label>
+                            <label asp-for="CityCode" class="col-12 col-xl-4 col-form-label">İl Kodu<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <input asp-for="CityCode" type="number" class="form-control" required>
                                 <span asp-validation-for="CityCode" class="text-danger"></span>
