@@ -31,6 +31,42 @@
                             </div>
                         </div>
 
+                        <!-- Previous Phase ID -->
+                        <div class="form-group row">
+                            <label asp-for="PreviousPhaseID" class="col-12 col-xl-4 col-form-label">Önceki Faz</label>
+                            <div class="col-12 col-xl-8">
+                                <select asp-for="PreviousPhaseID" class="form-control" id="selectPhase" style="width: 100%;">
+                                    @if (Model.PreviousPhase is not null)
+                                    {
+                                        <option value="@Model.PreviousPhase.PhaseID">@Model.PreviousPhase.PhaseTitle</option>
+                                    }
+
+                                    else
+                                    {
+                                        <option selected value="">Önceki Fazı Seçin</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="PreviousPhaseID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Is Presentation ? -->
+                        <div class="form-group row">
+                            <label asp-for="isPresentation" class="col-form-label col-12 col-xl-4">Sunum mu?</label>
+                            <div class="col-12 col-xl-8">
+                                <div class="text-center d-inline-block col-form-label">
+                                    <div class="vc-toggle-container">
+                                        <label class="vc-switch">
+                                            <input type="checkbox" class="vc-switch-input" asp-for="isPresentation">
+                                            <span data-on="Evet" data-off="Hayır" class="vc-switch-label"></span>
+                                            <span class="vc-handle"></span>
+                                            <span asp-validation-for="isPresentation" class="text-danger"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Phase Description -->
                         <div class="form-group row">
                             <label asp-for="PhaseDescription" class="col-12 col-xl-4 col-form-label">Faz Açıklaması</label>
@@ -61,4 +97,22 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <!-- Select2 for Phase -->
+    <script>
+        $('#selectPhase').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/Phase/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
+        });
+    </script>
 }

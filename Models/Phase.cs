@@ -11,6 +11,7 @@ namespace IBBPortal.Models
 {
 
     [Index(nameof(UserID))]
+    [Index(nameof(PreviousPhaseID))]
     public class Phase
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -20,12 +21,15 @@ namespace IBBPortal.Models
         [MaxLength(50)]
         public string PhaseTitle { get; set; }
 
+        [Required]
         public int PhaseOrder { get; set; }
 
         [MaxLength(256)]
         public string? PhaseDescription { get; set; }
 
         public int? PreviousPhaseID { get; set; }
+        [ForeignKey("PreviousPhaseID")]
+        public Phase PreviousPhase { get; set; }
 
         public bool isPresentation { get; set; }
 
