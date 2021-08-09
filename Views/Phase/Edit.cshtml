@@ -31,6 +31,15 @@
                             </div>
                         </div>
 
+                        <!-- Phase Order -->
+                        <div class="form-group row">
+                            <label asp-for="PhaseOrder" class="col-12 col-xl-4 col-form-label">Faz Sırası</label>
+                            <div class="col-12 col-xl-8">
+                                <input asp-for="PhaseOrder" type="number" class="form-control" required>
+                                <span asp-validation-for="PhaseOrder" class="text-danger"></span>
+                            </div>
+                        </div>
+
                         <!-- Previous Phase ID -->
                         <div class="form-group row">
                             <label asp-for="PreviousPhaseID" class="col-12 col-xl-4 col-form-label">Önceki Faz</label>
