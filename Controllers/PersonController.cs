@@ -14,21 +14,22 @@ using IBBPortal.Helpers;
 
 namespace IBBPortal.Controllers
 {
-    public class JobTitleController : Controller
+    public class PersonController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public JobTitleController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public PersonController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-        // GET: JobTitle
+        // GET: Contractor
         public IActionResult Index()
         {
             return View();
         }
+
 
         public JsonResult JSONData()
         {
@@ -50,7 +51,7 @@ namespace IBBPortal.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var data = _context.JobTitle.Select(c => new { c.JobTitleID, c.Title, UserName = c.User.UserName }).AsQueryable();
+                var data = _context.Person.Select(c => new { c.PersonID, FullName = c.PersonName + " " + c.PersonSurname, c.isInternal, JobTitle = c.JobTitle.Title });
 
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
@@ -61,10 +62,11 @@ namespace IBBPortal.Controllers
 
                 //Search Functionality = Programmer will always know how many columns will be shown to the user.
                 //So we will use that to check every column if they have a search value.
-                //If control checks out, search. If not, loop goes on until the end.
+                //If control checks out, search. If not loop goes on until the end.
                 string columnName, searchValue;
 
-                for (int i = 0; i < 2; i++)
+
+                for (int i = 0; i < 3; i++)
                 {
                     columnName = Request.Query[$"columns[{i}][data]"].FirstOrDefault();
                     searchValue = Request.Query[$"columns[{i}][search][value]"].FirstOrDefault();
@@ -91,42 +93,7 @@ namespace IBBPortal.Controllers
             }
         }
 
-        [HttpGet]
-        public JsonResult JsonSelectData(string term)
-        {
-            try
-            {
-
-                var JobTitleData = _context.JobTitle
-                                    .Select(x => new {
-                                        id = x.JobTitleID.ToString(),
-                                        text = x.Title
-                                    });
-
-                if (!String.IsNullOrEmpty(term))
-                {
-                    JobTitleData = JobTitleData.Where(m => m.text.Contains(term));
-                }
-
-                //Count 
-                var totalCount = JobTitleData.Count();
-
-                //Paging   
-                var passData = JobTitleData.ToList();
-
-
-                //Returning Json Data  
-                return Json(new { results = passData, totalCount = totalCount });
-
-            }
-
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        // GET: JobTitle/Details/5
+        // GET: Person/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -134,18 +101,21 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var jobTitle = await _context.JobTitle
-                .Include(j => j.User)
-                .FirstOrDefaultAsync(m => m.JobTitleID == id);
-            if (jobTitle == null)
+            var person = await _context.Person
+                .Include(p => p.Contractor)
+                .Include(p => p.Department)
+                .Include(p => p.JobTitle)
+                .Include(p => p.User)
+                .FirstOrDefaultAsync(m => m.PersonID == id);
+            if (person == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DetailsModal", jobTitle);
+            return PartialView("_DetailsModal", person);
         }
 
-        // GET: JobTitle/Create
+        // GET: Person/Create
         public IActionResult Create()
         {
             var culture = new CultureInfo("tr-TR");
@@ -154,23 +124,23 @@ namespace IBBPortal.Controllers
             return View();
         }
 
-        // POST: JobTitle/Create
+        // POST: Person/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("JobTitleID,Title,JobDescription,UserID,CreationDate,UpdateDate,DeletionDate")] JobTitle jobTitle)
+        public async Task<IActionResult> Create([Bind("PersonID,PersonName,PersonSurname,PersonPhone,PersonEmail,isInternal,JobTitleID,DepartmentID,ContractorID,UserID,CreationDate,UpdateDate,DeletionDate")] Person person)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(jobTitle);
+                _context.Add(person);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(jobTitle);
+            return View(person);
         }
 
-        // GET: JobTitle/Edit/5
+        // GET: Person/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -178,22 +148,26 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var jobTitle = await _context.JobTitle.FindAsync(id);
-            if (jobTitle == null)
+            var person = await _context.Person
+                .Include(contractor => contractor.Contractor)
+                .Include(jobTitle => jobTitle.JobTitle)
+                .Include(department => department.Department)
+                .FirstOrDefaultAsync(i => i.PersonID == id);
+            if (person == null)
             {
                 return NotFound();
             }
-            return View(jobTitle);
+            return View(person);
         }
 
-        // POST: JobTitle/Edit/5
+        // POST: Person/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("JobTitleID,Title,JobDescription,UserID,CreationDate,UpdateDate,DeletionDate")] JobTitle jobTitle)
+        public async Task<IActionResult> Edit(int id, [Bind("PersonID,PersonName,PersonSurname,PersonPhone,PersonEmail,isInternal,JobTitleID,DepartmentID,ContractorID,UserID,CreationDate,UpdateDate,DeletionDate")] Person person)
         {
-            if (id != jobTitle.JobTitleID)
+            if (id != person.PersonID)
             {
                 return NotFound();
             }
@@ -203,14 +177,14 @@ namespace IBBPortal.Controllers
                 try
                 {
                     var CurrentDate = DateTime.Now;
-                    jobTitle.UpdateDate = CurrentDate;
+                    person.UpdateDate = CurrentDate;
 
-                    _context.Update(jobTitle);
+                    _context.Update(person);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!JobTitleExists(jobTitle.JobTitleID))
+                    if (!PersonExists(person.PersonID))
                     {
                         return NotFound();
                     }
@@ -221,10 +195,10 @@ namespace IBBPortal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(jobTitle);
+            return View(person);
         }
 
-        // GET: JobTitle/Delete/5
+        // GET: Person/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -232,31 +206,34 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var jobTitle = await _context.JobTitle
-                .Include(j => j.User)
-                .FirstOrDefaultAsync(m => m.JobTitleID == id);
-            if (jobTitle == null)
+            var person = await _context.Person
+                .Include(p => p.Contractor)
+                .Include(p => p.Department)
+                .Include(p => p.JobTitle)
+                .Include(p => p.User)
+                .FirstOrDefaultAsync(m => m.PersonID == id);
+            if (person == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DeleteModal", jobTitle);
+            return PartialView("_DeleteModal", person);
         }
 
-        // POST: JobTitle/Delete/5
+        // POST: Person/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var jobTitle = await _context.JobTitle.FindAsync(id);
-            _context.JobTitle.Remove(jobTitle);
+            var person = await _context.Person.FindAsync(id);
+            _context.Person.Remove(person);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool JobTitleExists(int id)
+        private bool PersonExists(int id)
         {
-            return _context.JobTitle.Any(e => e.JobTitleID == id);
+            return _context.Person.Any(e => e.PersonID == id);
         }
     }
 }

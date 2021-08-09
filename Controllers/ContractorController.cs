@@ -93,6 +93,41 @@ namespace IBBPortal.Controllers
             }
         }
 
+        [HttpGet]
+        public JsonResult JsonSelectData(string term)
+        {
+            try
+            {
+
+                var ContractorData = _context.Contractor
+                                    .Select(x => new {
+                                        id = x.ContractorID.ToString(),
+                                        text = x.Title
+                                    });
+
+                if (!String.IsNullOrEmpty(term))
+                {
+                    ContractorData = ContractorData.Where(m => m.text.Contains(term));
+                }
+
+                //Count 
+                var totalCount = ContractorData.Count();
+
+                //Paging   
+                var passData = ContractorData.ToList();
+
+
+                //Returning Json Data  
+                return Json(new { results = passData, totalCount = totalCount });
+
+            }
+
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         // GET: Contractor/Details/5
         public IActionResult Details(int? id)
         {

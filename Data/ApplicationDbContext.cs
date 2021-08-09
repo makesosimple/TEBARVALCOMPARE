@@ -98,6 +98,8 @@ namespace IBBPortal.Data
         public DbSet<IBBPortal.Models.ProjectImportance> ProjectImportance { get; set; }
 
         public DbSet<IBBPortal.Models.RelationType> RelationType { get; set; }
+
+        public DbSet<IBBPortal.Models.Person> Person { get; set; }
     }
 
 

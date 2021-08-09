@@ -79,6 +79,21 @@
         </div>
     </li>
 
+    <!-- User Management -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePerson"
+           aria-expanded="true" aria-controls="collapsePerson">
+            <i class="fas fa-user-friends"></i>
+            <span>Kişi Yönetimi</span>
+        </a>
+        <div id="collapsePerson" class="collapse" aria-labelledby="headingPerson"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" asp-controller="Person" asp-action="Index">Kişiler</a>
+            </div>
+        </div>
+    </li>
+
     <!-- Contractor Management-->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseContractor"
