@@ -91,6 +91,41 @@ namespace IBBPortal.Controllers
             }
         }
 
+        [HttpGet]
+        public JsonResult JsonSelectData(string term)
+        {
+            try
+            {
+
+                var PhaseData = _context.Phase
+                                    .Select(x => new {
+                                        id = x.PhaseID.ToString(),
+                                        text = x.PhaseTitle
+                                    });
+
+                if (!String.IsNullOrEmpty(term))
+                {
+                    PhaseData = PhaseData.Where(m => m.text.Contains(term));
+                }
+
+                //Count 
+                var totalCount = PhaseData.Count();
+
+                //Paging   
+                var passData = PhaseData.ToList();
+
+
+                //Returning Json Data  
+                return Json(new { results = passData, totalCount = totalCount });
+
+            }
+
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         // GET: Phase/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -124,7 +159,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PhaseID,PhaseTitle,PhaseDescription,PreviousPhaseID,UserID,CreationDate,UpdateDate,DeletionDate")] Phase phase)
+        public async Task<IActionResult> Create([Bind("PhaseID,PhaseTitle,PhaseDescription,isPresentation,PreviousPhaseID,UserID,CreationDate,UpdateDate,DeletionDate")] Phase phase)
         {
             if (ModelState.IsValid)
             {
@@ -156,7 +191,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PhaseID,PhaseTitle,PhaseDescription,PreviousPhaseID,UserID,CreationDate,UpdateDate,DeletionDate")] Phase phase)
+        public async Task<IActionResult> Edit(int id, [Bind("PhaseID,PhaseTitle,PhaseDescription,isPresentation,PreviousPhaseID,UserID,CreationDate,UpdateDate,DeletionDate")] Phase phase)
         {
             if (id != phase.PhaseID)
             {

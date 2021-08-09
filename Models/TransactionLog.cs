@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace IBBPortal.Models
 {
 
-    [Index(nameof(UserID))]
+    //Index(nameof(UserID))]
     [Index(nameof(TransactionMessageID))]
     [Index(nameof(TransactionTypeID))]
     [Index(nameof(ProjectID))]
@@ -19,7 +19,7 @@ namespace IBBPortal.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TransactionMessageID { get; set; }
         public int TransactionTypeID { get; set; }
-        public int ProjectID { get; set }
+        public int ProjectID { get; set; }
         
         public string TransactionLogMessageContent { get; set; }
 

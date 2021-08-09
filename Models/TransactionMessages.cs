@@ -10,7 +10,7 @@ namespace IBBPortal.Models
 {
 
     [Index(nameof(UserID))]
-    [Index(nameof(SubfunctionID))]
+    //[Index(nameof(SubfunctionID))]
     public class TransactionMessages
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
