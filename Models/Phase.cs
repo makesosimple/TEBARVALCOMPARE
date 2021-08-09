@@ -31,6 +31,7 @@ namespace IBBPortal.Models
         [ForeignKey("PreviousPhaseID")]
         public Phase PreviousPhase { get; set; }
 
+        [Required]
         public bool isPresentation { get; set; }
 
         public string UserID { get; set; }

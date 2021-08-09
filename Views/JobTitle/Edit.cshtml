@@ -24,7 +24,7 @@
 
                         <!-- Job Title -->
                         <div class="form-group row">
-                            <label asp-for="Title" class="col-12 col-xl-4 col-form-label">Meslek Adı</label>
+                            <label asp-for="Title" class="col-12 col-xl-4 col-form-label">Meslek Adı<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <input asp-for="Title" type="text" class="form-control" required>
                                 <span asp-validation-for="Title" class="text-danger"></span>

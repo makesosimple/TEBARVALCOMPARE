@@ -24,7 +24,7 @@
 
                         <!-- Board Title -->
                         <div class="form-group row">
-                            <label asp-for="BoardTitle" class="col-12 col-xl-4 col-form-label">Kurul Adı</label>
+                            <label asp-for="BoardTitle" class="col-12 col-xl-4 col-form-label">Kurul Adı<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <input asp-for="BoardTitle" type="text" class="form-control" required>
                                 <span asp-validation-for="BoardTitle" class="text-danger"></span>

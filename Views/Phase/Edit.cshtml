@@ -24,7 +24,7 @@
 
                         <!-- Phase Title -->
                         <div class="form-group row">
-                            <label asp-for="PhaseTitle" class="col-12 col-xl-4 col-form-label">Faz İsmi</label>
+                            <label asp-for="PhaseTitle" class="col-12 col-xl-4 col-form-label">Faz İsmi<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <input asp-for="PhaseTitle" type="text" class="form-control" required>
                                 <span asp-validation-for="PhaseTitle" class="text-danger"></span>
@@ -33,7 +33,7 @@
 
                         <!-- Phase Order -->
                         <div class="form-group row">
-                            <label asp-for="PhaseOrder" class="col-12 col-xl-4 col-form-label">Faz Sırası</label>
+                            <label asp-for="PhaseOrder" class="col-12 col-xl-4 col-form-label">Faz Sırası<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <input asp-for="PhaseOrder" type="number" class="form-control" required>
                                 <span asp-validation-for="PhaseOrder" class="text-danger"></span>
@@ -61,7 +61,7 @@
 
                         <!-- Is Presentation ? -->
                         <div class="form-group row">
-                            <label asp-for="isPresentation" class="col-form-label col-12 col-xl-4">Sunum mu?</label>
+                            <label asp-for="isPresentation" class="col-form-label col-12 col-xl-4">Sunum mu?<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <div class="text-center d-inline-block col-form-label">
                                     <div class="vc-toggle-container">
