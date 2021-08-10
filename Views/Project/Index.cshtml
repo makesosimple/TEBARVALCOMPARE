@@ -1,0 +1,144 @@
+﻿@{
+    ViewData["Title"] = "Proje Yönetimi";
+}
+
+@section Scripts
+{
+    <!-- Table Script -->
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            let table = $("#dataTable").DataTable({
+                "dom": 'rt<"d-flex justify-content-between flex-column align-items-baseline flex-md-row mt-3"ipl><"clear">',
+                "language": {
+                    "url": "/langs/table-details.json",
+                },
+                "processing": false, // for show progress bar
+                "serverSide": true, // for process server side
+                "filter": true, // this is for disable filter (search box)
+                "orderMulti": false, // for disable multiple column at once
+                "ajax": {
+                    "url": "/Project/JSONData",
+                    "type": "POST"
+                },
+                "columns": [
+                    { "data": "projectTitle", "autoWidth": true },
+                    { "data": "requestingManagementTitle", "autoWidth": true },
+                    { "data": "responsibleManagementTitle", "autoWidth": true },
+                    { "data": "ownerFullName", "autoWidth": true },
+                    { "data": "serviceAreaTitle", "autoWidth": true },
+                    {
+                        "data": "projectStatusTitle",
+                        "render": function (data) {
+                            return `<div class="shadow btn btn-info">${data}</div>`;
+                        },
+                        "autoWidth": true
+                    },
+                    {
+                        "data": "projectImportanceTitle",
+                        "render": function (data) {
+                            return `<div class="shadow btn btn-info">${data}</div>`;
+                        },
+                        "autoWidth": true
+                    },
+                    {
+                        "data": "hasRelatedProject",
+                        "render": function (data) {
+
+                            let itemToRender;
+                            switch (data) {
+                                case true:
+                                    itemToRender = `<a href="#" class="shadow btn btn-success">EVET</a>`;
+                                    break;
+                                case false:
+                                    itemToRender = `<a href="#" class="shadow btn btn-danger">HAYIR</a>`;
+                                    break;
+                            }
+                            return itemToRender;
+                        },
+                        "autoWidth": true
+                    },
+                    {
+                        "data": null,
+                        "render": function (data, type, full, meta, row) {
+                            return `<div class="d-flex align-items-center justify-content-end">\
+                                        <a class="btn btn-circle bg-turqoise text-white" href="/Project/Edit/${full.projectID}"><i class="fas fa-edit"></i></a>\
+                                        <button type="button" class="btn btn-circle bg-warning text-white" onclick="modalScript(this)" data-url="/Project/Details/${full.projectID}"><i class="fas fa-info-circle"></i></button>\
+                                        <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/Project/Delete/${full.projectID}" ><i class="fas fa-trash-alt"></i></button>
+                                    </div>`;
+                        }
+                    },
+                ],
+                "columnDefs": [
+                    { "targets": -1, "orderable": false },
+                ],
+                "initComplete": function () {
+                    let api = this.api();
+
+                    $('input.searchInput').on('input', function () {
+                        let columnIndex = $(this).data("index");
+                        let desiredColumn = api.columns(columnIndex);
+                        if (desiredColumn.search() !== this.value) {
+                            desiredColumn
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+}
+
+<div id="GeneralModal"></div>
+
+<!-- Create Button-->
+<div class="row">
+    <div class="justify-content-between py-2 col-12 d-flex">
+        <h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
+        <a asp-action="Create" class="btn btn-success shadow mb-4">
+            <i class="fas fa-plus mr-2"></i> EKLE
+        </a>
+    </div>
+</div>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive position-relative">
+            <table class="table table-hover display" id="dataTable" width="100%">
+                <thead class="bg-navy-blue">
+                    <tr class="filter h-100 bg-white">
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="projectTitle" name="projectTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="requestingManagementTitle" name="requestingManagementTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="responsibleManagementTitle" name="responsibleManagementTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="3" type="text" placeholder="Ara..." id="ownerFullName" name="ownerFullName" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="4" type="text" placeholder="Ara..." id="serviceAreaTitle" name="serviceAreaTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="4" type="text" placeholder="Ara..." id="projectStatusTitle" name="projectStatusTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="4" type="text" placeholder="Ara..." id="projectImportanceTitle" name="projectImportanceTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="4" type="text" placeholder="Ara..." id="hasRelatedProject" name="hasRelatedProject" value="" /></th>
+                        <th scope="col"></th>
+                    </tr>
+                    <tr id="tableLabels">
+                        <th scope="col" class="text-white text-sm">Proje İsmi</th>
+                        <th scope="col" class="text-white text-sm">Talep Eden Müdürlük</th>
+                        <th scope="col" class="text-white text-sm">Sorumlu Müdürlük</th>
+                        <th scope="col" class="text-white text-sm">Proje Sahibi</th>
+                        <th scope="col" class="text-white text-sm">Hizmet Alanı</th>
+                        <th scope="col" class="text-white text-sm">Proje Durumu</th>
+                        <th scope="col" class="text-white text-sm">Proje Önemi</th>
+                        <th scope="col" class="text-white text-sm">Alt Projesi Var Mı?</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+
+                </tfoot>
+
+            </table>
+        </div>
+    </div>
+</div>

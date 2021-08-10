@@ -14,44 +14,55 @@ using IBBPortal.Helpers;
 
 namespace IBBPortal.Controllers
 {
-    public class PersonController : Controller
+    public class ProjectController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public PersonController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public ProjectController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-        // GET: Contractor
+        // GET: District
         public IActionResult Index()
         {
             return View();
         }
 
-
+        [HttpPost]
         public JsonResult JSONData()
         {
             try
             {
 
-                var draw = HttpContext.Request.Query["draw"].FirstOrDefault();
+                var draw = HttpContext.Request.Form["draw"].FirstOrDefault();
                 // Skiping number of Rows count  
-                var start = Request.Query["start"].FirstOrDefault();
+                var start = Request.Form["start"].FirstOrDefault();
                 // Paging Length 10,20  
-                var length = Request.Query["length"].FirstOrDefault();
+                var length = Request.Form["length"].FirstOrDefault();
                 // Sort Column Name  
-                var sortColumn = Request.Query["columns[" + Request.Query["order[0][column]"].FirstOrDefault() + "][data]"].FirstOrDefault();
+                var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][data]"].FirstOrDefault();
                 // Sort Column Direction ( asc ,desc)  
-                var sortColumnDirection = Request.Query["order[0][dir]"].FirstOrDefault().ToUpper();
+                var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault().ToUpper();
 
                 //Paging Size (10, 20, 50,100)  
                 int pageSize = length != null ? Convert.ToInt32(length) : 0;
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var data = _context.Person.Select(c => new { c.PersonID, FullName = c.PersonName + " " + c.PersonSurname, c.isInternal, JobTitle = c.JobTitle.Title });
+                var data = _context.Project.Select(c => new 
+                { 
+                    c.ProjectID, 
+                    c.ProjectTitle, 
+                    RequestingManagementTitle = c.RequestingManagement.ManagementTitle, 
+                    ResponsibleManagementTitle = c.ResponsibleManagement.ManagementTitle, 
+                    OwnerFullName = c.ProjectOwnerPerson.PersonName.Trim() + " " + c.ProjectOwnerPerson.PersonSurname.Trim(),
+                    ServiceAreaTitle = c.ProjectServiceArea.ServiceAreaTitle,
+                    ProjectStatusTitle = c.ProjectStatus.ProjectStatusTitle,
+                    ProjectImportanceTitle = c.ProjectImportance.ProjectImportanceTitle,
+                    c.HasRelatedProject
+                });
 
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
@@ -65,8 +76,7 @@ namespace IBBPortal.Controllers
                 //If control checks out, search. If not loop goes on until the end.
                 string columnName, searchValue;
 
-
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 8; i++)
                 {
                     columnName = Request.Query[$"columns[{i}][data]"].FirstOrDefault();
                     searchValue = Request.Query[$"columns[{i}][search][value]"].FirstOrDefault();
@@ -93,42 +103,7 @@ namespace IBBPortal.Controllers
             }
         }
 
-        [HttpGet]
-        public JsonResult JsonSelectData(string term)
-        {
-            try
-            {
-
-                var PersonData = _context.Person
-                                    .Select(x => new {
-                                        id = x.PersonID.ToString(),
-                                        text = x.PersonName.Trim() + " " + x.PersonSurname.Trim()
-                                    });
-
-                if (!String.IsNullOrEmpty(term))
-                {
-                    PersonData = PersonData.Where(m => m.text.Contains(term));
-                }
-
-                //Count 
-                var totalCount = PersonData.Count();
-
-                //Paging   
-                var passData = PersonData.ToList();
-
-
-                //Returning Json Data  
-                return Json(new { results = passData, totalCount = totalCount });
-
-            }
-
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        // GET: Person/Details/5
+        // GET: Project/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -136,21 +111,24 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var person = await _context.Person
-                .Include(p => p.Contractor)
-                .Include(p => p.Department)
-                .Include(p => p.JobTitle)
+            var project = await _context.Project
+                .Include(p => p.ProjectImportance)
+                .Include(p => p.ProjectOwnerPerson)
+                .Include(p => p.ProjectServiceArea)
+                .Include(p => p.ProjectStatus)
+                .Include(p => p.RequestingManagement)
+                .Include(p => p.ResponsibleManagement)
                 .Include(p => p.User)
-                .FirstOrDefaultAsync(m => m.PersonID == id);
-            if (person == null)
+                .FirstOrDefaultAsync(m => m.ProjectID == id);
+            if (project == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DetailsModal", person);
+            return PartialView("_DetailsModal", project);
         }
 
-        // GET: Person/Create
+        // GET: Project/Create
         public IActionResult Create()
         {
             var culture = new CultureInfo("tr-TR");
@@ -159,23 +137,23 @@ namespace IBBPortal.Controllers
             return View();
         }
 
-        // POST: Person/Create
+        // POST: Project/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PersonID,PersonName,PersonSurname,PersonPhone,PersonEmail,isInternal,JobTitleID,DepartmentID,ContractorID,UserID,CreationDate,UpdateDate,DeletionDate")] Person person)
+        public async Task<IActionResult> Create([Bind("ProjectID,ProjectTitle,ProjectCode,ProjectIBBCode,RequestingManagementID,ResponsibleManagementID,ProjectOwnerPersonID,ProjectServiceAreaID,ProjectImportanceID,ProjectStatusID,ProjectStatusDescription,ProjectStatusDescriptionDate,IsFeasibilityNeeded,HasRelatedProject,UserID,CreationDate,UpdateDate,DeletionDate")] Project project)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(person);
+                _context.Add(project);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(person);
+            return View(project);
         }
 
-        // GET: Person/Edit/5
+        // GET: Project/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -183,26 +161,30 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var person = await _context.Person
-                .Include(contractor => contractor.Contractor)
-                .Include(jobTitle => jobTitle.JobTitle)
-                .Include(department => department.Department)
-                .FirstOrDefaultAsync(i => i.PersonID == id);
-            if (person == null)
+            var project = await _context.Project
+                .Include(p => p.ProjectImportance)
+                .Include(p => p.ProjectOwnerPerson)
+                .Include(p => p.ProjectServiceArea)
+                .Include(p => p.ProjectStatus)
+                .Include(p => p.RequestingManagement)
+                .Include(p => p.ResponsibleManagement)
+                .Include(p => p.User)
+                .FirstOrDefaultAsync(m => m.ProjectID == id);
+            if (project == null)
             {
                 return NotFound();
             }
-            return View(person);
+            return View(project);
         }
 
-        // POST: Person/Edit/5
+        // POST: Project/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PersonID,PersonName,PersonSurname,PersonPhone,PersonEmail,isInternal,JobTitleID,DepartmentID,ContractorID,UserID,CreationDate,UpdateDate,DeletionDate")] Person person)
+        public async Task<IActionResult> Edit(int id, [Bind("ProjectID,ProjectTitle,ProjectCode,ProjectIBBCode,RequestingManagementID,ResponsibleManagementID,ProjectOwnerPersonID,ProjectServiceAreaID,ProjectImportanceID,ProjectStatusID,ProjectStatusDescription,ProjectStatusDescriptionDate,IsFeasibilityNeeded,HasRelatedProject,UserID,CreationDate,UpdateDate,DeletionDate")] Project project)
         {
-            if (id != person.PersonID)
+            if (id != project.ProjectID)
             {
                 return NotFound();
             }
@@ -212,14 +194,14 @@ namespace IBBPortal.Controllers
                 try
                 {
                     var CurrentDate = DateTime.Now;
-                    person.UpdateDate = CurrentDate;
+                    project.UpdateDate = CurrentDate;
 
-                    _context.Update(person);
+                    _context.Update(project);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PersonExists(person.PersonID))
+                    if (!ProjectExists(project.ProjectID))
                     {
                         return NotFound();
                     }
@@ -230,10 +212,10 @@ namespace IBBPortal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(person);
+            return View(project);
         }
 
-        // GET: Person/Delete/5
+        // GET: Project/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -241,34 +223,37 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var person = await _context.Person
-                .Include(p => p.Contractor)
-                .Include(p => p.Department)
-                .Include(p => p.JobTitle)
+            var project = await _context.Project
+                .Include(p => p.ProjectImportance)
+                .Include(p => p.ProjectOwnerPerson)
+                .Include(p => p.ProjectServiceArea)
+                .Include(p => p.ProjectStatus)
+                .Include(p => p.RequestingManagement)
+                .Include(p => p.ResponsibleManagement)
                 .Include(p => p.User)
-                .FirstOrDefaultAsync(m => m.PersonID == id);
-            if (person == null)
+                .FirstOrDefaultAsync(m => m.ProjectID == id);
+            if (project == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DeleteModal", person);
+            return PartialView("_DeleteModal", project);
         }
 
-        // POST: Person/Delete/5
+        // POST: Project/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var person = await _context.Person.FindAsync(id);
-            _context.Person.Remove(person);
+            var project = await _context.Project.FindAsync(id);
+            _context.Project.Remove(project);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PersonExists(int id)
+        private bool ProjectExists(int id)
         {
-            return _context.Person.Any(e => e.PersonID == id);
+            return _context.Project.Any(e => e.ProjectID == id);
         }
     }
 }
