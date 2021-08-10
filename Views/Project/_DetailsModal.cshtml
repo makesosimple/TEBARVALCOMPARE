@@ -1,0 +1,92 @@
+﻿@model IBBPortal.Models.Project
+
+@{
+    var OwnerFullName = @Model.ProjectOwnerPerson.PersonName + " " + @Model.ProjectOwnerPerson.PersonSurname;
+}
+<!-- Modal -->
+<div class="modal fade" id="ProjectModal" tabindex="-1" aria-labelledby="ProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-between">
+                            <h5 class="modal-title" id="exampleModalLabel">Detay</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Proje</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.ProjectTitle</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Proje Kodu</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.ProjectCode</p></div>
+                    </div>
+                    <hr />
+                    @if (@Model.RequestingManagement is not null)
+                    {
+                        <div class="row">
+                            <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Talep Eden Müdürlük</p></div>
+                            <div class="col-12 col-xl-8"><p class="text-primary">@Model.RequestingManagement.ManagementTitle</p></div>
+                        </div>
+                    }
+                    @if (@Model.ResponsibleManagement is not null)
+                    {
+                        <div class="row">
+                            <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Sorumlu Müdürlük</p></div>
+                            <div class="col-12 col-xl-8"><p class="text-primary">@Model.ResponsibleManagement.ManagementTitle</p></div>
+                        </div>
+                    }
+                    @if (@Model.ProjectOwnerPerson is not null)
+                    {
+                        <div class="row">
+                            <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Proje Sahibi</p></div>
+                            <div class="col-12 col-xl-8"><p class="text-primary">@OwnerFullName</p></div>
+                        </div>
+                    }
+                    @if (@Model.ProjectServiceArea is not null)
+                    {
+                        <div class="row">
+                            <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Hizmet Alanı</p></div>
+                            <div class="col-12 col-xl-8"><p class="text-primary">@Model.ProjectServiceArea.ServiceAreaTitle</p></div>
+                        </div>
+                    }
+                    @if (@Model.ProjectImportance is not null)
+                    {
+                        <div class="row">
+                            <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Önem</p></div>
+                            <div class="col-12 col-xl-8"><p class="text-primary">@Model.ProjectImportance.ProjectImportanceTitle</p></div>
+                        </div>
+                    }
+                    @if (@Model.ProjectStatus is not null)
+                    {
+                        <div class="row">
+                            <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Durum</p></div>
+                            <div class="col-12 col-xl-8"><p class="text-primary">@Model.ProjectStatus.ProjectStatusTitle</p></div>
+                        </div>
+                    }
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Oluşturan</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.User.UserName</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Oluşturma Tarihi</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.CreationDate</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Güncelleme Tarihi</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.UpdateDate</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
