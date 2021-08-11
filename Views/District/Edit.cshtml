@@ -4,6 +4,36 @@
     ViewData["Title"] = "İlçe Düzenle";
 }
 
+<!-- Alert for Exceptions -->
+@if (@TempData["SuccessTitle"] is not null)
+{
+    <div class="alert bg-gradient-success alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading text-white">
+            <i class="fas fa-check"></i>
+            @TempData["SuccessTitle"]
+            <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </h4>
+        <p class="text-white">@TempData["SuccessMessage"]</p>
+    </div>
+}
+
+<!-- Alert for Success -->
+@if (@TempData["SuccessTitle"] is not null)
+{
+    <div class="alert bg-gradient-success alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading text-white">
+            <i class="fas fa-check"></i>
+            @TempData["SuccessTitle"]
+            <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </h4>
+        <p class="text-white">@TempData["SuccessMessage"]</p>
+    </div>
+}
+
 <h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
 <form asp-action="Edit">
     <input type="hidden" asp-for="DistrictID" />
