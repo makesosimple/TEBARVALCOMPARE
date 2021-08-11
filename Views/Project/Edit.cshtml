@@ -41,7 +41,7 @@
 
                         <!-- Project IBB Code -->
                         <div class="form-group row">
-                            <label asp-for="ProjectIBBCode" class="col-12 col-lg-4 col-form-label">Proje IBB Kodu</label>
+                            <label asp-for="ProjectIBBCode" class="col-12 col-lg-4 col-form-label">Proje İBB Kodu</label>
                             <div class="col-12 col-lg-8">
                                 <input asp-for="ProjectIBBCode" type="text" class="form-control">
                                 <span asp-validation-for="ProjectIBBCode" class="text-danger"></span>
@@ -71,7 +71,7 @@
 
                         <!-- Responsible Management ID -->
                         <div class="form-group row">
-                            <label asp-for="ResponsibleManagementID" class="col-12 col-xl-4 col-form-label">Talep Eden Müdürlük<span class="text-danger">*</span></label>
+                            <label asp-for="ResponsibleManagementID" class="col-12 col-xl-4 col-form-label">Sorumlu Müdürlük<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <select asp-for="ResponsibleManagementID" class="form-control" id="selectResponsibleManagement" style="width: 100%;" required>
                                     @if (@Model.ResponsibleManagement is not null)
@@ -189,7 +189,7 @@
 
                         <!-- Is Feasibility Needed ? -->
                         <div class="form-group row">
-                            <label asp-for="IsFeasibilityNeeded" class="col-form-label col-12 col-xl-4">Fizibilite Gerekli Mi?<span class="text-danger">*</span></label>
+                            <label asp-for="IsFeasibilityNeeded" class="col-form-label col-12 col-xl-4">Fizibilite Gerekli mi?<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <div class="text-center d-inline-block col-form-label">
                                     <div class="vc-toggle-container">
@@ -206,7 +206,7 @@
 
                         <!-- Has Related Projects ? -->
                         <div class="form-group row">
-                            <label asp-for="HasRelatedProject" class="col-form-label col-12 col-xl-4">Alt Proje Var Mı?<span class="text-danger">*</span></label>
+                            <label asp-for="HasRelatedProject" class="col-form-label col-12 col-xl-4">Alt Proje Var mı?<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <div class="text-center d-inline-block col-form-label">
                                     <div class="vc-toggle-container">
