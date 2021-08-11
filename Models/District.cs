@@ -23,9 +23,12 @@ namespace IBBPortal.Models
         [MaxLength(50)]
         public string DistrictName { get; set; }
 
+        [Required]
         public int CityID { get; set; }
         [ForeignKey("CityID")]
         public City City { get; set; }
+
+        public List<Contractor> RelatedContractors { get; set; }
 
         public string UserID { get; set; }
         [ForeignKey("UserID")]

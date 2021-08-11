@@ -22,6 +22,8 @@ namespace IBBPortal.Models
         [MaxLength(256)]
         public string? SubfunctionDescription { get; set; }
 
+        public List<SubfunctionFeature> RelatedSubfunctionFeatures { get; set; }
+
         public string UserID { get; set; }
         [ForeignKey("UserID")]
         public ApplicationUser User { get; set; }

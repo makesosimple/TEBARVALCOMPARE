@@ -40,6 +40,8 @@ namespace IBBPortal.Models
         [ForeignKey("ContractorTypeID")]
         public ContractorType ContractorType { get; set; }
 
+        public List<Person> RelatedPeople{ get; set; }
+
         public string UserID { get; set; }
         [ForeignKey("UserID")]
         public ApplicationUser User { get; set; }
@@ -47,7 +49,6 @@ namespace IBBPortal.Models
         [MaxLength(32)]
         public string PhoneNumber { get; set; }
 
-        #nullable enable
         [MaxLength(256)]
         public string? Description { get; set; }
 
