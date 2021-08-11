@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
 {
-
+    //IBB -> Müdürlük
     [Index(nameof(ParentDepartmentID))]
     [Index(nameof(UserID))]
     public class Department

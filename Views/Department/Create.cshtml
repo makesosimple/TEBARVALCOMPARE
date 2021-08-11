@@ -1,7 +1,7 @@
 ﻿@model IBBPortal.Models.Department
 
 @{
-    ViewData["Title"] = "Departman Ekle";
+    ViewData["Title"] = "Müdürlük Ekle";
 }
 
 <h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
@@ -23,7 +23,7 @@
 
                         <!-- Department Name -->
                         <div class="form-group row">
-                            <label asp-for="DepartmentTitle" class="col-12 col-xl-4 col-form-label">Departman İsmi<span class="text-danger">*</span></label>
+                            <label asp-for="DepartmentTitle" class="col-12 col-xl-4 col-form-label">Müdürlük İsmi<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <input asp-for="DepartmentTitle" type="text" class="form-control" required>
                                 <span asp-validation-for="DepartmentTitle" class="text-danger"></span>
@@ -33,7 +33,7 @@
 
                         <!-- Parent Department ID -->
                         <div class="form-group row">
-                            <label asp-for="ParentDepartmentID" class="col-12 col-xl-4 col-form-label">Bağlı Olduğu Departman</label>
+                            <label asp-for="ParentDepartmentID" class="col-12 col-xl-4 col-form-label">Bağlı Olduğu Müdürlük</label>
                             <div class="col-12 col-xl-8">
                                 <select asp-for="ParentDepartmentID" class="form-control" id="selectDepartment" style="width: 100%;">
                                     <option selected value="">Departman Seçin</option>

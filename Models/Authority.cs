@@ -9,21 +9,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
 {
+    //IBB -> Makam
     [Index(nameof(UserID))]
-    public class Management
+    public class Authority
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ManagementID { get; set; }
+        public int AuthorityID { get; set; }
 
         [Required]
         [MaxLength(256)]
-        public string ManagementTitle { get; set; }
+        public string AuthorityTitle { get; set; }
 
         [MaxLength(256)]
-        public string? ManagementDescription { get; set; }
-
-        [MaxLength(32)]
-        public string? TaxCode { get; set; }
+        public string? AuthorityDescription { get; set; }
 
         public string UserID { get; set; }
         [ForeignKey("UserID")]

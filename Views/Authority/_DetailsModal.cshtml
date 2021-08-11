@@ -1,6 +1,6 @@
-﻿@model IBBPortal.Models.Management
+﻿@model IBBPortal.Models.Authority
 <!-- Modal -->
-<div class="modal fade" id="ManagementModal" tabindex="-1" aria-labelledby="ManagementModalLabel" aria-hidden="true">
+<div class="modal fade" id="AuthorityModal" tabindex="-1" aria-labelledby="AuthorityModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
@@ -18,12 +18,12 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Müdürlük</p></div>
-                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.ManagementTitle</p></div>
+                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Makam</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.AuthorityTitle</p></div>
                     </div>
                     <div class="row">
-                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Vergi Kodu</p></div>
-                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.TaxCode</p></div>
+                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Makam Açıklaması</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.AuthorityDescription</p></div>
                     </div>
                     <hr />
                     <div class="row">

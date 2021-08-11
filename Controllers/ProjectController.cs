@@ -54,9 +54,9 @@ namespace IBBPortal.Controllers
                 var data = _context.Project.Select(c => new 
                 { 
                     c.ProjectID, 
-                    c.ProjectTitle, 
-                    RequestingManagementTitle = c.RequestingManagement.ManagementTitle, 
-                    ResponsibleManagementTitle = c.ResponsibleManagement.ManagementTitle, 
+                    c.ProjectTitle,
+                    RequestingDepartmentTitle = c.RequestingDepartment.DepartmentTitle, 
+                    ResponsibleDepartmentTitle = c.ResponsibleDepartment.DepartmentTitle, 
                     OwnerFullName = c.ProjectOwnerPerson.PersonName.Trim() + " " + c.ProjectOwnerPerson.PersonSurname.Trim(),
                     ServiceAreaTitle = c.ProjectServiceArea.ServiceAreaTitle,
                     ProjectStatusTitle = c.ProjectStatus.ProjectStatusTitle,
@@ -116,8 +116,8 @@ namespace IBBPortal.Controllers
                 .Include(p => p.ProjectOwnerPerson)
                 .Include(p => p.ProjectServiceArea)
                 .Include(p => p.ProjectStatus)
-                .Include(p => p.RequestingManagement)
-                .Include(p => p.ResponsibleManagement)
+                .Include(p => p.RequestingDepartment)
+                .Include(p => p.ResponsibleDepartment)
                 .Include(p => p.User)
                 .FirstOrDefaultAsync(m => m.ProjectID == id);
             if (project == null)
@@ -142,7 +142,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProjectID,ProjectTitle,ProjectCode,ProjectIBBCode,RequestingManagementID,ResponsibleManagementID,ProjectOwnerPersonID,ProjectServiceAreaID,ProjectImportanceID,ProjectStatusID,ProjectStatusDescription,ProjectStatusDescriptionDate,IsFeasibilityNeeded,HasRelatedProject,UserID,CreationDate,UpdateDate,DeletionDate")] Project project)
+        public async Task<IActionResult> Create([Bind("ProjectID,ProjectTitle,ProjectIBBCode,RequestingDepartmentID,ResponsibleDepartmentID,ProjectOwnerPersonID,ProjectServiceAreaID,ProjectImportanceID,ProjectStatusID,ProjectStatusDescription,ProjectStatusDescriptionDate,IsFeasibilityNeeded,HasRelatedProject,UserID,CreationDate,UpdateDate,DeletionDate")] Project project)
         {
             if (ModelState.IsValid)
             {
@@ -166,8 +166,8 @@ namespace IBBPortal.Controllers
                 .Include(p => p.ProjectOwnerPerson)
                 .Include(p => p.ProjectServiceArea)
                 .Include(p => p.ProjectStatus)
-                .Include(p => p.RequestingManagement)
-                .Include(p => p.ResponsibleManagement)
+                .Include(p => p.RequestingDepartment)
+                .Include(p => p.ResponsibleDepartment)
                 .Include(p => p.User)
                 .FirstOrDefaultAsync(m => m.ProjectID == id);
             if (project == null)
@@ -182,7 +182,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProjectID,ProjectTitle,ProjectCode,ProjectIBBCode,RequestingManagementID,ResponsibleManagementID,ProjectOwnerPersonID,ProjectServiceAreaID,ProjectImportanceID,ProjectStatusID,ProjectStatusDescription,ProjectStatusDescriptionDate,IsFeasibilityNeeded,HasRelatedProject,UserID,CreationDate,UpdateDate,DeletionDate")] Project project)
+        public async Task<IActionResult> Edit(int id, [Bind("ProjectID,ProjectTitle,ProjectIBBCode,RequestingDepartmentID,ResponsibleDepartmentID,ProjectOwnerPersonID,ProjectServiceAreaID,ProjectImportanceID,ProjectStatusID,ProjectStatusDescription,ProjectStatusDescriptionDate,IsFeasibilityNeeded,HasRelatedProject,UserID,CreationDate,UpdateDate,DeletionDate")] Project project)
         {
             if (id != project.ProjectID)
             {
@@ -228,8 +228,8 @@ namespace IBBPortal.Controllers
                 .Include(p => p.ProjectOwnerPerson)
                 .Include(p => p.ProjectServiceArea)
                 .Include(p => p.ProjectStatus)
-                .Include(p => p.RequestingManagement)
-                .Include(p => p.ResponsibleManagement)
+                .Include(p => p.RequestingDepartment)
+                .Include(p => p.ResponsibleDepartment)
                 .Include(p => p.User)
                 .FirstOrDefaultAsync(m => m.ProjectID == id);
             if (project == null)

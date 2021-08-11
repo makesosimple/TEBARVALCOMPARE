@@ -1,12 +1,12 @@
-﻿@model IBBPortal.Models.Management
+﻿@model IBBPortal.Models.Authority
 
 @{
-    ViewData["Title"] = "Müdürlük Düzenle";
+    ViewData["Title"] = "Makam Düzenle";
 }
 
 <h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
 <form asp-action="Edit">
-    <input type="hidden" asp-for="ManagementID" />
+    <input type="hidden" asp-for="AuthorityID" />
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
             <ul class="nav nav-pills" id="formTabs" role="tablist">
@@ -22,30 +22,21 @@
                         <!-- Validation Part. Must be still for all views!! -->
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                        <!-- Management Title -->
+                        <!-- Authority Title -->
                         <div class="form-group row">
-                            <label asp-for="ManagementTitle" class="col-12 col-xl-4 col-form-label">Müdürlük İsmi<span class="text-danger">*</span></label>
+                            <label asp-for="AuthorityTitle" class="col-12 col-xl-4 col-form-label">Makam İsmi<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
-                                <input asp-for="ManagementTitle" type="text" class="form-control" required>
-                                <span asp-validation-for="ManagementTitle" class="text-danger"></span>
+                                <input asp-for="AuthorityTitle" type="text" class="form-control" required>
+                                <span asp-validation-for="AuthorityTitle" class="text-danger"></span>
                             </div>
                         </div>
 
-                        <!-- Tax Code -->
+                        <!-- Authority Description -->
                         <div class="form-group row">
-                            <label asp-for="TaxCode" class="col-12 col-xl-4 col-form-label">Vergi Numarası</label>
+                            <label asp-for="AuthorityDescription" class="col-12 col-xl-4 col-form-label">Makam Açıklaması</label>
                             <div class="col-12 col-xl-8">
-                                <input asp-for="TaxCode" type="text" class="form-control">
-                                <span asp-validation-for="TaxCode" class="text-danger"></span>
-                            </div>
-                        </div>
-
-                        <!-- Management Description -->
-                        <div class="form-group row">
-                            <label asp-for="ManagementDescription" class="col-12 col-xl-4 col-form-label">Müdürlük Açıklaması</label>
-                            <div class="col-12 col-xl-8">
-                                <textarea asp-for="ManagementDescription" class="form-control"></textarea>
-                                <span asp-validation-for="ManagementDescription" class="text-danger"></span>
+                                <textarea asp-for="AuthorityDescription" class="form-control"></textarea>
+                                <span asp-validation-for="AuthorityDescription" class="text-danger"></span>
                             </div>
                         </div>
 

@@ -30,18 +30,18 @@
                         <div class="col-12 col-xl-8"><p class="text-primary">@Model.ProjectCode</p></div>
                     </div>
                     <hr />
-                    @if (@Model.RequestingManagement is not null)
+                    @if (@Model.RequestingDepartment is not null)
                     {
                         <div class="row">
                             <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Talep Eden Müdürlük</p></div>
-                            <div class="col-12 col-xl-8"><p class="text-primary">@Model.RequestingManagement.ManagementTitle</p></div>
+                            <div class="col-12 col-xl-8"><p class="text-primary">@Model.RequestingDepartment.DepartmentTitle</p></div>
                         </div>
                     }
-                    @if (@Model.ResponsibleManagement is not null)
+                    @if (@Model.ResponsibleDepartment is not null)
                     {
                         <div class="row">
                             <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Sorumlu Müdürlük</p></div>
-                            <div class="col-12 col-xl-8"><p class="text-primary">@Model.ResponsibleManagement.ManagementTitle</p></div>
+                            <div class="col-12 col-xl-8"><p class="text-primary">@Model.ResponsibleDepartment.DepartmentTitle</p></div>
                         </div>
                     }
                     @if (@Model.ProjectOwnerPerson is not null)

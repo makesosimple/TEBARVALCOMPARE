@@ -14,11 +14,11 @@ using System.Globalization;
 
 namespace IBBPortal.Controllers
 {
-    public class ManagementController : Controller
+    public class AuthorityController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public ManagementController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public AuthorityController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -50,7 +50,7 @@ namespace IBBPortal.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var data = _context.Management.Select(c => new { c.ManagementID, c.ManagementTitle, c.TaxCode, UserName = c.User.UserName });
+                var data = _context.Authority.Select(c => new { c.AuthorityID, c.AuthorityTitle, UserName = c.User.UserName });
 
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
@@ -64,7 +64,7 @@ namespace IBBPortal.Controllers
                 //If control checks out, search. If not loop goes on until the end.
                 string columnName, searchValue;
 
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     columnName = Request.Query[$"columns[{i}][data]"].FirstOrDefault();
                     searchValue = Request.Query[$"columns[{i}][search][value]"].FirstOrDefault();
@@ -97,22 +97,22 @@ namespace IBBPortal.Controllers
             try
             {
 
-                var ManagementData = _context.Management
+                var AuthorityData = _context.Authority
                                     .Select(x => new {
-                                        id = x.ManagementID.ToString(),
-                                        text = x.ManagementTitle
+                                        id = x.AuthorityID.ToString(),
+                                        text = x.AuthorityTitle
                                     });
 
                 if (!String.IsNullOrEmpty(term))
                 {
-                    ManagementData = ManagementData.Where(m => m.text.Contains(term));
+                    AuthorityData = AuthorityData.Where(m => m.text.Contains(term));
                 }
 
                 //Count 
-                var totalCount = ManagementData.Count();
+                var totalCount = AuthorityData.Count();
 
                 //Paging   
-                var passData = ManagementData.ToList();
+                var passData = AuthorityData.ToList();
 
 
                 //Returning Json Data  
@@ -134,15 +134,15 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var management = await _context.Management
+            var authority = await _context.Authority
                 .Include(m => m.User)
-                .FirstOrDefaultAsync(m => m.ManagementID == id);
-            if (management == null)
+                .FirstOrDefaultAsync(m => m.AuthorityID == id);
+            if (authority == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DetailsModal", management);
+            return PartialView("_DetailsModal", authority);
         }
 
         // GET: Management/Create
@@ -159,15 +159,15 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ManagementID,ManagementTitle,ManagementDescription,TaxCode,UserID,CreationDate,UpdateDate,DeletionDate")] Management management)
+        public async Task<IActionResult> Create([Bind("AuthorityID,AuthorityTitle,AuthorityDescription,UserID,CreationDate,UpdateDate,DeletionDate")] Authority authority)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(management);
+                _context.Add(authority);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(management);
+            return View(authority);
         }
 
         // GET: Management/Edit/5
@@ -178,12 +178,12 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var management = await _context.Management.FindAsync(id);
-            if (management == null)
+            var authority = await _context.Authority.FindAsync(id);
+            if (authority == null)
             {
                 return NotFound();
             }
-            return View(management);
+            return View(authority);
         }
 
         // POST: Management/Edit/5
@@ -191,9 +191,9 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ManagementID,ManagementTitle,ManagementDescription,TaxCode,UserID,CreationDate,UpdateDate,DeletionDate")] Management management)
+        public async Task<IActionResult> Edit(int id, [Bind("AuthorityID,AuthorityTitle,AuthorityDescription,UserID,CreationDate,UpdateDate,DeletionDate")] Authority authority)
         {
-            if (id != management.ManagementID)
+            if (id != authority.AuthorityID)
             {
                 return NotFound();
             }
@@ -204,14 +204,14 @@ namespace IBBPortal.Controllers
                 {
 
                     var CurrentDate = DateTime.Now;
-                    management.UpdateDate = CurrentDate;
+                    authority.UpdateDate = CurrentDate;
 
-                    _context.Update(management);
+                    _context.Update(authority);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ManagementExists(management.ManagementID))
+                    if (!ManagementExists(authority.AuthorityID))
                     {
                         return NotFound();
                     }
@@ -222,7 +222,7 @@ namespace IBBPortal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(management);
+            return View(authority);
         }
 
         // GET: Management/Delete/5
@@ -233,15 +233,15 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var management = await _context.Management
+            var authority = await _context.Authority
                 .Include(m => m.User)
-                .FirstOrDefaultAsync(m => m.ManagementID == id);
-            if (management == null)
+                .FirstOrDefaultAsync(m => m.AuthorityID == id);
+            if (authority == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DeleteModal", management);
+            return PartialView("_DeleteModal", authority);
         }
 
         // POST: Management/Delete/5
@@ -249,15 +249,15 @@ namespace IBBPortal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var management = await _context.Management.FindAsync(id);
-            _context.Management.Remove(management);
+            var authority = await _context.Authority.FindAsync(id);
+            _context.Authority.Remove(authority);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ManagementExists(int id)
         {
-            return _context.Management.Any(e => e.ManagementID == id);
+            return _context.Authority.Any(e => e.AuthorityID == id);
         }
     }
 }

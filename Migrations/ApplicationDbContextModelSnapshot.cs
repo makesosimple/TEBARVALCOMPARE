@@ -94,6 +94,42 @@ namespace IBBPortal.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("IBBPortal.Models.Authority", b =>
+                {
+                    b.Property<int>("AuthorityID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AuthorityDescription")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("AuthorityTitle")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("AuthorityID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Authority");
+                });
+
             modelBuilder.Entity("IBBPortal.Models.Board", b =>
                 {
                     b.Property<int>("BoardID")
@@ -428,46 +464,6 @@ namespace IBBPortal.Migrations
                     b.ToTable("JobTitle");
                 });
 
-            modelBuilder.Entity("IBBPortal.Models.Management", b =>
-                {
-                    b.Property<int>("ManagementID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreationDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ManagementDescription")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("ManagementTitle")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("TaxCode")
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
-
-                    b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ManagementID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("Management");
-                });
-
             modelBuilder.Entity("IBBPortal.Models.Person", b =>
                 {
                     b.Property<int>("PersonID")
@@ -600,9 +596,10 @@ namespace IBBPortal.Migrations
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
-                    b.Property<string>("ProjectIBBCode")
+                    b.Property<int?>("ProjectIBBCode")
+                        .IsRequired()
                         .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                        .HasColumnType("int");
 
                     b.Property<int>("ProjectImportanceID")
                         .HasColumnType("int");
@@ -628,10 +625,10 @@ namespace IBBPortal.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("RequestingManagementID")
+                    b.Property<int>("RequestingDepartmentID")
                         .HasColumnType("int");
 
-                    b.Property<int>("ResponsibleManagementID")
+                    b.Property<int>("ResponsibleDepartmentID")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdateDate")
@@ -650,9 +647,9 @@ namespace IBBPortal.Migrations
 
                     b.HasIndex("ProjectStatusID");
 
-                    b.HasIndex("RequestingManagementID");
+                    b.HasIndex("RequestingDepartmentID");
 
-                    b.HasIndex("ResponsibleManagementID");
+                    b.HasIndex("ResponsibleDepartmentID");
 
                     b.HasIndex("UserID");
 
@@ -1225,6 +1222,15 @@ namespace IBBPortal.Migrations
                     b.HasDiscriminator().HasValue("ApplicationRole");
                 });
 
+            modelBuilder.Entity("IBBPortal.Models.Authority", b =>
+                {
+                    b.HasOne("IBBPortal.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("IBBPortal.Models.Board", b =>
                 {
                     b.HasOne("IBBPortal.Models.ApplicationUser", "User")
@@ -1337,15 +1343,6 @@ namespace IBBPortal.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("IBBPortal.Models.Management", b =>
-                {
-                    b.HasOne("IBBPortal.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("IBBPortal.Models.Person", b =>
                 {
                     b.HasOne("IBBPortal.Models.Contractor", "Contractor")
@@ -1414,15 +1411,15 @@ namespace IBBPortal.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("IBBPortal.Models.Management", "RequestingManagement")
+                    b.HasOne("IBBPortal.Models.Department", "RequestingDepartment")
                         .WithMany()
-                        .HasForeignKey("RequestingManagementID")
+                        .HasForeignKey("RequestingDepartmentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("IBBPortal.Models.Management", "ResponsibleManagement")
+                    b.HasOne("IBBPortal.Models.Department", "ResponsibleDepartment")
                         .WithMany()
-                        .HasForeignKey("ResponsibleManagementID")
+                        .HasForeignKey("ResponsibleDepartmentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1438,9 +1435,9 @@ namespace IBBPortal.Migrations
 
                     b.Navigation("ProjectStatus");
 
-                    b.Navigation("RequestingManagement");
+                    b.Navigation("RequestingDepartment");
 
-                    b.Navigation("ResponsibleManagement");
+                    b.Navigation("ResponsibleDepartment");
 
                     b.Navigation("User");
                 });
