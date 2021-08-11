@@ -1,13 +1,13 @@
-﻿@model IBBPortal.Models.Management
+﻿@model IBBPortal.Models.Authority
 <!-- Modal -->
-<div class="modal fade" id="ManagementDeletionModal" tabindex="-1" aria-labelledby="ManagementDeletionModalLabel" aria-hidden="true">
+<div class="modal fade" id="AuthorityDeletionModal" tabindex="-1" aria-labelledby="AuthorityDeletionModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12 d-flex justify-content-between">
-                            <h5 class="modal-title" id="exampleModalLabel">Müdürlük Silme</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Makam Silme</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -18,13 +18,13 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-12"><p class="text-primary font-weight-bold mb-0">@Model.ManagementID kodlu @Model.ManagementTitle kaydını silmek istediğinize emin misiniz?</p></div>
+                        <div class="col-12"><p class="text-primary font-weight-bold mb-0">@Model.AuthorityID kodlu @Model.AuthorityTitle kaydını silmek istediğinize emin misiniz?</p></div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <form asp-action="Delete">
-                    <input type="hidden" asp-for="ManagementID" />
+                    <input type="hidden" asp-for="AuthorityID" />
                     <div class="buttons">
                         <button type="submit" value="Delete" class="btn bg-success text-white"><i class="fas fa-trash-alt mr-2"></i> Sil</button>
                         <a asp-action="Index" class="btn btn-danger"><i class="fas fa-ban"></i> Vazgeç</a>

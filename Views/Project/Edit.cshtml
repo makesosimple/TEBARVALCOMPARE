@@ -41,9 +41,9 @@
 
                         <!-- Project IBB Code -->
                         <div class="form-group row">
-                            <label asp-for="ProjectIBBCode" class="col-12 col-lg-4 col-form-label">Proje İBB Kodu</label>
+                            <label asp-for="ProjectIBBCode" class="col-12 col-lg-4 col-form-label">Proje İBB Kodu<span class="text-danger">*</span></label>
                             <div class="col-12 col-lg-8">
-                                <input asp-for="ProjectIBBCode" type="text" class="form-control">
+                                <input asp-for="ProjectIBBCode" type="number" class="form-control" required>
                                 <span asp-validation-for="ProjectIBBCode" class="text-danger"></span>
                             </div>
                         </div>
@@ -52,12 +52,12 @@
 
                         <!-- Requesting Management ID -->
                         <div class="form-group row">
-                            <label asp-for="RequestingManagementID" class="col-12 col-xl-4 col-form-label">Talep Eden Müdürlük<span class="text-danger">*</span></label>
+                            <label asp-for="RequestingDepartmentID" class="col-12 col-xl-4 col-form-label">Talep Eden Müdürlük<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
-                                <select asp-for="RequestingManagementID" class="form-control" id="selectRequestingManagement" style="width: 100%;" required>
-                                    @if (@Model.RequestingManagement is not null)
+                                <select asp-for="RequestingDepartmentID" class="form-control" id="selectRequestingDepartment" style="width: 100%;" required>
+                                    @if (@Model.RequestingDepartment is not null)
                                     {
-                                        <option value="@Model.RequestingManagement.ManagementID">@Model.RequestingManagement.ManagementTitle</option>
+                                        <option value="@Model.RequestingDepartment.DepartmentID">@Model.RequestingDepartment.DepartmentTitle</option>
                                     }
 
                                     else
@@ -65,18 +65,18 @@
                                         <option value="">Talep Eden Müdürlük Seçin</option>
                                     }
                                 </select>
-                                <span asp-validation-for="RequestingManagementID" class="text-danger"></span>
+                                <span asp-validation-for="RequestingDepartmentID" class="text-danger"></span>
                             </div>
                         </div>
 
                         <!-- Responsible Management ID -->
                         <div class="form-group row">
-                            <label asp-for="ResponsibleManagementID" class="col-12 col-xl-4 col-form-label">Sorumlu Müdürlük<span class="text-danger">*</span></label>
+                            <label asp-for="ResponsibleDepartmentID" class="col-12 col-xl-4 col-form-label">Sorumlu Müdürlük<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
-                                <select asp-for="ResponsibleManagementID" class="form-control" id="selectResponsibleManagement" style="width: 100%;" required>
-                                    @if (@Model.ResponsibleManagement is not null)
+                                <select asp-for="ResponsibleDepartmentID" class="form-control" id="selectResponsibleDepartment" style="width: 100%;" required>
+                                    @if (@Model.ResponsibleDepartment is not null)
                                     {
-                                        <option value="@Model.ResponsibleManagement.ManagementID">@Model.ResponsibleManagement.ManagementTitle</option>
+                                        <option value="@Model.ResponsibleDepartment.DepartmentID">@Model.ResponsibleDepartment.DepartmentTitle</option>
                                     }
 
                                     else
@@ -84,7 +84,7 @@
                                         <option value="">Sorumlu Müdürlük Seçin</option>
                                     }
                                 </select>
-                                <span asp-validation-for="ResponsibleManagementID" class="text-danger"></span>
+                                <span asp-validation-for="ResponsibleDepartmentID" class="text-danger"></span>
                             </div>
                         </div>
 
@@ -244,11 +244,11 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
-        $('#selectRequestingManagement').select2({
+        $('#selectRequestingDepartment').select2({
             theme: "ibb",
             language: "tr",
             ajax: {
-                url: '/Management/JsonSelectData',
+                url: '/Department/JsonSelectData',
                 dataType: 'json',
                 processResults: function (response) {
 
@@ -259,11 +259,11 @@
             }
         });
 
-        $('#selectResponsibleManagement').select2({
+        $('#selectResponsibleDepartment').select2({
             theme: "ibb",
             language: "tr",
             ajax: {
-                url: '/Management/JsonSelectData',
+                url: '/Department/JsonSelectData',
                 dataType: 'json',
                 processResults: function (response) {
 

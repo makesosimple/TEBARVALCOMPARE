@@ -15,8 +15,8 @@ namespace IBBPortal.Models
     //[Index(nameof(ProjectExpropriationID))]
     //[Index(nameof(ProjectZoningPlanID))]
     //[Index(nameof(ProjectBoardApprovalID))]
-    [Index(nameof(RequestingManagementID))]
-    [Index(nameof(ResponsibleManagementID))]
+    [Index(nameof(RequestingDepartmentID))]
+    [Index(nameof(ResponsibleDepartmentID))]
     [Index(nameof(ProjectOwnerPersonID))]
     [Index(nameof(ProjectServiceAreaID))]
     [Index(nameof(ProjectImportanceID))]
@@ -39,21 +39,22 @@ namespace IBBPortal.Models
         public string? ProjectCode { get; set; }
 
         //Input field. Value will come from the end-user.
+        [Required]
         [MaxLength(32)]
-        public string? ProjectIBBCode { get; set; }
+        public int ProjectIBBCode { get; set; }
 
-        //Requesting Management. Bind to Management Model.
+        //Requesting Department. Bind to Department Model.
         [Required]
-        public int RequestingManagementID { get; set; }
+        public int RequestingDepartmentID { get; set; }
 
-        [ForeignKey("RequestingManagementID")]
-        public Management RequestingManagement { get; set; }
+        [ForeignKey("RequestingDepartmentID")]
+        public Department RequestingDepartment { get; set; }
 
-        //Responsible Management. Bind to Management Model.
+        //Responsible Department. Bind to Department Model.
         [Required]
-        public int ResponsibleManagementID { get; set; }
-        [ForeignKey("ResponsibleManagementID")]
-        public Management ResponsibleManagement { get; set; }
+        public int ResponsibleDepartmentID { get; set; }
+        [ForeignKey("ResponsibleDepartmentID")]
+        public Department ResponsibleDepartment { get; set; }
 
         //Project Owner. Bind to Person Model.
         [Required]

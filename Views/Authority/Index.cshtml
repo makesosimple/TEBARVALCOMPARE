@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Müdürlük Yönetimi";
+    ViewData["Title"] = "Makam Yönetimi";
 }
 @section Scripts
 {
@@ -17,20 +17,19 @@
                 "filter": true, // this is for disable filter (search box)
                 "orderMulti": false, // for disable multiple column at once
                 "ajax": {
-                    "url": "/Management/JSONData",
+                    "url": "/Authority/JSONData",
                     "type": "GET"
                 },
                 "columns": [
-                    { "data": "managementTitle", "autoWidth": true },
-                    { "data": "taxCode", "autoWidth": true },
+                    { "data": "uthorityTitle", "autoWidth": true },
                     { "data": "userName", "autoWidth": true },
                     {
                         "data": null,
                         "render": function (data, type, full, meta, row) {
                             return `<div class="d-flex align-items-center justify-content-end">\
-                                        <a class="btn btn-circle bg-turqoise text-white" href="/Management/Edit/${full.managementID}"><i class="fas fa-edit"></i></a>\
-                                        <button type="button" class="btn btn-circle bg-warning text-white" onclick="modalScript(this)" data-url="/Management/Details/${full.managementID}"><i class="fas fa-info-circle"></i></button>\
-                                        <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/Management/Delete/${full.managementID}" ><i class="fas fa-trash-alt"></i></button>
+                                        <a class="btn btn-circle bg-turqoise text-white" href="/Authority/Edit/${full.authorityID}"><i class="fas fa-edit"></i></a>\
+                                        <button type="button" class="btn btn-circle bg-warning text-white" onclick="modalScript(this)" data-url="/Authority/Details/${full.authorityID}"><i class="fas fa-info-circle"></i></button>\
+                                        <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/Authority/Delete/${full.authorityID}" ><i class="fas fa-trash-alt"></i></button>
                                     </div>`;
                         }
                     },
@@ -76,14 +75,12 @@
             <table class="table table-hover display" id="dataTable" width="100%">
                 <thead class="bg-navy-blue">
                     <tr class="filter h-100 bg-white">
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="managementTitle" name="managementTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="taxCode" name="taxCode" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="userName" name="userName" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="authorityTitle" name="authorityTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="userName" name="userName" value="" /></th>
                         <th scope="col"></th>
                     </tr>
                     <tr id="tableLabels">
-                        <th scope="col" class="text-white text-sm">Müdürlük İsmi</th>
-                        <th scope="col" class="text-white text-sm">Vergi Kodu</th>
+                        <th scope="col" class="text-white text-sm">Makam İsmi</th>
                         <th scope="col" class="text-white text-sm">Oluşturan</th>
                         <th scope="col"></th>
                     </tr>

@@ -73,7 +73,7 @@ namespace IBBPortal.Data
 
         public DbSet<IBBPortal.Models.Phase> Phase { get; set; }
 
-        public DbSet<IBBPortal.Models.Management> Management { get; set; }
+        public DbSet<IBBPortal.Models.Authority> Authority { get; set; }
 
         public DbSet<IBBPortal.Models.ZoningPlanStatus> ZoningPlanStatus { get; set; }
 

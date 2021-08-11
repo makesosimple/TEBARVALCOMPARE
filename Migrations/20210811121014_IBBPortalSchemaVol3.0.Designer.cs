@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IBBPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210808214540_IBBPortalSchemaVol2.2")]
-    partial class IBBPortalSchemaVol22
+    [Migration("20210811121014_IBBPortalSchemaVol3.0")]
+    partial class IBBPortalSchemaVol30
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -94,6 +94,42 @@ namespace IBBPortal.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.Authority", b =>
+                {
+                    b.Property<int>("AuthorityID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AuthorityDescription")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("AuthorityTitle")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("AuthorityID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Authority");
                 });
 
             modelBuilder.Entity("IBBPortal.Models.Board", b =>
@@ -430,32 +466,45 @@ namespace IBBPortal.Migrations
                     b.ToTable("JobTitle");
                 });
 
-            modelBuilder.Entity("IBBPortal.Models.Management", b =>
+            modelBuilder.Entity("IBBPortal.Models.Person", b =>
                 {
-                    b.Property<int>("ManagementID")
+                    b.Property<int>("PersonID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("ContractorID")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreationDate")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletionDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ManagementDescription")
+                    b.Property<int?>("DepartmentID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("JobTitleID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PersonEmail")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("ManagementTitle")
+                    b.Property<string>("PersonName")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("TaxCode")
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                    b.Property<string>("PersonPhone")
+                        .HasMaxLength(24)
+                        .HasColumnType("nvarchar(24)");
+
+                    b.Property<string>("PersonSurname")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
@@ -463,11 +512,20 @@ namespace IBBPortal.Migrations
                     b.Property<string>("UserID")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("ManagementID");
+                    b.Property<bool>("isInternal")
+                        .HasColumnType("bit");
+
+                    b.HasKey("PersonID");
+
+                    b.HasIndex("ContractorID");
+
+                    b.HasIndex("DepartmentID");
+
+                    b.HasIndex("JobTitleID");
 
                     b.HasIndex("UserID");
 
-                    b.ToTable("Management");
+                    b.ToTable("Person");
                 });
 
             modelBuilder.Entity("IBBPortal.Models.Phase", b =>
@@ -510,9 +568,129 @@ namespace IBBPortal.Migrations
 
                     b.HasKey("PhaseID");
 
+                    b.HasIndex("PreviousPhaseID");
+
                     b.HasIndex("UserID");
 
                     b.ToTable("Phase");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.Project", b =>
+                {
+                    b.Property<int>("ProjectID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("HasRelatedProject")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsFeasibilityNeeded")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ProjectCode")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<int?>("ProjectIBBCode")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProjectImportanceID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProjectOwnerPersonID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProjectServiceAreaID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProjectStatusDescription")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<DateTime?>("ProjectStatusDescriptionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProjectStatusID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProjectTitle")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("RequestingDepartmentID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ResponsibleDepartmentID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ProjectID");
+
+                    b.HasIndex("ProjectImportanceID");
+
+                    b.HasIndex("ProjectOwnerPersonID");
+
+                    b.HasIndex("ProjectServiceAreaID");
+
+                    b.HasIndex("ProjectStatusID");
+
+                    b.HasIndex("RequestingDepartmentID");
+
+                    b.HasIndex("ResponsibleDepartmentID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Project");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.ProjectImportance", b =>
+                {
+                    b.Property<int>("ProjectImportanceID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ProjectImportanceDescription")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("ProjectImportanceTitle")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ProjectImportanceID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("ProjectImportance");
                 });
 
             modelBuilder.Entity("IBBPortal.Models.ProjectPhaseStatus", b =>
@@ -618,6 +796,41 @@ namespace IBBPortal.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("ProjectTeamCategory");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.RelationType", b =>
+                {
+                    b.Property<int>("RelationTypeID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RelationTypeDescription")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("RelationTypeTitle")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("RelationTypeID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("RelationType");
                 });
 
             modelBuilder.Entity("IBBPortal.Models.ServiceArea", b =>
@@ -1011,6 +1224,15 @@ namespace IBBPortal.Migrations
                     b.HasDiscriminator().HasValue("ApplicationRole");
                 });
 
+            modelBuilder.Entity("IBBPortal.Models.Authority", b =>
+                {
+                    b.HasOne("IBBPortal.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("IBBPortal.Models.Board", b =>
                 {
                     b.HasOne("IBBPortal.Models.ApplicationUser", "User")
@@ -1123,16 +1345,106 @@ namespace IBBPortal.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("IBBPortal.Models.Management", b =>
+            modelBuilder.Entity("IBBPortal.Models.Person", b =>
                 {
+                    b.HasOne("IBBPortal.Models.Contractor", "Contractor")
+                        .WithMany()
+                        .HasForeignKey("ContractorID");
+
+                    b.HasOne("IBBPortal.Models.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentID");
+
+                    b.HasOne("IBBPortal.Models.JobTitle", "JobTitle")
+                        .WithMany()
+                        .HasForeignKey("JobTitleID");
+
                     b.HasOne("IBBPortal.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserID");
+
+                    b.Navigation("Contractor");
+
+                    b.Navigation("Department");
+
+                    b.Navigation("JobTitle");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("IBBPortal.Models.Phase", b =>
+                {
+                    b.HasOne("IBBPortal.Models.Phase", "PreviousPhase")
+                        .WithMany()
+                        .HasForeignKey("PreviousPhaseID");
+
+                    b.HasOne("IBBPortal.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID");
+
+                    b.Navigation("PreviousPhase");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.Project", b =>
+                {
+                    b.HasOne("IBBPortal.Models.ProjectImportance", "ProjectImportance")
+                        .WithMany()
+                        .HasForeignKey("ProjectImportanceID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IBBPortal.Models.Person", "ProjectOwnerPerson")
+                        .WithMany()
+                        .HasForeignKey("ProjectOwnerPersonID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IBBPortal.Models.ServiceArea", "ProjectServiceArea")
+                        .WithMany()
+                        .HasForeignKey("ProjectServiceAreaID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IBBPortal.Models.ProjectStatus", "ProjectStatus")
+                        .WithMany()
+                        .HasForeignKey("ProjectStatusID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IBBPortal.Models.Department", "RequestingDepartment")
+                        .WithMany()
+                        .HasForeignKey("RequestingDepartmentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IBBPortal.Models.Department", "ResponsibleDepartment")
+                        .WithMany()
+                        .HasForeignKey("ResponsibleDepartmentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IBBPortal.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID");
+
+                    b.Navigation("ProjectImportance");
+
+                    b.Navigation("ProjectOwnerPerson");
+
+                    b.Navigation("ProjectServiceArea");
+
+                    b.Navigation("ProjectStatus");
+
+                    b.Navigation("RequestingDepartment");
+
+                    b.Navigation("ResponsibleDepartment");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.ProjectImportance", b =>
                 {
                     b.HasOne("IBBPortal.Models.ApplicationUser", "User")
                         .WithMany()
@@ -1160,6 +1472,15 @@ namespace IBBPortal.Migrations
                 });
 
             modelBuilder.Entity("IBBPortal.Models.ProjectTeamCategory", b =>
+                {
+                    b.HasOne("IBBPortal.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.RelationType", b =>
                 {
                     b.HasOne("IBBPortal.Models.ApplicationUser", "User")
                         .WithMany()

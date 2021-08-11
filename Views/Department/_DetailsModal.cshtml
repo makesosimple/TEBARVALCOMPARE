@@ -18,13 +18,13 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Departman İsmi</p></div>
+                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Müdürlük</p></div>
                         <div class="col-12 col-xl-8"><p class="text-primary">@Model.DepartmentTitle</p></div>
                     </div>
                     @if (Model.ParentDepartment is not null)
                     {
                         <div class="row">
-                            <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Bağlı Olduğu Departman</p></div>
+                            <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Bağlı Olduğu Müdürlük</p></div>
                             <div class="col-12 col-xl-8"><p class="text-primary">@Model.ParentDepartment.DepartmentTitle</p></div>
                         </div>
                     }
