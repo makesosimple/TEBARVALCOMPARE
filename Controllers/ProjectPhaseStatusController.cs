@@ -227,9 +227,19 @@ namespace IBBPortal.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var projectPhaseStatus = await _context.ProjectPhaseStatus.FindAsync(id);
-            _context.ProjectPhaseStatus.Remove(projectPhaseStatus);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            
+            try
+            {
+                _context.ProjectPhaseStatus.Remove(projectPhaseStatus);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException ex)
+            {
+                TempData["ErrorTitle"] = "HATA";
+                TempData["ErrorMessage"] = $"Bu değer, başka alanlarda kullanımda olduğu için silemezsiniz. Lütfen sistem yöneticinizle görüşün.";
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         private bool ProjectPhaseStatusExists(int id)

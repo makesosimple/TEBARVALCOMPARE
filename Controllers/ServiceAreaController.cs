@@ -264,10 +264,7 @@ namespace IBBPortal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var serviceArea = await _context.ServiceArea
-                .Include(f => f.ParentServiceArea)
-                .Include(f => f.User)
-                .FirstOrDefaultAsync(m => m.ServiceAreaID == id);
+            var serviceArea = await _context.ServiceArea.FindAsync(id);
 
             try
             {
@@ -278,8 +275,7 @@ namespace IBBPortal.Controllers
             catch (DbUpdateException ex)
             {
                 TempData["ErrorTitle"] = "HATA";
-                TempData["ErrorMessage"] = $"Silmeye çalıştığınız {serviceArea.ServiceAreaID} kodlu {serviceArea.ServiceAreaTitle} kategorisi " +
-                    $"başka Hizmet Alanları tarafından kullanılmaktadır. Lütfen önce bağlı kayıtları siliniz!";
+                TempData["ErrorMessage"] = $"Bu değer, başka alanlarda kullanımda olduğu için silemezsiniz. Lütfen sistem yöneticinizle görüşün.";
                 return RedirectToAction(nameof(Index));
             }
         }

@@ -263,9 +263,18 @@ namespace IBBPortal.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var authority = await _context.Authority.FindAsync(id);
-            _context.Authority.Remove(authority);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                _context.Authority.Remove(authority);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException ex)
+            {
+                TempData["ErrorTitle"] = "HATA";
+                TempData["ErrorMessage"] = $"Bu değer, başka alanlarda kullanımda olduğu için silemezsiniz. Lütfen sistem yöneticinizle görüşün.";
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         private bool ManagementExists(int id)

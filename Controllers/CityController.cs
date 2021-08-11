@@ -261,16 +261,7 @@ namespace IBBPortal.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var city = await _context.City.FindAsync(id);
-            _context.City.Remove(city);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
 
-            //var city = await _context.City
-            //    .Include(f => f.ParentFileCategory)
-            //    .Include(f => f.User)
-            //    .FirstOrDefaultAsync(m => m.CityID == id);
-
-            /*
             try
             {
                 _context.City.Remove(city);
@@ -280,11 +271,9 @@ namespace IBBPortal.Controllers
             catch (DbUpdateException ex)
             {
                 TempData["ErrorTitle"] = "HATA";
-                TempData["ErrorMessage"] = $"Silmeye çalıştığınız {city.CityID} kodlu {city.CityName} kategorisi " +
-                    $"başka Dosya Kategorileri tarafından kullanılmaktadır. Lütfen önce bağlı kayıtları siliniz!";
+                TempData["ErrorMessage"] = $"Bu değer, başka alanlarda kullanımda olduğu için silemezsiniz. Lütfen sistem yöneticinizle görüşün.";
                 return RedirectToAction(nameof(Index));
             }
-            */
         }
 
         private bool CityExists(int id)

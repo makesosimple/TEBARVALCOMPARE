@@ -40,43 +40,35 @@ namespace IBBPortal.Models
 
         //Input field. Value will come from the end-user.
         [Required]
-        [MaxLength(32)]
         public int ProjectIBBCode { get; set; }
 
         //Requesting Department. Bind to Department Model.
-        [Required]
-        public int RequestingDepartmentID { get; set; }
-
+        public int? RequestingDepartmentID { get; set; }
         [ForeignKey("RequestingDepartmentID")]
         public Department RequestingDepartment { get; set; }
 
         //Responsible Department. Bind to Department Model.
-        [Required]
-        public int ResponsibleDepartmentID { get; set; }
+        public int? ResponsibleDepartmentID { get; set; }
         [ForeignKey("ResponsibleDepartmentID")]
         public Department ResponsibleDepartment { get; set; }
 
         //Project Owner. Bind to Person Model.
-        [Required]
-        public int ProjectOwnerPersonID { get; set; }
+        public int? ProjectOwnerPersonID { get; set; }
         [ForeignKey("ProjectOwnerPersonID")]
         public Person ProjectOwnerPerson { get; set; }
 
         //Project Service Area. Bind to Service Area Model.
-        [Required]
-        public int ProjectServiceAreaID { get; set; }
+        public int? ProjectServiceAreaID { get; set; }
         [ForeignKey("ProjectServiceAreaID")]
         public ServiceArea ProjectServiceArea { get; set; }
 
         //Project Importance. Bind to Project Importance Model.
-        [Required]
-        public int ProjectImportanceID { get; set; }
+        public int? ProjectImportanceID { get; set; }
         [ForeignKey("ProjectImportanceID")]
         public ProjectImportance ProjectImportance { get; set; }
 
         //Project Status. Bind To Project Status Model
-        [Required]
-        public int ProjectStatusID { get; set; }
+        public int? ProjectStatusID { get; set; }
         [ForeignKey("ProjectStatusID")]
         public ProjectStatus ProjectStatus { get; set; }
 

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace IBBPortal.Migrations
 {
-    public partial class IBBPortalSchemaVol30 : Migration
+    public partial class Test : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -789,12 +789,12 @@ namespace IBBPortal.Migrations
                     ProjectTitle = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     ProjectCode = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
                     ProjectIBBCode = table.Column<int>(type: "int", maxLength: 32, nullable: false),
-                    RequestingDepartmentID = table.Column<int>(type: "int", nullable: false),
-                    ResponsibleDepartmentID = table.Column<int>(type: "int", nullable: false),
-                    ProjectOwnerPersonID = table.Column<int>(type: "int", nullable: false),
-                    ProjectServiceAreaID = table.Column<int>(type: "int", nullable: false),
-                    ProjectImportanceID = table.Column<int>(type: "int", nullable: false),
-                    ProjectStatusID = table.Column<int>(type: "int", nullable: false),
+                    RequestingDepartmentID = table.Column<int>(type: "int", nullable: true),
+                    ResponsibleDepartmentID = table.Column<int>(type: "int", nullable: true),
+                    ProjectOwnerPersonID = table.Column<int>(type: "int", nullable: true),
+                    ProjectServiceAreaID = table.Column<int>(type: "int", nullable: true),
+                    ProjectImportanceID = table.Column<int>(type: "int", nullable: true),
+                    ProjectStatusID = table.Column<int>(type: "int", nullable: true),
                     ProjectStatusDescription = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
                     ProjectStatusDescriptionDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsFeasibilityNeeded = table.Column<bool>(type: "bit", nullable: false),
@@ -818,37 +818,37 @@ namespace IBBPortal.Migrations
                         column: x => x.RequestingDepartmentID,
                         principalTable: "Department",
                         principalColumn: "DepartmentID",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Project_Department_ResponsibleDepartmentID",
                         column: x => x.ResponsibleDepartmentID,
                         principalTable: "Department",
                         principalColumn: "DepartmentID",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Project_Person_ProjectOwnerPersonID",
                         column: x => x.ProjectOwnerPersonID,
                         principalTable: "Person",
                         principalColumn: "PersonID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Project_ProjectImportance_ProjectImportanceID",
                         column: x => x.ProjectImportanceID,
                         principalTable: "ProjectImportance",
                         principalColumn: "ProjectImportanceID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Project_ProjectStatus_ProjectStatusID",
                         column: x => x.ProjectStatusID,
                         principalTable: "ProjectStatus",
                         principalColumn: "ProjectStatusID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Project_ServiceArea_ProjectServiceAreaID",
                         column: x => x.ProjectServiceAreaID,
                         principalTable: "ServiceArea",
                         principalColumn: "ServiceAreaID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(

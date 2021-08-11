@@ -227,9 +227,19 @@ namespace IBBPortal.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var zoningPlanModificationStatus = await _context.ZoningPlanModificationStatus.FindAsync(id);
-            _context.ZoningPlanModificationStatus.Remove(zoningPlanModificationStatus);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            
+            try
+            {
+                _context.ZoningPlanModificationStatus.Remove(zoningPlanModificationStatus);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException ex)
+            {
+                TempData["ErrorTitle"] = "HATA";
+                TempData["ErrorMessage"] = $"Bu değer, başka alanlarda kullanımda olduğu için silemezsiniz. Lütfen sistem yöneticinizle görüşün.";
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         private bool ZoningPlanModificationStatusExists(int id)

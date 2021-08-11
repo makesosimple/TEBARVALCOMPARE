@@ -596,18 +596,17 @@ namespace IBBPortal.Migrations
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
-                    b.Property<int?>("ProjectIBBCode")
-                        .IsRequired()
+                    b.Property<int>("ProjectIBBCode")
                         .HasMaxLength(32)
                         .HasColumnType("int");
 
-                    b.Property<int>("ProjectImportanceID")
+                    b.Property<int?>("ProjectImportanceID")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProjectOwnerPersonID")
+                    b.Property<int?>("ProjectOwnerPersonID")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProjectServiceAreaID")
+                    b.Property<int?>("ProjectServiceAreaID")
                         .HasColumnType("int");
 
                     b.Property<string>("ProjectStatusDescription")
@@ -617,7 +616,7 @@ namespace IBBPortal.Migrations
                     b.Property<DateTime?>("ProjectStatusDescriptionDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ProjectStatusID")
+                    b.Property<int?>("ProjectStatusID")
                         .HasColumnType("int");
 
                     b.Property<string>("ProjectTitle")
@@ -625,10 +624,10 @@ namespace IBBPortal.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("RequestingDepartmentID")
+                    b.Property<int?>("RequestingDepartmentID")
                         .HasColumnType("int");
 
-                    b.Property<int>("ResponsibleDepartmentID")
+                    b.Property<int?>("ResponsibleDepartmentID")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdateDate")
@@ -1252,17 +1251,17 @@ namespace IBBPortal.Migrations
             modelBuilder.Entity("IBBPortal.Models.Contractor", b =>
                 {
                     b.HasOne("IBBPortal.Models.City", "City")
-                        .WithMany()
+                        .WithMany("RelatedContractors")
                         .HasForeignKey("CityID");
 
                     b.HasOne("IBBPortal.Models.ContractorType", "ContractorType")
-                        .WithMany()
+                        .WithMany("RelatedContractors")
                         .HasForeignKey("ContractorTypeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("IBBPortal.Models.District", "District")
-                        .WithMany()
+                        .WithMany("RelatedContractors")
                         .HasForeignKey("DistrictID");
 
                     b.HasOne("IBBPortal.Models.ApplicationUser", "User")
@@ -1290,7 +1289,7 @@ namespace IBBPortal.Migrations
             modelBuilder.Entity("IBBPortal.Models.Department", b =>
                 {
                     b.HasOne("IBBPortal.Models.Department", "ParentDepartment")
-                        .WithMany("Departments")
+                        .WithMany()
                         .HasForeignKey("ParentDepartmentID");
 
                     b.HasOne("IBBPortal.Models.ApplicationUser", "User")
@@ -1305,7 +1304,7 @@ namespace IBBPortal.Migrations
             modelBuilder.Entity("IBBPortal.Models.District", b =>
                 {
                     b.HasOne("IBBPortal.Models.City", "City")
-                        .WithMany()
+                        .WithMany("RelatedDistricts")
                         .HasForeignKey("CityID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1346,15 +1345,15 @@ namespace IBBPortal.Migrations
             modelBuilder.Entity("IBBPortal.Models.Person", b =>
                 {
                     b.HasOne("IBBPortal.Models.Contractor", "Contractor")
-                        .WithMany()
+                        .WithMany("RelatedPeople")
                         .HasForeignKey("ContractorID");
 
                     b.HasOne("IBBPortal.Models.Department", "Department")
-                        .WithMany()
+                        .WithMany("RelatedPeople")
                         .HasForeignKey("DepartmentID");
 
                     b.HasOne("IBBPortal.Models.JobTitle", "JobTitle")
-                        .WithMany()
+                        .WithMany("RelatedPeople")
                         .HasForeignKey("JobTitleID");
 
                     b.HasOne("IBBPortal.Models.ApplicationUser", "User")
@@ -1388,40 +1387,28 @@ namespace IBBPortal.Migrations
             modelBuilder.Entity("IBBPortal.Models.Project", b =>
                 {
                     b.HasOne("IBBPortal.Models.ProjectImportance", "ProjectImportance")
-                        .WithMany()
-                        .HasForeignKey("ProjectImportanceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("RelatedProjects")
+                        .HasForeignKey("ProjectImportanceID");
 
                     b.HasOne("IBBPortal.Models.Person", "ProjectOwnerPerson")
-                        .WithMany()
-                        .HasForeignKey("ProjectOwnerPersonID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("RelatedProjects")
+                        .HasForeignKey("ProjectOwnerPersonID");
 
                     b.HasOne("IBBPortal.Models.ServiceArea", "ProjectServiceArea")
-                        .WithMany()
-                        .HasForeignKey("ProjectServiceAreaID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("RelatedProjects")
+                        .HasForeignKey("ProjectServiceAreaID");
 
                     b.HasOne("IBBPortal.Models.ProjectStatus", "ProjectStatus")
-                        .WithMany()
-                        .HasForeignKey("ProjectStatusID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("RelatedProjects")
+                        .HasForeignKey("ProjectStatusID");
 
                     b.HasOne("IBBPortal.Models.Department", "RequestingDepartment")
                         .WithMany()
-                        .HasForeignKey("RequestingDepartmentID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RequestingDepartmentID");
 
                     b.HasOne("IBBPortal.Models.Department", "ResponsibleDepartment")
                         .WithMany()
-                        .HasForeignKey("ResponsibleDepartmentID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ResponsibleDepartmentID");
 
                     b.HasOne("IBBPortal.Models.ApplicationUser", "User")
                         .WithMany()
@@ -1514,7 +1501,7 @@ namespace IBBPortal.Migrations
             modelBuilder.Entity("IBBPortal.Models.SubfunctionFeature", b =>
                 {
                     b.HasOne("IBBPortal.Models.Subfunction", "Subfunction")
-                        .WithMany()
+                        .WithMany("RelatedSubfunctionFeatures")
                         .HasForeignKey("SubfunctionID");
 
                     b.HasOne("IBBPortal.Models.ApplicationUser", "User")
@@ -1595,9 +1582,61 @@ namespace IBBPortal.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("IBBPortal.Models.City", b =>
+                {
+                    b.Navigation("RelatedContractors");
+
+                    b.Navigation("RelatedDistricts");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.Contractor", b =>
+                {
+                    b.Navigation("RelatedPeople");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.ContractorType", b =>
+                {
+                    b.Navigation("RelatedContractors");
+                });
+
             modelBuilder.Entity("IBBPortal.Models.Department", b =>
                 {
-                    b.Navigation("Departments");
+                    b.Navigation("RelatedPeople");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.District", b =>
+                {
+                    b.Navigation("RelatedContractors");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.JobTitle", b =>
+                {
+                    b.Navigation("RelatedPeople");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.Person", b =>
+                {
+                    b.Navigation("RelatedProjects");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.ProjectImportance", b =>
+                {
+                    b.Navigation("RelatedProjects");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.ProjectStatus", b =>
+                {
+                    b.Navigation("RelatedProjects");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.ServiceArea", b =>
+                {
+                    b.Navigation("RelatedProjects");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.Subfunction", b =>
+                {
+                    b.Navigation("RelatedSubfunctionFeatures");
                 });
 #pragma warning restore 612, 618
         }
