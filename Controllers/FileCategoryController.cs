@@ -253,10 +253,24 @@ namespace IBBPortal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var fileCategory = await _context.FileCategory.FindAsync(id);
-            _context.FileCategory.Remove(fileCategory);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var fileCategory = await _context.FileCategory
+                .Include(f => f.ParentFileCategory)
+                .Include(f => f.User)
+                .FirstOrDefaultAsync(m => m.FileCategoryID == id);
+
+            try
+            {
+                _context.FileCategory.Remove(fileCategory);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch(Exception ex)
+            {
+                TempData["ErrorTitle"] = "HATA";
+                TempData["ErrorMessage"] = $"Silmeye çalıştığınız {fileCategory.FileCategoryID} kodlu {fileCategory.FileCategoryFolderName} kategorisi " +
+                    $"başka Dosya Kategorileri tarafından kullanılmaktadır. Lütfen önce bağlı kayıtları siliniz!";
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         private bool FileCategoryExists(int id)
