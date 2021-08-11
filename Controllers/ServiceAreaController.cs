@@ -164,9 +164,22 @@ namespace IBBPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(serviceArea);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.Add(serviceArea);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessTitle"] = "BAŞARILI";
+                    TempData["SuccessMessage"] = $" {serviceArea.ServiceAreaID} numaralı kayıt başarıyla oluşturuldu.";
+                    return RedirectToAction(nameof(Edit), new { id = serviceArea.ServiceAreaID.ToString() });
+                }
+                catch (Exception ex)
+                {
+                    TempData["ErrorTitle"] = "HATA";
+                    TempData["ErrorMessage"] = $"Kayıt oluşturulamadı.";
+                    return RedirectToAction(nameof(Edit), new { id = serviceArea.ServiceAreaID.ToString() });
+                }
+
+                //return RedirectToAction(nameof(Index));
             }
 
             return View(serviceArea);
@@ -251,10 +264,24 @@ namespace IBBPortal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var serviceArea = await _context.ServiceArea.FindAsync(id);
-            _context.ServiceArea.Remove(serviceArea);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var serviceArea = await _context.ServiceArea
+                .Include(f => f.ParentServiceArea)
+                .Include(f => f.User)
+                .FirstOrDefaultAsync(m => m.ServiceAreaID == id);
+
+            try
+            {
+                _context.ServiceArea.Remove(serviceArea);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException ex)
+            {
+                TempData["ErrorTitle"] = "HATA";
+                TempData["ErrorMessage"] = $"Silmeye çalıştığınız {serviceArea.ServiceAreaID} kodlu {serviceArea.ServiceAreaTitle} kategorisi " +
+                    $"başka Hizmet Alanları tarafından kullanılmaktadır. Lütfen önce bağlı kayıtları siliniz!";
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         private bool ServiceAreaExists(int id)

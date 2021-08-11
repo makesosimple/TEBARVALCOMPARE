@@ -163,9 +163,22 @@ namespace IBBPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(city);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.Add(city);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessTitle"] = "BAŞARILI";
+                    TempData["SuccessMessage"] = $" {city.CityID} numaralı kayıt başarıyla oluşturuldu.";
+                    return RedirectToAction(nameof(Edit), new { id = city.CityID.ToString() });
+                }
+                catch (Exception ex)
+                {
+                    TempData["ErrorTitle"] = "HATA";
+                    TempData["ErrorMessage"] = $"Kayıt oluşturulamadı.";
+                    return RedirectToAction(nameof(Edit), new { id = city.CityID.ToString() });
+                }
+
+                //return RedirectToAction(nameof(Index));
             }
             return View(city);
         }
@@ -251,6 +264,27 @@ namespace IBBPortal.Controllers
             _context.City.Remove(city);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+
+            //var city = await _context.City
+            //    .Include(f => f.ParentFileCategory)
+            //    .Include(f => f.User)
+            //    .FirstOrDefaultAsync(m => m.CityID == id);
+
+            /*
+            try
+            {
+                _context.City.Remove(city);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException ex)
+            {
+                TempData["ErrorTitle"] = "HATA";
+                TempData["ErrorMessage"] = $"Silmeye çalıştığınız {city.CityID} kodlu {city.CityName} kategorisi " +
+                    $"başka Dosya Kategorileri tarafından kullanılmaktadır. Lütfen önce bağlı kayıtları siliniz!";
+                return RedirectToAction(nameof(Index));
+            }
+            */
         }
 
         private bool CityExists(int id)

@@ -170,9 +170,23 @@ namespace IBBPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(district);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                try
+                {
+                    _context.Add(district);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessTitle"] = "BAŞARILI";
+                    TempData["SuccessMessage"] = $" {district.DistrictID} numaralı kayıt başarıyla oluşturuldu.";
+                    return RedirectToAction(nameof(Edit), new { id = district.DistrictID.ToString() });
+                }
+                catch (Exception ex)
+                {
+                    TempData["ErrorTitle"] = "HATA";
+                    TempData["ErrorMessage"] = $"Kayıt oluşturulamadı.";
+                    return RedirectToAction(nameof(Edit), new { id = district.DistrictID.ToString() });
+                }
+
+                //return RedirectToAction(nameof(Index));
             }
             return View(district);
         }
@@ -254,7 +268,7 @@ namespace IBBPortal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var district = await _context.District.FindAsync(id);
+            var district = await _context.District.Include(city => city.City).FirstOrDefaultAsync(i => i.DistrictID == id);
             _context.District.Remove(district);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
