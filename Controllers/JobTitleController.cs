@@ -163,9 +163,22 @@ namespace IBBPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(jobTitle);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.Add(jobTitle);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessTitle"] = "BAŞARILI";
+                    TempData["SuccessMessage"] = $" {jobTitle.JobTitleID} numaralı kayıt başarıyla oluşturuldu.";
+                    return RedirectToAction(nameof(Edit), new { id = jobTitle.JobTitleID.ToString() });
+                }
+                catch (Exception ex)
+                {
+                    TempData["ErrorTitle"] = "HATA";
+                    TempData["ErrorMessage"] = $"Kayıt oluşturulamadı.";
+                    return RedirectToAction(nameof(Edit), new { id = jobTitle.JobTitleID.ToString() });
+                }
+
+                //return RedirectToAction(nameof(Index));
             }
             return View(jobTitle);
         }

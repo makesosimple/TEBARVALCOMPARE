@@ -130,9 +130,22 @@ namespace IBBPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(subfunctionFeature);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.Add(subfunctionFeature);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessTitle"] = "BAŞARILI";
+                    TempData["SuccessMessage"] = $" {subfunctionFeature.SubfunctionFeatureID} numaralı kayıt başarıyla oluşturuldu.";
+                    return RedirectToAction(nameof(Edit), new { id = subfunctionFeature.SubfunctionFeatureID.ToString() });
+                }
+                catch (Exception ex)
+                {
+                    TempData["ErrorTitle"] = "HATA";
+                    TempData["ErrorMessage"] = $"Kayıt oluşturulamadı.";
+                    return RedirectToAction(nameof(Edit), new { id = subfunctionFeature.SubfunctionFeatureID.ToString() });
+                }
+
+                //return RedirectToAction(nameof(Index));
             }
             return View(subfunctionFeature);
         }

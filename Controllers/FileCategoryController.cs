@@ -264,7 +264,7 @@ namespace IBBPortal.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            catch(Exception ex)
+            catch(DbUpdateException ex)
             {
                 TempData["ErrorTitle"] = "HATA";
                 TempData["ErrorMessage"] = $"Silmeye çalıştığınız {fileCategory.FileCategoryID} kodlu {fileCategory.FileCategoryFolderName} kategorisi " +
