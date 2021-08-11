@@ -15,7 +15,7 @@ namespace IBBPortal.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int BoardID { get; set; }
 
-        [Required, RegularExpression(@"^[A-Z]+[a-zA-Z0-9""'\s-]*$"), MaxLength(50)]
+        [Required, MaxLength(50)]
         public string BoardTitle { get; set; }
 
         [MaxLength(256)]
