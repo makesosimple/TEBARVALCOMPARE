@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\JobField\Create.cshtml" />
+    <Content Remove="Views\JobField\Edit.cshtml" />
+    <Content Remove="Views\JobField\Index.cshtml" />
+    <Content Remove="Views\JobField\_DeleteModal.cshtml" />
+    <Content Remove="Views\JobField\_DetailsModal.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="Views\Board\Create.cshtml" />
     <None Include="Views\Board\Edit.cshtml" />
     <None Include="Views\Board\Index.cshtml" />
@@ -29,6 +37,11 @@
     <None Include="Views\District\_DetailsModal.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <None Include="Views\Home\Privacy.cshtml" />
+    <None Include="Views\JobField\Create.cshtml" />
+    <None Include="Views\JobField\Edit.cshtml" />
+    <None Include="Views\JobField\Index.cshtml" />
+    <None Include="Views\JobField\_DeleteModal.cshtml" />
+    <None Include="Views\JobField\_DetailsModal.cshtml" />
     <None Include="Views\JobTitle\Create.cshtml" />
     <None Include="Views\JobTitle\Edit.cshtml" />
     <None Include="Views\JobTitle\Index.cshtml" />

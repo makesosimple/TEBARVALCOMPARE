@@ -30,14 +30,14 @@
                     {
                         "data": "projectStatusTitle",
                         "render": function (data) {
-                            return `<div class="shadow btn btn-info">${data}</div>`;
+                            return `<div class="btn btn-info">${data}</div>`;
                         },
                         "autoWidth": true
                     },
                     {
                         "data": "projectImportanceTitle",
                         "render": function (data) {
-                            return `<div class="shadow btn btn-info">${data}</div>`;
+                            return `<div class="btn btn-info">${data}</div>`;
                         },
                         "autoWidth": true
                     },
@@ -48,10 +48,10 @@
                             let itemToRender;
                             switch (data) {
                                 case true:
-                                    itemToRender = `<a href="#" class="shadow btn btn-success">EVET</a>`;
+                                    itemToRender = `<a href="#" class="btn btn-success">EVET</a>`;
                                     break;
                                 case false:
-                                    itemToRender = `<a href="#" class="shadow btn btn-danger">HAYIR</a>`;
+                                    itemToRender = `<a href="#" class="btn btn-danger">HAYIR</a>`;
                                     break;
                             }
                             return itemToRender;

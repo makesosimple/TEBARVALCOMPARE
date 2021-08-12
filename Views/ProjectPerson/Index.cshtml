@@ -1,0 +1,55 @@
+﻿<div id="GeneralModal"></div>
+
+<!-- Alert for Exceptions -->
+@if (@TempData["ErrorTitle"] is not null)
+{
+    <div class="alert bg-gradient-danger alert-dismissible fade show border-0" role="alert">
+        <h4 class="alert-heading text-white">
+            <i class="fas fa-exclamation-circle"></i>
+            @TempData["ErrorTitle"]
+            <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </h4>
+        <p class="text-white">@TempData["ErrorMessage"]</p>
+    </div>
+}
+
+<div class="row">
+    <div class="col-12">
+        <h4 class="text-primary border-bottom pb-2">Kişiler</h4>
+
+        <div class="table-responsive position-relative">
+            <table class="table table-hover display" id="dataTableProjectPerson" width="100%" cellspacing="20">
+                <thead class="bg-navy-blue">
+                    <tr class="filter h-100 bg-white">
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="user" name="user" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="organization" name="organization" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="organization" name="organization" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="3" type="text" placeholder="Ara..." id="organization" name="organization" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="4" type="text" placeholder="Ara..." id="organization" name="organization" value="" /></th>
+                        <th scope="col">
+                            <button type="button" class="btn btn-success d-block w-100" onclick="modalScript(this)" data-url="/ProjectPerson/Create">
+                                <i class="fas fa-plus mr-2"></i> EKLE
+                            </button>
+                        </th>
+                    </tr>
+                    <tr id="tableLabels">
+                        <th scope="col" class="text-white text-sm">Kişi</th>
+                        <th scope="col" class="text-white text-sm">Projedeki Görevi</th>
+                        <th scope="col" class="text-white text-sm">Alan</th>
+                        <th scope="col" class="text-white text-sm">Organizasyon</th>
+                        <th scope="col" class="text-white text-sm">Yüklenici</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+
+                </tfoot>
+
+            </table>
+        </div>
+    </div>
+</div>

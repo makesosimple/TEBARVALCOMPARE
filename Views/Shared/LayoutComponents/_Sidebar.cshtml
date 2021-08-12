@@ -126,12 +126,20 @@
         </a>
     </li>
 
-    <!-- Job Management-->
+    <!-- Job Management -->
     <li class="nav-item">
-        <a class="nav-link" asp-controller="JobTitle" asp-action="Index">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseJob"
+           aria-expanded="true" aria-controls="collapseJob">
             <i class="fas fa-briefcase"></i>
             <span>Meslek Yönetimi</span>
         </a>
+        <div id="collapseJob" class="collapse" aria-labelledby="headingJob"
+             data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" asp-controller="JobTitle" asp-action="Index">Meslekler</a>
+                <a class="collapse-item" asp-controller="JobField" asp-action="Index">Meslek Alanları</a>
+            </div>
+        </div>
     </li>
 
     <!-- Board Management-->

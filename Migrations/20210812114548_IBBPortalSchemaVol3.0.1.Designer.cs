@@ -4,14 +4,16 @@ using IBBPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IBBPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210812114548_IBBPortalSchemaVol3.0.1")]
+    partial class IBBPortalSchemaVol301
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -722,64 +724,6 @@ namespace IBBPortal.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("ProjectImportance");
-                });
-
-            modelBuilder.Entity("IBBPortal.Models.ProjectPerson", b =>
-                {
-                    b.Property<int>("ProjectPersonID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("ContractorID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsInternal")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("JobFieldID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("JobTitleID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PersonID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ProjectID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ProjectPersonDescription")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ProjectPersonID");
-
-                    b.HasIndex("ContractorID");
-
-                    b.HasIndex("JobFieldID");
-
-                    b.HasIndex("JobTitleID");
-
-                    b.HasIndex("PersonID");
-
-                    b.HasIndex("ProjectID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("ProjectPerson");
                 });
 
             modelBuilder.Entity("IBBPortal.Models.ProjectPhaseStatus", b =>
@@ -1535,45 +1479,6 @@ namespace IBBPortal.Migrations
                     b.HasOne("IBBPortal.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserID");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("IBBPortal.Models.ProjectPerson", b =>
-                {
-                    b.HasOne("IBBPortal.Models.Contractor", "Contractor")
-                        .WithMany()
-                        .HasForeignKey("ContractorID");
-
-                    b.HasOne("IBBPortal.Models.JobField", "JobField")
-                        .WithMany()
-                        .HasForeignKey("JobFieldID");
-
-                    b.HasOne("IBBPortal.Models.JobTitle", "JobTitle")
-                        .WithMany()
-                        .HasForeignKey("JobTitleID");
-
-                    b.HasOne("IBBPortal.Models.Person", "Person")
-                        .WithMany()
-                        .HasForeignKey("PersonID");
-
-                    b.HasOne("IBBPortal.Models.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectID");
-
-                    b.HasOne("IBBPortal.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID");
-
-                    b.Navigation("Contractor");
-
-                    b.Navigation("JobField");
-
-                    b.Navigation("JobTitle");
-
-                    b.Navigation("Person");
-
-                    b.Navigation("Project");
 
                     b.Navigation("User");
                 });
