@@ -20,20 +20,20 @@
 }
 
 <h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
-<form asp-action="Edit">
-    <input type="hidden" asp-for="ProjectID" />
-    <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
-            <ul class="nav nav-pills" id="formTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="tag-tab" data-toggle="tab" href="#tag" role="tab" aria-controls="tag" arsia-selected="false">Künye</a>
-                </li>
-            </ul>
-        </div>
-        <div class="card-body">
-            <div class="tab-pane fade active show" id="tag" role="tabpanel" aria-labelledby="tag-tab">
-                <div class="row">
-                    <div class="col-12 col-xl-6">
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
+        <ul class="nav nav-pills" id="formTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="tag-tab" data-toggle="tab" href="#tag" role="tab" aria-controls="tag" arsia-selected="false">Künye</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-pane fade active show" id="tag" role="tabpanel" aria-labelledby="tag-tab">
+            <div class="row">
+                <div class="col-12 col-xl-6">
+                    <form asp-action="Edit">
+                        <input type="hidden" asp-for="ProjectID" />
                         <!-- Validation Part. Must be still for all views!! -->
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -247,13 +247,12 @@
                             <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
                             <a asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
                         </div>
-
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-</form>
+</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
