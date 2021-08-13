@@ -217,6 +217,9 @@ namespace IBBPortal.Controllers
 
                     _context.Update(relationType);
                     await _context.SaveChangesAsync();
+
+                    TempData["SuccessTitle"] = "BAŞARILI";
+                    TempData["SuccessMessage"] = $"{relationType.RelationTypeID} numaralı kayıt başarıyla düzenlendi.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -264,6 +267,8 @@ namespace IBBPortal.Controllers
             {
                 _context.RelationType.Remove(relationType);
                 await _context.SaveChangesAsync();
+                TempData["SuccessTitle"] = "BAŞARILI";
+                TempData["SuccessMessage"] = $"{relationType.RelationTypeID} numaralı kayıt başarıyla silindi.";
                 return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateException ex)

@@ -28,10 +28,10 @@
                         "data": null,
                         "render": function (data, type, full, meta, row) {
                             return `<div class="d-flex align-items-center justify-content-end">\
-                                            <a class="btn btn-circle bg-turqoise text-white mr-1" href="/ProjectTeamCategory/Edit/${full.projectTeamCategoryID}"><i class="fas fa-edit"></i></a>\
-                                            <button type="button" class="btn btn-circle bg-warning text-white mr-1" onclick="modalScript(this)" data-url="/ProjectTeamCategory/Details/${full.projectTeamCategoryID}"><i class="fas fa-info-circle"></i></button>\
-                                            <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/ProjectTeamCategory/Delete/${full.projectTeamCategoryID}" ><i class="fas fa-trash-alt"></i></button>
-                                        </div>`;
+                                                <a class="btn btn-circle bg-turqoise text-white mr-1" href="/ProjectTeamCategory/Edit/${full.projectTeamCategoryID}"><i class="fas fa-edit"></i></a>\
+                                                <button type="button" class="btn btn-circle bg-warning text-white mr-1" onclick="modalScript(this)" data-url="/ProjectTeamCategory/Details/${full.projectTeamCategoryID}"><i class="fas fa-info-circle"></i></button>\
+                                                <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/ProjectTeamCategory/Delete/${full.projectTeamCategoryID}" ><i class="fas fa-trash-alt"></i></button>
+                                            </div>`;
                         }
                     },
                 ],
@@ -71,6 +71,21 @@
             </button>
         </h4>
         <p class="text-white">@TempData["ErrorMessage"]</p>
+    </div>
+}
+
+<!-- Alert for Success -->
+@if (@TempData["SuccessTitle"] is not null)
+{
+    <div class="alert bg-gradient-success alert-dismissible fade show border-0" role="alert">
+        <h4 class="alert-heading text-white">
+            <i class="fas fa-check"></i>
+            @TempData["SuccessTitle"]
+            <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </h4>
+        <p class="text-white">@TempData["SuccessMessage"]</p>
     </div>
 }
 
