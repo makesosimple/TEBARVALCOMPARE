@@ -185,6 +185,9 @@ namespace IBBPortal.Controllers
 
                     _context.Update(subfunctionFeature);
                     await _context.SaveChangesAsync();
+
+                    TempData["SuccessTitle"] = "BAŞARILI";
+                    TempData["SuccessMessage"] = $"{subfunctionFeature.SubfunctionFeatureID} numaralı kayıt başarıyla düzenlendi.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -233,6 +236,8 @@ namespace IBBPortal.Controllers
             {
                 _context.SubfunctionFeature.Remove(subfunctionFeature);
                 await _context.SaveChangesAsync();
+                TempData["SuccessTitle"] = "BAŞARILI";
+                TempData["SuccessMessage"] = $"{subfunctionFeature.SubfunctionFeatureID} numaralı kayıt başarıyla silindi.";
                 return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateException ex)

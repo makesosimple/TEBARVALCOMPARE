@@ -183,6 +183,9 @@ namespace IBBPortal.Controllers
 
                     _context.Update(zoningPlanStatus);
                     await _context.SaveChangesAsync();
+
+                    TempData["SuccessTitle"] = "BAŞARILI";
+                    TempData["SuccessMessage"] = $"{zoningPlanStatus.ZoningPlanStatusID} numaralı kayıt başarıyla düzenlendi.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -230,6 +233,8 @@ namespace IBBPortal.Controllers
             {
                 _context.ZoningPlanStatus.Remove(zoningPlanStatus);
                 await _context.SaveChangesAsync();
+                TempData["SuccessTitle"] = "BAŞARILI";
+                TempData["SuccessMessage"] = $"{zoningPlanStatus.ZoningPlanStatusID} numaralı kayıt başarıyla silindi.";
                 return RedirectToAction(nameof(Index));
 
             }

@@ -182,6 +182,9 @@ namespace IBBPortal.Controllers
 
                     _context.Update(projectTeamCategory);
                     await _context.SaveChangesAsync();
+
+                    TempData["SuccessTitle"] = "BAŞARILI";
+                    TempData["SuccessMessage"] = $"{projectTeamCategory.ProjectTeamCategoryID} numaralı kayıt başarıyla düzenlendi.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -229,6 +232,8 @@ namespace IBBPortal.Controllers
             {
                 _context.ProjectTeamCategory.Remove(projectTeamCategory);
                 await _context.SaveChangesAsync();
+                TempData["SuccessTitle"] = "BAŞARILI";
+                TempData["SuccessMessage"] = $"{projectTeamCategory.ProjectTeamCategoryID} numaralı kayıt başarıyla silindi.";
                 return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateException ex)
