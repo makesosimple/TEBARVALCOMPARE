@@ -219,6 +219,9 @@ namespace IBBPortal.Controllers
 
                     _context.Update(jobField);
                     await _context.SaveChangesAsync();
+
+                    TempData["SuccessTitle"] = "BAŞARILI";
+                    TempData["SuccessMessage"] = $"{jobField.JobFieldID} numaralı kayıt başarıyla düzenlendi.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -266,6 +269,8 @@ namespace IBBPortal.Controllers
             {
                 _context.JobField.Remove(jobField);
                 await _context.SaveChangesAsync();
+                TempData["SuccessTitle"] = "BAŞARILI";
+                TempData["SuccessMessage"] = $"{jobField.JobFieldID} numaralı kayıt başarıyla silindi.";
                 return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateException ex)

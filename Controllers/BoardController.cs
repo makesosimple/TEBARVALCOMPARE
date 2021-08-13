@@ -187,6 +187,9 @@ namespace IBBPortal.Controllers
 
                     _context.Update(board);
                     await _context.SaveChangesAsync();
+
+                    TempData["SuccessTitle"] = "BAŞARILI";
+                    TempData["SuccessMessage"] = $"{board.BoardID} numaralı kayıt başarıyla düzenlendi.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -233,6 +236,8 @@ namespace IBBPortal.Controllers
             {
                 _context.Board.Remove(board);
                 await _context.SaveChangesAsync();
+                TempData["SuccessTitle"] = "BAŞARILI";
+                TempData["SuccessMessage"] = $"{board.BoardID} numaralı kayıt başarıyla silindi.";
                 return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateException ex)
