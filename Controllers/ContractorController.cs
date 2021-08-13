@@ -178,10 +178,8 @@ namespace IBBPortal.Controllers
                 {
                     TempData["ErrorTitle"] = "HATA";
                     TempData["ErrorMessage"] = $"Kayıt oluşturulamadı.";
-                    return RedirectToAction(nameof(Edit), new { id = contractor.ContractorID.ToString() });
+                    return RedirectToAction(nameof(Index));
                 }
-
-                //return RedirectToAction(nameof(Index));
             }
             return View(contractor);
         }
