@@ -1,0 +1,236 @@
+﻿@model IBBPortal.Models.ProjectPerson
+
+<!-- Modal -->
+<div class="modal fade" id="ProjectPersonEditModal" tabindex="-1" aria-labelledby="ProjectPersonEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <form asp-action="Edit">
+                <input type="hidden" asp-for="ProjectPersonID"/>
+                <div class="modal-header">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-between">
+                                <h5 class="modal-title" id="exampleModalLabel">Kişi Düzenle</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- Validation Part. Must be still for all views!! -->
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <!-- Is Internal ? -->
+                        <div class="form-group row">
+                            <label asp-for="IsInternal" class="col-form-label col-12 col-xl-4">Kurumiçi mi?<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8">
+                                <div class="text-center d-inline-block col-form-label">
+                                    <div class="vc-toggle-container">
+                                        <label class="vc-switch">
+                                            <input type="checkbox" class="vc-switch-input" asp-for="IsInternal">
+                                            <span data-on="Evet" data-off="Hayır" class="vc-switch-label"></span>
+                                            <span class="vc-handle"></span>
+                                            <span asp-validation-for="IsInternal" class="text-danger"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project Person ID -->
+                        <div class="form-group row" data-dependent-on="#IsInternal" data-dependent-value="checked">
+                            <label asp-for="PersonID" class="col-12 col-xl-4 col-form-label">Kişi<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8">
+                                <select asp-for="PersonID" class="form-control" id="selectProjectPerson" style="width: 100%;">
+                                    @if (Model.Person is not null)
+                                    {
+                                    <option value="@Model.Person.PersonID">@Model.Person.PersonName.Trim() @Model.Person.PersonSurname.Trim()</option>
+                                    }
+
+                                    else
+                                    {
+                                        <option value="">Kişi Seçin</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="PersonID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Project Person Job Title ID -->
+                        <div class="form-group row" data-dependent-on="#IsInternal" data-dependent-value="checked">
+                            <label asp-for="JobTitleID" class="col-12 col-xl-4 col-form-label">Projedeki Görevi<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8">
+                                <select asp-for="JobTitleID" class="form-control" id="selectProjectPersonJobTitle" style="width: 100%;">
+                                    @if (Model.JobTitle is not null)
+                                    {
+                                        <option value="@Model.JobTitle.JobTitleID">@Model.JobTitle.Title</option>
+                                    }
+
+                                    else
+                                    {
+                                        <option value="">Görev Seçin</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="JobTitleID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Project Person Job Field ID -->
+                        <div class="form-group row" data-dependent-on="#IsInternal" data-dependent-value="checked">
+                            <label asp-for="JobFieldID" class="col-12 col-xl-4 col-form-label">Alan<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8">
+                                <select asp-for="JobFieldID" class="form-control" id="selectProjectPersonJobField" style="width: 100%;">
+                                    @if (Model.JobField is not null)
+                                    {
+                                        <option value="@Model.JobField.JobFieldID">@Model.JobField.JobFieldTitle</option>
+                                    }
+
+                                    else
+                                    {
+                                        <option value="">Alan Seçin</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="JobFieldID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Project Person Contractor ID -->
+                        <div class="form-group row" data-dependent-on="#IsInternal" data-dependent-value="unchecked">
+                            <label asp-for="ContractorID" class="col-12 col-xl-4 col-form-label">Yüklenici<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8">
+                                <select asp-for="ContractorID" class="form-control" id="selectProjectPersonContractor" style="width: 100%;">
+                                    @if (Model.JobField is not null)
+                                    {
+                                        <option value="@Model.Contractor.ContractorID">@Model.Contractor.Title</option>
+                                    }
+
+                                    else
+                                    {
+                                        <option value="">Yüklenici Seçin</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="ContractorID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Project Person Description -->
+                        <div class="form-group row">
+                            <label asp-for="ProjectPersonDescription" class="col-12 col-xl-4 col-form-label">Açıklama</label>
+                            <div class="col-12 col-xl-8">
+                                <textarea asp-for="ProjectPersonDescription" class="form-control"></textarea>
+                                <span asp-validation-for="ProjectPersonDescription" class="text-danger"></span>
+                            </div>
+                        </div>
+
+
+                        <!-- Default Values for the Database Date Part -->
+                        <input type="hidden" asp-for="CreationDate" />
+                        <input type="hidden" asp-for="UpdateDate" />
+
+                        <!-- User ID for the Update -->
+                        <input type="hidden" asp-for="UserID" />
+
+                        <!-- Project ID for the Update -->
+                        <input type="hidden" asp-for="ProjectID" />
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="buttons">
+                        <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
+                        <a asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#selectProjectPerson').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/Person/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
+
+                return {
+                    results: response.results,
+                };
+            }
+        }
+    });
+
+    $('#selectProjectPersonJobTitle').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/JobTitle/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
+
+                return {
+                    results: response.results,
+                };
+            }
+        }
+    });
+
+    $('#selectProjectPersonJobField').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/JobField/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
+
+                return {
+                    results: response.results,
+                };
+            }
+        }
+    });
+
+    $('#selectProjectPersonContractor').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/Contractor/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
+
+                return {
+                    results: response.results,
+                };
+            }
+        }
+    });
+
+    //Dependent Fields Management
+    $("[data-dependent-on]").each(function () {
+        //Hide all dependent fields by default until user makes a choice.
+        $(this).hide();
+
+        //Get the object, object's target and desired value. 
+        let field = $(this);
+        let target = $(this).data("dependent-on");
+        let desiredValue = $(this).data("dependent-value");
+        let status = $(target).is(':checked') ? 'checked' : 'unchecked';
+
+        //Let's check initial state first for UX.
+        if (status == desiredValue) field.show();
+
+        //Now every time user changes the input value of the target, certain fields will open or close on DOM.
+        $(target).on("change", function () {
+            status = $(this).is(':checked') ? 'checked' : 'unchecked';
+            if (status == desiredValue) field.show();
+            else field.hide();
+        });
+
+    });
+</script>
+

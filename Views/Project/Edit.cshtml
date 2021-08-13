@@ -24,230 +24,235 @@
     <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
         <ul class="nav nav-pills" id="formTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="tag-tab" data-toggle="tab" href="#tag" role="tab" aria-controls="tag" arsia-selected="false">Künye</a>
+                <a class="nav-link active" id="tag-tab" data-toggle="tab" href="#tag" role="tab" aria-controls="tag" aria-selected="false">Künye</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="associates-tab" href="/ProjectPerson/Index/@Model.ProjectID">Kişiler</a>
             </li>
         </ul>
     </div>
     <div class="card-body">
-        <div class="tab-pane fade active show" id="tag" role="tabpanel" aria-labelledby="tag-tab">
-            <div class="row">
-                <div class="col-12 col-xl-6">
-                    <form asp-action="Edit">
-                        <input type="hidden" asp-for="ProjectID" />
-                        <!-- Validation Part. Must be still for all views!! -->
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="tab-content my-3" id="formContent">
+            <div class="tab-pane fade active show" id="tag" role="tabpanel" aria-labelledby="tag-tab">
+                <div class="row">
+                    <div class="col-12 col-xl-6">
+                        <form asp-action="Edit">
+                            <input type="hidden" asp-for="ProjectID" />
+                            <!-- Validation Part. Must be still for all views!! -->
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                        <!-- Project Title -->
-                        <div class="form-group row">
-                            <label asp-for="ProjectTitle" class="col-12 col-lg-4 col-form-label">Proje Başlığı<span class="text-danger">*</span></label>
-                            <div class="col-12 col-lg-8">
-                                <input asp-for="ProjectTitle" type="text" class="form-control" required>
-                                <span asp-validation-for="ProjectTitle" class="text-danger"></span>
+                            <!-- Project Title -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectTitle" class="col-12 col-lg-4 col-form-label">Proje Başlığı<span class="text-danger">*</span></label>
+                                <div class="col-12 col-lg-8">
+                                    <input asp-for="ProjectTitle" type="text" class="form-control" required>
+                                    <span asp-validation-for="ProjectTitle" class="text-danger"></span>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Project Code -->
-                        <div class="form-group row">
-                            <label asp-for="ProjectCode" class="col-12 col-lg-4 col-form-label">Proje Kodu</label>
-                            <div class="col-12 col-lg-8">
-                                <div class="text-primary">@Model.ProjectCode</div>
+                            <!-- Project Code -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectCode" class="col-12 col-lg-4 col-form-label">Proje Kodu</label>
+                                <div class="col-12 col-lg-8">
+                                    <div class="text-primary">@Model.ProjectCode</div>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Project IBB Code -->
-                        <div class="form-group row">
-                            <label asp-for="ProjectIBBCode" class="col-12 col-lg-4 col-form-label">Proje İBB Kodu<span class="text-danger">*</span></label>
-                            <div class="col-12 col-lg-8">
-                                <input asp-for="ProjectIBBCode" type="number" class="form-control" required>
-                                <span asp-validation-for="ProjectIBBCode" class="text-danger"></span>
+                            <!-- Project IBB Code -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectIBBCode" class="col-12 col-lg-4 col-form-label">Proje İBB Kodu<span class="text-danger">*</span></label>
+                                <div class="col-12 col-lg-8">
+                                    <input asp-for="ProjectIBBCode" type="number" class="form-control" required>
+                                    <span asp-validation-for="ProjectIBBCode" class="text-danger"></span>
+                                </div>
                             </div>
-                        </div>
 
-                        <hr />
+                            <hr />
 
-                        <!-- Requesting Management ID -->
-                        <div class="form-group row">
-                            <label asp-for="RequestingDepartmentID" class="col-12 col-xl-4 col-form-label">Talep Eden Müdürlük<span class="text-danger">*</span></label>
-                            <div class="col-12 col-xl-8">
-                                <select asp-for="RequestingDepartmentID" class="form-control" id="selectRequestingDepartment" style="width: 100%;" required>
-                                    @if (@Model.RequestingDepartment is not null)
-                                    {
-                                        <option value="@Model.RequestingDepartment.DepartmentID">@Model.RequestingDepartment.DepartmentTitle</option>
-                                    }
+                            <!-- Requesting Management ID -->
+                            <div class="form-group row">
+                                <label asp-for="RequestingDepartmentID" class="col-12 col-xl-4 col-form-label">Talep Eden Müdürlük<span class="text-danger">*</span></label>
+                                <div class="col-12 col-xl-8">
+                                    <select asp-for="RequestingDepartmentID" class="form-control" id="selectRequestingDepartment" style="width: 100%;" required>
+                                        @if (@Model.RequestingDepartment is not null)
+                                        {
+                                            <option value="@Model.RequestingDepartment.DepartmentID">@Model.RequestingDepartment.DepartmentTitle</option>
+                                        }
 
-                                    else
-                                    {
-                                        <option value="">Talep Eden Müdürlük Seçin</option>
-                                    }
-                                </select>
-                                <span asp-validation-for="RequestingDepartmentID" class="text-danger"></span>
+                                        else
+                                        {
+                                            <option value="">Talep Eden Müdürlük Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="RequestingDepartmentID" class="text-danger"></span>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Responsible Management ID -->
-                        <div class="form-group row">
-                            <label asp-for="ResponsibleDepartmentID" class="col-12 col-xl-4 col-form-label">Sorumlu Müdürlük<span class="text-danger">*</span></label>
-                            <div class="col-12 col-xl-8">
-                                <select asp-for="ResponsibleDepartmentID" class="form-control" id="selectResponsibleDepartment" style="width: 100%;" required>
-                                    @if (@Model.ResponsibleDepartment is not null)
-                                    {
-                                        <option value="@Model.ResponsibleDepartment.DepartmentID">@Model.ResponsibleDepartment.DepartmentTitle</option>
-                                    }
+                            <!-- Responsible Management ID -->
+                            <div class="form-group row">
+                                <label asp-for="ResponsibleDepartmentID" class="col-12 col-xl-4 col-form-label">Sorumlu Müdürlük<span class="text-danger">*</span></label>
+                                <div class="col-12 col-xl-8">
+                                    <select asp-for="ResponsibleDepartmentID" class="form-control" id="selectResponsibleDepartment" style="width: 100%;" required>
+                                        @if (@Model.ResponsibleDepartment is not null)
+                                        {
+                                            <option value="@Model.ResponsibleDepartment.DepartmentID">@Model.ResponsibleDepartment.DepartmentTitle</option>
+                                        }
 
-                                    else
-                                    {
-                                        <option value="">Sorumlu Müdürlük Seçin</option>
-                                    }
-                                </select>
-                                <span asp-validation-for="ResponsibleDepartmentID" class="text-danger"></span>
+                                        else
+                                        {
+                                            <option value="">Sorumlu Müdürlük Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ResponsibleDepartmentID" class="text-danger"></span>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Project Owner Person ID -->
-                        <div class="form-group row">
-                            <label asp-for="ProjectOwnerPersonID" class="col-12 col-xl-4 col-form-label">Proje Sahibi<span class="text-danger">*</span></label>
-                            <div class="col-12 col-xl-8">
-                                <select asp-for="ProjectOwnerPersonID" class="form-control" id="selectProjectOwner" style="width: 100%;" required>
-                                    @if (@Model.ProjectOwnerPerson is not null)
-                                    {
-                                        <option value="@Model.ProjectOwnerPerson.PersonID">@Model.ProjectOwnerPerson.PersonName @Model.ProjectOwnerPerson.PersonSurname</option>
-                                    }
+                            <!-- Project Owner Person ID -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectOwnerPersonID" class="col-12 col-xl-4 col-form-label">Proje Sahibi<span class="text-danger">*</span></label>
+                                <div class="col-12 col-xl-8">
+                                    <select asp-for="ProjectOwnerPersonID" class="form-control" id="selectProjectOwner" style="width: 100%;" required>
+                                        @if (@Model.ProjectOwnerPerson is not null)
+                                        {
+                                            <option value="@Model.ProjectOwnerPerson.PersonID">@Model.ProjectOwnerPerson.PersonName @Model.ProjectOwnerPerson.PersonSurname</option>
+                                        }
 
-                                    else
-                                    {
-                                        <option value="">Proje Sahibi Seçin</option>
-                                    }
-                                </select>
-                                <span asp-validation-for="ProjectOwnerPersonID" class="text-danger"></span>
+                                        else
+                                        {
+                                            <option value="">Proje Sahibi Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ProjectOwnerPersonID" class="text-danger"></span>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Project Service Area ID -->
-                        <div class="form-group row">
-                            <label asp-for="ProjectServiceAreaID" class="col-12 col-xl-4 col-form-label">Proje Hizmet Alanı<span class="text-danger">*</span></label>
-                            <div class="col-12 col-xl-8">
-                                <select asp-for="ProjectServiceAreaID" class="form-control" id="selectServiceArea" style="width: 100%;" required>
-                                    @if (@Model.ProjectServiceArea is not null)
-                                    {
-                                        <option value="@Model.ProjectServiceArea.ServiceAreaID">@Model.ProjectServiceArea.ServiceAreaTitle</option>
-                                    }
+                            <!-- Project Service Area ID -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectServiceAreaID" class="col-12 col-xl-4 col-form-label">Proje Hizmet Alanı<span class="text-danger">*</span></label>
+                                <div class="col-12 col-xl-8">
+                                    <select asp-for="ProjectServiceAreaID" class="form-control" id="selectServiceArea" style="width: 100%;" required>
+                                        @if (@Model.ProjectServiceArea is not null)
+                                        {
+                                            <option value="@Model.ProjectServiceArea.ServiceAreaID">@Model.ProjectServiceArea.ServiceAreaTitle</option>
+                                        }
 
-                                    else
-                                    {
-                                        <option value="">Hizmet Alanı Seçin</option>
-                                    }
-                                </select>
-                                <span asp-validation-for="ProjectServiceAreaID" class="text-danger"></span>
+                                        else
+                                        {
+                                            <option value="">Hizmet Alanı Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ProjectServiceAreaID" class="text-danger"></span>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Project Importance ID -->
-                        <div class="form-group row">
-                            <label asp-for="ProjectImportanceID" class="col-12 col-xl-4 col-form-label">Proje Önemi<span class="text-danger">*</span></label>
-                            <div class="col-12 col-xl-8">
-                                <select asp-for="ProjectImportanceID" class="form-control" id="selectProjectImportance" style="width: 100%;" required>
-                                    @if (@Model.ProjectImportance is not null)
-                                    {
-                                        <option value="@Model.ProjectImportance.ProjectImportanceID">@Model.ProjectImportance.ProjectImportanceTitle</option>
-                                    }
+                            <!-- Project Importance ID -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectImportanceID" class="col-12 col-xl-4 col-form-label">Proje Önemi<span class="text-danger">*</span></label>
+                                <div class="col-12 col-xl-8">
+                                    <select asp-for="ProjectImportanceID" class="form-control" id="selectProjectImportance" style="width: 100%;" required>
+                                        @if (@Model.ProjectImportance is not null)
+                                        {
+                                            <option value="@Model.ProjectImportance.ProjectImportanceID">@Model.ProjectImportance.ProjectImportanceTitle</option>
+                                        }
 
-                                    else
-                                    {
-                                        <option value="">Proje Önemi Seçin</option>
-                                    }
-                                </select>
-                                <span asp-validation-for="ProjectImportanceID" class="text-danger"></span>
+                                        else
+                                        {
+                                            <option value="">Proje Önemi Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ProjectImportanceID" class="text-danger"></span>
+                                </div>
                             </div>
-                        </div>
 
-                        <hr />
+                            <hr />
 
-                        <!-- Project Status ID -->
-                        <div class="form-group row">
-                            <label asp-for="ProjectStatusID" class="col-12 col-xl-4 col-form-label">Proje Durumu<span class="text-danger">*</span></label>
-                            <div class="col-12 col-xl-8">
-                                <select asp-for="ProjectStatusID" class="form-control" id="selectProjectStatus" style="width: 100%;" required>
-                                    @if (@Model.ProjectStatus is not null)
-                                    {
-                                        <option value="@Model.ProjectStatus.ProjectStatusID">@Model.ProjectStatus.ProjectStatusTitle</option>
-                                    }
+                            <!-- Project Status ID -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectStatusID" class="col-12 col-xl-4 col-form-label">Proje Durumu<span class="text-danger">*</span></label>
+                                <div class="col-12 col-xl-8">
+                                    <select asp-for="ProjectStatusID" class="form-control" id="selectProjectStatus" style="width: 100%;" required>
+                                        @if (@Model.ProjectStatus is not null)
+                                        {
+                                            <option value="@Model.ProjectStatus.ProjectStatusID">@Model.ProjectStatus.ProjectStatusTitle</option>
+                                        }
 
-                                    else
-                                    {
-                                        <option value="">Proje Durumu Seçin</option>
-                                    }
-                                </select>
-                                <span asp-validation-for="ProjectStatusID" class="text-danger"></span>
+                                        else
+                                        {
+                                            <option value="">Proje Durumu Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ProjectStatusID" class="text-danger"></span>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Project Status Description -->
-                        <div class="form-group row">
-                            <label asp-for="ProjectStatusDescription" class="col-12 col-xl-4 col-form-label">Proje Durumu Açıklaması</label>
-                            <div class="col-12 col-xl-8">
-                                <textarea asp-for="ProjectStatusDescription" class="form-control"></textarea>
-                                <span asp-validation-for="ProjectStatusDescription" class="text-danger"></span>
+                            <!-- Project Status Description -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectStatusDescription" class="col-12 col-xl-4 col-form-label">Proje Durumu Açıklaması</label>
+                                <div class="col-12 col-xl-8">
+                                    <textarea asp-for="ProjectStatusDescription" class="form-control"></textarea>
+                                    <span asp-validation-for="ProjectStatusDescription" class="text-danger"></span>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Project Status Description Date -->
-                        <div class="form-group row">
-                            <label asp-for="ProjectStatusDescriptionDate" class="col-12 col-xl-4 col-form-label">Proje Durumu Açıklaması Tarihi</label>
-                            <div class="col-12 col-xl-8">
-                                <input asp-for="ProjectStatusDescriptionDate" type="text" class="form-control datepicker">
-                                <i class="fas fa-calendar-alt"></i>
-                                <span asp-validation-for="ProjectStatusDescriptionDate" class="text-danger"></span>
+                            <!-- Project Status Description Date -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectStatusDescriptionDate" class="col-12 col-xl-4 col-form-label">Proje Durumu Açıklaması Tarihi</label>
+                                <div class="col-12 col-xl-8">
+                                    <input asp-for="ProjectStatusDescriptionDate" type="text" class="form-control datepicker">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span asp-validation-for="ProjectStatusDescriptionDate" class="text-danger"></span>
+                                </div>
                             </div>
-                        </div>
 
-                        <hr />
+                            <hr />
 
-                        <!-- Is Feasibility Needed ? -->
-                        <div class="form-group row">
-                            <label asp-for="IsFeasibilityNeeded" class="col-form-label col-12 col-xl-4">Fizibilite Gerekli mi?<span class="text-danger">*</span></label>
-                            <div class="col-12 col-xl-8">
-                                <div class="text-center d-inline-block col-form-label">
-                                    <div class="vc-toggle-container">
-                                        <label class="vc-switch">
-                                            <input type="checkbox" class="vc-switch-input" asp-for="IsFeasibilityNeeded">
-                                            <span data-on="Evet" data-off="Hayır" class="vc-switch-label"></span>
-                                            <span class="vc-handle"></span>
-                                            <span asp-validation-for="IsFeasibilityNeeded" class="text-danger"></span>
-                                        </label>
+                            <!-- Is Feasibility Needed ? -->
+                            <div class="form-group row">
+                                <label asp-for="IsFeasibilityNeeded" class="col-form-label col-12 col-xl-4">Fizibilite Gerekli mi?<span class="text-danger">*</span></label>
+                                <div class="col-12 col-xl-8">
+                                    <div class="text-center d-inline-block col-form-label">
+                                        <div class="vc-toggle-container">
+                                            <label class="vc-switch">
+                                                <input type="checkbox" class="vc-switch-input" asp-for="IsFeasibilityNeeded">
+                                                <span data-on="Evet" data-off="Hayır" class="vc-switch-label"></span>
+                                                <span class="vc-handle"></span>
+                                                <span asp-validation-for="IsFeasibilityNeeded" class="text-danger"></span>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Has Related Projects ? -->
-                        <div class="form-group row">
-                            <label asp-for="HasRelatedProject" class="col-form-label col-12 col-xl-4">Alt Proje Var mı?<span class="text-danger">*</span></label>
-                            <div class="col-12 col-xl-8">
-                                <div class="text-center d-inline-block col-form-label">
-                                    <div class="vc-toggle-container">
-                                        <label class="vc-switch">
-                                            <input type="checkbox" class="vc-switch-input" asp-for="HasRelatedProject">
-                                            <span data-on="Evet" data-off="Hayır" class="vc-switch-label"></span>
-                                            <span class="vc-handle"></span>
-                                            <span asp-validation-for="HasRelatedProject" class="text-danger"></span>
-                                        </label>
+                            <!-- Has Related Projects ? -->
+                            <div class="form-group row">
+                                <label asp-for="HasRelatedProject" class="col-form-label col-12 col-xl-4">Alt Proje Var mı?<span class="text-danger">*</span></label>
+                                <div class="col-12 col-xl-8">
+                                    <div class="text-center d-inline-block col-form-label">
+                                        <div class="vc-toggle-container">
+                                            <label class="vc-switch">
+                                                <input type="checkbox" class="vc-switch-input" asp-for="HasRelatedProject">
+                                                <span data-on="Evet" data-off="Hayır" class="vc-switch-label"></span>
+                                                <span class="vc-handle"></span>
+                                                <span asp-validation-for="HasRelatedProject" class="text-danger"></span>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Default Values for the Database Date Part -->
-                        <input type="hidden" asp-for="CreationDate" />
-                        <input type="hidden" asp-for="UpdateDate" />
+                            <!-- Default Values for the Database Date Part -->
+                            <input type="hidden" asp-for="CreationDate" />
+                            <input type="hidden" asp-for="UpdateDate" />
 
-                        <!-- User ID for the Update -->
-                        <input type="hidden" asp-for="UserID" />
+                            <!-- User ID for the Update -->
+                            <input type="hidden" asp-for="UserID" />
 
-                        <div class="buttons mt-3 my-md-0">
-                            <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
-                            <a asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
-                        </div>
-                    </form>
+                            <div class="buttons mt-3 my-md-0">
+                                <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
+                                <a asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

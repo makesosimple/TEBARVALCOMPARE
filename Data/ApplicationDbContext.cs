@@ -102,6 +102,10 @@ namespace IBBPortal.Data
         public DbSet<IBBPortal.Models.Person> Person { get; set; }
 
         public DbSet<IBBPortal.Models.Project> Project { get; set; }
+
+        public DbSet<IBBPortal.Models.JobField> JobField { get; set; }
+
+        public DbSet<IBBPortal.Models.ProjectPerson> ProjectPerson { get; set; }
     }
 
 

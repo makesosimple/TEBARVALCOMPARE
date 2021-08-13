@@ -30,14 +30,14 @@
                     {
                         "data": "projectStatusTitle",
                         "render": function (data) {
-                            return `<div class="shadow btn btn-info">${data}</div>`;
+                            return `<div class="btn btn-info">${data}</div>`;
                         },
                         "autoWidth": true
                     },
                     {
                         "data": "projectImportanceTitle",
                         "render": function (data) {
-                            return `<div class="shadow btn btn-info">${data}</div>`;
+                            return `<div class="btn btn-info">${data}</div>`;
                         },
                         "autoWidth": true
                     },
@@ -48,10 +48,10 @@
                             let itemToRender;
                             switch (data) {
                                 case true:
-                                    itemToRender = `<a href="#" class="shadow btn btn-success">EVET</a>`;
+                                    itemToRender = `<a href="#" class="btn btn-success">EVET</a>`;
                                     break;
                                 case false:
-                                    itemToRender = `<a href="#" class="shadow btn btn-danger">HAYIR</a>`;
+                                    itemToRender = `<a href="#" class="btn btn-danger">HAYIR</a>`;
                                     break;
                             }
                             return itemToRender;
@@ -130,9 +130,9 @@
                         <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="responsibleDepartmentTitle" name="responsibleDepartmentTitle" value="" /></th>
                         <th scope="col"><input class="form-control w-100 searchInput" data-index="3" type="text" placeholder="Ara..." id="ownerFullName" name="ownerFullName" value="" /></th>
                         <th scope="col"><input class="form-control w-100 searchInput" data-index="4" type="text" placeholder="Ara..." id="serviceAreaTitle" name="serviceAreaTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="4" type="text" placeholder="Ara..." id="projectStatusTitle" name="projectStatusTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="4" type="text" placeholder="Ara..." id="projectImportanceTitle" name="projectImportanceTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="4" type="text" placeholder="Ara..." id="hasRelatedProject" name="hasRelatedProject" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="5" type="text" placeholder="Ara..." id="projectStatusTitle" name="projectStatusTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="6" type="text" placeholder="Ara..." id="projectImportanceTitle" name="projectImportanceTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="7" type="text" placeholder="Ara..." id="hasRelatedProject" name="hasRelatedProject" value="" /></th>
                         <th scope="col"></th>
                     </tr>
                     <tr id="tableLabels">
