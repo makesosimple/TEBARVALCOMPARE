@@ -25,8 +25,9 @@ namespace IBBPortal.Controllers
         }
 
         // GET: ProjectPerson
-        public IActionResult Index()
+        public IActionResult Index(int id)
         {
+            ViewBag.ProjectID = id;
             return View();
         }
 
@@ -128,11 +129,12 @@ namespace IBBPortal.Controllers
         }
 
         // GET: ProjectPerson/Create
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
             var culture = new CultureInfo("tr-TR");
             ViewBag.CurrentDate = DateTime.Now.ToString(culture);
             ViewBag.UserID = _userManager.GetUserId(HttpContext.User);
+            ViewBag.ProjectID = id;
             return PartialView("_CreateModal");
         }
 
@@ -150,17 +152,17 @@ namespace IBBPortal.Controllers
                     _context.Add(projectPerson);
                     await _context.SaveChangesAsync();
                     TempData["SuccessTitle"] = "BAŞARILI";
-                    TempData["SuccessMessage"] = $" {projectPerson.ProjectPersonID} numaralı kayıt başarıyla oluşturuldu.";
-                    return RedirectToAction(nameof(Index));
+                    TempData["SuccessMessage"] = $"Kayıt başarıyla oluşturuldu.";
+                    return RedirectToAction(nameof(Index), new { id = projectPerson.ProjectID});
                 }
                 catch (Exception ex)
                 {
                     TempData["ErrorTitle"] = "HATA";
                     TempData["ErrorMessage"] = $"Kayıt oluşturulamadı.";
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index), new { id = projectPerson.ProjectID });
                 }
             }
-            return View(projectPerson);
+            return PartialView("_CreateModal");
         }
 
         // GET: ProjectPerson/Edit/5
@@ -184,7 +186,7 @@ namespace IBBPortal.Controllers
             {
                 return NotFound();
             }
-            return View(projectPerson);
+            return PartialView("_EditModal", projectPerson);
         }
 
         // POST: ProjectPerson/Edit/5
@@ -220,9 +222,9 @@ namespace IBBPortal.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { id = projectPerson.ProjectID });
             }
-            return View(projectPerson);
+            return PartialView("_EditModal", projectPerson);
         }
 
         // GET: ProjectPerson/Delete/5
@@ -260,13 +262,13 @@ namespace IBBPortal.Controllers
             {
                 _context.ProjectPerson.Remove(projectPerson);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { id = projectPerson.ProjectID});
             }
             catch (DbUpdateException ex)
             {
                 TempData["ErrorTitle"] = "HATA";
                 TempData["ErrorMessage"] = $"Bu değer, başka alanlarda kullanımda olduğu için silemezsiniz. Lütfen sistem yöneticinizle görüşün.";
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { id = projectPerson.ProjectID });
             }
         }
 

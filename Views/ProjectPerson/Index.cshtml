@@ -1,4 +1,82 @@
-﻿<div id="GeneralModal"></div>
+﻿@{
+    ViewData["Title"] = "Proje Düzenle";
+}
+
+@section Scripts {
+    <script>
+        //ProjectPerson Datatable
+        $(document).ready(function () {
+            let table = $("#dataTableProjectPerson").DataTable({
+                "dom": 'rt<"d-flex justify-content-between flex-column align-items-baseline flex-md-row mt-3"ipl><"clear">',
+                "language": {
+                    "url": "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Turkish.json",
+                },
+                "processing": false, // for show progress bar
+                "serverSide": true, // for process server side
+                "filter": true, // this is for disable filter (search box)
+                "orderMulti": false, // for disable multiple column at once
+                "ajax": {
+                    "url": "/ProjectPerson/JSONData",
+                    "data": function (d) {
+                        d.projectID = @ViewBag.ProjectID;
+                    },
+                    "type": "POST"
+                },
+                "columns": [
+                    { "data": "projectPersonName", "autoWidth": true },
+                    { "data": "projectPersonJob", "autoWidth": true },
+                    { "data": "projectPersonJobField", "autoWidth": true },
+                    {
+                        "data": "projectPersonIsInternal",
+                        "render": function (data) {
+
+                            let itemToRender;
+                            switch (data) {
+                                case true:
+                                    itemToRender = `<a href="#" class="btn btn-success">Kurumiçi</a>`;
+                                    break;
+                                case false:
+                                    itemToRender = `<a href="#" class="btn btn-danger">Kurumdışı</a>`;
+                                    break;
+                            }
+                            return itemToRender;
+                        },
+                        "autoWidth": true
+                    },
+                    { "data": "projectPersonContractor", "autoWidth": true },
+                    {
+                        "data": null,
+                        "render": function (data, type, full, meta, row) {
+                            return `<div class="d-flex align-items-center justify-content-end">\
+                                                    <button type="button" class="btn btn-circle bg-turqoise text-white mr-1" onclick="modalScript(this)" data-url="/ProjectPerson/Edit/${full.projectPersonID}"><i class="fas fa-edit"></i></a>\
+                                                    <button type="button" class="btn btn-circle bg-warning text-white mr-1" onclick="modalScript(this)" data-url="/ProjectPerson/Details/${full.projectPersonID}"><i class="fas fa-info-circle"></i></button>\
+                                                    <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/ProjectPerson/Delete/${full.projectPersonID}"><i class="fas fa-trash-alt"></i></button>
+                                                </div>`;
+                        }
+                    },
+                ],
+                "columnDefs": [
+                    { "targets": -1, "orderable": false },
+                ],
+                "initComplete": function () {
+                    let api = this.api();
+
+                    $('input.searchInput').on('input', function () {
+                        let columnIndex = $(this).data("index");
+                        let desiredColumn = api.columns(columnIndex);
+                        if (desiredColumn.search() !== this.value) {
+                            desiredColumn
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}
+
+<div id="GeneralModal"></div>
 
 <!-- Alert for Exceptions -->
 @if (@TempData["ErrorTitle"] is not null)
@@ -15,41 +93,75 @@
     </div>
 }
 
-<div class="row">
-    <div class="col-12">
-        <h4 class="text-primary border-bottom pb-2">Kişiler</h4>
+<!-- Alert for Exceptions -->
+@if (@TempData["SuccessTitle"] is not null)
+{
+    <div class="alert bg-gradient-success alert-dismissible fade show border-0" role="alert">
+        <h4 class="alert-heading text-white">
+            <i class="fas fa-check"></i>
+            @TempData["SuccessTitle"]
+            <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </h4>
+        <p class="text-white">@TempData["SuccessMessage"]</p>
+    </div>
+}
 
-        <div class="table-responsive position-relative">
-            <table class="table table-hover display" id="dataTableProjectPerson" width="100%" cellspacing="20">
-                <thead class="bg-navy-blue">
-                    <tr class="filter h-100 bg-white">
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="user" name="user" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="organization" name="organization" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="organization" name="organization" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="3" type="text" placeholder="Ara..." id="organization" name="organization" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="4" type="text" placeholder="Ara..." id="organization" name="organization" value="" /></th>
-                        <th scope="col">
-                            <button type="button" class="btn btn-success d-block w-100" onclick="modalScript(this)" data-url="/ProjectPerson/Create">
-                                <i class="fas fa-plus mr-2"></i> EKLE
-                            </button>
-                        </th>
-                    </tr>
-                    <tr id="tableLabels">
-                        <th scope="col" class="text-white text-sm">Kişi</th>
-                        <th scope="col" class="text-white text-sm">Projedeki Görevi</th>
-                        <th scope="col" class="text-white text-sm">Alan</th>
-                        <th scope="col" class="text-white text-sm">Organizasyon</th>
-                        <th scope="col" class="text-white text-sm">Yüklenici</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-                <tfoot>
+<h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
+        <ul class="nav nav-pills" id="formTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="tag-tab" href="/Project/Edit/@ViewBag.ProjectID">Künye</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="associates-tab" data-toggle="tab" href="#associates" role="tab" aria-controls="associates" aria-selected="false">Kişiler</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content my-3" id="formContent">
+            <div class="tab-pane fade active show" id="tag" role="tabpanel" aria-labelledby="tag-tab">
+                <div class="row">
+                    <div class="col-12">
+                        <h4 class="text-primary border-bottom pb-2">Kişiler</h4>
 
-                </tfoot>
+                        <div class="table-responsive position-relative">
+                            <table class="table table-hover display" id="dataTableProjectPerson" width="100%" cellspacing="20">
+                                <thead class="bg-navy-blue">
+                                    <tr class="filter h-100 bg-white">
+                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="user" name="user" value="" /></th>
+                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="organization" name="organization" value="" /></th>
+                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="organization" name="organization" value="" /></th>
+                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="3" type="text" placeholder="Ara..." id="organization" name="organization" value="" /></th>
+                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="4" type="text" placeholder="Ara..." id="organization" name="organization" value="" /></th>
+                                        <th scope="col">
+                                            <button type="button" class="btn btn-success d-block w-100" onclick="modalScript(this)" data-url="/ProjectPerson/Create/@ViewBag.ProjectID">
+                                                <i class="fas fa-plus mr-2"></i> EKLE
+                                            </button>
+                                        </th>
+                                    </tr>
+                                    <tr id="tableLabels">
+                                        <th scope="col" class="text-white text-sm">Kişi</th>
+                                        <th scope="col" class="text-white text-sm">Projedeki Görevi</th>
+                                        <th scope="col" class="text-white text-sm">Alan</th>
+                                        <th scope="col" class="text-white text-sm">Organizasyon</th>
+                                        <th scope="col" class="text-white text-sm">Yüklenici</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot>
 
-            </table>
+                                </tfoot>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

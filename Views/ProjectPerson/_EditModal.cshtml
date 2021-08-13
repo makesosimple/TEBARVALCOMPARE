@@ -1,15 +1,16 @@
 ﻿@model IBBPortal.Models.ProjectPerson
+
 <!-- Modal -->
-<div class="modal fade" id="ProjectPersonCreateModal" tabindex="-1" aria-labelledby="ProjectPersonCreateModalLabel" aria-hidden="true">
+<div class="modal fade" id="ProjectPersonEditModal" tabindex="-1" aria-labelledby="ProjectPersonEditModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-            <form asp-action="Create">
-
+            <form asp-action="Edit">
+                <input type="hidden" asp-for="ProjectPersonID"/>
                 <div class="modal-header">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-12 d-flex justify-content-between">
-                                <h5 class="modal-title" id="exampleModalLabel">Kişi Ekle</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Kişi Düzenle</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -44,7 +45,15 @@
                             <label asp-for="PersonID" class="col-12 col-xl-4 col-form-label">Kişi<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <select asp-for="PersonID" class="form-control" id="selectProjectPerson" style="width: 100%;">
-                                    <option value="">Kişi Seçin</option>
+                                    @if (Model.Person is not null)
+                                    {
+                                    <option value="@Model.Person.PersonID">@Model.Person.PersonName.Trim() @Model.Person.PersonSurname.Trim()</option>
+                                    }
+
+                                    else
+                                    {
+                                        <option value="">Kişi Seçin</option>
+                                    }
                                 </select>
                                 <span asp-validation-for="PersonID" class="text-danger"></span>
                             </div>
@@ -55,18 +64,34 @@
                             <label asp-for="JobTitleID" class="col-12 col-xl-4 col-form-label">Projedeki Görevi<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <select asp-for="JobTitleID" class="form-control" id="selectProjectPersonJobTitle" style="width: 100%;">
-                                    <option value="">Görev Seçin</option>
+                                    @if (Model.JobTitle is not null)
+                                    {
+                                        <option value="@Model.JobTitle.JobTitleID">@Model.JobTitle.Title</option>
+                                    }
+
+                                    else
+                                    {
+                                        <option value="">Görev Seçin</option>
+                                    }
                                 </select>
                                 <span asp-validation-for="JobTitleID" class="text-danger"></span>
                             </div>
                         </div>
 
                         <!-- Project Person Job Field ID -->
-                        <div class="form-group row"  data-dependent-on="#IsInternal" data-dependent-value="checked">
+                        <div class="form-group row" data-dependent-on="#IsInternal" data-dependent-value="checked">
                             <label asp-for="JobFieldID" class="col-12 col-xl-4 col-form-label">Alan<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <select asp-for="JobFieldID" class="form-control" id="selectProjectPersonJobField" style="width: 100%;">
-                                    <option value="">Alan Seçin</option>
+                                    @if (Model.JobField is not null)
+                                    {
+                                        <option value="@Model.JobField.JobFieldID">@Model.JobField.JobFieldTitle</option>
+                                    }
+
+                                    else
+                                    {
+                                        <option value="">Alan Seçin</option>
+                                    }
                                 </select>
                                 <span asp-validation-for="JobFieldID" class="text-danger"></span>
                             </div>
@@ -77,7 +102,15 @@
                             <label asp-for="ContractorID" class="col-12 col-xl-4 col-form-label">Yüklenici<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <select asp-for="ContractorID" class="form-control" id="selectProjectPersonContractor" style="width: 100%;">
-                                    <option value="">Yüklenici Seçin</option>
+                                    @if (Model.JobField is not null)
+                                    {
+                                        <option value="@Model.Contractor.ContractorID">@Model.Contractor.Title</option>
+                                    }
+
+                                    else
+                                    {
+                                        <option value="">Yüklenici Seçin</option>
+                                    }
                                 </select>
                                 <span asp-validation-for="ContractorID" class="text-danger"></span>
                             </div>
@@ -93,14 +126,15 @@
                         </div>
 
 
-                        <!-- Default Values for the Database Date Part-->
-                        <input type="hidden" asp-for="CreationDate" value="@ViewBag.CurrentDate" />
+                        <!-- Default Values for the Database Date Part -->
+                        <input type="hidden" asp-for="CreationDate" />
+                        <input type="hidden" asp-for="UpdateDate" />
 
-                        <!-- User ID for the Creation -->
-                        <input type="hidden" asp-for="UserID" value="@ViewBag.UserID" />
+                        <!-- User ID for the Update -->
+                        <input type="hidden" asp-for="UserID" />
 
-                        <!-- Project ID for the Creation -->
-                        <input type="hidden" asp-for="ProjectID" value="@ViewBag.ProjectID" />
+                        <!-- Project ID for the Update -->
+                        <input type="hidden" asp-for="ProjectID" />
 
                     </div>
                 </div>
