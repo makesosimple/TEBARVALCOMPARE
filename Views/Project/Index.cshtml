@@ -22,7 +22,14 @@
                     "type": "POST"
                 },
                 "columns": [
-                    { "data": "projectTitle", "autoWidth": true },
+                    {
+                        "data": "projectTitle",
+                        "autoWidth": true,
+                        "render": function (data, type, row) {
+                            console.log(row);
+                            return '<a href="/Project/Edit/'+row.projectID+'">'+data+'</a>';
+                        }
+                    },
                     { "data": "requestingDepartmentTitle", "autoWidth": true },
                     { "data": "responsibleDepartmentTitle", "autoWidth": true },
                     { "data": "ownerFullName", "autoWidth": true },

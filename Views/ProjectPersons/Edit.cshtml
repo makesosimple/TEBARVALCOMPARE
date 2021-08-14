@@ -1,0 +1,79 @@
+﻿@model IBBPortal.Models.ProjectPerson
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>ProjectPerson</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ProjectPersonID" />
+            <div class="form-group">
+                <label asp-for="PersonID" class="control-label"></label>
+                <select asp-for="PersonID" class="form-control" asp-items="ViewBag.PersonID"></select>
+                <span asp-validation-for="PersonID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectID" class="control-label"></label>
+                <select asp-for="ProjectID" class="form-control" asp-items="ViewBag.ProjectID"></select>
+                <span asp-validation-for="ProjectID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContractorID" class="control-label"></label>
+                <select asp-for="ContractorID" class="form-control" asp-items="ViewBag.ContractorID"></select>
+                <span asp-validation-for="ContractorID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="JobTitleID" class="control-label"></label>
+                <select asp-for="JobTitleID" class="form-control" asp-items="ViewBag.JobTitleID"></select>
+                <span asp-validation-for="JobTitleID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectPersonDescription" class="control-label"></label>
+                <input asp-for="ProjectPersonDescription" class="form-control" />
+                <span asp-validation-for="ProjectPersonDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsInternal" /> @Html.DisplayNameFor(model => model.IsInternal)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserID" class="control-label"></label>
+                <select asp-for="UserID" class="form-control" asp-items="ViewBag.UserID"></select>
+                <span asp-validation-for="UserID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreationDate" class="control-label"></label>
+                <input asp-for="CreationDate" class="form-control" />
+                <span asp-validation-for="CreationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdateDate" class="control-label"></label>
+                <input asp-for="UpdateDate" class="form-control" />
+                <span asp-validation-for="UpdateDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeletionDate" class="control-label"></label>
+                <input asp-for="DeletionDate" class="form-control" />
+                <span asp-validation-for="DeletionDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
