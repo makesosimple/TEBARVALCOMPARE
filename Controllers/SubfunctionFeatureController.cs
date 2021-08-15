@@ -132,6 +132,9 @@ namespace IBBPortal.Controllers
             {
                 try
                 {
+                    subfunctionFeature.CreationDate = DateTime.Now;
+                    subfunctionFeature.UserID = _userManager.GetUserId(HttpContext.User);
+
                     _context.Add(subfunctionFeature);
                     await _context.SaveChangesAsync();
                     TempData["SuccessTitle"] = "BAŞARILI";

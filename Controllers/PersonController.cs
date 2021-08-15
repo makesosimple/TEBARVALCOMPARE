@@ -153,9 +153,6 @@ namespace IBBPortal.Controllers
         // GET: Person/Create
         public IActionResult Create()
         {
-            var culture = new CultureInfo("tr-TR");
-            ViewBag.CurrentDate = DateTime.Now.ToString(culture);
-            ViewBag.UserID = _userManager.GetUserId(HttpContext.User);
             return View();
         }
 
@@ -170,6 +167,9 @@ namespace IBBPortal.Controllers
             {
                 try
                 {
+                    person.CreationDate = DateTime.Now;
+                    person.UserID = _userManager.GetUserId(HttpContext.User);
+
                     _context.Add(person);
                     await _context.SaveChangesAsync();
                     TempData["SuccessTitle"] = "BAŞARILI";

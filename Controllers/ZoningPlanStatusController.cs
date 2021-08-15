@@ -113,9 +113,6 @@ namespace IBBPortal.Controllers
         // GET: ZoningPlanStatus/Create
         public IActionResult Create()
         {
-            var culture = new CultureInfo("tr-TR");
-            ViewBag.CurrentDate = DateTime.Now.ToString(culture);
-            ViewBag.UserID = _userManager.GetUserId(HttpContext.User);
             return View();
         }
 
@@ -130,6 +127,9 @@ namespace IBBPortal.Controllers
             {
                 try
                 {
+                    zoningPlanStatus.CreationDate = DateTime.Now;
+                    zoningPlanStatus.UserID = _userManager.GetUserId(HttpContext.User);
+
                     _context.Add(zoningPlanStatus);
                     await _context.SaveChangesAsync();
                     TempData["SuccessTitle"] = "BAŞARILI";
