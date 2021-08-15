@@ -131,9 +131,6 @@ namespace IBBPortal.Controllers
         // GET: ProjectPerson/Create
         public IActionResult Create(int id)
         {
-            var culture = new CultureInfo("tr-TR");
-            ViewBag.CurrentDate = DateTime.Now.ToString(culture);
-            ViewBag.UserID = _userManager.GetUserId(HttpContext.User);
             ViewBag.ProjectID = id;
             return PartialView("_CreateModal");
         }
@@ -149,6 +146,9 @@ namespace IBBPortal.Controllers
             {
                 try
                 {
+                    projectPerson.CreationDate = DateTime.Now;
+                    projectPerson.UserID = _userManager.GetUserId(HttpContext.User);
+
                     _context.Add(projectPerson);
                     await _context.SaveChangesAsync();
                     TempData["SuccessTitle"] = "BAŞARILI";

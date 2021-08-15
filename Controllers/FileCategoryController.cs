@@ -149,9 +149,6 @@ namespace IBBPortal.Controllers
         // GET: FileCategory/Create
         public IActionResult Create()
         {
-            var culture = new CultureInfo("tr-TR");
-            ViewBag.CurrentDate = DateTime.Now.ToString(culture);
-            ViewBag.UserID = _userManager.GetUserId(HttpContext.User);
             return View();
         }
 
@@ -166,6 +163,9 @@ namespace IBBPortal.Controllers
             {
                 try
                 {
+                    fileCategory.CreationDate = DateTime.Now;
+                    fileCategory.UserID = _userManager.GetUserId(HttpContext.User);
+
                     _context.Add(fileCategory);
                     await _context.SaveChangesAsync();
                     TempData["SuccessTitle"] = "BAŞARILI";

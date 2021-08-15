@@ -147,9 +147,6 @@ namespace IBBPortal.Controllers
         // GET: RelationType/Create
         public IActionResult Create()
         {
-            var culture = new CultureInfo("tr-TR");
-            ViewBag.CurrentDate = DateTime.Now.ToString(culture);
-            ViewBag.UserID = _userManager.GetUserId(HttpContext.User);
             return View();
         }
 
@@ -164,6 +161,9 @@ namespace IBBPortal.Controllers
             {
                 try
                 {
+                    relationType.CreationDate = DateTime.Now;
+                    relationType.UserID = _userManager.GetUserId(HttpContext.User);
+
                     _context.Add(relationType);
                     await _context.SaveChangesAsync();
                     TempData["SuccessTitle"] = "BAŞARILI";

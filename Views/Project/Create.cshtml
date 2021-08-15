@@ -148,7 +148,7 @@
                         </div>
 
                         <!-- Has Related Projects ? -->
-                        <div class="form-group row">
+                        <!--<div class="form-group row">
                             <label asp-for="HasRelatedProject" class="col-form-label col-12 col-xl-4">Alt Proje Var mı?<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <div class="text-center d-inline-block col-form-label">
@@ -162,13 +162,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Default Values for the Database Date Part-->
-                        <input type="hidden" asp-for="CreationDate" value="@ViewBag.CurrentDate" />
-
-                        <!-- User ID for the Creation -->
-                        <input type="hidden" asp-for="UserID" value="@ViewBag.UserID" />
+                        </div>-->
 
                         <div class="buttons mt-3 my-md-0">
                             <button type="submit" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
@@ -185,95 +179,95 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-<script>
-    $('#selectRequestingDepartment').select2({
-        theme: "ibb",
-        language: "tr",
-        ajax: {
-            url: '/Department/JsonSelectData',
-            dataType: 'json',
-            processResults: function (response) {
+    <script>
+        $('#selectRequestingDepartment').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/Department/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
 
-                return {
-                    results: response.results,
-                };
+                    return {
+                        results: response.results,
+                    };
+                }
             }
-        }
-    });
+        });
 
-    $('#selectResponsibleDepartment').select2({
-        theme: "ibb",
-        language: "tr",
-        ajax: {
-            url: '/Department/JsonSelectData',
-            dataType: 'json',
-            processResults: function (response) {
+        $('#selectResponsibleDepartment').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/Department/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
 
-                return {
-                    results: response.results,
-                };
+                    return {
+                        results: response.results,
+                    };
+                }
             }
-        }
-    });
+        });
 
-    $('#selectProjectOwner').select2({
-        theme: "ibb",
-        language: "tr",
-        ajax: {
-            url: '/Person/JsonSelectData',
-            dataType: 'json',
-            processResults: function (response) {
+        $('#selectProjectOwner').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/Person/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
 
-                return {
-                    results: response.results,
-                };
+                    return {
+                        results: response.results,
+                    };
+                }
             }
-        }
-    });
+        });
 
-    $('#selectServiceArea').select2({
-        theme: "ibb",
-        language: "tr",
-        ajax: {
-            url: '/ServiceArea/JsonSelectData',
-            dataType: 'json',
-            processResults: function (response) {
+        $('#selectServiceArea').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/ServiceArea/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
 
-                return {
-                    results: response.results,
-                };
+                    return {
+                        results: response.results,
+                    };
+                }
             }
-        }
-    });
+        });
 
-    $('#selectProjectImportance').select2({
-        theme: "ibb",
-        language: "tr",
-        ajax: {
-            url: '/ProjectImportance/JsonSelectData',
-            dataType: 'json',
-            processResults: function (response) {
+        $('#selectProjectImportance').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/ProjectImportance/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
 
-                return {
-                    results: response.results,
-                };
+                    return {
+                        results: response.results,
+                    };
+                }
             }
-        }
-    });
+        });
 
-    $('#selectProjectStatus').select2({
-        theme: "ibb",
-        language: "tr",
-        ajax: {
-            url: '/ProjectStatus/JsonSelectData',
-            dataType: 'json',
-            processResults: function (response) {
+        $('#selectProjectStatus').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/ProjectStatus/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
 
-                return {
-                    results: response.results,
-                };
+                    return {
+                        results: response.results,
+                    };
+                }
             }
-        }
-    });
-</script>
+        });
+    </script>
 }
