@@ -16,8 +16,8 @@ namespace IBBPortal.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AuthorityID { get; set; }
 
-        [Required]
-        [MaxLength(256)]
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
+        [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
         public string AuthorityTitle { get; set; }
 
         [MaxLength(256)]

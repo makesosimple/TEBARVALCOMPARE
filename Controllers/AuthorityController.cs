@@ -19,13 +19,12 @@ namespace IBBPortal.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private HtmlSanitizer _sanitizer;
+        private readonly HtmlSanitizer _sanitizer;
 
-        public AuthorityController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, HtmlSanitizer sanitizer)
+        public AuthorityController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
-            _sanitizer = sanitizer;
         }
 
         // GET: City
@@ -165,8 +164,6 @@ namespace IBBPortal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("AuthorityID,AuthorityTitle,AuthorityDescription,UserID,CreationDate,UpdateDate,DeletionDate")] Authority authority)
         {
-            authority.AuthorityTitle = _sanitizer.Sanitize(authority.AuthorityTitle);
-
             if (ModelState.IsValid)
             {
                 try
