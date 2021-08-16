@@ -1,4 +1,10 @@
 ﻿@model IBBPortal.Models.Authority
+
+@{ 
+    var cultureInfo = CultureInfo.CreateSpecificCulture("tr-TR");
+    var CreationDate = Model.CreationDate.ToString("d MMMMM yyyy HH:mm:ss", cultureInfo);
+    var UpdateDate = Model.UpdateDate.HasValue ? Model.UpdateDate.Value.ToString("d MMMMM yyyy HH:mm:ss", cultureInfo): "";
+}
 <!-- Modal -->
 <div class="modal fade" id="AuthorityModal" tabindex="-1" aria-labelledby="AuthorityModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -32,11 +38,11 @@
                     </div>
                     <div class="row">
                         <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Oluşturma Tarihi</p></div>
-                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.CreationDate</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@CreationDate</p></div>
                     </div>
                     <div class="row">
                         <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Güncelleme Tarihi</p></div>
-                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.UpdateDate</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@UpdateDate</p></div>
                     </div>
                 </div>
             </div>

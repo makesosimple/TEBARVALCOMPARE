@@ -11,6 +11,7 @@ using IBBPortal.Models;
 using Microsoft.AspNetCore.Identity;
 using IBBPortal.Helpers;
 using System.Globalization;
+using Ganss.XSS;
 
 namespace IBBPortal.Controllers
 {
@@ -18,10 +19,13 @@ namespace IBBPortal.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public AuthorityController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        private HtmlSanitizer _sanitizer;
+
+        public AuthorityController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, HtmlSanitizer sanitizer)
         {
             _context = context;
             _userManager = userManager;
+            _sanitizer = sanitizer;
         }
 
         // GET: City
@@ -29,21 +33,22 @@ namespace IBBPortal.Controllers
         {
             return View();
         }
-
+        
+        [HttpPost]
         public JsonResult JSONData()
         {
             try
             {
 
-                var draw = HttpContext.Request.Query["draw"].FirstOrDefault();
+                var draw = HttpContext.Request.Form["draw"].FirstOrDefault();
                 // Skiping number of Rows count  
-                var start = Request.Query["start"].FirstOrDefault();
+                var start = Request.Form["start"].FirstOrDefault();
                 // Paging Length 10,20  
-                var length = Request.Query["length"].FirstOrDefault();
+                var length = Request.Form["length"].FirstOrDefault();
                 // Sort Column Name  
-                var sortColumn = Request.Query["columns[" + Request.Query["order[0][column]"].FirstOrDefault() + "][data]"].FirstOrDefault();
+                var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][data]"].FirstOrDefault();
                 // Sort Column Direction ( asc ,desc)  
-                var sortColumnDirection = Request.Query["order[0][dir]"].FirstOrDefault().ToUpper();
+                var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault().ToUpper();
 
                 //Paging Size (10, 20, 50,100)  
                 int pageSize = length != null ? Convert.ToInt32(length) : 0;
@@ -137,6 +142,8 @@ namespace IBBPortal.Controllers
             var authority = await _context.Authority
                 .Include(m => m.User)
                 .FirstOrDefaultAsync(m => m.AuthorityID == id);
+
+
             if (authority == null)
             {
                 return NotFound();
@@ -158,6 +165,8 @@ namespace IBBPortal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("AuthorityID,AuthorityTitle,AuthorityDescription,UserID,CreationDate,UpdateDate,DeletionDate")] Authority authority)
         {
+            authority.AuthorityTitle = _sanitizer.Sanitize(authority.AuthorityTitle);
+
             if (ModelState.IsValid)
             {
                 try
