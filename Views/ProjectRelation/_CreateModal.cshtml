@@ -1,0 +1,102 @@
+﻿@model IBBPortal.Models.ProjectRelation
+<!-- Modal -->
+<div class="modal fade" id="ProjectRelationCreateModal" tabindex="-1" aria-labelledby="ProjectRelationCreateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <form asp-action="Create">
+                <div class="modal-header">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-between">
+                                <h5 class="modal-title" id="exampleModalLabel">İlişkili Proje Ekle</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- Validation Part. Must be still for all views!! -->
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <!-- Related Project ID -->
+                        <div class="form-group row">
+                            <label asp-for="RelatedProjectID" class="col-12 col-xl-4 col-form-label">İlişkili Proje<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8">
+                                <select asp-for="RelatedProjectID" class="form-control" id="selectRelatedProject" style="width: 100%;" required>
+                                    <option value="">İlişkili Proje Seçin</option>
+                                </select>
+                                <span asp-validation-for="RelatedProjectID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Relation Type ID -->
+                        <div class="form-group row">
+                            <label asp-for="RelationTypeID" class="col-12 col-xl-4 col-form-label">İlişki Tipi<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8">
+                                <select asp-for="RelationTypeID" class="form-control" id="selectRelationType" style="width: 100%;" required>
+                                    <option value="">İlişki Tipi Seçin</option>
+                                </select>
+                                <span asp-validation-for="RelationTypeID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Project Relation Description -->
+                        <div class="form-group row">
+                            <label asp-for="ProjectRelationDescription" class="col-12 col-xl-4 col-form-label">Açıklama</label>
+                            <div class="col-12 col-xl-8">
+                                <textarea asp-for="ProjectRelationDescription" class="form-control"></textarea>
+                                <span asp-validation-for="ProjectRelationDescription" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Project ID for the Creation -->
+                        <input type="hidden" asp-for="ProjectID" value="@ViewBag.ProjectID" />
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="buttons">
+                        <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
+                        <a asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#selectRelatedProject').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/Project/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
+
+                return {
+                    results: response.results,
+                };
+            }
+        }
+    });
+
+    $('#selectRelationType').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/RelationType/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
+
+                return {
+                    results: response.results,
+                };
+            }
+        }
+    });
+</script>
+

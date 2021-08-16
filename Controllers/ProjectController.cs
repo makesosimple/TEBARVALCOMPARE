@@ -78,10 +78,10 @@ namespace IBBPortal.Controllers
 
                 for (int i = 0; i < 8; i++)
                 {
-                    columnName = Request.Query[$"columns[{i}][data]"].FirstOrDefault();
-                    searchValue = Request.Query[$"columns[{i}][search][value]"].FirstOrDefault();
+                    columnName = Request.Form[$"columns[{i}][data]"].FirstOrDefault();
+                    searchValue = Request.Form[$"columns[{i}][search][value]"].FirstOrDefault();
 
-                    if (!(string.IsNullOrEmpty(columnName) && string.IsNullOrEmpty(searchValue)))
+                    if (!string.IsNullOrEmpty(columnName) && !string.IsNullOrEmpty(searchValue))
                     {
                         data = data.WhereContains(columnName, searchValue);
                     }
@@ -94,6 +94,41 @@ namespace IBBPortal.Controllers
 
                 //Returning Json Data  
                 return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = passData });
+
+            }
+
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet]
+        public JsonResult JsonSelectData(string term)
+        {
+            try
+            {
+
+                var ProjectData = _context.Project
+                                    .Select(x => new {
+                                        id = x.ProjectID.ToString(),
+                                        text = x.ProjectTitle
+                                    });
+
+                if (!String.IsNullOrEmpty(term))
+                {
+                    ProjectData = ProjectData.Where(m => m.text.Contains(term));
+                }
+
+                //Count 
+                var totalCount = ProjectData.Count();
+
+                //Paging   
+                var passData = ProjectData.ToList();
+
+
+                //Returning Json Data  
+                return Json(new { results = passData, totalCount = totalCount });
 
             }
 
@@ -227,6 +262,70 @@ namespace IBBPortal.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(project);
+        }
+
+        // GET: Project/Edit/5
+        public async Task<IActionResult> EditProjectField(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var project = await _context.Project
+                .Include(p => p.District)
+                .FirstOrDefaultAsync(m => m.ProjectID == id);
+
+            if (project == null)
+            {
+                return NotFound();
+            }
+            return View(project);
+        }
+
+        // POST: Project/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost, ActionName("EditProjectField")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProjectFieldMain(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var projectToUpdate = await _context.Project.FirstOrDefaultAsync(c => c.ProjectID == id);
+
+            //Set Update Date
+            var CurrentDate = DateTime.Now;
+            projectToUpdate.UpdateDate = CurrentDate;
+
+
+            if (await TryUpdateModelAsync<Project>(projectToUpdate, "", 
+                c =>  c.IsProjectInIstanbul, c => c.DistrictID, c => c.ProjectAddress, c => c.ProjectArea, c => c.ProjectConstructionArea, c => c.ProjectPaysageArea, c => c.ProjectPaftaAdaParsel ))
+            {
+                try
+                {
+                    await _context.SaveChangesAsync();
+
+                    TempData["SuccessTitle"] = "BAŞARILI";
+                    TempData["SuccessMessage"] = $"{projectToUpdate.ProjectID} numaralı kayıt başarıyla düzenlendi.";
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ProjectExists(projectToUpdate.ProjectID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(EditProjectField), new { id = projectToUpdate.ProjectID.ToString() });
+            }
+            return View(projectToUpdate);
         }
 
         // GET: Project/Delete/5

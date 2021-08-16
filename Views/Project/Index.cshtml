@@ -26,7 +26,6 @@
                         "data": "projectTitle",
                         "autoWidth": true,
                         "render": function (data, type, row) {
-                            console.log(row);
                             return '<a href="/Project/Edit/'+row.projectID+'">'+data+'</a>';
                         }
                     },
@@ -37,14 +36,14 @@
                     {
                         "data": "projectStatusTitle",
                         "render": function (data) {
-                            return `<div class="btn btn-info">${data}</div>`;
+                            return `<div class="btn btn-info text-sm">${data}</div>`;
                         },
                         "autoWidth": true
                     },
                     {
                         "data": "projectImportanceTitle",
                         "render": function (data) {
-                            return `<div class="btn btn-info">${data}</div>`;
+                            return `<div class="btn btn-info text-sm">${data}</div>`;
                         },
                         "autoWidth": true
                     },
@@ -55,10 +54,10 @@
                             let itemToRender;
                             switch (data) {
                                 case true:
-                                    itemToRender = `<a href="#" class="btn btn-success">EVET</a>`;
+                                    itemToRender = `<a href="#" class="btn btn-success text-sm">EVET</a>`;
                                     break;
                                 case false:
-                                    itemToRender = `<a href="#" class="btn btn-danger">HAYIR</a>`;
+                                    itemToRender = `<a href="#" class="btn btn-danger text-sm">HAYIR</a>`;
                                     break;
                             }
                             return itemToRender;

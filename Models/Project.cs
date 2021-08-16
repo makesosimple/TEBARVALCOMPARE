@@ -87,6 +87,38 @@ namespace IBBPortal.Models
         [Required]
         public bool HasRelatedProject { get; set; }
 
+        //Project Field Tab Information
+
+        //Check if Project is in İstanbul. If this value is true, districts must come to select accordingly.
+        public bool IsProjectInIstanbul { get; set; }
+
+        //Bind project to District Model
+        public int? DistrictID { get; set; }
+        [ForeignKey("DistrictID")]
+        public District District { get; set; }
+
+        //Not required as all project will be displayed on Map but it's for a quick reference.
+        [MaxLength(256)]
+        public string? ProjectAddress { get; set; }
+
+        //Project Cost. I don't know if this field is required. Ask tomorrow.
+        [Column(TypeName = "decimal(12, 4)")]
+        public decimal? ProjectCost { get; set; }
+
+        [Column(TypeName = "decimal(8, 4)")]
+        public decimal? ProjectArea { get; set; }
+
+        [Column(TypeName = "decimal(8, 4)")]
+        public decimal? ProjectConstructionArea { get; set; }
+
+        [Column(TypeName = "decimal(8, 4)")]
+        public decimal? ProjectPaysageArea { get; set; }
+
+        [MaxLength(64, ErrorMessage = "Bu alana maksimum 64 karakter girebilirsiniz.")]
+        public string? ProjectPaftaAdaParsel { get; set; }
+
+        //End of Project Field Tab Information
+
         public string UserID { get; set; }
         [ForeignKey("UserID")]
         public ApplicationUser User { get; set; }
@@ -100,27 +132,6 @@ namespace IBBPortal.Models
         
 
         //public int ProjectCoordinatorPersonID { get; set; }
-
-        //public bool IsProjectInIstanbul { get; set; }
-        //public int DistrictID { get; set; }
-
-        //[MaxLength(256)]
-        //public string ProjectAddress { get; set; }
-
-
-        //[Column(TypeName = "decimal(12, 4)")]
-        //public decimal ProjectCost { get; set; }
-
-        //[Column(TypeName = "decimal(8, 4)")]
-        //public decimal ProjectArea { get; set; }
-
-        //[Column(TypeName = "decimal(8, 4)")]
-        //public decimal ProjectConstructionArea { get; set; }
-
-        //[Column(TypeName = "decimal(8, 4)")]
-        //public decimal ProjectPaysageArea { get; set; }
-
-        //public string ProjectPaftaAdaParsel { get; set; }
 
         //public int ProjectFeasibilityID { get; set; }
         //public int ProjectExpropriationID { get; set; }

@@ -19,11 +19,6 @@ namespace IBBPortal.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<IdentityUser>(b =>
-            {
-                b.ToTable("ApplicationUser");
-            });
-
             modelBuilder.Entity<IdentityUserClaim<string>>(b =>
             {
                 b.ToTable("ApplicationUserClaim");
@@ -106,6 +101,8 @@ namespace IBBPortal.Data
         public DbSet<IBBPortal.Models.JobField> JobField { get; set; }
 
         public DbSet<IBBPortal.Models.ProjectPerson> ProjectPerson { get; set; }
+
+        public DbSet<IBBPortal.Models.ProjectRelation> ProjectRelation { get; set; }
     }
 
 

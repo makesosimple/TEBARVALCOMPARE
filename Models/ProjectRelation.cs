@@ -17,23 +17,35 @@ namespace IBBPortal.Models
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProjectRelationID { get; set; }
-        public int ProjectID { get; set; }
 
-       
-        public int RelatedProjectID { get; set; }
-        public int RelationTypeID { get; set; }
+        //Current Project that we are on.
+        public int? ProjectID { get; set; }
+        [ForeignKey("ProjectID")]
+        public Project Project { get; set; }
 
+        //Related Project that we want to bind to Current Project.
+        public int? RelatedProjectID { get; set; }
+        [ForeignKey("RelatedProjectID")]
+        public Project RelatedProject { get; set; }
+
+        //Project to Project Relation Type.
+        public int? RelationTypeID { get; set; }
         [ForeignKey("RelationTypeID")]
         public RelationType RelationType { get; set; }
 
+        //Add a description type just in case the relation is unclear to new users or to top level executives.
+        [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
+        public string? ProjectRelationDescription { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string UserID { get; set; }
+        [ForeignKey("UserID")]
+        public ApplicationUser User { get; set; }
+
+        [Required]
         public DateTime CreationDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? UpdateDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? DeletionDate { get; set; }
     }
 }

@@ -14,17 +14,17 @@ using IBBPortal.Helpers;
 
 namespace IBBPortal.Controllers
 {
-    public class ProjectPersonController : Controller
+    public class ProjectRelationController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public ProjectPersonController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public ProjectRelationController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-        // GET: ProjectPerson
+        // GET: ProjectRelation
         public IActionResult Index(int id)
         {
             ViewBag.ProjectID = id;
@@ -52,17 +52,15 @@ namespace IBBPortal.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var data = _context.ProjectPerson
+                var data = _context.ProjectRelation
                     .Select(c => new
-                {
-                    c.ProjectPersonID,
-                    c.ProjectID,
-                    ProjectPersonName = c.Person.PersonName.Trim() + " " + c.Person.PersonSurname.Trim(),
-                    ProjectPersonJob = c.JobTitle.Title,
-                    ProjectPersonJobField = c.JobField.JobFieldTitle,
-                    ProjectPersonIsInternal = c.IsInternal,
-                    ProjectPersonContractor = c.Contractor.Title
-                })
+                    {
+                        c.ProjectRelationID,
+                        c.ProjectID,
+                        RelatedProjectTitle = c.RelatedProject.ProjectTitle,
+                        RelatedProjectIBBCode = c.RelatedProject.ProjectIBBCode,
+                        RelationType = c.RelationType.RelationTypeTitle
+                    })
                     .Where(c => c.ProjectID == projectID);
 
                 //Sorting
@@ -77,7 +75,7 @@ namespace IBBPortal.Controllers
                 //If control checks out, search. If not loop goes on until the end.
                 string columnName, searchValue;
 
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     columnName = Request.Form[$"columns[{i}][data]"].FirstOrDefault();
                     searchValue = Request.Form[$"columns[{i}][search][value]"].FirstOrDefault();
@@ -104,7 +102,7 @@ namespace IBBPortal.Controllers
             }
         }
 
-        // GET: ProjectPerson/Details/5
+        // GET: ProjectRelation/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -112,60 +110,58 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var projectPerson = await _context.ProjectPerson
-                .Include(p => p.Contractor)
-                .Include(p => p.JobField)
-                .Include(p => p.JobTitle)
-                .Include(p => p.Person)
+            var projectRelation = await _context.ProjectRelation
                 .Include(p => p.Project)
+                .Include(p => p.RelatedProject)
+                .Include(p => p.RelationType)
                 .Include(p => p.User)
-                .FirstOrDefaultAsync(m => m.ProjectPersonID == id);
-            if (projectPerson == null)
+                .FirstOrDefaultAsync(m => m.ProjectRelationID == id);
+            if (projectRelation == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DetailsModal", projectPerson);
+            return PartialView("_DetailsModal", projectRelation);
         }
 
-        // GET: ProjectPerson/Create
+        // GET: ProjectRelation/Create
         public IActionResult Create(int id)
         {
             ViewBag.ProjectID = id;
             return PartialView("_CreateModal");
         }
 
-        // POST: ProjectPerson/Create
+        // POST: ProjectRelation/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProjectPersonID,IsInternal,ProjectID,PersonID,JobTitleID,JobFieldID,ContractorID,ProjectPersonDescription,UserID,CreationDate,UpdateDate,DeletionDate")] ProjectPerson projectPerson)
+        public async Task<IActionResult> Create([Bind("ProjectRelationID,ProjectID,RelatedProjectID,RelationTypeID,ProjectRelationDescription,UserID,CreationDate,UpdateDate,DeletionDate")] ProjectRelation projectRelation)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    projectPerson.CreationDate = DateTime.Now;
-                    projectPerson.UserID = _userManager.GetUserId(HttpContext.User);
+                    projectRelation.CreationDate = DateTime.Now;
+                    projectRelation.UserID = _userManager.GetUserId(HttpContext.User);
 
-                    _context.Add(projectPerson);
+                    _context.Add(projectRelation);
                     await _context.SaveChangesAsync();
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $"Kayıt başarıyla oluşturuldu.";
-                    return RedirectToAction(nameof(Index), new { id = projectPerson.ProjectID});
+                    return RedirectToAction(nameof(Index), new { id = projectRelation.ProjectID });
                 }
                 catch (Exception ex)
                 {
                     TempData["ErrorTitle"] = "HATA";
                     TempData["ErrorMessage"] = $"Kayıt oluşturulamadı.";
-                    return RedirectToAction(nameof(Index), new { id = projectPerson.ProjectID });
+                    return RedirectToAction(nameof(Index), new { id = projectRelation.ProjectID });
                 }
             }
             return PartialView("_CreateModal");
         }
 
-        // GET: ProjectPerson/Edit/5
+        // GET: ProjectRelation/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -173,30 +169,27 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var projectPerson = await _context.ProjectPerson
-                .Include(p => p.Contractor)
-                .Include(p => p.JobField)
-                .Include(p => p.JobTitle)
-                .Include(p => p.Person)
+            var projectRelation = await _context.ProjectRelation
                 .Include(p => p.Project)
+                .Include(p => p.RelatedProject)
+                .Include(p => p.RelationType)
                 .Include(p => p.User)
-                .FirstOrDefaultAsync(m => m.ProjectPersonID == id);
-
-            if (projectPerson == null)
+                .FirstOrDefaultAsync(m => m.ProjectRelationID == id);
+            if (projectRelation == null)
             {
                 return NotFound();
             }
-            return PartialView("_EditModal", projectPerson);
+            return PartialView("_EditModal", projectRelation);
         }
 
-        // POST: ProjectPerson/Edit/5
+        // POST: ProjectRelation/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProjectPersonID,IsInternal,ProjectID,PersonID,JobTitleID,JobFieldID,ContractorID,ProjectPersonDescription,UserID,CreationDate,UpdateDate,DeletionDate")] ProjectPerson projectPerson)
+        public async Task<IActionResult> Edit(int id, [Bind("ProjectRelationID,ProjectID,RelatedProjectID,RelationTypeID,ProjectRelationDescription,UserID,CreationDate,UpdateDate,DeletionDate")] ProjectRelation projectRelation)
         {
-            if (id != projectPerson.ProjectPersonID)
+            if (id != projectRelation.ProjectRelationID)
             {
                 return NotFound();
             }
@@ -206,14 +199,14 @@ namespace IBBPortal.Controllers
                 try
                 {
                     var CurrentDate = DateTime.Now;
-                    projectPerson.UpdateDate = CurrentDate;
+                    projectRelation.UpdateDate = CurrentDate;
 
-                    _context.Update(projectPerson);
+                    _context.Update(projectRelation);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProjectPersonExists(projectPerson.ProjectPersonID))
+                    if (!ProjectRelationExists(projectRelation.ProjectRelationID))
                     {
                         return NotFound();
                     }
@@ -222,12 +215,12 @@ namespace IBBPortal.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index), new { id = projectPerson.ProjectID });
+                return RedirectToAction(nameof(Index), new { id = projectRelation.ProjectID });
             }
-            return PartialView("_EditModal", projectPerson);
+            return PartialView("_EditModal", projectRelation);
         }
 
-        // GET: ProjectPerson/Delete/5
+        // GET: ProjectRelation/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -235,46 +228,44 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var projectPerson = await _context.ProjectPerson
-                .Include(p => p.Contractor)
-                .Include(p => p.JobField)
-                .Include(p => p.JobTitle)
-                .Include(p => p.Person)
+            var projectRelation = await _context.ProjectRelation
                 .Include(p => p.Project)
+                .Include(p => p.RelatedProject)
+                .Include(p => p.RelationType)
                 .Include(p => p.User)
-                .FirstOrDefaultAsync(m => m.ProjectPersonID == id);
-            if (projectPerson == null)
+                .FirstOrDefaultAsync(m => m.ProjectRelationID == id);
+            if (projectRelation == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DeleteModal", projectPerson);
+            return PartialView("_DeleteModal", projectRelation);
         }
 
-        // POST: ProjectPerson/Delete/5
+        // POST: ProjectRelation/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var projectPerson = await _context.ProjectPerson.FindAsync(id);
-
+            var projectRelation = await _context.ProjectRelation.FindAsync(id);
+            
             try
             {
-                _context.ProjectPerson.Remove(projectPerson);
+                _context.ProjectRelation.Remove(projectRelation);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index), new { id = projectPerson.ProjectID});
+                return RedirectToAction(nameof(Index), new { id = projectRelation.ProjectID });
             }
             catch (DbUpdateException ex)
             {
                 TempData["ErrorTitle"] = "HATA";
                 TempData["ErrorMessage"] = $"Bu değer, başka alanlarda kullanımda olduğu için silemezsiniz. Lütfen sistem yöneticinizle görüşün.";
-                return RedirectToAction(nameof(Index), new { id = projectPerson.ProjectID });
+                return RedirectToAction(nameof(Index), new { id = projectRelation.ProjectID });
             }
         }
 
-        private bool ProjectPersonExists(int id)
+        private bool ProjectRelationExists(int id)
         {
-            return _context.ProjectPerson.Any(e => e.ProjectPersonID == id);
+            return _context.ProjectRelation.Any(e => e.ProjectRelationID == id);
         }
     }
 }
