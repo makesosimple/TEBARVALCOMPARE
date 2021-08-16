@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
@@ -30,16 +27,16 @@ namespace IBBPortal.Models
         public int ProjectID { get; set; }
 
         //Sample Porject Title Easy. Not sure if that must be 256 characters long.
-        [MaxLength(256)]
-        [Required]
+        [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
         public string ProjectTitle { get; set; }
 
         //This will be generated in the controller
-        [MaxLength(32)]
+        [MaxLength(32, ErrorMessage = "Bu alana maksimum 32 karakter girebilirsiniz.")]
         public string? ProjectCode { get; set; }
 
         //Input field. Value will come from the end-user.
-        [Required]
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
         public int ProjectIBBCode { get; set; }
 
         //Requesting Department. Bind to Department Model.
@@ -80,11 +77,11 @@ namespace IBBPortal.Models
         public DateTime? ProjectStatusDescriptionDate { get; set; }
 
         //Is Feasibility Needed? This is for bool check.
-        [Required]
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
         public bool IsFeasibilityNeeded { get; set; }
 
         //Has Related Project? This is for field check.
-        [Required]
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
         public bool HasRelatedProject { get; set; }
 
         public string UserID { get; set; }

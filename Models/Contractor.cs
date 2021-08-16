@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
@@ -18,14 +15,14 @@ namespace IBBPortal.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ContractorID { get; set; }
 
-        [Required]
-        [MaxLength(256)]
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
+        [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
         public string Title { get; set; }
 
-        [MaxLength(32)]
+        [MaxLength(32, ErrorMessage = "Bu alana maksimum 32 karakter girebilirsiniz.")]
         public string TaxCode { get; set; }
 
-        [MaxLength(32)]
+        [MaxLength(32, ErrorMessage = "Bu alana maksimum 32 karakter girebilirsiniz.")]
         public string TaxOffice { get; set; }
 
         public int? CityID { get; set; }
@@ -38,6 +35,7 @@ namespace IBBPortal.Models
 
         public int ContractorTypeID { get; set; }
         [ForeignKey("ContractorTypeID")]
+
         public ContractorType ContractorType { get; set; }
 
         public List<Person> RelatedPeople{ get; set; }
@@ -46,19 +44,19 @@ namespace IBBPortal.Models
         [ForeignKey("UserID")]
         public ApplicationUser User { get; set; }
 
-        [MaxLength(32)]
+        [MaxLength(32, ErrorMessage = "Bu alana maksimum 32 karakter girebilirsiniz.")]
         public string PhoneNumber { get; set; }
 
-        [MaxLength(256)]
+        [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
         public string? Description { get; set; }
 
-        [MaxLength(256)]
+        [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
         public string? Address { get; set; }
 
-        [MaxLength(128)]
+        [MaxLength(128, ErrorMessage = "Bu alana maksimum 128 karakter girebilirsiniz.")]
         public string? Email { get; set; }
 
-        [MaxLength(256)]
+        [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
         public string? Website { get; set; }
 
         [Required]

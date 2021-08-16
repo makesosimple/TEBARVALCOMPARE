@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
@@ -20,7 +16,7 @@ namespace IBBPortal.Models
         [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
         public string AuthorityTitle { get; set; }
 
-        [MaxLength(256)]
+        [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
         public string? AuthorityDescription { get; set; }
 
         public string UserID { get; set; }

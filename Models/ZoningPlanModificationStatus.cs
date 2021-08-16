@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
@@ -15,11 +12,11 @@ namespace IBBPortal.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ZoningPlanModificationStatusID { get; set; }
 
-        [Required]
-        [MaxLength(50)]
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
+        [MaxLength(50, ErrorMessage = "Bu alana maksimum 50 karakter girebilirsiniz.")]
         public string ZoningPlanModificationStatusTitle { get; set; }
 
-        [MaxLength(256)]
+        [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
         public string? ZoningPlanModificationStatusDescription { get; set; }
 
         public string UserID { get; set; }

@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
@@ -17,8 +14,8 @@ namespace IBBPortal.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int DepartmentID { get; set; }
         
-        [Required]
-        [MaxLength(128)]
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
+        [MaxLength(128, ErrorMessage = "Bu alana maksimum 128 karakter girebilirsiniz.")]
         public string DepartmentTitle { get; set; }
 
         public int? ParentDepartmentID { get; set; }

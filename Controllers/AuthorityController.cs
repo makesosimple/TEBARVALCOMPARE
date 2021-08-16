@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IBBPortal.Data;
 using IBBPortal.Models;
 using Microsoft.AspNetCore.Identity;
 using IBBPortal.Helpers;
-using System.Globalization;
 using Ganss.XSS;
 
 namespace IBBPortal.Controllers
@@ -55,6 +52,10 @@ namespace IBBPortal.Controllers
                 int recordsTotal = 0;
 
                 var data = _context.Authority.Select(c => new { c.AuthorityID, c.AuthorityTitle, UserName = c.User.UserName });
+
+                //var cultureInfo = CultureInfo.CreateSpecificCulture("tr-TR");
+                //var CreationDate = Model.CreationDate.ToString("d MMMMM yyyy HH:mm:ss", cultureInfo);
+                //var UpdateDate = Model.UpdateDate.HasValue ? Model.UpdateDate.Value.ToString("d MMMMM yyyy HH:mm:ss", cultureInfo) : "";
 
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
@@ -175,7 +176,7 @@ namespace IBBPortal.Controllers
                     await _context.SaveChangesAsync();
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $" {authority.AuthorityID} numaralı kayıt başarıyla oluşturuldu.";
-                    return RedirectToAction(nameof(Edit), new { id = authority.AuthorityID.ToString() });
+                    return RedirectToAction(nameof(Index), new { id = authority.AuthorityID.ToString() });
                 }
                 catch (Exception ex)
                 {
