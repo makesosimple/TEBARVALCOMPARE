@@ -24,6 +24,8 @@ namespace IBBPortal.Models
 
         public string UserID { get; set; }
         [ForeignKey("UserID")]
+        public ApplicationUser User { get; set; }
+
         public DateTime CreationDate { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
