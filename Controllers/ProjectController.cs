@@ -136,6 +136,45 @@ namespace IBBPortal.Controllers
             }
         }
 
+        //Map Values for Project.
+        //POST : PRoject/ProjectSpatialData/5
+        [HttpPost]
+        public JsonResult ProjectSpatialData(int? id)
+        {
+            try
+            {
+
+                var ProjectSpatialData = _context.Project
+                                    .Select(x => new {
+                                        x.ProjectID,
+                                        Longitude = x.ProjectPoint.Coordinate.Y.ToString(),
+                                        Latitude = x.ProjectPoint.Coordinate.X.ToString(),
+                                        ProjectKMLString = x.KML,
+                                    });
+
+                if (!String.IsNullOrEmpty(id.ToString()))
+                {
+                    ProjectSpatialData = ProjectSpatialData.Where(m => m.ProjectID == id);
+                }
+
+                //Count 
+                var totalCount = ProjectSpatialData.Count();
+
+                //Paging   
+                var passData = ProjectSpatialData.ToList();
+
+
+                //Returning Json Data  
+                return Json(new { results = passData, totalCount = totalCount });
+
+            }
+
+            catch (Exception)
+            {
+                return Json(new { error = "No Data Found!" });
+            }
+        }
+
         // GET: Project/Details/5
         public async Task<IActionResult> Details(int? id)
         {
