@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IBBPortal.Data;
 using IBBPortal.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Linq.Dynamic.Core;
-using System.Globalization;
 using IBBPortal.Helpers;
 using NetTopologySuite.Geometries;
 
@@ -188,7 +185,7 @@ namespace IBBPortal.Controllers
                     await _context.SaveChangesAsync();
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $" {project.ProjectID} numaralı kayıt başarıyla oluşturuldu.";
-                    return RedirectToAction(nameof(Edit), new { id = project.ProjectID.ToString() });
+                    return RedirectToAction(nameof(Index), new { id = project.ProjectID.ToString() });
                 }
                 catch (Exception ex)
                 {

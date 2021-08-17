@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
@@ -31,10 +28,10 @@ namespace IBBPortal.Models
 
         public DateTime? ProjectPhaseTimeExtentedFinish { get; set; }
 
-        [MaxLength(256)]
+        [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
         public string? ProjectPhaseExtensionReason { get; set; }
 
-        [MaxLength(256)]
+        [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
         public string ProjectPhaseStatusDescription { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

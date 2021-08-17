@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
@@ -17,21 +15,21 @@ namespace IBBPortal.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PersonID { get; set; }
 
-        [MaxLength(50)]
-        [Required]
+        [MaxLength(50, ErrorMessage = "Bu alana maksimum 50 karakter girebilirsiniz.")]
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
         public string PersonName { get; set; }
 
-        [MaxLength(50)]
-        [Required]
+        [MaxLength(50, ErrorMessage = "Bu alana maksimum 50 karakter girebilirsiniz.")]
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
         public string PersonSurname { get; set; }
 
-        [MaxLength(24)]
+        [MaxLength(24, ErrorMessage = "Bu alana maksimum 24 karakter girebilirsiniz.")]
         public string? PersonPhone { get; set; }
 
-        [MaxLength(256)]
+        [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
         public string? PersonEmail { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
         public bool isInternal { get; set; } 
 
         public int? JobTitleID { get; set; }
