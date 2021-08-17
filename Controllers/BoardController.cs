@@ -133,7 +133,7 @@ namespace IBBPortal.Controllers
                     await _context.SaveChangesAsync();
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $" {board.BoardID} numaralı kayıt başarıyla oluşturuldu.";
-                    return RedirectToAction(nameof(Index), new { id = board.BoardID.ToString() });
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {

@@ -131,7 +131,7 @@ namespace IBBPortal.Controllers
                     await _context.SaveChangesAsync();
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $" {projectPhaseStatus.ProjectPhaseStatusID} numaralı kayıt başarıyla oluşturuldu.";
-                    return RedirectToAction(nameof(Index), new { id = projectPhaseStatus.ProjectPhaseStatusID.ToString() });
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {

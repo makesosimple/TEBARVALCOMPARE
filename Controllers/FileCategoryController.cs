@@ -167,7 +167,7 @@ namespace IBBPortal.Controllers
                     await _context.SaveChangesAsync();
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $" {fileCategory.FileCategoryID} numaralı kayıt başarıyla oluşturuldu.";
-                    return RedirectToAction(nameof(Index), new { id = fileCategory.FileCategoryID.ToString() });
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {

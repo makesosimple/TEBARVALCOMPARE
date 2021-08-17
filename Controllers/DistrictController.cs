@@ -180,7 +180,7 @@ namespace IBBPortal.Controllers
                     await _context.SaveChangesAsync();
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $" {district.DistrictID} numaralı kayıt başarıyla oluşturuldu.";
-                    return RedirectToAction(nameof(Index), new { id = district.DistrictID.ToString() });
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
