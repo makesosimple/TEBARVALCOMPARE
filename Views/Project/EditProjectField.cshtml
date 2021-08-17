@@ -1,0 +1,197 @@
+﻿@model IBBPortal.Models.Project
+
+@{
+    ViewData["Title"] = "Proje Düzenle";
+}
+
+<!-- Alert for Exceptions -->
+@if (@TempData["SuccessTitle"] is not null)
+{
+    <div class="alert bg-gradient-success alert-dismissible fade show border-0" role="alert">
+        <h4 class="alert-heading text-white">
+            <i class="fas fa-check"></i>
+            @TempData["SuccessTitle"]
+            <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </h4>
+        <p class="text-white">@TempData["SuccessMessage"]</p>
+    </div>
+}
+
+<h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
+        <ul class="nav nav-pills" id="formTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="tag-tab" href="/Project/Edit/@Model.ProjectID">Künye</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="associates-tab" href="/ProjectPerson/Index/@Model.ProjectID">Kişiler</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="associates-tab" href="/ProjectRelation/Index/@Model.ProjectID">İlişkili Projeler</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="project-field-tab" data-toggle="tab" href="#project-field" role="tab" aria-controls="project-field" aria-selected="false">Proje Alanı</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content my-3" id="formContent">
+            <div class="tab-pane fade active show" id="project-field" role="tabpanel" aria-labelledby="project-field-tab">
+                <div class="row">
+                    <div class="col-12 col-xl-6">
+                        <form asp-action="EditProjectField">
+                            <input type="hidden" asp-for="ProjectID" />
+                            <!-- Validation Part. Must be still for all views!! -->
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <!-- Is Project In İstanbul ? -->
+                            <div class="form-group row">
+                                <label asp-for="IsProjectInIstanbul" class="col-form-label col-12 col-xl-4">İstanbul Dışı mı?<span class="text-danger">*</span></label>
+                                <div class="col-12 col-xl-8">
+                                    <div class="text-center d-inline-block col-form-label">
+                                        <div class="vc-toggle-container">
+                                            <label class="vc-switch">
+                                                <input type="checkbox" class="vc-switch-input" asp-for="IsProjectInIstanbul">
+                                                <span data-on="Evet" data-off="Hayır" class="vc-switch-label"></span>
+                                                <span class="vc-handle"></span>
+                                                <span asp-validation-for="IsProjectInIstanbul" class="text-danger"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- District ID -->
+                            <div class="form-group row" data-dependent-on="#IsProjectInIstanbul" data-dependent-value="unchecked">
+                                <label asp-for="DistrictID" class="col-12 col-xl-4 col-form-label">İlçe</label>
+                                <div class="col-12 col-xl-8">
+                                    <select asp-for="DistrictID" class="form-control" id="selectDistrict" style="width: 100%;">
+                                        @if (Model.District is not null)
+                                        {
+                                            <option value="@Model.District.DistrictID">@Model.District.DistrictName</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option selected value="">İlçe Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="DistrictID" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Project Address -->
+                            <div class="form-group row" data-dependent-on="#IsProjectInIstanbul" data-dependent-value="unchecked">
+                                <label asp-for="ProjectAddress" class="col-12 col-xl-4 col-form-label">Açık Adres</label>
+                                <div class="col-12 col-xl-8">
+                                    <textarea class="form-control" asp-for="ProjectAddress" rows="3"></textarea>
+                                    <span asp-validation-for="ProjectAddress" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Project Construction Area -->
+                            <div class="form-group row" data-dependent-on="#IsProjectInIstanbul" data-dependent-value="unchecked">
+                                <label asp-for="ProjectConstructionArea" class="col-12 col-xl-4 col-form-label">İnşaat Alanı (m<sup>2</sup>)</label>
+                                <div class="col-12 col-xl-8">
+                                    <input asp-for="ProjectConstructionArea" class="form-control" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-input-type="length">
+                                    <i class="fas fa-ruler-vertical"></i>
+                                    <span asp-validation-for="ProjectConstructionArea" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Project Area -->
+                            <div class="form-group row" data-dependent-on="#IsProjectInIstanbul" data-dependent-value="unchecked">
+                                <label asp-for="ProjectArea" class="col-12 col-xl-4 col-form-label">Proje Alanı (m<sup>2</sup>)</label>
+                                <div class="col-12 col-xl-8">
+                                    <input asp-for="ProjectArea" class="form-control" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-input-type="length">
+                                    <i class="fas fa-ruler-vertical"></i>
+                                    <span asp-validation-for="ProjectArea" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Project Paysage Area -->
+                            <div class="form-group row" data-dependent-on="#IsProjectInIstanbul" data-dependent-value="unchecked">
+                                <label asp-for="ProjectPaysageArea" class="col-12 col-xl-4 col-form-label">Peyzaj Alanı (m<sup>2</sup>)</label>
+                                <div class="col-12 col-xl-8">
+                                    <input asp-for="ProjectPaysageArea" class="form-control" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-input-type="length">
+                                    <i class="fas fa-ruler-vertical"></i>
+                                    <span asp-validation-for="ProjectPaysageArea" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Project Pafta/Ada/Parsel -->
+                            <div class="form-group row" data-dependent-on="#IsProjectInIstanbul" data-dependent-value="unchecked">
+                                <label asp-for="ProjectPaftaAdaParsel" class="col-12 col-xl-4 col-form-label">Pafta/Ada/Parsel</label>
+                                <div class="col-12 col-xl-8">
+                                    <input asp-for="ProjectPaftaAdaParsel" type="text" class="form-control">
+                                    <span asp-validation-for="ProjectPaftaAdaParsel" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Default Values for the Database Date Part -->
+                            <input type="hidden" asp-for="UpdateDate" />
+
+                            <div class="buttons mt-3 my-md-0">
+                                <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
+                                <a asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $('#selectDistrict').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/District/JsonSelectData',
+                data: function () {
+                    let query = {
+                        cityCode: 34,
+                    }
+                    return query;
+                },
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
+        });
+
+        //Dependent Fields Management
+        $("[data-dependent-on]").each(function () {
+            //Hide all dependent fields by default until user makes a choice.
+            $(this).hide();
+
+            //Get the object, object's target and desired value. 
+            let field = $(this);
+            let target = $(this).data("dependent-on");
+            let desiredValue = $(this).data("dependent-value");
+            let status = $(target).is(':checked') ? 'checked' : 'unchecked';
+
+            //Let's check initial state first for UX.
+            if (status == desiredValue) field.show();
+
+            //Now every time user changes the input value of the target, certain fields will open or close on DOM.
+            $(target).on("change", function () {
+                status = $(this).is(':checked') ? 'checked' : 'unchecked';
+                if (status == desiredValue) field.show();
+                else field.hide();
+            });
+
+        });
+    </script>
+}

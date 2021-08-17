@@ -4,14 +4,16 @@ using IBBPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IBBPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210816155247_IBBPortalSchemaVol3.2")]
+    partial class IBBPortalSchemaVol32
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -621,34 +623,15 @@ namespace IBBPortal.Migrations
                     b.Property<DateTime?>("DeletionDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DistrictID")
-                        .HasColumnType("int");
-
                     b.Property<bool>("HasRelatedProject")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsFeasibilityNeeded")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsProjectInIstanbul")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ProjectAddress")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<decimal?>("ProjectArea")
-                        .HasColumnType("decimal(8,4)");
-
                     b.Property<string>("ProjectCode")
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
-
-                    b.Property<decimal?>("ProjectConstructionArea")
-                        .HasColumnType("decimal(8,4)");
-
-                    b.Property<decimal?>("ProjectCost")
-                        .HasColumnType("decimal(12,4)");
 
                     b.Property<int>("ProjectIBBCode")
                         .HasColumnType("int");
@@ -658,13 +641,6 @@ namespace IBBPortal.Migrations
 
                     b.Property<int?>("ProjectOwnerPersonID")
                         .HasColumnType("int");
-
-                    b.Property<string>("ProjectPaftaAdaParsel")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<decimal?>("ProjectPaysageArea")
-                        .HasColumnType("decimal(8,4)");
 
                     b.Property<int?>("ProjectServiceAreaID")
                         .HasColumnType("int");
@@ -697,8 +673,6 @@ namespace IBBPortal.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ProjectID");
-
-                    b.HasIndex("DistrictID");
 
                     b.HasIndex("ProjectImportanceID");
 
@@ -1508,10 +1482,6 @@ namespace IBBPortal.Migrations
 
             modelBuilder.Entity("IBBPortal.Models.Project", b =>
                 {
-                    b.HasOne("IBBPortal.Models.District", "District")
-                        .WithMany()
-                        .HasForeignKey("DistrictID");
-
                     b.HasOne("IBBPortal.Models.ProjectImportance", "ProjectImportance")
                         .WithMany("RelatedProjects")
                         .HasForeignKey("ProjectImportanceID");
@@ -1539,8 +1509,6 @@ namespace IBBPortal.Migrations
                     b.HasOne("IBBPortal.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserID");
-
-                    b.Navigation("District");
 
                     b.Navigation("ProjectImportance");
 

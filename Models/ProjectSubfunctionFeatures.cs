@@ -12,9 +12,21 @@ namespace IBBPortal.Models
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProjectSubfunctionFeaturesID { get; set; }
-        public int ProjectID { get; set; }
-        public int SubfunctionID { get; set; }
-        public int SubfunctionFeatureID { get; set; }
+
+        //Current Project that we are on.
+        public int? ProjectID { get; set; }
+        [ForeignKey("ProjectID")]
+        public Project Project { get; set; }
+
+        //Subfunction model to bind to project
+        public int? SubfunctionID { get; set; }
+        [ForeignKey("SubfunctionID")]
+        public Subfunction Subfunction { get; set; }
+
+        //Subfunction Feature 
+        public int? SubfunctionFeatureID { get; set; }
+        [ForeignKey("SubfunctionFeatureID")]
+        public SubfunctionFeature SubfunctionFeature { get; set; }
 
         public float SubfunctionFeatureValueFloat { get; set; }
         public string SubfunctionFeatureValueString { get; set; }

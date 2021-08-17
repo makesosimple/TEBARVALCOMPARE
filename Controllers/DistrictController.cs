@@ -90,7 +90,7 @@ namespace IBBPortal.Controllers
         }
 
         [HttpGet]
-        public JsonResult JsonSelectData(string? term, int cityID)
+        public JsonResult JsonSelectData(string? term, int? cityID, int? cityCode)
         {
             try
             {
@@ -99,7 +99,8 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.DistrictID.ToString(),
                                         text = x.DistrictName,
-                                        city = x.CityID
+                                        city = x.CityID,
+                                        cityCode = x.City.CityCode
                                     });
 
                 if (!String.IsNullOrEmpty(term))
@@ -110,6 +111,11 @@ namespace IBBPortal.Controllers
                 if (!String.IsNullOrEmpty(cityID.ToString()))
                 {
                     DistrictData = DistrictData.Where(m => m.city == cityID);
+                }
+
+                if (!String.IsNullOrEmpty(cityCode.ToString()))
+                {
+                    DistrictData = DistrictData.Where(m => m.cityCode == cityCode);
                 }
 
                 //Count 
