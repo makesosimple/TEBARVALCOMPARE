@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Linq.Dynamic.Core;
 using System.Globalization;
 using IBBPortal.Helpers;
+using NetTopologySuite.Geometries;
 
 namespace IBBPortal.Controllers
 {
@@ -301,9 +302,16 @@ namespace IBBPortal.Controllers
             var CurrentDate = DateTime.Now;
             projectToUpdate.UpdateDate = CurrentDate;
 
+            //Get Project Longitude and Latitude. This will throw an error if user tries to update with null Lang and Long!
+            double projectLongitude = Convert.ToDouble(Request.Form["ProjectLongitude"].FirstOrDefault());
+            double projectLatitude = Convert.ToDouble(Request.Form["ProjectLatitude"].FirstOrDefault());
+
+            projectToUpdate.ProjectPoint = new Point(projectLatitude, projectLongitude) { SRID = 4326 };
 
             if (await TryUpdateModelAsync<Project>(projectToUpdate, "", 
-                c =>  c.IsProjectInIstanbul, c => c.DistrictID, c => c.ProjectAddress, c => c.ProjectArea, c => c.ProjectConstructionArea, c => c.ProjectPaysageArea, c => c.ProjectPaftaAdaParsel ))
+                c =>  c.IsProjectInIstanbul, c => c.DistrictID, c => c.ProjectAddress, c => c.ProjectArea, 
+                c => c.ProjectConstructionArea, c => c.ProjectPaysageArea, c => c.ProjectPaftaAdaParsel,
+                c => c.ProjectLongitude, c => c.ProjectLatitude, c => c.KML, c => c.ProjectPoint))
             {
                 try
                 {
@@ -312,7 +320,7 @@ namespace IBBPortal.Controllers
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $"{projectToUpdate.ProjectID} numaralı kayıt başarıyla düzenlendi.";
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception)
                 {
                     if (!ProjectExists(projectToUpdate.ProjectID))
                     {
@@ -320,7 +328,9 @@ namespace IBBPortal.Controllers
                     }
                     else
                     {
-                        throw;
+                        TempData["ErrorTitle"] = "HATA";
+                        TempData["ErrorMessage"] = $"Kayıt düzenlenirken bir hata oluştu. Lütfen sistem yöneticinizle görüşün.";
+                        return RedirectToAction(nameof(EditProjectField), new { id = projectToUpdate.ProjectID.ToString() });
                     }
                 }
                 return RedirectToAction(nameof(EditProjectField), new { id = projectToUpdate.ProjectID.ToString() });

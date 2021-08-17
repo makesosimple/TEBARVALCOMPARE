@@ -32,7 +32,7 @@
 
     function formatNumber(n) {
     // format number 1000000 to 1,234,567
-      return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+      return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".")
     }
 
 
@@ -55,12 +55,12 @@
       var caret_pos = input.prop("selectionStart");
         
       // check for decimal
-      if (input_val.indexOf(".") >= 0) {
+      if (input_val.indexOf(",") >= 0) {
 
         // get position of first decimal
         // this prevents multiple decimals from
         // being entered
-        var decimal_pos = input_val.indexOf(".");
+        var decimal_pos = input_val.indexOf(",");
 
         // split number by decimal point
         var left_side = input_val.substring(0, decimal_pos);
@@ -83,11 +83,11 @@
         // join number by .
         switch(inputType) {
           case 'currency':
-            input_val = "₺ " + left_side + "." + right_side;
+            input_val = "₺ " + left_side + "," + right_side;
             break;
 
           case 'length':
-            input_val = left_side + "." + right_side;
+            input_val = left_side + "," + right_side;
             break;
         }
       } else {
@@ -98,7 +98,7 @@
         
         // final formatting
         if (blur === "blur") {
-          input_val += ".00";
+          input_val += ",00";
         }
 
         switch(inputType) {
@@ -123,16 +123,6 @@
 
     //Format Phone  Number
     $(".phoneField").mask("(999) 999 99 99");
-
-    //Format Current Date
-    let currentdate = new Date(); 
-    let datetime =  currentdate.getDate() + "/"
-                    + (currentdate.getMonth()+1)  + "/" 
-                    + currentdate.getFullYear() + " "  
-                    + currentdate.getHours() + ":"  
-                    + currentdate.getMinutes() + ":" 
-                    + currentdate.getSeconds();
-    $("#currentDate").val(datetime);
   
   })(jQuery); // End of use strict
   

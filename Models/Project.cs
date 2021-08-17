@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite.Geometries;
 
 namespace IBBPortal.Models
 {
@@ -87,7 +88,7 @@ namespace IBBPortal.Models
         [Required]
         public bool HasRelatedProject { get; set; }
 
-        //Project Field Tab Information
+        /** Project Field Tab Information **/
 
         //Check if Project is in İstanbul. If this value is true, districts must come to select accordingly.
         public bool IsProjectInIstanbul { get; set; }
@@ -102,22 +103,34 @@ namespace IBBPortal.Models
         public string? ProjectAddress { get; set; }
 
         //Project Cost. I don't know if this field is required. Ask tomorrow.
-        [Column(TypeName = "decimal(12, 4)")]
+        [Column(TypeName = "decimal(18, 2)")]
         public decimal? ProjectCost { get; set; }
 
-        [Column(TypeName = "decimal(8, 4)")]
-        public decimal? ProjectArea { get; set; }
+        public double? ProjectArea { get; set; }
 
-        [Column(TypeName = "decimal(8, 4)")]
-        public decimal? ProjectConstructionArea { get; set; }
+        public double? ProjectConstructionArea { get; set; }
 
-        [Column(TypeName = "decimal(8, 4)")]
-        public decimal? ProjectPaysageArea { get; set; }
+        public double? ProjectPaysageArea { get; set; }
 
         [MaxLength(64, ErrorMessage = "Bu alana maksimum 64 karakter girebilirsiniz.")]
         public string? ProjectPaftaAdaParsel { get; set; }
 
-        //End of Project Field Tab Information
+        //Project Physical Location and Shape (Important as this data will be projected to Map.)
+        [MaxLength(512, ErrorMessage = "Bu alana maksimum 512 karakter girebilirsiniz.")]
+        public string? KML { get; set; }
+
+        [Column(TypeName = "decimal(9, 6)")]
+        public decimal? ProjectLongitude { get; set; }
+
+        [Column(TypeName = "decimal(9, 6)")]
+        public decimal? ProjectLatitude { get; set; }
+
+        public Point ProjectPoint { get; set; }
+
+        public LineString ProjectLineString { get; set; }
+
+
+        /** End of Project Field Tab Information **/
 
         public string UserID { get; set; }
         [ForeignKey("UserID")]
