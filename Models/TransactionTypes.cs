@@ -12,24 +12,26 @@ namespace IBBPortal.Models
     [Index(nameof(UserID))]
     public class TransactionTypes
     {   
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TransactionTypeID { get; set; }
         
+        [Required]
+        [MaxLength(64)]
         public string TransactionTypeName { get; set; }
 
         [MaxLength(256)]
-        public string TransactionTypeDescription { get; set; }
+        public string? TransactionTypeDescription { get; set; }
 
         public string UserID { get; set; }
         [ForeignKey("UserID")]
         public ApplicationUser User { get; set; }
 
+        [Required]
         public DateTime CreationDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? UpdateDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? DeletionDate { get; set; }
 
     }
