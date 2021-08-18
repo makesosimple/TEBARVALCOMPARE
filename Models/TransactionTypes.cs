@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
@@ -16,11 +13,11 @@ namespace IBBPortal.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TransactionTypeID { get; set; }
         
-        [Required]
-        [MaxLength(64)]
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
+        [MaxLength(64, ErrorMessage = "Bu alana maksimum 64 karakter girebilirisniz.")]
         public string TransactionTypeName { get; set; }
 
-        [MaxLength(256)]
+        [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirisniz.")]
         public string? TransactionTypeDescription { get; set; }
 
         public string UserID { get; set; }
@@ -36,3 +33,4 @@ namespace IBBPortal.Models
 
     }
 }
+
