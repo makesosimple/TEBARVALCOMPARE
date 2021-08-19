@@ -12,6 +12,7 @@
     <Content Remove="Views\JobField\Index.cshtml" />
     <Content Remove="Views\JobField\_DeleteModal.cshtml" />
     <Content Remove="Views\JobField\_DetailsModal.cshtml" />
+    <Content Remove="Views\Shared\Layouts\_LayoutMap.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,6 +54,7 @@
     <None Include="Views\Shared\LayoutComponents\_Meta.cshtml" />
     <None Include="Views\Shared\LayoutComponents\_Sidebar.cshtml" />
     <None Include="Views\Shared\Layouts\_LayoutLogin.cshtml" />
+    <None Include="Views\Shared\Layouts\_LayoutMap.cshtml" />
     <None Include="Views\Shared\Layouts\_LayoutMain.cshtml" />
     <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
     <None Include="Views\_ViewImports.cshtml" />

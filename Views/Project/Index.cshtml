@@ -8,8 +8,24 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
+            /* Primary Buttons for DataTable. Must be common on all tables. */
+            $.fn.dataTable.ext.buttons.alert = {
+                className: 'btn btn-primary btn-circle border-0',
+
+                action: function (e, dt, node, config) {
+                    window.location = '/ProjectMap';
+                }
+            };
+
             let table = $("#dataTable").DataTable({
-                "dom": 'rt<"d-flex justify-content-between flex-column align-items-baseline flex-md-row mt-3"ipl><"clear">',
+                "dom": '<"top d-flex justify-content-start my-2"B>rt<"d-flex justify-content-between flex-column align-items-baseline flex-md-row mt-3"ipl><"clear">',
+                buttons: [
+                    {
+                        extend: 'alert',
+                        text: '<i class="fas fa-map-marker-alt"></i>',
+                        className: 'bg-primary',
+                    },
+                ],
                 "language": {
                     "url": "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Turkish.json",
                 },
