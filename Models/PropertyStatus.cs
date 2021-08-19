@@ -5,17 +5,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
 {
-    [Index(nameof(User))]
+    [Index(nameof(UserID))]
     public class PropertyStatus
     {
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ProperyStatusID { get; set; }
+        public int PropertyStatusID { get; set; }
 
         [Required(ErrorMessage = "Bu alanın doldurulması zorunludur."), MaxLength(64, ErrorMessage = "Bu alana maksimum 64 karakter girebilirsiniz.")]
-        public string ProperyStatusTitle { get; set; }
+        public string PropertyStatusTitle { get; set; }
 
         [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
-        public string? ProperyStatusDescription { get; set; }
+        public string? PropertyStatusDescription { get; set; }
 
         public string UserID { get; set; }
         [ForeignKey("UserID")]

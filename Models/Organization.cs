@@ -5,9 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
 {
-    [Index(nameof(User))]
+    [Index(nameof(UserID))]
     public class Organization
     {
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int OrganizationID { get; set; }
 
