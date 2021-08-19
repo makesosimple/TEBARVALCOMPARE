@@ -103,6 +103,10 @@ namespace IBBPortal.Data
         public DbSet<IBBPortal.Models.ProjectPerson> ProjectPerson { get; set; }
 
         public DbSet<IBBPortal.Models.ProjectRelation> ProjectRelation { get; set; }
+
+        public DbSet<IBBPortal.Models.TransactionTypes> TransactionTypes { get; set; }
+
+        public DbSet<IBBPortal.Models.TransactionMessages> TransactionMessages { get; set; }
     }
 
 
