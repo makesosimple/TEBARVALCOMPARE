@@ -113,7 +113,9 @@ namespace IBBPortal.Data
         public DbSet<IBBPortal.Models.ProjectPerson> ProjectPerson { get; set; }
 
         public DbSet<IBBPortal.Models.ProjectRelation> ProjectRelation { get; set; }
-
+        
+        public DbSet<IBBPortal.Models.Shortcuts> Shortcuts { get; set; }
+        
         public DbSet<IBBPortal.Models.PropertyStatus> PropertyStatus { get; set; }
 
         public DbSet<IBBPortal.Models.Organization> Organization { get; set; }

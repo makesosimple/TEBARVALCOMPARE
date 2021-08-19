@@ -17,6 +17,8 @@ namespace IBBPortal.Models
         
         public int ShortcutsUserID { get; set; }
 
+        public string UserID { get; set; }
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreationDate { get; set; }
 
