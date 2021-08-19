@@ -22,7 +22,7 @@ namespace IBBPortal.Controllers
             _userManager = userManager;
         }
 
-        // GET: PropertyStatus
+        // GET: Organization
         public IActionResult Index()
         {
             return View();
@@ -89,6 +89,41 @@ namespace IBBPortal.Controllers
             }
         }
 
+        [HttpGet]
+        public JsonResult JsonSelectData(string term)
+        {
+            try
+            {
+
+                var PropertyStatusData = _context.PropertyStatus
+                                    .Select(x => new {
+                                        id = x.PropertyStatusID.ToString(),
+                                        text = x.PropertyStatusTitle
+                                    });
+
+                if (!String.IsNullOrEmpty(term))
+                {
+                    PropertyStatusData = PropertyStatusData.Where(m => m.text.Contains(term));
+                }
+
+                //Count 
+                var totalCount = PropertyStatusData.Count();
+
+                //Paging   
+                var passData = PropertyStatusData.ToList();
+
+
+                //Returning Json Data  
+                return Json(new { results = passData, totalCount = totalCount });
+
+            }
+
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         // GET: PropertyStatus/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -119,7 +154,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProperyStatusID,ProperyStatusTitle,ProperyStatusDescription,UserID,CreationDate,UpdateDate,DeletionDate")] PropertyStatus propertyStatus)
+        public async Task<IActionResult> Create([Bind("PropertyStatusID,PropertyStatusTitle,PropertyStatusDescription,UserID,CreationDate,UpdateDate,DeletionDate")] PropertyStatus propertyStatus)
         {
             if (ModelState.IsValid)
             {
@@ -165,7 +200,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProperyStatusID,ProperyStatusTitle,ProperyStatusDescription,UserID,CreationDate,UpdateDate,DeletionDate")] PropertyStatus propertyStatus)
+        public async Task<IActionResult> Edit(int id, [Bind("PropertyStatusID,PropertyStatusTitle,PropertyStatusDescription,UserID,CreationDate,UpdateDate,DeletionDate")] PropertyStatus propertyStatus)
         {
             if (id != propertyStatus.PropertyStatusID)
             {
@@ -226,7 +261,6 @@ namespace IBBPortal.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var propertyStatus = await _context.PropertyStatus.FindAsync(id);
-
             try
             {
                 _context.PropertyStatus.Remove(propertyStatus);

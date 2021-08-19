@@ -98,6 +98,8 @@ namespace IBBPortal.Data
 
         public DbSet<IBBPortal.Models.Project> Project { get; set; }
 
+        public DbSet<IBBPortal.Models.ProjectField> ProjectField { get; set; }
+
         public DbSet<IBBPortal.Models.ProjectBoardApproval> ProjectBoardApproval { get; set; }
 
         public DbSet<IBBPortal.Models.ProjectZoningPlan> ProjectZoningPlan { get; set; }
@@ -119,6 +121,8 @@ namespace IBBPortal.Data
         public DbSet<IBBPortal.Models.TransactionTypes> TransactionTypes { get; set; }
 
         public DbSet<IBBPortal.Models.TransactionMessages> TransactionMessages { get; set; }
+
+        public DbSet<IBBPortal.Models.ExpropriationStatus> ExpropriationStatus { get; set; }
     }
 
 

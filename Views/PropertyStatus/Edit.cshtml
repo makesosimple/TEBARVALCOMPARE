@@ -37,16 +37,16 @@
                     <!-- Validation Part. Must be still for all views!! -->
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <!-- Project Team Category Title -->
+                    <!-- Property Status Title -->
                     <div class="form-group row">
-                        <label asp-for="PropertyStatusTitle" class="col-12 col-xl-4 col-form-label">Mülkiyet Durumu<span class="text-danger">*</span></label>
+                        <label asp-for="PropertyStatusTitle" class="col-12 col-xl-4 col-form-label">Mülkiyet Durumu İsmi<span class="text-danger">*</span></label>
                         <div class="col-12 col-xl-8">
                             <input asp-for="PropertyStatusTitle" type="text" class="form-control" required>
                             <span asp-validation-for="PropertyStatusTitle" class="text-danger"></span>
                         </div>
                     </div>
 
-                    <!-- Project Team Category Description -->
+                    <!-- Property Status Description -->
                     <div class="form-group row">
                         <label asp-for="PropertyStatusDescription" class="col-12 col-xl-4 col-form-label">Mülkiyet Durumu Açıklaması</label>
                         <div class="col-12 col-xl-8">

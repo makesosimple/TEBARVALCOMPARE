@@ -1,28 +1,27 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IBBPortal.Data;
 using IBBPortal.Models;
 using Microsoft.AspNetCore.Identity;
-using System.Linq.Dynamic.Core;
 using IBBPortal.Helpers;
 
 namespace IBBPortal.Controllers
 {
-    public class TransactionMessageController : Controller
+    public class ExpropriationStatusController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-
-        public TransactionMessageController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public ExpropriationStatusController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-        // GET: TransactionMessage
+        // GET: City
         public IActionResult Index()
         {
             return View();
@@ -48,7 +47,7 @@ namespace IBBPortal.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var data = _context.TransactionMessages.Select(c => new { c.TransactionMessageID, c.TransactionMessageContent, c.TransactionMessageDescription, TransactionTypeName = c.TransactionType.TransactionTypeName, UserName = c.User.UserName });
+                var data = _context.ExpropriationStatus.Select(c => new { c.ExpropriationStatusID, c.ExpropriationStatusTitle, UserName = c.User.UserName });
 
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
@@ -62,7 +61,7 @@ namespace IBBPortal.Controllers
                 //If control checks out, search. If not loop goes on until the end.
                 string columnName, searchValue;
 
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     columnName = Request.Query[$"columns[{i}][data]"].FirstOrDefault();
                     searchValue = Request.Query[$"columns[{i}][search][value]"].FirstOrDefault();
@@ -90,33 +89,27 @@ namespace IBBPortal.Controllers
         }
 
         [HttpGet]
-        public JsonResult JsonSelectData(string? term, int? transactionTypeID)
+        public JsonResult JsonSelectData(string term)
         {
             try
             {
 
-                var TransactionMessageData = _context.TransactionMessages
+                var ExpropriationStatusData = _context.ExpropriationStatus
                                     .Select(x => new {
-                                        id = x.TransactionMessageID.ToString(),
-                                        text = x.TransactionMessageContent,
-                                        transactionType = x.TransactionTypeID
+                                        id = x.ExpropriationStatusID.ToString(),
+                                        text = x.ExpropriationStatusTitle
                                     });
 
                 if (!String.IsNullOrEmpty(term))
                 {
-                    TransactionMessageData = TransactionMessageData.Where(m => m.text.Contains(term));
-                }
-
-                if (!String.IsNullOrEmpty(transactionTypeID.ToString()))
-                {
-                    TransactionMessageData = TransactionMessageData.Where(m => m.transactionType == transactionTypeID);
+                    ExpropriationStatusData = ExpropriationStatusData.Where(m => m.text.Contains(term));
                 }
 
                 //Count 
-                var totalCount = TransactionMessageData.Count();
+                var totalCount = ExpropriationStatusData.Count();
 
                 //Paging   
-                var passData = TransactionMessageData.ToList();
+                var passData = ExpropriationStatusData.ToList();
 
 
                 //Returning Json Data  
@@ -130,7 +123,7 @@ namespace IBBPortal.Controllers
             }
         }
 
-        // GET: TransactionMessage/Details/5
+        // GET: ExpropriationStatus/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -138,42 +131,41 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var transactionMessages = await _context.TransactionMessages
-                .Include(t => t.User)
-                .Where(m => m.TransactionMessageID == id).FirstOrDefaultAsync();
-            if (transactionMessages == null)
+            var expropriationStatus = await _context.ExpropriationStatus
+                .Include(e => e.User)
+                .FirstOrDefaultAsync(m => m.ExpropriationStatusID == id);
+            if (expropriationStatus == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DetailsModal", transactionMessages);
+            return PartialView("_DetailsModal", expropriationStatus);
         }
 
-        // GET: TransactionMessage/Create
+        // GET: ExpropriationStatus/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: TransactionMessage/Create
+        // POST: ExpropriationStatus/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TransactionMessageID,TransactionTypeID,TransactionMessageContent,TransactionMessageDescription,UserID,CreationDate,UpdateDate,DeletionDate")] TransactionMessages transactionMessages)
+        public async Task<IActionResult> Create([Bind("ExpropriationStatusID,ExpropriationStatusTitle,ExpropriationStatusDescription,UserID,CreationDate,UpdateDate,DeletionDate")] ExpropriationStatus expropriationStatus)
         {
             if (ModelState.IsValid)
             {
-
                 try
                 {
-                    transactionMessages.CreationDate = DateTime.Now;
-                    transactionMessages.UserID = _userManager.GetUserId(HttpContext.User);
+                    expropriationStatus.CreationDate = DateTime.Now;
+                    expropriationStatus.UserID = _userManager.GetUserId(HttpContext.User);
 
-                    _context.Add(transactionMessages);
+                    _context.Add(expropriationStatus);
                     await _context.SaveChangesAsync();
                     TempData["SuccessTitle"] = "BAŞARILI";
-                    TempData["SuccessMessage"] = $" {transactionMessages.TransactionMessageID} numaralı kayıt başarıyla oluşturuldu.";
+                    TempData["SuccessMessage"] = $" {expropriationStatus.ExpropriationStatusID} numaralı kayıt başarıyla oluşturuldu.";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -183,10 +175,10 @@ namespace IBBPortal.Controllers
                     return RedirectToAction(nameof(Index));
                 }
             }
-            return View(transactionMessages);
+            return View(expropriationStatus);
         }
 
-        // GET: TransactionMessage/Edit/5
+        // GET: ExpropriationStatus/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -194,22 +186,22 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var transactionMessages = await _context.TransactionMessages.Include(transactionType => transactionType.TransactionType).FirstOrDefaultAsync(i => i.TransactionMessageID == id);
-            if (transactionMessages == null)
+            var expropriationStatus = await _context.ExpropriationStatus.FindAsync(id);
+            if (expropriationStatus == null)
             {
                 return NotFound();
             }
-            return View(transactionMessages);
+            return View(expropriationStatus);
         }
 
-        // POST: TransactionMessage/Edit/5
+        // POST: ExpropriationStatus/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TransactionMessageID,TransactionTypeID,TransactionMessageContent,TransactionMessageDescription,UserID,CreationDate,UpdateDate,DeletionDate")] TransactionMessages transactionMessages)
+        public async Task<IActionResult> Edit(int id, [Bind("ExpropriationStatusID,ExpropriationStatusTitle,ExpropriationStatusDescription,UserID,CreationDate,UpdateDate,DeletionDate")] ExpropriationStatus expropriationStatus)
         {
-            if (id != transactionMessages.TransactionMessageID)
+            if (id != expropriationStatus.ExpropriationStatusID)
             {
                 return NotFound();
             }
@@ -219,17 +211,14 @@ namespace IBBPortal.Controllers
                 try
                 {
                     var CurrentDate = DateTime.Now;
-                    transactionMessages.UpdateDate = CurrentDate;
+                    expropriationStatus.UpdateDate = CurrentDate;
 
-                    _context.Update(transactionMessages);
+                    _context.Update(expropriationStatus);
                     await _context.SaveChangesAsync();
-
-                    TempData["SuccessTitle"] = "BAŞARILI";
-                    TempData["SuccessMessage"] = $"{transactionMessages.TransactionMessageID} numaralı kayıt başarıyla düzenlendi.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TransactionMessagesExists(transactionMessages.TransactionMessageID))
+                    if (!ExpropriationStatusExists(expropriationStatus.ExpropriationStatusID))
                     {
                         return NotFound();
                     }
@@ -240,10 +229,10 @@ namespace IBBPortal.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(transactionMessages);
+            return View(expropriationStatus);
         }
 
-        // GET: TransactionMessage/Delete/5
+        // GET: ExpropriationStatus/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -251,29 +240,32 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var transactionMessages = await _context.TransactionMessages
-                .FirstOrDefaultAsync(m => m.TransactionMessageID == id);
-            if (transactionMessages == null)
+            var expropriationStatus = await _context.ExpropriationStatus
+                .Include(e => e.User)
+                .FirstOrDefaultAsync(m => m.ExpropriationStatusID == id);
+            if (expropriationStatus == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DeleteModal", transactionMessages);
+            return PartialView("_DeleteModal", expropriationStatus);
         }
 
-        // POST: TransactionMessage/Delete/5
+        // POST: ExpropriationStatus/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var transactionMessages = await _context.TransactionMessages.Include(transactionType => transactionType.TransactionType).FirstOrDefaultAsync(i => i.TransactionMessageID == id);
+            var expropriationStatus = await _context.ExpropriationStatus.FindAsync(id);
+            
             try
             {
-                _context.TransactionMessages.Remove(transactionMessages);
+                _context.ExpropriationStatus.Remove(expropriationStatus);
                 await _context.SaveChangesAsync();
                 TempData["SuccessTitle"] = "BAŞARILI";
-                TempData["SuccessMessage"] = $"{transactionMessages.TransactionMessageID} numaralı kayıt başarıyla silindi.";
+                TempData["SuccessMessage"] = $"{expropriationStatus.ExpropriationStatusID} numaralı kayıt başarıyla silindi.";
                 return RedirectToAction(nameof(Index));
+
             }
             catch (DbUpdateException ex)
             {
@@ -283,9 +275,9 @@ namespace IBBPortal.Controllers
             }
         }
 
-        private bool TransactionMessagesExists(int id)
+        private bool ExpropriationStatusExists(int id)
         {
-            return _context.TransactionMessages.Any(e => e.TransactionMessageID == id);
+            return _context.ExpropriationStatus.Any(e => e.ExpropriationStatusID == id);
         }
     }
 }

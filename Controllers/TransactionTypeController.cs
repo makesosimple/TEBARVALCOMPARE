@@ -132,9 +132,9 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var transactionTypes = _context.TransactionTypes
+            var transactionTypes = await _context.TransactionTypes
                 .Include(t => t.User)
-                .Where(m => m.TransactionTypeID == id).FirstOrDefault();
+                .Where(m => m.TransactionTypeID == id).FirstOrDefaultAsync();
             if (transactionTypes == null)
             {
                 return NotFound();

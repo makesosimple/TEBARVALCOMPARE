@@ -4,15 +4,17 @@ using IBBPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 
 namespace IBBPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210819191921_IBBPortalSchemaVol3.4.2")]
+    partial class IBBPortalSchemaVol342
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -384,42 +386,6 @@ namespace IBBPortal.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("District");
-                });
-
-            modelBuilder.Entity("IBBPortal.Models.ExpropriationStatus", b =>
-                {
-                    b.Property<int>("ExpropriationStatusID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreationDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ExpropriationStatusDescription")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("ExpropriationStatusTitle")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ExpropriationStatusID");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("ExpropriationStatus");
                 });
 
             modelBuilder.Entity("IBBPortal.Models.FileCategory", b =>
@@ -820,9 +786,6 @@ namespace IBBPortal.Migrations
                     b.Property<DateTime?>("DeletionDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ExpropriationStatusID")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("ProjectExpropriationCost")
                         .HasColumnType("decimal(18,2)");
 
@@ -857,8 +820,6 @@ namespace IBBPortal.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ProjectExpropriationID");
-
-                    b.HasIndex("ExpropriationStatusID");
 
                     b.HasIndex("ProjectID");
 
@@ -1884,15 +1845,6 @@ namespace IBBPortal.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("IBBPortal.Models.ExpropriationStatus", b =>
-                {
-                    b.HasOne("IBBPortal.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserID");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("IBBPortal.Models.FileCategory", b =>
                 {
                     b.HasOne("IBBPortal.Models.FileCategory", "ParentFileCategory")
@@ -2045,10 +1997,6 @@ namespace IBBPortal.Migrations
 
             modelBuilder.Entity("IBBPortal.Models.ProjectExpropriation", b =>
                 {
-                    b.HasOne("IBBPortal.Models.ExpropriationStatus", "ExpropriationStatus")
-                        .WithMany()
-                        .HasForeignKey("ExpropriationStatusID");
-
                     b.HasOne("IBBPortal.Models.Project", "Project")
                         .WithMany()
                         .HasForeignKey("ProjectID");
@@ -2060,8 +2008,6 @@ namespace IBBPortal.Migrations
                     b.HasOne("IBBPortal.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserID");
-
-                    b.Navigation("ExpropriationStatus");
 
                     b.Navigation("Project");
 

@@ -10,6 +10,8 @@ namespace IBBPortal.Models
 {
     //Property Status / Property Status Descriptipon
     [Index(nameof(ProjectID))]
+    [Index(nameof(PropertyStatusID))]
+    [Index(nameof(ExpropriationStatusID))]
     public class ProjectExpropriation
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -19,6 +21,18 @@ namespace IBBPortal.Models
         public int? ProjectID { get; set; }
         [ForeignKey("ProjectID")]
         public Project Project { get; set; }
+
+        //Related Property Status ID. All projects can have only one Property Status
+        public int? PropertyStatusID { get; set; }
+        [ForeignKey("PropertyStatusID")]
+        public PropertyStatus PropertyStatus { get; set; }
+
+        [MaxLength(256)]
+        public string? PropertyStatusDescription { get; set; }
+
+        public int? ExpropriationStatusID { get; set; }
+        [ForeignKey("ExpropriationStatusID")]
+        public ExpropriationStatus ExpropriationStatus { get; set; }
 
         [MaxLength(256)]
         public string? ProjectExpropriationDescription { get; set; }

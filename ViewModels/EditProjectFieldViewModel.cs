@@ -8,7 +8,7 @@ namespace IBBPortal.ViewModels
 {
     public class EditProjectFieldViewModel
     {
-        public Project Project { get; set; }
+        public ProjectField ProjectField { get; set; }
 
         public ProjectBoardApproval? ProjectBoardApproval { get; set; }
 

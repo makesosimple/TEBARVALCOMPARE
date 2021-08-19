@@ -4,8 +4,8 @@
     ViewData["Title"] = "Proje Düzenle";
 
     //Defined so that we can show full decimal points to user
-    var Longitude = Model.Project != null ? Model.Project.ProjectLongitude : null;
-    var Latitude = Model.Project != null ? Model.Project.ProjectLatitude : null;
+    var Longitude = Model.ProjectField != null ? Model.ProjectField.ProjectLongitude : null;
+    var Latitude = Model.ProjectField != null ? Model.ProjectField.ProjectLatitude : null;
 }
 
 <!-- Alert for Exceptions -->
@@ -43,13 +43,13 @@
     <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
         <ul class="nav nav-pills" id="formTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="tag-tab" href="/Project/Edit/@Model.Project.ProjectID">Künye</a>
+                <a class="nav-link" id="tag-tab" href="/Project/Edit/@ViewBag.ProjectID">Künye</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="associates-tab" href="/ProjectPerson/Index/@Model.Project.ProjectID">Kişiler</a>
+                <a class="nav-link" id="associates-tab" href="/ProjectPerson/Index/@ViewBag.ProjectID">Kişiler</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="associates-tab" href="/ProjectRelation/Index/@Model.Project.ProjectID">İlişkili Projeler</a>
+                <a class="nav-link" id="associates-tab" href="/ProjectRelation/Index/@ViewBag.ProjectID">İlişkili Projeler</a>
             </li>
             <li class="nav-item" role="presentation">
                 <a class="nav-link active" id="project-field-tab" data-toggle="tab" href="#project-field" role="tab" aria-controls="project-field" aria-selected="false">Proje Alanı</a>
@@ -62,21 +62,20 @@
                 <div class="row">
                     <div class="col-12 col-xl-6">
                         <form asp-action="EditProjectField">
-                            <input type="hidden" asp-for="Project.ProjectID" />
                             <!-- Validation Part. Must be still for all views!! -->
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                             <!-- Is Project In İstanbul ? -->
                             <div class="form-group row">
-                                <label asp-for="Project.IsProjectInIstanbul" class="col-form-label col-12 col-xl-4">Proje İstanbulda mı?<span class="text-danger">*</span></label>
+                                <label asp-for="ProjectField.IsProjectInIstanbul" class="col-form-label col-12 col-xl-4">Proje İstanbulda mı?<span class="text-danger">*</span></label>
                                 <div class="col-12 col-xl-8">
                                     <div class="text-center d-inline-block col-form-label">
                                         <div class="vc-toggle-container">
                                             <label class="vc-switch">
-                                                <input type="checkbox" class="vc-switch-input" asp-for="Project.IsProjectInIstanbul" checked>
+                                                <input type="checkbox" class="vc-switch-input" asp-for="ProjectField.IsProjectInIstanbul" checked>
                                                 <span data-on="Evet" data-off="Hayır" class="vc-switch-label"></span>
                                                 <span class="vc-handle"></span>
-                                                <span asp-validation-for="Project.IsProjectInIstanbul" class="text-danger"></span>
+                                                <span asp-validation-for="ProjectField.IsProjectInIstanbul" class="text-danger"></span>
                                             </label>
                                         </div>
                                     </div>
@@ -84,13 +83,13 @@
                             </div>
 
                             <!-- District ID -->
-                            <div class="form-group row" data-dependent-on="#Project_IsProjectInIstanbul" data-dependent-value="checked">
-                                <label asp-for="Project.DistrictID" class="col-12 col-xl-4 col-form-label">İlçe</label>
+                            <div class="form-group row" data-dependent-on="#ProjectField_IsProjectInIstanbul" data-dependent-value="checked">
+                                <label asp-for="ProjectField.DistrictID" class="col-12 col-xl-4 col-form-label">İlçe</label>
                                 <div class="col-12 col-xl-8">
-                                    <select asp-for="Project.DistrictID" class="form-control" id="selectDistrict" style="width: 100%;">
-                                        @if (Model.Project.District is not null)
+                                    <select asp-for="ProjectField.DistrictID" class="form-control" id="selectDistrict" style="width: 100%;">
+                                        @if (Model.ProjectField is not null)
                                         {
-                                            <option value="@Model.Project.District.DistrictID">@Model.Project.District.DistrictName</option>
+                                            <option value="@Model.ProjectField.District.DistrictID">@Model.ProjectField.District.DistrictName</option>
                                         }
 
                                         else
@@ -98,88 +97,88 @@
                                             <option selected value="">İlçe Seçin</option>
                                         }
                                     </select>
-                                    <span asp-validation-for="Project.DistrictID" class="text-danger"></span>
+                                    <span asp-validation-for="ProjectField.DistrictID" class="text-danger"></span>
                                 </div>
                             </div>
 
                             <!-- Project Address -->
-                            <div class="form-group row" data-dependent-on="#Project_IsProjectInIstanbul" data-dependent-value="checked">
-                                <label asp-for="Project.ProjectAddress" class="col-12 col-xl-4 col-form-label">Açık Adres</label>
+                            <div class="form-group row" data-dependent-on="#ProjectField_IsProjectInIstanbul" data-dependent-value="checked">
+                                <label asp-for="ProjectField.ProjectAddress" class="col-12 col-xl-4 col-form-label">Açık Adres</label>
                                 <div class="col-12 col-xl-8">
-                                    <textarea class="form-control" asp-for="Project.ProjectAddress" rows="3"></textarea>
-                                    <span asp-validation-for="Project.ProjectAddress" class="text-danger"></span>
+                                    <textarea class="form-control" asp-for="ProjectField.ProjectAddress" rows="3"></textarea>
+                                    <span asp-validation-for="ProjectField.ProjectAddress" class="text-danger"></span>
                                 </div>
                             </div>
 
                             <!-- Project Construction Area -->
-                            <div class="form-group row" data-dependent-on="#Project_IsProjectInIstanbul" data-dependent-value="checked">
-                                <label asp-for="Project.ProjectConstructionArea" class="col-12 col-xl-4 col-form-label">İnşaat Alanı (m<sup>2</sup>)</label>
+                            <div class="form-group row" data-dependent-on="#ProjectField_IsProjectInIstanbul" data-dependent-value="checked">
+                                <label asp-for="ProjectField.ProjectConstructionArea" class="col-12 col-xl-4 col-form-label">İnşaat Alanı (m<sup>2</sup>)</label>
                                 <div class="col-12 col-xl-8">
-                                    <input asp-for="Project.ProjectConstructionArea" type="text" class="form-control" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-input-type="length" data-val="false">
+                                    <input asp-for="ProjectField.ProjectConstructionArea" type="text" class="form-control" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-input-type="length" data-val="false">
                                     <i class="fas fa-ruler-vertical"></i>
-                                    <span asp-validation-for="Project.ProjectConstructionArea" class="text-danger"></span>
+                                    <span asp-validation-for="ProjectField.ProjectConstructionArea" class="text-danger"></span>
                                 </div>
                             </div>
 
                             <!-- Project Area -->
-                            <div class="form-group row" data-dependent-on="#Project_IsProjectInIstanbul" data-dependent-value="checked">
-                                <label asp-for="Project.ProjectArea" class="col-12 col-xl-4 col-form-label">Proje Alanı (m<sup>2</sup>)</label>
+                            <div class="form-group row" data-dependent-on="#ProjectField_IsProjectInIstanbul" data-dependent-value="checked">
+                                <label asp-for="ProjectField.ProjectArea" class="col-12 col-xl-4 col-form-label">Proje Alanı (m<sup>2</sup>)</label>
                                 <div class="col-12 col-xl-8">
-                                    <input asp-for="Project.ProjectArea" type="text" class="form-control" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-input-type="length" data-val="false">
+                                    <input asp-for="ProjectField.ProjectArea" type="text" class="form-control" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-input-type="length" data-val="false">
                                     <i class="fas fa-ruler-vertical"></i>
-                                    <span asp-validation-for="Project.ProjectArea" class="text-danger"></span>
+                                    <span asp-validation-for="ProjectField.ProjectArea" class="text-danger"></span>
                                 </div>
                             </div>
 
                             <!-- Project Paysage Area -->
-                            <div class="form-group row" data-dependent-on="#Project_IsProjectInIstanbul" data-dependent-value="checked">
-                                <label asp-for="Project.ProjectPaysageArea" class="col-12 col-xl-4 col-form-label">Peyzaj Alanı (m<sup>2</sup>)</label>
+                            <div class="form-group row" data-dependent-on="#ProjectField_IsProjectInIstanbul" data-dependent-value="checked">
+                                <label asp-for="ProjectField.ProjectPaysageArea" class="col-12 col-xl-4 col-form-label">Peyzaj Alanı (m<sup>2</sup>)</label>
                                 <div class="col-12 col-xl-8">
-                                    <input asp-for="Project.ProjectPaysageArea" type="text" class="form-control" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-input-type="length" data-val="false">
+                                    <input asp-for="ProjectField.ProjectPaysageArea" type="text" class="form-control" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-input-type="length" data-val="false">
                                     <i class="fas fa-ruler-vertical"></i>
-                                    <span asp-validation-for="Project.ProjectPaysageArea" class="text-danger"></span>
+                                    <span asp-validation-for="ProjectField.ProjectPaysageArea" class="text-danger"></span>
                                 </div>
                             </div>
 
                             <!-- Project Pafta/Ada/Parsel -->
-                            <div class="form-group row" data-dependent-on="#Project_IsProjectInIstanbul" data-dependent-value="checked">
-                                <label asp-for="Project.ProjectPaftaAdaParsel" class="col-12 col-xl-4 col-form-label">Pafta/Ada/Parsel</label>
+                            <div class="form-group row" data-dependent-on="#ProjectField_IsProjectInIstanbul" data-dependent-value="checked">
+                                <label asp-for="ProjectField.ProjectPaftaAdaParsel" class="col-12 col-xl-4 col-form-label">Pafta/Ada/Parsel</label>
                                 <div class="col-12 col-xl-8">
-                                    <input asp-for="Project.ProjectPaftaAdaParsel" type="text" class="form-control">
-                                    <span asp-validation-for="Project.ProjectPaftaAdaParsel" class="text-danger"></span>
+                                    <input asp-for="ProjectField.ProjectPaftaAdaParsel" type="text" class="form-control">
+                                    <span asp-validation-for="ProjectField.ProjectPaftaAdaParsel" class="text-danger"></span>
                                 </div>
                             </div>
 
-                            <div class="form-header row" data-dependent-on="#Project_IsProjectInIstanbul" data-dependent-value="checked">
+                            <div class="form-header row" data-dependent-on="#ProjectField_IsProjectInIstanbul" data-dependent-value="checked">
                                 <div class="col-12">
                                     <p class="text-lg text-primary border-bottom">Proje Harita Bilgileri</p>
                                 </div>
                             </div>
 
                             <!-- Project Latitude -->
-                            <div class="form-group row" data-dependent-on="#Project_IsProjectInIstanbul" data-dependent-value="checked">
-                                <label asp-for="Project.ProjectLatitude" class="col-12 col-xl-4 col-form-label">Enlem</label>
+                            <div class="form-group row" data-dependent-on="#ProjectField_IsProjectInIstanbul" data-dependent-value="checked">
+                                <label asp-for="ProjectField.ProjectLatitude" class="col-12 col-xl-4 col-form-label">Enlem</label>
                                 <div class="col-12 col-xl-8">
-                                    <input asp-for="Project.ProjectLatitude" class="form-control" value="@Latitude" data-val="false">
-                                    <span asp-validation-for="Project.ProjectLatitude" class="text-danger"></span>
+                                    <input asp-for="ProjectField.ProjectLatitude" class="form-control" value="@Latitude" data-val="false">
+                                    <span asp-validation-for="ProjectField.ProjectLatitude" class="text-danger"></span>
                                 </div>
                             </div>
 
                             <!-- Project Longitude -->
-                            <div class="form-group row" data-dependent-on="#Project_IsProjectInIstanbul" data-dependent-value="checked">
-                                <label asp-for="Project.ProjectLongitude" class="col-12 col-xl-4 col-form-label">Boylam</label>
+                            <div class="form-group row" data-dependent-on="#ProjectField_IsProjectInIstanbul" data-dependent-value="checked">
+                                <label asp-for="ProjectField.ProjectLongitude" class="col-12 col-xl-4 col-form-label">Boylam</label>
                                 <div class="col-12 col-xl-8">
-                                    <input asp-for="Project.ProjectLongitude" class="form-control" value="@Longitude" data-val="false">
-                                    <span asp-validation-for="Project.ProjectLongitude" class="text-danger"></span>
+                                    <input asp-for="ProjectField.ProjectLongitude" class="form-control" value="@Longitude" data-val="false">
+                                    <span asp-validation-for="ProjectField.ProjectLongitude" class="text-danger"></span>
                                 </div>
                             </div>
 
                             <!-- Project KML String -->
-                            <div class="form-group row" data-dependent-on="#Project_IsProjectInIstanbul" data-dependent-value="checked">
-                                <label asp-for="Project.KML" class="col-12 col-xl-4 col-form-label">KML</label>
+                            <div class="form-group row" data-dependent-on="#ProjectField_IsProjectInIstanbul" data-dependent-value="checked">
+                                <label asp-for="ProjectField.KML" class="col-12 col-xl-4 col-form-label">KML</label>
                                 <div class="col-12 col-xl-8">
-                                    <textarea class="form-control" asp-for="Project.KML" rows="3"></textarea>
-                                    <span asp-validation-for="Project.KML" class="text-danger"></span>
+                                    <textarea class="form-control" asp-for="ProjectField.KML" rows="3"></textarea>
+                                    <span asp-validation-for="ProjectField.KML" class="text-danger"></span>
                                 </div>
                             </div>
                             <!-- End of default Project Field -->
@@ -335,7 +334,7 @@
 
                             <!-- Project Zoning Plan Reason -->
                             <div class="form-group row" data-dependent-on="#ProjectZoningPlan_ZoningPlanModificationNeeded" data-dependent-value="checked">
-                                <label asp-for="ProjectZoningPlan.ZoningPlanModificationReason" class="col-12 col-xl-4 col-form-label">Kurul Durum Açıklaması</label>
+                                <label asp-for="ProjectZoningPlan.ZoningPlanModificationReason" class="col-12 col-xl-4 col-form-label">İmar Plan Tadilatı Gerekçesi</label>
                                 <div class="col-12 col-xl-8">
                                     <textarea class="form-control" asp-for="ProjectZoningPlan.ZoningPlanModificationReason" rows="3"></textarea>
                                     <span asp-validation-for="ProjectZoningPlan.ZoningPlanModificationReason" class="text-danger"></span>
@@ -414,6 +413,39 @@
                                     <p class="text-md text-primary border-bottom">MÜLKİYET</p>
                                 </div>
                             </div>
+
+                            <!-- Property Status ID -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectExpropriation.PropertyStatusID" class="col-12 col-xl-4 col-form-label">Mülkiyet Durumu</label>
+                                <div class="col-12 col-xl-8">
+                                    <select asp-for="ProjectExpropriation.PropertyStatusID" class="form-control" id="selectPropertyStatus" style="width: 100%;">
+                                        @if (Model.ProjectExpropriation is not null)
+                                        {
+                                            if (Model.ProjectExpropriation.PropertyStatus is not null)
+                                            {
+                                                <option value="@Model.ProjectExpropriation.PropertyStatus.PropertyStatusID">@Model.ProjectExpropriation.PropertyStatus.PropertyStatusTitle</option>
+                                            }
+
+                                        }
+
+                                        else
+                                        {
+                                            <option selected value="">Mülkiyet Durumu Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ProjectExpropriation.PropertyStatusID" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Property Status Description -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectExpropriation.PropertyStatusDescription" class="col-12 col-xl-4 col-form-label">Mülkiyet Durumu Açıklaması</label>
+                                <div class="col-12 col-xl-8">
+                                    <textarea class="form-control" asp-for="ProjectExpropriation.PropertyStatusDescription" rows="3"></textarea>
+                                    <span asp-validation-for="ProjectExpropriation.PropertyStatusDescription" class="text-danger"></span>
+                                </div>
+                            </div>
+
                             <!-- Does Project Need Expropriation? -->
                             <div class="form-group row">
                                 <label asp-for="ProjectExpropriation.ProjectNeedsExpropriation" class="col-form-label col-12 col-xl-4">Kamulaştırma Gerekli mi?<span class="text-danger">*</span></label>
@@ -451,11 +483,34 @@
                                 </div>
                             </div>
 
-                            <!-- Project Expropriation Status -->
+                            <!-- Expropriation Status ID -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectExpropriation.ExpropriationStatusID" class="col-12 col-xl-4 col-form-label">Kamulaştırma Durumu</label>
+                                <div class="col-12 col-xl-8">
+                                    <select asp-for="ProjectExpropriation.ExpropriationStatusID" class="form-control" id="selectExpropriationStatus" style="width: 100%;">
+                                        @if (Model.ProjectExpropriation is not null)
+                                        {
+                                            if (Model.ProjectExpropriation.ExpropriationStatus is not null)
+                                            {
+                                                <option value="@Model.ProjectExpropriation.ExpropriationStatus.ExpropriationStatusID">@Model.ProjectExpropriation.ExpropriationStatus.ExpropriationStatusTitle</option>
+                                            }
+
+                                        }
+
+                                        else
+                                        {
+                                            <option selected value="">Kamulaştırma Durumu Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ProjectExpropriation.PropertyStatusID" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Project Expropriation Status Description -->
                             <div class="form-group row" data-dependent-on="#ProjectExpropriation_ProjectNeedsExpropriation" data-dependent-value="checked">
                                 <label asp-for="ProjectExpropriation.ProjectExpropriationStatusDesc" class="col-12 col-xl-4 col-form-label">Kamulaştırma Durumu Açıklaması</label>
                                 <div class="col-12 col-xl-8">
-                                    <input asp-for="ProjectExpropriation.ProjectExpropriationStatusDesc" type="text" class="form-control">
+                                    <textarea asp-for="ProjectExpropriation.ProjectExpropriationStatusDesc" type="text" class="form-control" rows="3"></textarea>
                                     <span asp-validation-for="ProjectExpropriation.ProjectExpropriationStatusDesc" class="text-danger"></span>
                                 </div>
                             </div>
@@ -493,6 +548,29 @@
                                 </div>
                             </div>
 
+                            <!-- Organization ID -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectPermission.OrganizationID" class="col-12 col-xl-4 col-form-label">Ruhsatın Alındığı Kurum</label>
+                                <div class="col-12 col-xl-8">
+                                    <select asp-for="ProjectPermission.OrganizationID" class="form-control" id="selectOrganization" style="width: 100%;">
+                                        @if (Model.ProjectPermission is not null)
+                                        {
+                                            if (Model.ProjectPermission.Organization is not null)
+                                            {
+                                                <option value="@Model.ProjectPermission.Organization.OrganizationID">@Model.ProjectPermission.Organization.OrganizationTitle</option>
+                                            }
+
+                                        }
+
+                                        else
+                                        {
+                                            <option selected value="">Kurum Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ProjectExpropriation.PropertyStatusID" class="text-danger"></span>
+                                </div>
+                            </div>
+
                             <!-- Project Permission Reason -->
                             <div class="form-group row" data-dependent-on="#ProjectPermission_IsPermissionNeeded" data-dependent-value="checked">
                                 <label asp-for="ProjectPermission.ProjectPermissionReason" class="col-12 col-xl-4 col-form-label">Ruhsat Durumu Açıklaması</label>
@@ -501,11 +579,6 @@
                                     <span asp-validation-for="ProjectPermission.ProjectPermissionReason" class="text-danger"></span>
                                 </div>
                             </div>
-
-
-
-                            <!-- Default Values for the Database Date Part -->
-                            <input type="hidden" asp-for="Project.UpdateDate" />
 
                             <div class="buttons mt-3 my-md-0">
                                 <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
@@ -597,6 +670,51 @@
             language: "tr",
             ajax: {
                 url: '/Person/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
+        });
+
+        $('#selectPropertyStatus').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/PropertyStatus/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
+        });
+
+        $('#selectExpropriationStatus').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/ExpropriationStatus/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
+        });
+
+        $('#selectOrganization').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/Organization/JsonSelectData',
                 dataType: 'json',
                 processResults: function (response) {
 

@@ -145,7 +145,7 @@ namespace IBBPortal.Controllers
             try
             {
 
-                var ProjectSpatialData = _context.Project
+                var ProjectSpatialData = _context.ProjectField
                                     .Select(x => new {
                                         x.ProjectID,
                                         Longitude = x.ProjectPoint.Coordinate.Y.ToString(),
@@ -314,7 +314,7 @@ namespace IBBPortal.Controllers
             EditProjectFieldViewModel model = new EditProjectFieldViewModel();
 
             //Attach Desired Entities to ViewModel
-            model.Project = await _context.Project
+            model.ProjectField = await _context.ProjectField
                 .Include(p => p.District)
                 .FirstOrDefaultAsync(m => m.ProjectID == id);
 
@@ -330,11 +330,15 @@ namespace IBBPortal.Controllers
                 .FirstOrDefaultAsync(m => m.Project.ProjectID == id);
 
             model.ProjectExpropriation= await _context.ProjectExpropriation
+                .Include(c => c.PropertyStatus)
+                .Include(c => c.ExpropriationStatus)
                 .FirstOrDefaultAsync(m => m.Project.ProjectID == id);
 
             model.ProjectPermission = await _context.ProjectPermission
+                .Include(m => m.Organization)
                 .FirstOrDefaultAsync(m => m.Project.ProjectID == id);
 
+            ViewBag.ProjectID = id;
             return View(model);
         }
 
@@ -343,53 +347,216 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("EditProjectField")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditProjectFieldMain(int? id)
+        public async Task<IActionResult> EditProjectFieldMain(int? id, EditProjectFieldViewModel model)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var projectToUpdate = await _context.Project.FirstOrDefaultAsync(c => c.ProjectID == id);
-
-            //Set Update Date
+            //Current Date
             var CurrentDate = DateTime.Now;
-            projectToUpdate.UpdateDate = CurrentDate;
 
-            //Get Project Longitude and Latitude. This will throw an error if user tries to update with null Lang and Long!
-            double projectLongitude = Convert.ToDouble(Request.Form["ProjectLongitude"].FirstOrDefault());
-            double projectLatitude = Convert.ToDouble(Request.Form["ProjectLatitude"].FirstOrDefault());
+            //Log User for Activity LOG
+            var CurrentUser = _userManager.GetUserId(HttpContext.User);
 
-            projectToUpdate.ProjectPoint = new Point(projectLatitude, projectLongitude) { SRID = 4326 };
+            var projectFieldToUpdate = await _context.ProjectField.FirstOrDefaultAsync(c => c.ProjectID == id);
+            var projectBoardApprovalToUpdate = await _context.ProjectBoardApproval.FirstOrDefaultAsync(c => c.ProjectID == id);
+            var projectZoningPlanToUpdate = await _context.ProjectZoningPlan.FirstOrDefaultAsync(c => c.ProjectID == id);
+            var projectExpropriationToUpdate = await _context.ProjectExpropriation.FirstOrDefaultAsync(c => c.ProjectID == id);
+            var projectPermissionToUpdate = await _context.ProjectPermission.FirstOrDefaultAsync(c => c.ProjectID == id);
 
-            if (await TryUpdateModelAsync<Project>(projectToUpdate, "", 
-                c =>  c.IsProjectInIstanbul, c => c.DistrictID, c => c.ProjectAddress, c => c.ProjectArea, 
-                c => c.ProjectConstructionArea, c => c.ProjectPaysageArea, c => c.ProjectPaftaAdaParsel,
-                c => c.ProjectLongitude, c => c.ProjectLatitude, c => c.KML, c => c.ProjectPoint))
+            //ProjectField
+            if (projectFieldToUpdate == null)
             {
-                try
-                {
-                    await _context.SaveChangesAsync();
+                ProjectField projectField = new ProjectField();
 
-                    TempData["SuccessTitle"] = "BAŞARILI";
-                    TempData["SuccessMessage"] = $"{projectToUpdate.ProjectID} numaralı kayıt başarıyla düzenlendi.";
-                }
-                catch (Exception)
-                {
-                    if (!ProjectExists(projectToUpdate.ProjectID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        TempData["ErrorTitle"] = "HATA";
-                        TempData["ErrorMessage"] = $"Kayıt düzenlenirken bir hata oluştu. Lütfen sistem yöneticinizle görüşün.";
-                        return RedirectToAction(nameof(EditProjectField), new { id = projectToUpdate.ProjectID.ToString() });
-                    }
-                }
-                return RedirectToAction(nameof(EditProjectField), new { id = projectToUpdate.ProjectID.ToString() });
+                double projectLongitude = Convert.ToDouble(Request.Form["ProjectLongitude"].FirstOrDefault());
+                double projectLatitude = Convert.ToDouble(Request.Form["ProjectLatitude"].FirstOrDefault());
+
+                projectField.ProjectPoint = new Point(projectLatitude, projectLongitude) { SRID = 4326 };
+
+                projectField.ProjectID = id;
+                projectField.IsProjectInIstanbul = model.ProjectField.IsProjectInIstanbul;
+                projectField.DistrictID = model.ProjectField.DistrictID;
+                projectField.ProjectAddress = model.ProjectField.ProjectAddress;
+                projectField.ProjectArea = model.ProjectField.ProjectArea;
+                projectField.ProjectConstructionArea = model.ProjectField.ProjectConstructionArea;
+                projectField.ProjectPaysageArea = model.ProjectField.ProjectPaysageArea;
+                projectField.ProjectPaftaAdaParsel = model.ProjectField.ProjectPaftaAdaParsel;
+                projectField.ProjectLongitude = model.ProjectField.ProjectLongitude;
+                projectField.ProjectLatitude = model.ProjectField.ProjectLatitude;
+                projectField.KML = model.ProjectField.KML;
+                projectField.CreationDate = CurrentDate;
+                projectField.UserID = CurrentUser;
+
+                _context.Add(projectFieldToUpdate);
             }
-            return View(projectToUpdate);
+            else
+            {
+                double projectLongitude = Convert.ToDouble(Request.Form["ProjectLongitude"].FirstOrDefault());
+                double projectLatitude = Convert.ToDouble(Request.Form["ProjectLatitude"].FirstOrDefault());
+
+                projectFieldToUpdate.ProjectPoint = new Point(projectLatitude, projectLongitude) { SRID = 4326 };
+
+                projectFieldToUpdate.ProjectID = id;
+                projectFieldToUpdate.IsProjectInIstanbul = model.ProjectField.IsProjectInIstanbul;
+                projectFieldToUpdate.DistrictID = model.ProjectField.DistrictID;
+                projectFieldToUpdate.ProjectAddress = model.ProjectField.ProjectAddress;
+                projectFieldToUpdate.ProjectArea = model.ProjectField.ProjectArea;
+                projectFieldToUpdate.ProjectConstructionArea = model.ProjectField.ProjectConstructionArea;
+                projectFieldToUpdate.ProjectPaysageArea = model.ProjectField.ProjectPaysageArea;
+                projectFieldToUpdate.ProjectPaftaAdaParsel = model.ProjectField.ProjectPaftaAdaParsel;
+                projectFieldToUpdate.ProjectLongitude = model.ProjectField.ProjectLongitude;
+                projectFieldToUpdate.ProjectLatitude = model.ProjectField.ProjectLatitude;
+                projectFieldToUpdate.KML = model.ProjectField.KML;
+                projectFieldToUpdate.UpdateDate = CurrentDate;
+            }
+
+            //Project Board Approval
+            if (projectBoardApprovalToUpdate == null)
+            {
+                //For creation we need a Model that is connected to a Database.
+                ProjectBoardApproval projectBoardApproval = new ProjectBoardApproval();
+
+                projectBoardApproval.ProjectID = id;
+                projectBoardApproval.IsBoardApprovalNeeded = model.ProjectBoardApproval.IsBoardApprovalNeeded;
+                projectBoardApproval.BoardID = model.ProjectBoardApproval.BoardID;
+                projectBoardApproval.ProjectBoardApprovalDate = model.ProjectBoardApproval.ProjectBoardApprovalDate;
+                projectBoardApproval.ProjectBoardApprovalReason = model.ProjectBoardApproval.ProjectBoardApprovalReason;
+                projectBoardApproval.UserID = CurrentUser;
+                projectBoardApproval.CreationDate = CurrentDate;
+
+                _context.Add(projectBoardApproval);
+            }
+            else
+            {
+                projectBoardApprovalToUpdate.ProjectID = id;
+                projectBoardApprovalToUpdate.IsBoardApprovalNeeded = model.ProjectBoardApproval.IsBoardApprovalNeeded;
+                projectBoardApprovalToUpdate.BoardID = model.ProjectBoardApproval.BoardID;
+                projectBoardApprovalToUpdate.ProjectBoardApprovalDate = model.ProjectBoardApproval.ProjectBoardApprovalDate;
+                projectBoardApprovalToUpdate.ProjectBoardApprovalReason = model.ProjectBoardApproval.ProjectBoardApprovalReason;
+                projectBoardApprovalToUpdate.UpdateDate = CurrentDate;
+            }
+
+            //Project Zoning Plan
+            if (projectZoningPlanToUpdate == null)
+            {
+                //For creation we need a Model that is connected to a Database.
+                ProjectZoningPlan projectZoningPlan = new ProjectZoningPlan();
+
+                projectZoningPlan.ProjectID = id;
+                projectZoningPlan.ZoningPlanStatusID1000 = model.ProjectZoningPlan.ZoningPlanStatusID1000;
+                projectZoningPlan.ZoningPlanDate1000 = model.ProjectZoningPlan.ZoningPlanDate1000;
+                projectZoningPlan.ZoningPlanStatusID5000 = model.ProjectZoningPlan.ZoningPlanStatusID5000;
+                projectZoningPlan.ZoningPlanDate5000 = model.ProjectZoningPlan.ZoningPlanDate5000;
+                projectZoningPlan.ZoningPlanModificationNeeded = model.ProjectZoningPlan.ZoningPlanModificationNeeded;
+                projectZoningPlan.ZoningPlanModificationReason = model.ProjectZoningPlan.ZoningPlanModificationReason;
+                projectZoningPlan.ModificationApprovalDate = model.ProjectZoningPlan.ModificationApprovalDate;
+                projectZoningPlan.ModificationProposalDate = model.ProjectZoningPlan.ModificationProposalDate;
+                projectZoningPlan.ZoningPlanModificationStatusID = model.ProjectZoningPlan.ZoningPlanModificationStatusID;
+                projectZoningPlan.ZoningPlanResponsiblePersonID = model.ProjectZoningPlan.ZoningPlanResponsiblePersonID;
+                projectZoningPlan.UserID = CurrentUser;
+                projectZoningPlan.CreationDate = CurrentDate;
+
+                _context.Add(projectZoningPlan);
+            }
+
+            else
+            {
+                projectZoningPlanToUpdate.ProjectID = id;
+                projectZoningPlanToUpdate.ZoningPlanStatusID1000 = model.ProjectZoningPlan.ZoningPlanStatusID1000;
+                projectZoningPlanToUpdate.ZoningPlanDate1000 = model.ProjectZoningPlan.ZoningPlanDate1000;
+                projectZoningPlanToUpdate.ZoningPlanStatusID5000 = model.ProjectZoningPlan.ZoningPlanStatusID5000;
+                projectZoningPlanToUpdate.ZoningPlanDate5000 = model.ProjectZoningPlan.ZoningPlanDate5000;
+                projectZoningPlanToUpdate.ZoningPlanModificationNeeded = model.ProjectZoningPlan.ZoningPlanModificationNeeded;
+                projectZoningPlanToUpdate.ZoningPlanModificationReason = model.ProjectZoningPlan.ZoningPlanModificationReason;
+                projectZoningPlanToUpdate.ModificationApprovalDate = model.ProjectZoningPlan.ModificationApprovalDate;
+                projectZoningPlanToUpdate.ModificationProposalDate = model.ProjectZoningPlan.ModificationProposalDate;
+                projectZoningPlanToUpdate.ZoningPlanModificationStatusID = model.ProjectZoningPlan.ZoningPlanModificationStatusID;
+                projectZoningPlanToUpdate.ZoningPlanResponsiblePersonID = model.ProjectZoningPlan.ZoningPlanResponsiblePersonID;
+                projectZoningPlanToUpdate.UpdateDate = CurrentDate;
+            }
+
+            //Project Expropriation
+            if (projectExpropriationToUpdate == null)
+            {
+                //For creation we need a Model that is connected to a Database.
+                ProjectExpropriation projectExpropriation = new ProjectExpropriation();
+
+                projectExpropriation.ProjectID = id;
+                projectExpropriation.PropertyStatusID = model.ProjectExpropriation.PropertyStatusID;
+                projectExpropriation.PropertyStatusDescription = model.ProjectExpropriation.PropertyStatusDescription;
+                projectExpropriation.ProjectExpropriationDescription = model.ProjectExpropriation.ProjectExpropriationDescription;
+                projectExpropriation.ProjectNeedsExpropriation = model.ProjectExpropriation.ProjectNeedsExpropriation;
+                projectExpropriation.ProjectExpropriationDate = model.ProjectExpropriation.ProjectExpropriationDate;
+                projectExpropriation.ProjectExpropriationCost = model.ProjectExpropriation.ProjectExpropriationCost;
+                projectExpropriation.ProjectExpropriationCost = model.ProjectExpropriation.ProjectExpropriationCost;
+                projectExpropriation.ExpropriationStatusID = model.ProjectExpropriation.ExpropriationStatusID;
+                projectExpropriation.ProjectExpropriationStatusDesc = model.ProjectExpropriation.ProjectExpropriationStatusDesc;
+                projectExpropriation.UserID = CurrentUser;
+                projectExpropriation.CreationDate = CurrentDate;
+
+                _context.Add(projectExpropriation);
+            }
+
+            else
+            {
+                projectExpropriationToUpdate.ProjectID = id;
+                projectExpropriationToUpdate.PropertyStatusID = model.ProjectExpropriation.PropertyStatusID;
+                projectExpropriationToUpdate.PropertyStatusDescription = model.ProjectExpropriation.PropertyStatusDescription;
+                projectExpropriationToUpdate.ProjectExpropriationDescription = model.ProjectExpropriation.ProjectExpropriationDescription;
+                projectExpropriationToUpdate.ProjectNeedsExpropriation = model.ProjectExpropriation.ProjectNeedsExpropriation;
+                projectExpropriationToUpdate.ProjectExpropriationDate = model.ProjectExpropriation.ProjectExpropriationDate;
+                projectExpropriationToUpdate.ProjectExpropriationCost = model.ProjectExpropriation.ProjectExpropriationCost;
+                projectExpropriationToUpdate.ProjectExpropriationCost = model.ProjectExpropriation.ProjectExpropriationCost;
+                projectExpropriationToUpdate.ExpropriationStatusID = model.ProjectExpropriation.ExpropriationStatusID;
+                projectExpropriationToUpdate.ProjectExpropriationStatusDesc = model.ProjectExpropriation.ProjectExpropriationStatusDesc;
+                projectExpropriationToUpdate.UpdateDate = CurrentDate;
+            }
+
+            //Project Permission
+            if (projectPermissionToUpdate == null)
+            {
+                //For creation we need a Model that is connected to a Database.
+                ProjectPermission projectPermission = new ProjectPermission();
+
+                projectPermission.ProjectID = id;
+                projectPermission.OrganizationID = model.ProjectPermission.OrganizationID;
+                projectPermission.IsPermissionNeeded = model.ProjectPermission.IsPermissionNeeded;
+                projectPermission.ProjectPermissionDate = model.ProjectPermission.ProjectPermissionDate;
+                projectPermission.ProjectPermissionReason = model.ProjectPermission.ProjectPermissionReason;
+                projectPermission.UserID = CurrentUser;
+                projectPermission.CreationDate = CurrentDate;
+
+                _context.Add(projectPermission);
+            }
+
+            else
+            {
+                projectPermissionToUpdate.ProjectID = id;
+                projectPermissionToUpdate.OrganizationID = model.ProjectPermission.OrganizationID;
+                projectPermissionToUpdate.IsPermissionNeeded = model.ProjectPermission.IsPermissionNeeded;
+                projectPermissionToUpdate.ProjectPermissionDate = model.ProjectPermission.ProjectPermissionDate;
+                projectPermissionToUpdate.ProjectPermissionReason = model.ProjectPermission.ProjectPermissionReason;
+                projectPermissionToUpdate.UpdateDate = CurrentDate;
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessTitle"] = "BAŞARILI";
+                TempData["SuccessMessage"] = $"{projectFieldToUpdate.ProjectID} numaralı kayıt başarıyla düzenlendi.";
+            }
+            catch (Exception)
+            {
+                TempData["ErrorTitle"] = "HATA";
+                TempData["ErrorMessage"] = $"Kayıt düzenlenirken bir hata oluştu. Lütfen sistem yöneticinizle görüşün.";
+                return RedirectToAction(nameof(EditProjectField), new { id = projectFieldToUpdate.ProjectID.ToString() });
+            }
+
+            return RedirectToAction(nameof(EditProjectField), new { id = projectFieldToUpdate.ProjectID.ToString() });
         }
 
         // GET: Project/Delete/5
