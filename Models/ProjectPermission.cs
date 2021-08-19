@@ -8,32 +8,41 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
 {
-
     [Index(nameof(ProjectID))]
+    [Index(nameof(OrganizationID))]
+    [Index(nameof(UserID))]
     public class ProjectPermission
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProjectPermissionID { get; set; }
-        public int ProjectID { get; set; }
 
-        [MaxLength(256)]
-        public string ProjectPermissionProvider { get; set; }
-       
+        //Related to Project Table. This is needed just for ID but just in case client wants project related information on this tab, Attach o Project Object.
+        public int? ProjectID { get; set; }
+        [ForeignKey("ProjectID")]
+        public Project Project { get; set; }
+
+        //Related to Organization Table. Evert Permission can be given by only one Organization.
+        public int? OrganizationID { get; set; }
+        [ForeignKey("OrganizationID")]
+        public Organization Organization { get; set; }
+
+        [Required]
+        public bool IsPermissionNeeded { get; set; }
 
         public DateTime? ProjectPermissionDate { get; set; }
 
         [MaxLength(256)]
-        public string ProjectPermissionReason { get; set; }
+        public string? ProjectPermissionReason { get; set; }
 
-        
+        public string UserID { get; set; }
+        [ForeignKey("UserID")]
+        public ApplicationUser User { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public DateTime CreationDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? UpdateDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? DeletionDate { get; set; }
 
     }

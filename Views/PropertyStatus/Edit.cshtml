@@ -1,0 +1,79 @@
+﻿@model IBBPortal.Models.PropertyStatus
+
+@{
+    ViewData["Title"] = "Mülkiyet Durumu Düzenle";
+}
+
+<!-- Alert for Exceptions -->
+@if (@TempData["SuccessTitle"] is not null)
+{
+    <div class="alert bg-gradient-success alert-dismissible fade show border-0" role="alert">
+        <h4 class="alert-heading text-white">
+            <i class="fas fa-check"></i>
+            @TempData["SuccessTitle"]
+            <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </h4>
+        <p class="text-white">@TempData["SuccessMessage"]</p>
+    </div>
+}
+
+<h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
+<form asp-action="Edit">
+    <input type="hidden" asp-for="PropertyStatusID" />
+    <div class="card shadow mb-4">
+        @*<div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
+                <ul class="nav nav-pills" id="formTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="false">Genel</a>
+                    </li>
+                </ul>
+            </div>*@
+        <div class="card-body">
+            @*<div class="tab-pane fade active show" id="general" role="tabpanel" aria-labelledby="general-tab">*@
+            <div class="row">
+                <div class="col-12 col-xl-6">
+                    <!-- Validation Part. Must be still for all views!! -->
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <!-- Property Status Title -->
+                    <div class="form-group row">
+                        <label asp-for="PropertyStatusTitle" class="col-12 col-xl-4 col-form-label">Mülkiyet Durumu İsmi<span class="text-danger">*</span></label>
+                        <div class="col-12 col-xl-8">
+                            <input asp-for="PropertyStatusTitle" type="text" class="form-control" required>
+                            <span asp-validation-for="PropertyStatusTitle" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!-- Property Status Description -->
+                    <div class="form-group row">
+                        <label asp-for="PropertyStatusDescription" class="col-12 col-xl-4 col-form-label">Mülkiyet Durumu Açıklaması</label>
+                        <div class="col-12 col-xl-8">
+                            <textarea asp-for="PropertyStatusDescription" class="form-control"></textarea>
+                            <span asp-validation-for="PropertyStatusDescription" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!-- Default Values for the Database Date Part -->
+                    <input type="hidden" asp-for="CreationDate" />
+                    <input type="hidden" asp-for="UpdateDate" />
+
+                    <!-- User ID for the Update -->
+                    <input type="hidden" asp-for="UserID" />
+
+                    <div class="buttons mt-3 my-md-0">
+                        <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
+                        <a asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        @*</div>*@
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

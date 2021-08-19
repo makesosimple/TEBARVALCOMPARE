@@ -14,24 +14,34 @@ namespace IBBPortal.Models
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProjectBoardApprovalID { get; set; }
-        public int ProjectID { get; set; }
-        public int BoardID { get; set; }
-       
+        
+        //Related to Project Table. This is needed just for ID but just in case client wants project related information on this tab, Attach o Project Object.
+        public int? ProjectID { get; set; }
+        [ForeignKey("ProjectID")]
+        public Project Project { get; set; }
+
+        [Required]
+        public bool IsBoardApprovalNeeded { get; set; }
+
+        //Related to Board Table.
+        public int? BoardID { get; set; }
+        [ForeignKey("BoardID")]
+        public Board Board { get; set; }
 
         public DateTime? ProjectBoardApprovalDate { get; set; }
 
         [MaxLength(256)]
-        public string ProjectBoardApprovalReason { get; set; }
+        public string? ProjectBoardApprovalReason { get; set; }
 
-        
+        public string UserID { get; set; }
+        [ForeignKey("UserID")]
+        public ApplicationUser User { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public DateTime CreationDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? UpdateDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? DeletionDate { get; set; }
 
     }

@@ -88,6 +88,41 @@ namespace IBBPortal.Controllers
             }
         }
 
+        [HttpGet]
+        public JsonResult JsonSelectData(string term)
+        {
+            try
+            {
+
+                var ZoningPlanModificationStatusData = _context.ZoningPlanModificationStatus
+                                    .Select(x => new {
+                                        id = x.ZoningPlanModificationStatusID.ToString(),
+                                        text = x.ZoningPlanModificationStatusTitle
+                                    });
+
+                if (!String.IsNullOrEmpty(term))
+                {
+                    ZoningPlanModificationStatusData = ZoningPlanModificationStatusData.Where(m => m.text.Contains(term));
+                }
+
+                //Count 
+                var totalCount = ZoningPlanModificationStatusData.Count();
+
+                //Paging   
+                var passData = ZoningPlanModificationStatusData.ToList();
+
+
+                //Returning Json Data  
+                return Json(new { results = passData, totalCount = totalCount });
+
+            }
+
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         // GET: ZoningPlanModificationStatus/Details/5
         public async Task<IActionResult> Details(int? id)
         {

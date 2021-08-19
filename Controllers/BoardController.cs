@@ -90,6 +90,41 @@ namespace IBBPortal.Controllers
             }
         }
 
+        [HttpGet]
+        public JsonResult JsonSelectData(string term)
+        {
+            try
+            {
+
+                var BoardData = _context.Board
+                                    .Select(x => new {
+                                        id = x.BoardID.ToString(),
+                                        text = x.BoardTitle
+                                    });
+
+                if (!String.IsNullOrEmpty(term))
+                {
+                    BoardData = BoardData.Where(m => m.text.Contains(term));
+                }
+
+                //Count 
+                var totalCount = BoardData.Count();
+
+                //Paging   
+                var passData = BoardData.ToList();
+
+
+                //Returning Json Data  
+                return Json(new { results = passData, totalCount = totalCount });
+
+            }
+
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         // GET: Board/Details/5
         public IActionResult Details(int? id)
         {
