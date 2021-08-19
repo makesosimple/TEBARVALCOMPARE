@@ -547,6 +547,66 @@
             }
         });
 
+        $('#selectBoard').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/Board/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
+        });
+
+        $('#selectZoningPlanStatus1000, #selectZoningPlanStatus5000').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/ZoningPlanStatus/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
+        });
+
+        $('#selectZoningPlanModificationStatus').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/ZoningPlanModificationStatus/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
+        });
+
+        $('#selectZoningPlanModificationResponsible').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/Person/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
+        });
+
         //Dependent Fields Management
         $("[data-dependent-on]").each(function () {
             //Hide all dependent fields by default until user makes a choice.
