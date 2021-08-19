@@ -1,7 +1,6 @@
-﻿@model IBBPortal.Models.District
-
+﻿@model IBBPortal.Models.TransactionMessages
 <!-- Modal -->
-<div class="modal fade" id="DistrictDeletionModal" tabindex="-1" aria-labelledby="DistrictDeletionModalLabel" aria-hidden="true">
+<div class="modal fade" id="TransactionMessagesDeletionModal" tabindex="-1" aria-labelledby="TransactionMessagesDeletionModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
@@ -19,13 +18,13 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-12"><p class="text-primary font-weight-bold mb-0">@Model.DistrictCode ilçe kodlu @Model.DistrictName kaydını silmek istediğinize emin misiniz?</p></div>
+                        <div class="col-12"><p class="text-primary font-weight-bold mb-0">@Model.TransactionMessageID kodlu @Model.TransactionMessageContent kaydını silmek istediğinize emin misiniz?</p></div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <form asp-action="Delete">
-                    <input type="hidden" asp-for="DistrictID" />
+                    <input type="hidden" asp-for="TransactionMessageID" />
                     <div class="buttons">
                         <button type="submit" value="Delete" class="btn bg-success text-white"><i class="fas fa-trash-alt mr-2"></i> Sil</button>
                         <a asp-action="Index" class="btn btn-danger"><i class="fas fa-ban"></i> Vazgeç</a>

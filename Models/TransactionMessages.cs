@@ -11,27 +11,33 @@ namespace IBBPortal.Models
 
     [Index(nameof(UserID))]
     //[Index(nameof(SubfunctionID))]
+    [Index(nameof(TransactionTypeID))]
     public class TransactionMessages
     {   
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TransactionMessageID { get; set; }
-        public int TransactionTypeID { get; set; }
+
+        public int? TransactionTypeID { get; set; }
+        [ForeignKey("TransactionTypeID")]
+        public TransactionTypes TransactionType { get; set; }
         
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
+        [MaxLength(64, ErrorMessage = "Bu alana maksimum 64 karakter girebilirsiniz.")]
         public string TransactionMessageContent { get; set; }
 
-        [MaxLength(256)]
-        public string TransactionMessageDescription { get; set; }
+        [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
+        public string? TransactionMessageDescription { get; set; }
 
         public string UserID { get; set; }
         [ForeignKey("UserID")]
         public ApplicationUser User { get; set; }
 
+        [Required]
         public DateTime CreationDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? UpdateDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? DeletionDate { get; set; }
 
     }

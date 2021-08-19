@@ -115,6 +115,10 @@ namespace IBBPortal.Data
         public DbSet<IBBPortal.Models.PropertyStatus> PropertyStatus { get; set; }
 
         public DbSet<IBBPortal.Models.Organization> Organization { get; set; }
+        
+        public DbSet<IBBPortal.Models.TransactionTypes> TransactionTypes { get; set; }
+
+        public DbSet<IBBPortal.Models.TransactionMessages> TransactionMessages { get; set; }
     }
 
 
