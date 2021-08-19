@@ -8,34 +8,41 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
 {
-
+    //Property Status / Property Status Descriptipon
     [Index(nameof(ProjectID))]
     public class ProjectExpropriation
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProjectExpropriationID { get; set; }
-        public int ProjectID { get; set; }
-        
-        [MaxLength(256)]
-        public string ProjectExpropriationDescription { get; set; }
-        public bool ProjectNeedsExpropriation { get; set; }
 
+        //Related Project ID. All projects can have only one Expropriation
+        public int? ProjectID { get; set; }
+        [ForeignKey("ProjectID")]
+        public Project Project { get; set; }
+
+        [MaxLength(256)]
+        public string? ProjectExpropriationDescription { get; set; }
+
+        [Required]
+        public bool ProjectNeedsExpropriation { get; set; }
 
         public DateTime? ProjectExpropriationDate { get; set; }
 
-        [Column(TypeName = "decimal(12, 4)")]
+        [Column(TypeName = "decimal(18, 2)")]
         public decimal ProjectExpropriationCost { get; set; }
 
         [MaxLength(256)]
-        public string ProjectExpropriationStatusDesc { get; set; }
+        public string? ProjectExpropriationStatusDesc { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string UserID { get; set; }
+        [ForeignKey("UserID")]
+        public ApplicationUser User { get; set; }
+
+        [Required]
         public DateTime CreationDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? UpdateDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? DeletionDate { get; set; }
 
     }
