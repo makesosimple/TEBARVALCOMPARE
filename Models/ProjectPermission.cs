@@ -14,26 +14,28 @@ namespace IBBPortal.Models
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProjectPermissionID { get; set; }
-        public int ProjectID { get; set; }
+
+        //Related to Project Table. This is needed just for ID but just in case client wants project related information on this tab, Attach o Project Object.
+        public int? ProjectID { get; set; }
+        [ForeignKey("ProjectID")]
+        public Project Project { get; set; }
+
+        [Required]
+        public bool IsPermissionNeeded { get; set; }
 
         [MaxLength(256)]
-        public string ProjectPermissionProvider { get; set; }
-       
+        public string? ProjectPermissionProvider { get; set; }
 
         public DateTime? ProjectPermissionDate { get; set; }
 
         [MaxLength(256)]
-        public string ProjectPermissionReason { get; set; }
+        public string? ProjectPermissionReason { get; set; }
 
-        
-
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public DateTime CreationDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? UpdateDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? DeletionDate { get; set; }
 
     }

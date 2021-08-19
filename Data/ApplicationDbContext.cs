@@ -98,6 +98,14 @@ namespace IBBPortal.Data
 
         public DbSet<IBBPortal.Models.Project> Project { get; set; }
 
+        public DbSet<IBBPortal.Models.ProjectBoardApproval> ProjectBoardApproval { get; set; }
+
+        public DbSet<IBBPortal.Models.ProjectZoningPlan> ProjectZoningPlan { get; set; }
+
+        public DbSet<IBBPortal.Models.ProjectExpropriation> ProjectExpropriation { get; set; }
+
+        public DbSet<IBBPortal.Models.ProjectPermission> ProjectPermission { get; set; }
+
         public DbSet<IBBPortal.Models.JobField> JobField { get; set; }
 
         public DbSet<IBBPortal.Models.ProjectPerson> ProjectPerson { get; set; }

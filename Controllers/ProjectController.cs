@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IBBPortal.Data;
 using IBBPortal.Models;
+using IBBPortal.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System.Linq.Dynamic.Core;
 using IBBPortal.Helpers;
@@ -301,7 +302,7 @@ namespace IBBPortal.Controllers
             return View(project);
         }
 
-        // GET: Project/Edit/5
+        // GET: Project/EditProjectField/5
         public async Task<IActionResult> EditProjectField(int? id)
         {
             if (id == null)
@@ -309,15 +310,32 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var project = await _context.Project
+            //Define ViewModel for Project Field
+            EditProjectFieldViewModel model = new EditProjectFieldViewModel();
+
+            //Attach Desired Entities to ViewModel
+            model.Project = await _context.Project
                 .Include(p => p.District)
                 .FirstOrDefaultAsync(m => m.ProjectID == id);
 
-            if (project == null)
-            {
-                return NotFound();
-            }
-            return View(project);
+            model.ProjectBoardApproval = await _context.ProjectBoardApproval
+                .Include(p => p.Board)
+                .FirstOrDefaultAsync(m => m.Project.ProjectID == id );
+
+            model.ProjectZoningPlan = await _context.ProjectZoningPlan
+                .Include(p => p.ZoningPlanModificationStatus)
+                .Include(p => p.ZoningPlanResponsiblePerson)
+                .Include(p => p.ZoningPlanStatus1000)
+                .Include(p => p.ZoningPlanStatus5000)
+                .FirstOrDefaultAsync(m => m.Project.ProjectID == id);
+
+            model.ProjectExpropriation= await _context.ProjectExpropriation
+                .FirstOrDefaultAsync(m => m.Project.ProjectID == id);
+
+            model.ProjectPermission = await _context.ProjectPermission
+                .FirstOrDefaultAsync(m => m.Project.ProjectID == id);
+
+            return View(model);
         }
 
         // POST: Project/Edit/5
