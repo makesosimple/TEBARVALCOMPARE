@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
 {
-
+    //Organization CRUD must be created
     [Index(nameof(ProjectID))]
     public class ProjectPermission
     {   

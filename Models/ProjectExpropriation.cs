@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Models
 {
-
+    //Property Status / Property Status Descriptipon
     [Index(nameof(ProjectID))]
     public class ProjectExpropriation
     {   
