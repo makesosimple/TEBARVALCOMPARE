@@ -45,7 +45,7 @@ namespace IBBPortal.Models
         public string? ProjectPaftaAdaParsel { get; set; }
 
         //Project Physical Location and Shape (Important as this data will be projected to Map.)
-        [MaxLength(512, ErrorMessage = "Bu alana maksimum 512 karakter girebilirsiniz.")]
+        [MaxLength(16000, ErrorMessage = "Bu alana maksimum 16000 karakter girebilirsiniz.")]
         public string? KML { get; set; }
 
         [Column(TypeName = "decimal(9, 6)")]
@@ -57,6 +57,11 @@ namespace IBBPortal.Models
         public Point ProjectPoint { get; set; }
 
         public LineString ProjectLineString { get; set; }
+
+        public Polygon? ProjectPolygon { get; set; }
+
+        [MaxLength(16000, ErrorMessage = "Bu alana maksimum 16000 karakter girebilirsiniz.")]
+        public string? coordinates { get; set; }
 
         public string UserID { get; set; }
         [ForeignKey("UserID")]

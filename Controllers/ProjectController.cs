@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Identity;
 using System.Linq.Dynamic.Core;
 using IBBPortal.Helpers;
 using NetTopologySuite.Geometries;
+using System.Xml.Linq;
+using System.Text.RegularExpressions;
+
 
 namespace IBBPortal.Controllers
 {
@@ -60,8 +63,31 @@ namespace IBBPortal.Controllers
                     ServiceAreaTitle = c.ProjectServiceArea.ServiceAreaTitle,
                     ProjectStatusTitle = c.ProjectStatus.ProjectStatusTitle,
                     ProjectImportanceTitle = c.ProjectImportance.ProjectImportanceTitle,
-                    c.HasRelatedProject
+                    c.HasRelatedProject,
+                    
+                    //_context.Shortcuts.Where(s => s.UserID == _userManager.GetUserId(HttpContext.User), s => s.ShortcutsProjectID == c.ProjectID)
                 });
+
+                var shortcuts = _context.Shortcuts.Where(s => s.UserID == _userManager.GetUserId(HttpContext.User)).ToList();
+
+                /*var data = _context.Project.Join(_context.Shortcuts.Where(s => s.UserID == _userManager.GetUserId(HttpContext.User)), 
+                    p => p.ProjectID, 
+                    s => s.ShortcutsProjectID, 
+                    (p,s) => new
+                    {
+                        p.ProjectID,
+                        p.ProjectTitle,
+                        RequestingDepartmentTitle = p.RequestingDepartment.DepartmentTitle,
+                        ResponsibleDepartmentTitle = p.ResponsibleDepartment.DepartmentTitle,
+                        OwnerFullName = p.ProjectOwnerPerson.PersonName.Trim() + " " + p.ProjectOwnerPerson.PersonSurname.Trim(),
+                        ServiceAreaTitle = p.ProjectServiceArea.ServiceAreaTitle,
+                        ProjectStatusTitle = p.ProjectStatus.ProjectStatusTitle,
+                        ProjectImportanceTitle = p.ProjectImportance.ProjectImportanceTitle,
+                        p.HasRelatedProject,
+                        s.ShortcutsProjectID
+                 
+                    }
+                    );*/
 
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
@@ -92,7 +118,7 @@ namespace IBBPortal.Controllers
                 var passData = data.Skip(skip).Take(pageSize).ToList();
 
                 //Returning Json Data  
-                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = passData });
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = passData, shortCuts = shortcuts });
 
             }
 
@@ -100,6 +126,58 @@ namespace IBBPortal.Controllers
             {
                 throw;
             }
+        }
+
+        [HttpPost]
+        public JsonResult MapData()
+        {
+            //try
+            //{
+
+                
+                
+
+                
+
+                var data = _context.Project.Join(_context.ProjectField, 
+                    p => p.ProjectID, 
+                    s => s.ProjectID, 
+                    (p,s) => new
+                    {
+                        p.ProjectID,
+                        p.ProjectTitle,
+                        RequestingDepartmentTitle = p.RequestingDepartment.DepartmentTitle,
+                        ResponsibleDepartmentTitle = p.ResponsibleDepartment.DepartmentTitle,
+                        OwnerFullName = p.ProjectOwnerPerson.PersonName.Trim() + " " + p.ProjectOwnerPerson.PersonSurname.Trim(),
+                        ServiceAreaTitle = p.ProjectServiceArea.ServiceAreaTitle,
+                        ProjectStatusTitle = p.ProjectStatus.ProjectStatusTitle,
+                        ProjectImportanceTitle = p.ProjectImportance.ProjectImportanceTitle,
+                        p.HasRelatedProject,
+                        s.ProjectLatitude,
+                        s.ProjectLongitude,
+                   
+                        s.ProjectLineString
+                 
+                    }
+                    );
+
+                //Sorting
+                
+
+                //total number of rows count   
+                var recordsTotal = data.Count();
+                //Paging   
+                var passData = data.ToList();
+
+                //Returning Json Data  
+                return Json(new { data = passData });
+
+            //}
+
+            //catch (Exception)
+            //{
+              //  throw;
+            //}
         }
 
         [HttpGet]
@@ -387,10 +465,16 @@ namespace IBBPortal.Controllers
                 projectField.ProjectLongitude = model.ProjectField.ProjectLongitude;
                 projectField.ProjectLatitude = model.ProjectField.ProjectLatitude;
                 projectField.KML = model.ProjectField.KML;
+                Regex regex = new Regex(@"\<coordinates\>(.*)\</coordinates\>");
+                var v = regex.Match(model.ProjectField.KML);
+                string coordinates = v.Groups[1].Value;
+
+                projectField.coordinates = coordinates; // model.ProjectField.KML;
                 projectField.CreationDate = CurrentDate;
                 projectField.UserID = CurrentUser;
 
-                _context.Add(projectFieldToUpdate);
+                _context.Add(projectField);
+                projectFieldToUpdate = projectField;
             }
             else
             {
@@ -409,7 +493,14 @@ namespace IBBPortal.Controllers
                 projectFieldToUpdate.ProjectPaftaAdaParsel = model.ProjectField.ProjectPaftaAdaParsel;
                 projectFieldToUpdate.ProjectLongitude = model.ProjectField.ProjectLongitude;
                 projectFieldToUpdate.ProjectLatitude = model.ProjectField.ProjectLatitude;
+                //XDocument doc = XDocument.Parse(model.ProjectField.KML);
+                //string coordinates = null;
                 projectFieldToUpdate.KML = model.ProjectField.KML;
+                Regex regex = new Regex(@"\<coordinates\>(.*)\</coordinates\>");
+                var v = regex.Match(model.ProjectField.KML);
+                string coordinates = v.Groups[1].Value;
+
+                projectFieldToUpdate.coordinates = coordinates; // model.ProjectField.KML;
                 projectFieldToUpdate.UpdateDate = CurrentDate;
             }
 
@@ -551,9 +642,10 @@ namespace IBBPortal.Controllers
             }
             catch (Exception)
             {
-                TempData["ErrorTitle"] = "HATA";
-                TempData["ErrorMessage"] = $"Kayıt düzenlenirken bir hata oluştu. Lütfen sistem yöneticinizle görüşün.";
-                return RedirectToAction(nameof(EditProjectField), new { id = projectFieldToUpdate.ProjectID.ToString() });
+                throw;
+                //TempData["ErrorTitle"] = "HATA";
+                //TempData["ErrorMessage"] = $"Kayıt düzenlenirken bir hata oluştu. Lütfen sistem yöneticinizle görüşün.";
+                //return RedirectToAction(nameof(EditProjectField), new { id = projectFieldToUpdate.ProjectID.ToString() });
             }
 
             return RedirectToAction(nameof(EditProjectField), new { id = projectFieldToUpdate.ProjectID.ToString() });

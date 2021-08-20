@@ -75,23 +75,13 @@ namespace IBBPortal.Controllers
             // Validate entity is not null
             if (entity != null)
             {
-                // Answer for question #2
 
-                // Make changes on entity
-                //entity.UnitPrice = 49.99m;
-                //entity.Description = "Collector's edition";
-                entity.ShortcutsProjectID = id;
-                entity.UserID = userID;
-                entity.UpdateDate = DateTime.Now;
-
-                /* If the entry is being tracked, then invoking update API is not needed. 
-                  The API only needs to be invoked if the entry was not tracked. 
-                  https://www.learnentityframeworkcore.com/dbcontext/modifying-data */
-                _context.Shortcuts.Update(entity);
+                
+                _context.Shortcuts.Remove(entity);
 
                 // Save changes in database
                 _context.SaveChanges();
-                retId = entity.ShortcutsID;
+                retId = 0;
             } else
             {
                 var shortCut = new Shortcuts();
