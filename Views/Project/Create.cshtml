@@ -128,42 +128,6 @@
                             </div>
                         </div>
 
-                        <hr />
-
-                        <!-- Is Feasibility Needed ? -->
-                        <div class="form-group row">
-                            <label asp-for="IsFeasibilityNeeded" class="col-form-label col-12 col-xl-4">Fizibilite Gerekli mi?<span class="text-danger">*</span></label>
-                            <div class="col-12 col-xl-8">
-                                <div class="text-center d-inline-block col-form-label">
-                                    <div class="vc-toggle-container">
-                                        <label class="vc-switch">
-                                            <input type="checkbox" class="vc-switch-input" asp-for="IsFeasibilityNeeded">
-                                            <span data-on="Evet" data-off="Hayır" class="vc-switch-label"></span>
-                                            <span class="vc-handle"></span>
-                                            <span asp-validation-for="IsFeasibilityNeeded" class="text-danger"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Has Related Projects ? -->
-                        @*<div class="form-group row">
-                                <label asp-for="HasRelatedProject" class="col-form-label col-12 col-xl-4">Alt Proje Var mı?<span class="text-danger">*</span></label>
-                                <div class="col-12 col-xl-8">
-                                    <div class="text-center d-inline-block col-form-label">
-                                        <div class="vc-toggle-container">
-                                            <label class="vc-switch">
-                                                <input type="checkbox" class="vc-switch-input" asp-for="HasRelatedProject">
-                                                <span data-on="Evet" data-off="Hayır" class="vc-switch-label"></span>
-                                                <span class="vc-handle"></span>
-                                                <span asp-validation-for="HasRelatedProject" class="text-danger"></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>*@
-
                         <div class="buttons mt-3 my-md-0">
                             <button type="submit" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
                             <a asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>

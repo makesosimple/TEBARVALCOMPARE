@@ -80,23 +80,6 @@
                         "autoWidth": true
                     },
                     {
-                        "data": "hasRelatedProject",
-                        "render": function (data) {
-
-                            let itemToRender;
-                            switch (data) {
-                                case true:
-                                    itemToRender = `<a href="#" class="btn btn-success text-sm">EVET</a>`;
-                                    break;
-                                case false:
-                                    itemToRender = `<a href="#" class="btn btn-danger text-sm">HAYIR</a>`;
-                                    break;
-                            }
-                            return itemToRender;
-                        },
-                        "autoWidth": true
-                    },
-                    {
                         "data": null,
                         "render": function (data, type, full, meta, row) {
                             return `<div class="d-flex align-items-center justify-content-end">\
@@ -200,7 +183,6 @@
                         <th scope="col"><input class="form-control w-100 searchInput" data-index="4" type="text" placeholder="Ara..." id="serviceAreaTitle" name="serviceAreaTitle" value="" /></th>
                         <th scope="col"><input class="form-control w-100 searchInput" data-index="5" type="text" placeholder="Ara..." id="projectStatusTitle" name="projectStatusTitle" value="" /></th>
                         <th scope="col"><input class="form-control w-100 searchInput" data-index="6" type="text" placeholder="Ara..." id="projectImportanceTitle" name="projectImportanceTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="7" type="text" placeholder="Ara..." id="hasRelatedProject" name="hasRelatedProject" value="" /></th>
                         <th scope="col"></th>
                     </tr>
                     <tr id="tableLabels">
@@ -212,7 +194,6 @@
                         <th scope="col" class="text-white text-sm">Hizmet Alanı</th>
                         <th scope="col" class="text-white text-sm">Proje Durumu</th>
                         <th scope="col" class="text-white text-sm">Proje Önemi</th>
-                        <th scope="col" class="text-white text-sm">Alt Projesi Var Mı?</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>

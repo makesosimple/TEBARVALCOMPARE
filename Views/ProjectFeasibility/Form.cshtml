@@ -1,0 +1,215 @@
+﻿@model IBBPortal.Models.ProjectFeasibility
+
+@{
+    var ProjectID = ViewBag.ProjectID == null ? Model.ProjectID : ViewBag.ProjectID;
+    ViewData["Title"] = "Proje Düzenle";
+}
+
+<!-- Alert for Exceptions -->
+@if (@TempData["SuccessTitle"] is not null)
+{
+    <div class="alert bg-gradient-success alert-dismissible fade show border-0" role="alert">
+        <h4 class="alert-heading text-white">
+            <i class="fas fa-check"></i>
+            @TempData["SuccessTitle"]
+            <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </h4>
+        <p class="text-white">@TempData["SuccessMessage"]</p>
+    </div>
+}
+
+<h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
+        <ul class="nav nav-pills" id="formTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="tag-tab" href="/Project/Edit/@ProjectID">Künye</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="project-feasibility-tab" data-toggle="tab" href="#project-feasibility" role="tab" aria-controls="project-feasibility" aria-selected="false">Fizibilite</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="associates-tab" href="/ProjectPerson/Index/@ProjectID">Kişiler</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="associates-tab" href="/ProjectRelation/Index/@ProjectID">İlişkili Projeler</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="project-field-tab" href="/Project/EditProjectField/@ProjectID">Proje Alanı</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content my-3" id="formContent">
+            <div class="tab-pane fade active show" id="project-feasibility" role="tabpanel" aria-labelledby="project-feasibility-tab">
+                <div class="row">
+                    <div class="col-12 col-xl-6">
+                        <form asp-action="Form">
+                            <input type="hidden" asp-for="ProjectFeasibilityID"/>
+                            <input type="hidden" asp-for="ProjectID" value="@ProjectID" />
+                            <!-- Validation Part. Must be still for all views!! -->
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                            <!-- Is Feasibility Needed ? -->
+                            <div class="form-group row">
+                                <label asp-for="IsFeasibilityNeeded" class="col-form-label col-12 col-xl-4">Fizibilite Gerekli mi?<span class="text-danger">*</span></label>
+                                <div class="col-12 col-xl-8">
+                                    <div class="text-center d-inline-block col-form-label">
+                                        <div class="vc-toggle-container">
+                                            <label class="vc-switch">
+                                                <input type="checkbox" class="vc-switch-input" asp-for="IsFeasibilityNeeded">
+                                                <span data-on="Evet" data-off="Hayır" class="vc-switch-label"></span>
+                                                <span class="vc-handle"></span>
+                                                <span asp-validation-for="IsFeasibilityNeeded" class="text-danger"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Contractor ID -->
+                            <div class="form-group row" data-dependent-on="#IsFeasibilityNeeded" data-dependent-value="checked">
+                                <label asp-for="ContractorID" class="col-12 col-xl-4 col-form-label">Fizibiliteyi Hazırlayacak Yüklenici</label>
+                                <div class="col-12 col-xl-8">
+                                    <select asp-for="ContractorID" class="form-control" id="selectContractor" style="width: 100%;">
+                                        @if (@Model.Contractor is not null)
+                                        {
+                                            <option value="@Model.Contractor.ContractorID">@Model.Contractor.Title</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="">Yüklenici Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ContractorID" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Person ID -->
+                            <div class="form-group row" data-dependent-on="#IsFeasibilityNeeded" data-dependent-value="checked">
+                                <label asp-for="PersonID" class="col-12 col-xl-4 col-form-label">Fizibiliteyi Hazırlayacak Kişi</label>
+                                <div class="col-12 col-xl-8">
+                                    <select asp-for="PersonID" class="form-control" id="selectPerson" style="width: 100%;" required>
+                                        @if (@Model.Person is not null)
+                                        {
+                                            <option value="@Model.Person.PersonID">@Model.Person.PersonName @Model.Person.PersonSurname</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="">Kişi Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="PersonID" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Project Feasibility Outsource -->
+                            <div class="form-group row" data-dependent-on="#IsFeasibilityNeeded" data-dependent-value="checked">
+                                <label asp-for="ProjectFeasibilityOutsource" class="col-12 col-xl-4 col-form-label">Fizibilite Dış Kaynak<span class="text-danger">*</span></label>
+                                <div class="col-12 col-xl-8">
+                                    <input asp-for="ProjectFeasibilityOutsource" class="form-control" required />
+                                    <span asp-validation-for="ProjectFeasibilityOutsource" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Project Feasibility Date -->
+                            <div class="form-group row" data-dependent-on="#IsFeasibilityNeeded" data-dependent-value="checked">
+                                <label asp-for="ProjectFeasibilityDate" class="col-12 col-xl-4 col-form-label">Fizibilite Tarihi</label>
+                                <div class="col-12 col-xl-8">
+                                    <input asp-for="ProjectFeasibilityDate" type="text" class="form-control datepicker">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span asp-validation-for="ProjectFeasibilityDate" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Project Feasibility Cost -->
+                            <div class="form-group row" data-dependent-on="#IsFeasibilityNeeded" data-dependent-value="checked">
+                                <label asp-for="ProjectFeasibilityCost" class="col-12 col-xl-4 col-form-label">Fizibilite Bedeli</label>
+                                <div class="col-12 col-xl-8">
+                                    <input asp-for="ProjectFeasibilityCost" type="text" class="form-control" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-input-type="length" data-val="false">
+                                    <i class="fas fa-coins"></i>
+                                    <span asp-validation-for="ProjectFeasibilityCost" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Default Values for the Database Date Part -->
+                            <input type="hidden" asp-for="CreationDate" />
+                            <input type="hidden" asp-for="UpdateDate" />
+
+                            <!-- User ID for the Update -->
+                            <input type="hidden" asp-for="UserID" />
+
+                            <div class="buttons mt-3 my-md-0">
+                                <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
+                                <a asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $('#selectContractor').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/Contractor/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
+        });
+
+        $('#selectPerson').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/Person/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
+        });
+
+        //Dependent Fields Management
+        $("[data-dependent-on]").each(function () {
+            //Hide all dependent fields by default until user makes a choice.
+            $(this).hide();
+
+            //Get the object, object's target and desired value.
+            let field = $(this);
+            let target = $(this).data("dependent-on");
+            let desiredValue = $(this).data("dependent-value");
+            let status = $(target).is(':checked') ? 'checked' : 'unchecked';
+
+            //Let's check initial state first for UX.
+            if (status == desiredValue) field.show();
+
+            //Now every time user changes the input value of the target, certain fields will open or close on DOM.
+            $(target).on("change", function () {
+                status = $(this).is(':checked') ? 'checked' : 'unchecked';
+                if (status == desiredValue) field.show();
+                else field.hide();
+            });
+
+        });
+    </script>
+}

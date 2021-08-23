@@ -47,6 +47,9 @@
                 <a class="nav-link" id="tag-tab" href="/Project/Edit/@ViewBag.ProjectID">Künye</a>
             </li>
             <li class="nav-item" role="presentation">
+                <a class="nav-link" id="associates-tab" href="/ProjectFeasibility/Form/@ViewBag.ProjectID">Fizibilite</a>
+            </li>
+            <li class="nav-item" role="presentation">
                 <a class="nav-link" id="associates-tab" href="/ProjectPerson/Index/@ViewBag.ProjectID">Kişiler</a>
             </li>
             <li class="nav-item" role="presentation">
@@ -73,7 +76,7 @@
                                     <div class="text-center d-inline-block col-form-label">
                                         <div class="vc-toggle-container">
                                             <label class="vc-switch">
-                                                <input type="checkbox" class="vc-switch-input" asp-for="ProjectField.IsProjectInIstanbul" checked>
+                                                <input type="checkbox" class="vc-switch-input" asp-for="ProjectField.IsProjectInIstanbul">
                                                 <span data-on="Evet" data-off="Hayır" class="vc-switch-label"></span>
                                                 <span class="vc-handle"></span>
                                                 <span asp-validation-for="ProjectField.IsProjectInIstanbul" class="text-danger"></span>
@@ -93,6 +96,11 @@
                                             if (Model.ProjectField.District is not null)
                                             {
                                                 <option value="@Model.ProjectField.District.DistrictID">@Model.ProjectField.District.DistrictName</option>
+                                            }
+
+                                            else
+                                            {
+                                                <option selected value="">İlçe Seçin</option>
                                             }
                                         }
 
@@ -199,7 +207,7 @@
                                     <div class="text-center d-inline-block col-form-label">
                                         <div class="vc-toggle-container">
                                             <label class="vc-switch">
-                                                <input type="checkbox" class="vc-switch-input" asp-for="ProjectBoardApproval.IsBoardApprovalNeeded" checked>
+                                                <input type="checkbox" class="vc-switch-input" asp-for="ProjectBoardApproval.IsBoardApprovalNeeded">
                                                 <span data-on="Evet" data-off="Hayır" class="vc-switch-label"></span>
                                                 <span class="vc-handle"></span>
                                                 <span asp-validation-for="ProjectBoardApproval.IsBoardApprovalNeeded" class="text-danger"></span>
@@ -229,6 +237,11 @@
                                             @if (Model.ProjectBoardApproval.Board is not null)
                                             {
                                                 <option value="@Model.ProjectBoardApproval.Board.BoardID">@Model.ProjectBoardApproval.Board.BoardTitle</option>
+                                            }
+
+                                            else
+                                            {
+                                                <option selected value="">Kurul Seçin</option>
                                             }
                                         }
 
@@ -277,6 +290,11 @@
                                             {
                                                 <option value="@Model.ProjectZoningPlan.ZoningPlanStatus1000.ZoningPlanStatusID">@Model.ProjectZoningPlan.ZoningPlanStatus1000.ZoningPlanStatusTitle</option>
                                             }
+
+                                            else
+                                            {
+                                                <option selected value="">İmar Planı Durumu Seçin</option>
+                                            }
                                         }
                                         else
                                         {
@@ -308,6 +326,11 @@
                                             {
                                                 <option value="@Model.ProjectZoningPlan.ZoningPlanStatus5000.ZoningPlanStatusID">@Model.ProjectZoningPlan.ZoningPlanStatus5000.ZoningPlanStatusTitle</option>
                                             }
+
+                                            else
+                                            {
+                                                <option selected value="">İmar Planı Durumu Seçin</option>
+                                            }
                                         }
 
                                         else
@@ -326,7 +349,7 @@
                                     <div class="text-center d-inline-block col-form-label">
                                         <div class="vc-toggle-container">
                                             <label class="vc-switch">
-                                                <input type="checkbox" class="vc-switch-input" asp-for="ProjectZoningPlan.ZoningPlanModificationNeeded" checked>
+                                                <input type="checkbox" class="vc-switch-input" asp-for="ProjectZoningPlan.ZoningPlanModificationNeeded">
                                                 <span data-on="Evet" data-off="Hayır" class="vc-switch-label"></span>
                                                 <span class="vc-handle"></span>
                                                 <span asp-validation-for="ProjectZoningPlan.ZoningPlanModificationNeeded" class="text-danger"></span>
@@ -377,6 +400,10 @@
                                                 <option value="@Model.ProjectZoningPlan.ZoningPlanModificationStatus.ZoningPlanModificationStatusID">@Model.ProjectZoningPlan.ZoningPlanModificationStatus.ZoningPlanModificationStatusTitle</option>
                                             }
 
+                                            else
+                                            {
+                                                <option selected value="">İmar Planı Tadilat Durumu Seçin</option>
+                                            }
                                         }
 
                                         else
@@ -398,6 +425,11 @@
                                             if (Model.ProjectZoningPlan.ZoningPlanModificationStatus is not null)
                                             {
                                                 <option value="@Model.ProjectZoningPlan.ZoningPlanResponsiblePerson.PersonID">@Model.ProjectZoningPlan.ZoningPlanResponsiblePerson.PersonName @Model.ProjectZoningPlan.ZoningPlanResponsiblePerson.PersonSurname</option>
+                                            }
+
+                                            else
+                                            {
+                                                <option selected value="">Plan Tadilatı Sorumlusu Seçin</option>
                                             }
 
                                         }
@@ -430,6 +462,11 @@
                                                 <option value="@Model.ProjectExpropriation.PropertyStatus.PropertyStatusID">@Model.ProjectExpropriation.PropertyStatus.PropertyStatusTitle</option>
                                             }
 
+                                            else
+                                            {
+                                                <option selected value="">Mülkiyet Durumu Seçin</option>
+                                            }
+
                                         }
 
                                         else
@@ -457,7 +494,7 @@
                                     <div class="text-center d-inline-block col-form-label">
                                         <div class="vc-toggle-container">
                                             <label class="vc-switch">
-                                                <input type="checkbox" class="vc-switch-input" asp-for="ProjectExpropriation.ProjectNeedsExpropriation" checked>
+                                                <input type="checkbox" class="vc-switch-input" asp-for="ProjectExpropriation.ProjectNeedsExpropriation">
                                                 <span data-on="Evet" data-off="Hayır" class="vc-switch-label"></span>
                                                 <span class="vc-handle"></span>
                                                 <span asp-validation-for="ProjectExpropriation.ProjectNeedsExpropriation" class="text-danger"></span>
@@ -488,7 +525,7 @@
                             </div>
 
                             <!-- Expropriation Status ID -->
-                            <div class="form-group row">
+                            <div class="form-group row" data-dependent-on="#ProjectExpropriation_ProjectNeedsExpropriation" data-dependent-value="checked">
                                 <label asp-for="ProjectExpropriation.ExpropriationStatusID" class="col-12 col-xl-4 col-form-label">Kamulaştırma Durumu</label>
                                 <div class="col-12 col-xl-8">
                                     <select asp-for="ProjectExpropriation.ExpropriationStatusID" class="form-control" id="selectExpropriationStatus" style="width: 100%;">
@@ -499,6 +536,10 @@
                                                 <option value="@Model.ProjectExpropriation.ExpropriationStatus.ExpropriationStatusID">@Model.ProjectExpropriation.ExpropriationStatus.ExpropriationStatusTitle</option>
                                             }
 
+                                            else
+                                            {
+                                                <option selected value="">Kamulaştırma Durumu Seçin</option>
+                                            }
                                         }
 
                                         else
@@ -532,7 +573,7 @@
                                     <div class="text-center d-inline-block col-form-label">
                                         <div class="vc-toggle-container">
                                             <label class="vc-switch">
-                                                <input type="checkbox" class="vc-switch-input" asp-for="ProjectPermission.IsPermissionNeeded" checked>
+                                                <input type="checkbox" class="vc-switch-input" asp-for="ProjectPermission.IsPermissionNeeded">
                                                 <span data-on="Evet" data-off="Hayır" class="vc-switch-label"></span>
                                                 <span class="vc-handle"></span>
                                                 <span asp-validation-for="ProjectPermission.IsPermissionNeeded" class="text-danger"></span>
@@ -553,7 +594,7 @@
                             </div>
 
                             <!-- Organization ID -->
-                            <div class="form-group row">
+                            <div class="form-group row" data-dependent-on="#ProjectPermission_IsPermissionNeeded" data-dependent-value="checked">
                                 <label asp-for="ProjectPermission.OrganizationID" class="col-12 col-xl-4 col-form-label">Ruhsatın Alındığı Kurum</label>
                                 <div class="col-12 col-xl-8">
                                     <select asp-for="ProjectPermission.OrganizationID" class="form-control" id="selectOrganization" style="width: 100%;">
@@ -564,6 +605,10 @@
                                                 <option value="@Model.ProjectPermission.Organization.OrganizationID">@Model.ProjectPermission.Organization.OrganizationTitle</option>
                                             }
 
+                                            else
+                                            {
+                                                <option selected value="">Kurum Seçin</option>
+                                            }
                                         }
 
                                         else

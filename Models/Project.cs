@@ -77,14 +77,6 @@ namespace IBBPortal.Models
         //Project Status Description Date. Not needed by the user but keep information just in case.
         public DateTime? ProjectStatusDescriptionDate { get; set; }
 
-        //Is Feasibility Needed? This is for bool check.
-        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
-        public bool IsFeasibilityNeeded { get; set; }
-
-        //Has Related Project? This is for field check.
-        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
-        public bool HasRelatedProject { get; set; }
-
         public string UserID { get; set; }
         [ForeignKey("UserID")]
         public ApplicationUser User { get; set; }

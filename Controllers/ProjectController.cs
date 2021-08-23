@@ -63,7 +63,6 @@ namespace IBBPortal.Controllers
                     ServiceAreaTitle = c.ProjectServiceArea.ServiceAreaTitle,
                     ProjectStatusTitle = c.ProjectStatus.ProjectStatusTitle,
                     ProjectImportanceTitle = c.ProjectImportance.ProjectImportanceTitle,
-                    c.HasRelatedProject,
                     
                     //_context.Shortcuts.Where(s => s.UserID == _userManager.GetUserId(HttpContext.User), s => s.ShortcutsProjectID == c.ProjectID)
                 });
@@ -289,7 +288,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProjectID,ProjectTitle,ProjectIBBCode,RequestingDepartmentID,ResponsibleDepartmentID,ProjectOwnerPersonID,ProjectServiceAreaID,ProjectImportanceID,ProjectStatusID,ProjectStatusDescription,ProjectStatusDescriptionDate,IsFeasibilityNeeded,HasRelatedProject,UserID,CreationDate,UpdateDate,DeletionDate")] Project project)
+        public async Task<IActionResult> Create([Bind("ProjectID,ProjectTitle,ProjectIBBCode,RequestingDepartmentID,ResponsibleDepartmentID,ProjectOwnerPersonID,ProjectServiceAreaID,ProjectImportanceID,ProjectStatusID,ProjectStatusDescription,ProjectStatusDescriptionDate,UserID,CreationDate,UpdateDate,DeletionDate")] Project project)
         {
             if (ModelState.IsValid)
             {
@@ -343,7 +342,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProjectID,ProjectTitle,ProjectIBBCode,RequestingDepartmentID,ResponsibleDepartmentID,ProjectOwnerPersonID,ProjectServiceAreaID,ProjectImportanceID,ProjectStatusID,ProjectStatusDescription,ProjectStatusDescriptionDate,IsFeasibilityNeeded,HasRelatedProject,UserID,CreationDate,UpdateDate,DeletionDate")] Project project)
+        public async Task<IActionResult> Edit(int id, [Bind("ProjectID,ProjectTitle,ProjectIBBCode,RequestingDepartmentID,ResponsibleDepartmentID,ProjectOwnerPersonID,ProjectServiceAreaID,ProjectImportanceID,ProjectStatusID,ProjectStatusDescription,ProjectStatusDescriptionDate,UserID,CreationDate,UpdateDate,DeletionDate")] Project project)
         {
             if (id != project.ProjectID)
             {
