@@ -50,7 +50,7 @@
     <None Include="Views\JobTitle\_DetailsModal.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <None Include="Views\Shared\LayoutComponents\_Footer.cshtml" />
-    <None Include="Views\Shared\LayoutComponents\_Header.cshtml" />
+    <None Include="Views\Shared\LayoutComponents\_HeaderForMap.cshtml" />
     <None Include="Views\Shared\LayoutComponents\_Meta.cshtml" />
     <None Include="Views\Shared\LayoutComponents\_Sidebar.cshtml" />
     <None Include="Views\Shared\Layouts\_LayoutLogin.cshtml" />

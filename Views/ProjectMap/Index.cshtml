@@ -2,8 +2,49 @@
     Layout = "~/Views/Shared/Layouts/_LayoutMap.cshtml";
 }
 
-<div id="map" style="height: 100vh; width: 100%;"></div>
+<div id="map" style="height: 100vh; width: 100%;">
+    
 
-@section Scripts {
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMYG7cNdDYUUxT8FSVxCtaxvSv9Ic2UZw&callback=initMap&libraries=&v=weekly"></script>
-}
+</div>
+<div class="floatingForm">
+
+
+    <form class="form-inline">
+
+        <input type="text" id="projectTitle" placeholder="Proje..." name="projectTitle" class="form-control">
+
+        <select class="form-control" id="selectDistrict" style="width:200px;">
+            <option value="">İlçe</option>
+        </select>
+        &nbsp;
+        <select class="form-control" id="selectYear">
+            <option value="">Yıl</option>
+        </select>
+        &nbsp;
+        <select class="form-control" id="selectDepartment">
+            <option value="">Sorumlu Müdürlük</option>
+        </select>
+        &nbsp;
+        <select class="form-control" id="selectProjectOwner">
+            <option value="">Proje Sahibi</option>
+        </select>
+        &nbsp;&nbsp;
+        <label for="showProjectBorders">Sınırları Göster</label>
+        <input type="checkbox" id="showProjectBorders" placeholder="Sınırları Göster..." name="showProjectBorders" class="form-control">
+
+        &nbsp;
+        <button id="toggleFilter" type="button" class="btn btn-success"><i class="fa fa-filter"></i> Filtrele</button>
+        <button id="closeFilter" type="button" class="btn btn-danger"><i class="fa fa-times-circle"></i></button>
+
+    </form>
+        
+</div>
+<div class="floatingFormClosed">
+    <form class="form-inline">
+        <button id="openFilter" type="button" class="btn btn-success"><i class="fa fa-filter"></i></button>
+     </form>
+</div>
+
+    @section Scripts {
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMYG7cNdDYUUxT8FSVxCtaxvSv9Ic2UZw&callback=initMap&libraries=&v=weekly"></script>
+    }

@@ -1,0 +1,109 @@
+﻿/* Custom Elements By SO */
+.floatingForm {
+    position: absolute;
+    top: 15px;
+    left: 0px;
+    padding:10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    
+    background-color: white;
+    border-radius: 5px;
+    margin:15px;
+    width:90%;
+
+}
+
+.floatingFormClosed {
+    position: absolute;
+    top: 15px;
+    left: 0px;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: white;
+    border-radius: 5px;
+    margin: 15px;
+    display: none;
+}
+
+
+    .form-inline {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+        width: 100%;
+    }
+
+    /* Add some margins for each label */
+    .form-inline label {
+        margin: 5px 10px 5px 0;
+    }
+
+    /* Style the input fields */
+    .form-inline input {
+        /*vertical-align: middle;*/
+        margin: 5px 10px 5px 0;
+        padding: 10px;
+        background-color: #fff;
+        
+        margin-right:20px;
+    }
+
+    .form-inline select {
+        margin-right:20px;
+        
+    }
+
+    /* Style the submit button */
+        .form-inline button {
+            /*padding: 10px 20px;*/
+            /*background-color: dodgerblue;*/
+            /*border: 1px solid #ddd;*/
+        }
+
+#closeFilter {
+    position: absolute;
+    right: 15px;
+}
+
+#openFilter {
+    /*position: absolute;
+    right: 15px;*/
+}
+
+        .form-inline button:hover {
+            /*background-color: dodgerblue;*/
+        }
+
+/* Add responsiveness - display the form controls vertically instead of horizontally on screens that are less than 800px wide */
+@media (max-width: 800px) {
+    .form-inline input {
+        margin: 5px 0;
+       
+    }
+
+    .form-inline select {
+        margin: 5px 0;
+       
+    }
+
+    .form-inline button {
+        margin: 5px 0;
+    }
+
+    .form-inline {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #closeFilter {
+        position: relative;
+        /*bottom: 15px;*/
+        margin-top: 5px;
+        margin-left: 15px;
+    }
+
+   
+}
+

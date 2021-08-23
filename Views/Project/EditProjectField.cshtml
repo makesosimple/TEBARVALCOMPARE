@@ -6,6 +6,7 @@
     //Defined so that we can show full decimal points to user
     var Longitude = Model.ProjectField != null ? Model.ProjectField.ProjectLongitude : null;
     var Latitude = Model.ProjectField != null ? Model.ProjectField.ProjectLatitude : null;
+    var coordinates = Model.ProjectField != null ? Model.ProjectField.coordinates : null;
 }
 
 <!-- Alert for Exceptions -->
@@ -89,7 +90,10 @@
                                     <select asp-for="ProjectField.DistrictID" class="form-control" id="selectDistrict" style="width: 100%;">
                                         @if (Model.ProjectField is not null)
                                         {
-                                            <option value="@Model.ProjectField.District.DistrictID">@Model.ProjectField.District.DistrictName</option>
+                                            if (Model.ProjectField.District is not null)
+                                            {
+                                                <option value="@Model.ProjectField.District.DistrictID">@Model.ProjectField.District.DistrictName</option>
+                                            }
                                         }
 
                                         else
@@ -587,7 +591,7 @@
                         </form>
                     </div>
                     <div class="col-12 col-xl-6">
-                        <div id="map" class="h-100"></div>
+                        <div id="map" class="h-100" style="max-height: 600px;"></div>
                     </div>
                 </div>
             </div>
@@ -748,7 +752,10 @@
 
         });
 
+        let project_coordinates = ('@coordinates').split(' ');
+        console.log('project_coordinates', project_coordinates);
     </script>
+    <script src="~/js/project_detail_map.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMYG7cNdDYUUxT8FSVxCtaxvSv9Ic2UZw&callback=initMap&libraries=&v=weekly"></script>
-
+    
 }

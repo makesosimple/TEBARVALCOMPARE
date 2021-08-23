@@ -128,38 +128,37 @@ namespace IBBPortal.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         public JsonResult MapData()
         {
             //try
             //{
+            var projectKeyword = HttpContext.Request.Query["projectKeyword"];
+            var selectedDistrict = HttpContext.Request.Query["districtID"];
+            var respDepartmentID = HttpContext.Request.Query["respDepartmentID"];
+            var ProjectOwnerID = HttpContext.Request.Query["ProjectOwnerID"];
+            var yearSelected = HttpContext.Request.Query["yearSelected"];
 
-                
-                
+            var data = _context.ProjectField.Select(c => new
+            {
+                c.ProjectID,
+                ProjectTitle = c.Project.ProjectTitle,
+                DistrictName = c.District.DistrictName,
+                Longitude = c.ProjectLongitude,
+                Latitude = c.ProjectLatitude,
+                Coordinates = c.coordinates,
+                RequestingDepartmentTitle = c.Project.RequestingDepartment.DepartmentTitle,
+                ResponsibleDepartmentTitle = c.Project.ResponsibleDepartment.DepartmentTitle,
+                OwnerFullName = c.Project.ProjectOwnerPerson.PersonName.Trim() + " " + c.Project.ProjectOwnerPerson.PersonSurname.Trim(),
+                ServiceAreaTitle = c.Project.ProjectServiceArea.ServiceAreaTitle,
+                ProjectImportanceTitle = c.Project.ProjectImportance.ProjectImportanceTitle,
+                RequestingDepartmentID = c.Project.RequestingDepartment.DepartmentID,
+                DistrictID = c.DistrictID == null ? 0 : c.DistrictID,
+            });
 
-                
+            
+            
 
-                var data = _context.Project.Join(_context.ProjectField, 
-                    p => p.ProjectID, 
-                    s => s.ProjectID, 
-                    (p,s) => new
-                    {
-                        p.ProjectID,
-                        p.ProjectTitle,
-                        RequestingDepartmentTitle = p.RequestingDepartment.DepartmentTitle,
-                        ResponsibleDepartmentTitle = p.ResponsibleDepartment.DepartmentTitle,
-                        OwnerFullName = p.ProjectOwnerPerson.PersonName.Trim() + " " + p.ProjectOwnerPerson.PersonSurname.Trim(),
-                        ServiceAreaTitle = p.ProjectServiceArea.ServiceAreaTitle,
-                        ProjectStatusTitle = p.ProjectStatus.ProjectStatusTitle,
-                        ProjectImportanceTitle = p.ProjectImportance.ProjectImportanceTitle,
-                        p.HasRelatedProject,
-                        s.ProjectLatitude,
-                        s.ProjectLongitude,
-                   
-                        s.ProjectLineString
-                 
-                    }
-                    );
 
                 //Sorting
                 
@@ -465,10 +464,33 @@ namespace IBBPortal.Controllers
                 projectField.ProjectLongitude = model.ProjectField.ProjectLongitude;
                 projectField.ProjectLatitude = model.ProjectField.ProjectLatitude;
                 projectField.KML = model.ProjectField.KML;
-                Regex regex = new Regex(@"\<coordinates\>(.*)\</coordinates\>");
-                var v = regex.Match(model.ProjectField.KML);
-                string coordinates = v.Groups[1].Value;
 
+                string coordinates = null;
+
+                if (model.ProjectField.KML!=null)
+                {
+                    try
+                    {
+                        Regex regex = new Regex(@"\<coordinates\>(.*)\</coordinates\>");
+                        var v = regex.Match(model.ProjectField.KML);
+                        coordinates = v.Groups[1].Value;
+                    } 
+                    catch
+                    {
+                        coordinates = null;
+                    }
+                    
+                }
+
+                //projectField.ProjectPolygon = 
+                // Read: https://csharp.hotexamples.com/examples/NetTopologySuite.Geometries/Polygon/-/php-polygon-class-examples.html
+                // Read: https://www.csharpcodi.com/csharp-examples/NetTopologySuite.IO.WKTReader.Read(System.IO.TextReader)/
+                /*var reader = new NetTopologySuite.IO.WKTReader();
+                var geom = reader.Read("POLYGON((" + coordinates + "))");
+
+                var polygon = (Polygon)geom;
+                projectField.ProjectPolygon = polygon;*/
+                //projectField.ProjectPolygon = new Polygon(new LinearRing(new LineString()
                 projectField.coordinates = coordinates; // model.ProjectField.KML;
                 projectField.CreationDate = CurrentDate;
                 projectField.UserID = CurrentUser;
@@ -496,12 +518,31 @@ namespace IBBPortal.Controllers
                 //XDocument doc = XDocument.Parse(model.ProjectField.KML);
                 //string coordinates = null;
                 projectFieldToUpdate.KML = model.ProjectField.KML;
-                Regex regex = new Regex(@"\<coordinates\>(.*)\</coordinates\>");
-                var v = regex.Match(model.ProjectField.KML);
-                string coordinates = v.Groups[1].Value;
+                string coordinates = null;
+
+                if (model.ProjectField.KML != null)
+                {
+                    try
+                    {
+                        Regex regex = new Regex(@"\<coordinates\>(.*)\</coordinates\>");
+                        var v = regex.Match(model.ProjectField.KML);
+                        coordinates = v.Groups[1].Value;
+                    }
+                    catch
+                    {
+                        coordinates = null;
+                    }
+
+                }
 
                 projectFieldToUpdate.coordinates = coordinates; // model.ProjectField.KML;
                 projectFieldToUpdate.UpdateDate = CurrentDate;
+
+                //var reader = new NetTopologySuite.IO.WKTReader();
+                //var geom = reader.Read("POLYGON((" + coordinates + "))");
+
+                //var polygon = (Polygon)geom;
+                //projectFieldToUpdate.ProjectPolygon = polygon;
             }
 
             //Project Board Approval
