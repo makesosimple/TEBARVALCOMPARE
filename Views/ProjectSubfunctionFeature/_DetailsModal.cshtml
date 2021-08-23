@@ -1,0 +1,49 @@
+﻿@model IBBPortal.Models.ProjectSubfunctionFeature
+<!-- Modal -->
+<div class="modal fade" id="ProjectSubfunctionFeatureDetailModal" tabindex="-1" aria-labelledby="ProjectSubfunctionFeatureDetailLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-between">
+                            <h5 class="modal-title" id="exampleModalLabel">Detay</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Alt Fonksiyon</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.Subfunction.SubfunctionTitle</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Özellik</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.SubfunctionFeature.SubfunctionFeatureTitle</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Değer</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.SubfunctionFeatureValue</p></div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Oluşturan</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.User.UserName</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Oluşturma Tarihi</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.CreationDate</p></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Güncelleme Tarihi</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.UpdateDate</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

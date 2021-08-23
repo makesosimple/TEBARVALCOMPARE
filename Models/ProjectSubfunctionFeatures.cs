@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,10 +9,11 @@ namespace IBBPortal.Models
     [Index(nameof(ProjectID))]
     [Index(nameof(SubfunctionID))]
     [Index(nameof(SubfunctionFeatureID))]
-    public class ProjectSubfunctionFeatures
+    [Index(nameof(UserID))]
+    public class ProjectSubfunctionFeature
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ProjectSubfunctionFeaturesID { get; set; }
+        public int ProjectSubfunctionFeatureID { get; set; }
 
         //Current Project that we are on.
         public int? ProjectID { get; set; }
@@ -28,20 +30,22 @@ namespace IBBPortal.Models
         [ForeignKey("SubfunctionFeatureID")]
         public SubfunctionFeature SubfunctionFeature { get; set; }
 
-        public float SubfunctionFeatureValueFloat { get; set; }
-        public string SubfunctionFeatureValueString { get; set; }
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
+        [MaxLength(50, ErrorMessage = "Bu alana maksimum 50 karakter girebilirsiniz.")]
+        public string SubfunctionFeatureValue { get; set; }
 
-        public string SubfunctionFeatureValueDescription { get; set; }
+        [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
+        public string? SubfunctionFeatureValueDescription { get; set; }
 
+        public string UserID { get; set; }
+        [ForeignKey("UserID")]
+        public ApplicationUser User { get; set; }
 
-
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public DateTime CreationDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? UpdateDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? DeletionDate { get; set; }
 
     }

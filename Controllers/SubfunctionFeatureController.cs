@@ -90,6 +90,41 @@ namespace IBBPortal.Controllers
             }
         }
 
+        [HttpGet]
+        public JsonResult JsonSelectData(string term)
+        {
+            try
+            {
+
+                var SubfunctionFeatureData = _context.SubfunctionFeature
+                                    .Select(x => new {
+                                        id = x.SubfunctionFeatureID.ToString(),
+                                        text = x.SubfunctionFeatureTitle
+                                    });
+
+                if (!String.IsNullOrEmpty(term))
+                {
+                    SubfunctionFeatureData = SubfunctionFeatureData.Where(m => m.text.Contains(term));
+                }
+
+                //Count 
+                var totalCount = SubfunctionFeatureData.Count();
+
+                //Paging   
+                var passData = SubfunctionFeatureData.ToList();
+
+
+                //Returning Json Data  
+                return Json(new { results = passData, totalCount = totalCount });
+
+            }
+
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         // GET: SubfunctionFeature/Details/5
         public async Task<IActionResult> Details(int? id)
         {

@@ -1,0 +1,137 @@
+﻿@model IBBPortal.Models.ProjectSubfunctionFeature
+
+<!-- Modal -->
+<div class="modal fade" id="ProjectSubfunctionFeatureEditModal" tabindex="-1" aria-labelledby="ProjectSubfunctionFeatureEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <form asp-action="Edit">
+                <input type="hidden" asp-for="ProjectSubfunctionFeatureID" />
+                <div class="modal-header">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-between">
+                                <h5 class="modal-title" id="exampleModalLabel">Alt Fonksiyon Düzenle</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- Validation Part. Must be still for all views!! -->
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <!-- Subfunction ID -->
+                        <div class="form-group row">
+                            <label asp-for="SubfunctionID" class="col-12 col-xl-4 col-form-label">Alt Fonksiyon<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8">
+                                <select asp-for="SubfunctionID" class="form-control" id="selectSubfunction" style="width: 100%;" required>
+                                    @if (Model.Subfunction is not null)
+                                    {
+                                        <option value="@Model.Subfunction.SubfunctionID">@Model.Subfunction.SubfunctionTitle</option>
+                                    }
+
+                                    else
+                                    {
+                                        <option value="">Alt Fonksiyon Seçin</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="SubfunctionID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Subfunction Feature ID -->
+                        <div class="form-group row">
+                            <label asp-for="SubfunctionFeatureID" class="col-12 col-xl-4 col-form-label">Özellik<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8">
+                                <select asp-for="SubfunctionFeatureID" class="form-control" id="selectSubfunctionFeature" style="width: 100%;" required>
+                                    @if (Model.SubfunctionFeature is not null)
+                                    {
+                                        <option value="@Model.SubfunctionFeature.SubfunctionFeatureID">@Model.SubfunctionFeature.SubfunctionFeatureTitle</option>
+                                    }
+
+                                    else
+                                    {
+                                        <option value="">Özellik Seçin</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="SubfunctionFeatureID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Subfunction Feature Value -->
+                        <div class="form-group row">
+                            <label asp-for="SubfunctionFeatureValue" class="col-12 col-xl-4 col-form-label">Değer<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8">
+                                <input asp-for="SubfunctionFeatureValue" type="text" class="form-control" required>
+                                <span asp-validation-for="SubfunctionFeatureValue" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Subfunction Feature Value Description -->
+                        <div class="form-group row">
+                            <label asp-for="SubfunctionFeatureValueDescription" class="col-12 col-xl-4 col-form-label">Açıklama</label>
+                            <div class="col-12 col-xl-8">
+                                <textarea asp-for="SubfunctionFeatureValueDescription" class="form-control"></textarea>
+                                <span asp-validation-for="SubfunctionFeatureValueDescription" class="text-danger"></span>
+                            </div>
+                        </div>
+
+
+                        <!-- Default Values for the Database Date Part -->
+                        <input type="hidden" asp-for="CreationDate" />
+                        <input type="hidden" asp-for="UpdateDate" />
+
+                        <!-- User ID for the Update -->
+                        <input type="hidden" asp-for="UserID" />
+
+                        <!-- Project ID for the Update -->
+                        <input type="hidden" asp-for="ProjectID" />
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="buttons">
+                        <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
+                        <a asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#selectSubfunction').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/Subfunction/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
+
+                return {
+                    results: response.results,
+                };
+            }
+        }
+    });
+
+    $('#selectSubfunctionFeature').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/SubfunctionFeature/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
+
+                return {
+                    results: response.results,
+                };
+            }
+        }
+    });
+</script>
+
