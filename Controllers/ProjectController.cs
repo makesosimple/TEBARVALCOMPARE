@@ -136,7 +136,8 @@ namespace IBBPortal.Controllers
             var projectKeyword = HttpContext.Request.Query["projectKeyword"];
             var selectedDistrict = HttpContext.Request.Query["districtID"];
             var respDepartmentID = HttpContext.Request.Query["respDepartmentID"];
-            var reqpDepartmentID = HttpContext.Request.Query["reqpDepartmentID"];
+            var ProjectOwnerID = HttpContext.Request.Query["ProjectOwnerID"];
+            var yearSelected = HttpContext.Request.Query["yearSelected"];
 
             var data = _context.ProjectField.Select(c => new
             {
@@ -152,7 +153,7 @@ namespace IBBPortal.Controllers
                 ServiceAreaTitle = c.Project.ProjectServiceArea.ServiceAreaTitle,
                 ProjectImportanceTitle = c.Project.ProjectImportance.ProjectImportanceTitle,
                 RequestingDepartmentID = c.Project.RequestingDepartment.DepartmentID,
-                DistrictID = c.District.DistrictID,
+                DistrictID = c.DistrictID == null ? 0 : c.DistrictID,
             });
 
             
