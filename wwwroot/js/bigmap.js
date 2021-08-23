@@ -7,6 +7,32 @@ function initMap() {
     zoom: 8,
   });
 }
+
+function buildMap() {
+
+    const projectTitle = $("#projectTitle").val();
+    
+    const selectYear = $("#selectYear").val();
+    const selectDepartment = $("#selectDepartment").val();
+    const selectProjectOwner = $("#selectProjectOwner").val();
+    const showProjectBorders = $("#showProjectBorders").val();
+    const selectDistrict = $("#selectDistrict").val();
+
+    
+
+    var queryString = "projectKeyword=" + projectTitle;
+    queryString += "districtID=" + selectDistrict;
+    queryString += "respDepartmentID=" + selectDepartment;
+    queryString += "ProjectOwnerID=" + selectProjectOwner;
+    queryString += "yearSelected=" + selectYear;
+
+    console.log(queryString);
+
+    $.getJSON("/Project/MapData/?" + queryString, function (data) {
+        console.log("data",data);
+    });
+}
+
 $(document).ready(function () {
     $("#closeFilter").click(function () {
         $(".floatingForm").hide();
@@ -89,4 +115,8 @@ $(document).ready(function () {
         language: "tr"
     }
     );
+
+    $('#toggleFilter').click(function () {
+        buildMap();
+    })
 });
