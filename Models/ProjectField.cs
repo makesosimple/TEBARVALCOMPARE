@@ -45,7 +45,7 @@ namespace IBBPortal.Models
         public string? ProjectPaftaAdaParsel { get; set; }
 
         //Project Physical Location and Shape (Important as this data will be projected to Map.)
-        [MaxLength(16000, ErrorMessage = "Bu alana maksimum 16000 karakter girebilirsiniz.")]
+        [Column(TypeName = "varchar(MAX)")]
         public string? KML { get; set; }
 
         [Column(TypeName = "decimal(9, 6)")]

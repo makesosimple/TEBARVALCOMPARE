@@ -90,7 +90,10 @@
                                     <select asp-for="ProjectField.DistrictID" class="form-control" id="selectDistrict" style="width: 100%;">
                                         @if (Model.ProjectField is not null)
                                         {
-                                            <option value="@Model.ProjectField.District.DistrictID">@Model.ProjectField.District.DistrictName</option>
+                                            if (Model.ProjectField.District is not null)
+                                            {
+                                                <option value="@Model.ProjectField.District.DistrictID">@Model.ProjectField.District.DistrictName</option>
+                                            }
                                         }
 
                                         else

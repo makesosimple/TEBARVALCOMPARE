@@ -38,7 +38,7 @@ namespace IBBPortal.Models
 
         //Input field. Value will come from the end-user.
         [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
-        public int ProjectIBBCode { get; set; }
+        public string ProjectIBBCode { get; set; }
 
         //Requesting Department. Bind to Department Model.
         public int? RequestingDepartmentID { get; set; }
