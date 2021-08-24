@@ -37,7 +37,7 @@
                     <!-- Validation Part. Must be still for all views!! -->
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <!-- Project Team Category Title -->
+                    <!-- Transaction Type Title -->
                     <div class="form-group row">
                         <label asp-for="TransactionTypeName" class="col-12 col-xl-4 col-form-label">İşlem Türü İsmi<span class="text-danger">*</span></label>
                         <div class="col-12 col-xl-8">
@@ -46,12 +46,21 @@
                         </div>
                     </div>
 
-                    <!-- Project Team Category Description -->
+                    <!-- Transaction Type Description -->
                     <div class="form-group row">
                         <label asp-for="TransactionTypeDescription" class="col-12 col-xl-4 col-form-label">İşlem Türü Açıklaması</label>
                         <div class="col-12 col-xl-8">
                             <textarea asp-for="TransactionTypeDescription" class="form-control"></textarea>
                             <span asp-validation-for="TransactionTypeDescription" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!-- Transaction Type Slug -->
+                    <div class="form-group row">
+                        <label asp-for="TransactionTypeSlug" class="col-12 col-xl-4 col-form-label">Slug</label>
+                        <div class="col-12 col-xl-8">
+                            <textarea asp-for="TransactionTypeSlug" class="form-control"></textarea>
+                            <span asp-validation-for="TransactionTypeSlug" class="text-danger"></span>
                         </div>
                     </div>
 
