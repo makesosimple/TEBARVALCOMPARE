@@ -129,6 +129,8 @@ namespace IBBPortal.Data
         public DbSet<IBBPortal.Models.ProjectFeasibility> ProjectFeasibility { get; set; }
 
         public DbSet<IBBPortal.Models.ProjectSubfunctionFeature> ProjectSubfunctionFeature { get; set; }
+
+        public DbSet<IBBPortal.Models.ProjectPhase> ProjectPhase { get; set; }
     }
 
 

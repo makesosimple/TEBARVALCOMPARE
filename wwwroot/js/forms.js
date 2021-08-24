@@ -1,12 +1,5 @@
 (function($) {
     "use strict"; // Start of use strict  
-    
-    // Initialize Select2
-    $('.initialize-select2').each(function() {
-      $(this).select2({
-        theme: "ibb"
-      });
-    });
 
     //Initialize Datepicker
     $('.datepicker').each(function() {

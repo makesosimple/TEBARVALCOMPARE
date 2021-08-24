@@ -88,6 +88,41 @@ namespace IBBPortal.Controllers
             }
         }
 
+        [HttpGet]
+        public JsonResult JsonSelectData(string term)
+        {
+            try
+            {
+
+                var ProjectPhaseStatusData = _context.ProjectPhaseStatus
+                                    .Select(x => new {
+                                        id = x.ProjectPhaseStatusID.ToString(),
+                                        text = x.ProjectPhaseStatusTitle
+                                    });
+
+                if (!String.IsNullOrEmpty(term))
+                {
+                    ProjectPhaseStatusData = ProjectPhaseStatusData.Where(m => m.text.Contains(term));
+                }
+
+                //Count 
+                var totalCount = ProjectPhaseStatusData.Count();
+
+                //Paging   
+                var passData = ProjectPhaseStatusData.ToList();
+
+
+                //Returning Json Data  
+                return Json(new { results = passData, totalCount = totalCount });
+
+            }
+
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         // GET: ProjectPhaseStatus/Details/5
         public async Task<IActionResult> Details(int? id)
         {

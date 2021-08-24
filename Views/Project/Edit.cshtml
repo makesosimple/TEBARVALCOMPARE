@@ -41,6 +41,9 @@
             <li class="nav-item" role="presentation">
                 <a class="nav-link" id="subfunction-tab" href="/ProjectSubfunctionFeature/Index/@Model.ProjectID">Fonksiyon</a>
             </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="schedule-tab" href="/ProjectPhase/Index/@Model.ProjectID">Takvim/Süreç</a>
+            </li>
         </ul>
     </div>
     <div class="card-body">
@@ -74,7 +77,7 @@
                             <div class="form-group row">
                                 <label asp-for="ProjectIBBCode" class="col-12 col-lg-4 col-form-label">Proje İBB Kodu<span class="text-danger">*</span></label>
                                 <div class="col-12 col-lg-8">
-                                    <input asp-for="ProjectIBBCode" type="number" class="form-control" required>
+                                    <input asp-for="ProjectIBBCode" class="form-control" required>
                                     <span asp-validation-for="ProjectIBBCode" class="text-danger"></span>
                                 </div>
                             </div>

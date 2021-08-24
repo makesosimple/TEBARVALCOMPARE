@@ -97,14 +97,18 @@ namespace IBBPortal.Controllers
                 var PhaseData = _context.Phase
                                     .Select(x => new {
                                         id = x.PhaseID.ToString(),
-                                        text = x.PhaseTitle
+                                        text = x.PhaseOrder + ". " + x.PhaseTitle
                                     });
 
                 if (!String.IsNullOrEmpty(term))
                 {
-                    PhaseData = PhaseData.Where(m => m.text.Contains(term));
+                    PhaseData = PhaseData.Where(m => m.text.Contains(term)).OrderBy(x => x.text);
                 }
 
+                else
+                {
+                    PhaseData = PhaseData.OrderBy(x => x.text);
+                }
                 //Count 
                 var totalCount = PhaseData.Count();
 

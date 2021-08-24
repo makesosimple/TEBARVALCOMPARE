@@ -8,14 +8,15 @@ using IBBPortal.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Linq.Dynamic.Core;
 using IBBPortal.Helpers;
+using System.Globalization;
 
 namespace IBBPortal.Controllers
 {
-    public class ProjectSubfunctionFeatureController : Controller
+    public class ProjectPhaseController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public ProjectSubfunctionFeatureController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public ProjectPhaseController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
@@ -49,14 +50,19 @@ namespace IBBPortal.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var data = _context.ProjectSubfunctionFeature
+                var cultureInfo = CultureInfo.CreateSpecificCulture("tr-TR");
+
+                var data = _context.ProjectPhase
                     .Select(c => new
                     {
-                        c.ProjectSubfunctionFeatureID,
+                        c.ProjectPhaseID,
                         c.ProjectID,
-                        SubfunctionTitle = c.Subfunction.SubfunctionTitle,
-                        SubfunctionFeatureTitle = c.SubfunctionFeature.SubfunctionFeatureTitle,
-                        c.SubfunctionFeatureValue
+                        PhaseTitle = c.Phase.PhaseTitle,
+                        PhaseStatusTitle = c.ProjectPhaseStatus.ProjectPhaseStatusTitle,
+                        ProjectPhaseStartDate = c.ProjectPhaseStart.HasValue ? c.ProjectPhaseStart.Value.ToString("d MMMMM yyyy", cultureInfo) : "",
+                        ProjectPhaseFinishDate = c.ProjectPhaseFinish.HasValue ? c.ProjectPhaseFinish.Value.ToString("d MMMMM yyyy", cultureInfo) : "",
+                        ProjectPhaseRecordedStartDate = c.ProjectPhaseRecordedStart.HasValue ? c.ProjectPhaseRecordedStart.Value.ToString("d MMMMM yyyy", cultureInfo) : "",
+                        ProjectPhaseRecordedFinishDate = c.ProjectPhaseRecordedFinish.HasValue ? c.ProjectPhaseRecordedFinish.Value.ToString("d MMMMM yyyy", cultureInfo) : "",
                     })
                     .Where(c => c.ProjectID == projectID);
 
@@ -72,7 +78,7 @@ namespace IBBPortal.Controllers
                 //If control checks out, search. If not loop goes on until the end.
                 string columnName, searchValue;
 
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 6; i++)
                 {
                     columnName = Request.Form[$"columns[{i}][data]"].FirstOrDefault();
                     searchValue = Request.Form[$"columns[{i}][search][value]"].FirstOrDefault();
@@ -99,7 +105,7 @@ namespace IBBPortal.Controllers
             }
         }
 
-        // GET: ProjectSubfunctionFeature/Details/5
+        // GET: ProjectPhase/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -107,59 +113,65 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var projectSubfunctionFeature = await _context.ProjectSubfunctionFeature
+            var projectPhase = await _context.ProjectPhase
+                .Include(p => p.Phase)
                 .Include(p => p.Project)
-                .Include(p => p.Subfunction)
-                .Include(p => p.SubfunctionFeature)
+                .Include(p => p.ProjectPhaseStatus)
                 .Include(p => p.User)
-                .FirstOrDefaultAsync(m => m.ProjectSubfunctionFeatureID == id);
-            if (projectSubfunctionFeature == null)
+                .FirstOrDefaultAsync(m => m.ProjectPhaseID == id);
+            if (projectPhase == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DetailsModal", projectSubfunctionFeature);
+            return PartialView("_DetailsModal", projectPhase);
         }
 
-        // GET: ProjectSubfunctionFeature/Create
+        // GET: ProjectPhase/Create
         public IActionResult Create(int id)
         {
             ViewBag.ProjectID = id;
             return PartialView("_CreateModal");
         }
 
-        // POST: ProjectSubfunctionFeature/Create
+        // POST: ProjectPhase/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProjectSubfunctionFeatureID,ProjectID,SubfunctionID,SubfunctionFeatureID,SubfunctionFeatureValue,SubfunctionFeatureValueDescription,UserID,CreationDate,UpdateDate,DeletionDate")] ProjectSubfunctionFeature projectSubfunctionFeature)
+        public async Task<IActionResult> Create([Bind("ProjectPhaseID,ProjectID,PhaseID,ProjectPhaseStatusID,ProjectPhaseStatusDescription,ProjectPhaseStart,ProjectPhaseFinish,ProjectPhaseRecordedStart,ProjectPhaseRecordedFinish,ProjectPhaseTimeExtension,ProjectPhaseTimeExtentedFinish,ProjectPhaseExtensionReason,UserID,CreationDate,UpdateDate,DeletionDate")] ProjectPhase projectPhase)
         {
+            if (!ProjectPhaseChecker(projectPhase))
+            {
+                TempData["ErrorTitle"] = "HATA";
+                TempData["ErrorMessage"] = $"Sunum tipi olmayan fazlar sadece bir kere eklenebilir.";
+                return RedirectToAction(nameof(Index), new { id = projectPhase.ProjectID });
+            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    projectSubfunctionFeature.CreationDate = DateTime.Now;
-                    projectSubfunctionFeature.UserID = _userManager.GetUserId(HttpContext.User);
+                    projectPhase.CreationDate = DateTime.Now;
+                    projectPhase.UserID = _userManager.GetUserId(HttpContext.User);
 
-                    _context.Add(projectSubfunctionFeature);
+                    _context.Add(projectPhase);
                     await _context.SaveChangesAsync();
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $"Kayıt başarıyla oluşturuldu.";
-                    return RedirectToAction(nameof(Index), new { id = projectSubfunctionFeature.ProjectID });
+                    return RedirectToAction(nameof(Index), new { id = projectPhase.ProjectID });
                 }
                 catch (Exception ex)
                 {
                     TempData["ErrorTitle"] = "HATA";
                     TempData["ErrorMessage"] = $"Kayıt oluşturulamadı.";
-                    return RedirectToAction(nameof(Index), new { id = projectSubfunctionFeature.ProjectID });
+                    return RedirectToAction(nameof(Index), new { id = projectPhase.ProjectID });
                 }
             }
-            return PartialView("_CreateModal");
+            return View(projectPhase);
         }
 
-        // GET: ProjectSubfunctionFeature/Edit/5
+        // GET: ProjectPhase/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -167,44 +179,50 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var projectSubfunctionFeature = await _context.ProjectSubfunctionFeature.
-                Include(p => p.Project)
-                .Include(p => p.Subfunction)
-                .Include(p => p.SubfunctionFeature)
-                .Include(p => p.User)
-                .FirstOrDefaultAsync(m => m.ProjectSubfunctionFeatureID == id); ;
-            if (projectSubfunctionFeature == null)
+            var projectPhase = await _context.ProjectPhase
+                .Include(p => p.Phase)
+                .Include(p => p.Project)
+                .Include(p => p.ProjectPhaseStatus)
+                .FirstOrDefaultAsync(m => m.ProjectPhaseID == id);
+
+            if (projectPhase == null)
             {
                 return NotFound();
             }
-            return PartialView("_EditModal", projectSubfunctionFeature);
+            return PartialView("_EditModal", projectPhase);
         }
 
-        // POST: ProjectSubfunctionFeature/Edit/5
+        // POST: ProjectPhase/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProjectSubfunctionFeatureID,ProjectID,SubfunctionID,SubfunctionFeatureID,SubfunctionFeatureValue,SubfunctionFeatureValueDescription,UserID,CreationDate,UpdateDate,DeletionDate")] ProjectSubfunctionFeature projectSubfunctionFeature)
+        public async Task<IActionResult> Edit(int id, [Bind("ProjectPhaseID,ProjectID,PhaseID,ProjectPhaseStatusID,ProjectPhaseStatusDescription,ProjectPhaseStart,ProjectPhaseFinish,ProjectPhaseRecordedStart,ProjectPhaseRecordedFinish,ProjectPhaseTimeExtension,ProjectPhaseTimeExtentedFinish,ProjectPhaseExtensionReason,UserID,CreationDate,UpdateDate,DeletionDate")] ProjectPhase projectPhase)
         {
-            if (id != projectSubfunctionFeature.ProjectSubfunctionFeatureID)
+            if (id != projectPhase.ProjectPhaseID)
             {
                 return NotFound();
+            }
+
+            if (!ProjectPhaseChecker(projectPhase))
+            {
+                TempData["ErrorTitle"] = "HATA";
+                TempData["ErrorMessage"] = $"Sunum tipi olmayan fazlar sadece bir kere eklenebilir.";
+                return RedirectToAction(nameof(Index), new { id = projectPhase.ProjectID });
             }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var CurrentDate = DateTime.Now;
-                    projectSubfunctionFeature.UpdateDate = CurrentDate;
+                    projectPhase.UpdateDate = DateTime.Now;
 
-                    _context.Update(projectSubfunctionFeature);
+                    _context.Update(projectPhase);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProjectSubfunctionFeatureExists(projectSubfunctionFeature.ProjectSubfunctionFeatureID))
+                    if (!ProjectPhaseExists(projectPhase.ProjectPhaseID))
                     {
                         return NotFound();
                     }
@@ -213,12 +231,12 @@ namespace IBBPortal.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index), new { id = projectSubfunctionFeature.ProjectID });
+                return RedirectToAction(nameof(Index), new { id = projectPhase.ProjectID });
             }
-            return PartialView("_EditModal", projectSubfunctionFeature);
+            return View(projectPhase);
         }
 
-        // GET: ProjectSubfunctionFeature/Delete/5
+        // GET: ProjectPhase/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -226,44 +244,72 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var projectSubfunctionFeature = await _context.ProjectSubfunctionFeature
+            var projectPhase = await _context.ProjectPhase
+                .Include(p => p.Phase)
                 .Include(p => p.Project)
-                .Include(p => p.Subfunction)
-                .Include(p => p.SubfunctionFeature)
-                .Include(p => p.User)
-                .FirstOrDefaultAsync(m => m.ProjectSubfunctionFeatureID == id);
-            if (projectSubfunctionFeature == null)
+                .Include(p => p.ProjectPhaseStatus)
+                .FirstOrDefaultAsync(m => m.ProjectPhaseID == id);
+            if (projectPhase == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DeleteModal", projectSubfunctionFeature);
+            return PartialView("_DeleteModal", projectPhase);
         }
 
-        // POST: ProjectSubfunctionFeature/Delete/5
+        // POST: ProjectPhase/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var projectSubfunctionFeature = await _context.ProjectSubfunctionFeature.FindAsync(id);
+            var projectPhase = await _context.ProjectPhase.FindAsync(id);
 
             try
             {
-                _context.ProjectSubfunctionFeature.Remove(projectSubfunctionFeature);
+                _context.ProjectPhase.Remove(projectPhase);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index), new { id = projectSubfunctionFeature.ProjectID });
+                return RedirectToAction(nameof(Index), new { id = projectPhase.ProjectID });
             }
             catch (DbUpdateException ex)
             {
                 TempData["ErrorTitle"] = "HATA";
                 TempData["ErrorMessage"] = $"Bu değer, başka alanlarda kullanımda olduğu için silemezsiniz. Lütfen sistem yöneticinizle görüşün.";
-                return RedirectToAction(nameof(Index), new { id = projectSubfunctionFeature.ProjectID });
+                return RedirectToAction(nameof(Index), new { id = projectPhase.ProjectID });
             }
         }
 
-        private bool ProjectSubfunctionFeatureExists(int id)
+        private bool ProjectPhaseExists(int id)
         {
-            return _context.ProjectSubfunctionFeature.Any(e => e.ProjectSubfunctionFeatureID == id);
+            return _context.ProjectPhase.Any(e => e.ProjectPhaseID == id);
+        }
+
+        //Use this function to check wheter user is entering the main phases twice. If it is a Presentation then no problem!
+        private bool ProjectPhaseChecker(ProjectPhase projectPhase)
+        {
+            var ProjectPhaseResults = _context.ProjectPhase
+                .Include(c => c.Phase)
+                .Where(c => c.ProjectID == projectPhase.ProjectID)
+                .ToList();
+
+            var PhaseResults = _context.Phase.FirstOrDefault(c => c.PhaseID == projectPhase.PhaseID);
+
+            //If there are no phases in the project then there is nothing to check.
+            if (ProjectPhaseResults == null) return true;
+
+            //If Phase that is being created is a Presentation, there is nothing to check.
+            else if (PhaseResults.isPresentation) return true;
+
+            else
+            {
+                //Check if the user had created the main Phase before. If true then don't allow user to enter a main Phase twice!
+                bool DoesPhaseExistInCurrentContext = ProjectPhaseResults.Exists(x => x.PhaseID == projectPhase.PhaseID);
+
+                if (DoesPhaseExistInCurrentContext) return false;
+                else return true;
+            }
+
+
+
         }
     }
 }

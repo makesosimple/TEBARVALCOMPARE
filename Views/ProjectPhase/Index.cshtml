@@ -16,23 +16,32 @@
                 "filter": true, // this is for disable filter (search box)
                 "orderMulti": false, // for disable multiple column at once
                 "ajax": {
-                    "url": "/ProjectSubfunctionFeature/JSONData",
+                    "url": "/ProjectPhase/JSONData",
                     "data": function (d) {
                         d.projectID = @ViewBag.ProjectID;
                     },
                     "type": "POST"
                 },
                 "columns": [
-                    { "data": "subfunctionTitle", "autoWidth": true },
-                    { "data": "subfunctionFeatureTitle", "autoWidth": true },
-                    { "data": "subfunctionFeatureValue", "autoWidth": true },
+                    { "data": "phaseTitle", "autoWidth": true },
+                    {
+                        "data": "phaseStatusTitle",
+                        "render": function (data) {
+                            return `<div class="btn btn-warning text-sm">${data}</div>`;
+                        },
+                        "autoWidth": true
+                    },
+                    { "data": "projectPhaseStartDate", "autoWidth": true },
+                    { "data": "projectPhaseFinishDate", "autoWidth": true },
+                    { "data": "projectPhaseRecordedStartDate", "autoWidth": true },
+                    { "data": "projectPhaseRecordedFinishDate", "autoWidth": true },
                     {
                         "data": null,
                         "render": function (data, type, full, meta, row) {
                             return `<div class="d-flex align-items-center justify-content-end">\
-                                                    <button type="button" class="btn btn-circle bg-turqoise text-white mr-1" onclick="modalScript(this)" data-url="/ProjectSubfunctionFeature/Edit/${full.projectSubfunctionFeatureID}"><i class="fas fa-edit"></i></a>\
-                                                    <button type="button" class="btn btn-circle bg-warning text-white mr-1" onclick="modalScript(this)" data-url="/ProjectSubfunctionFeature/Details/${full.projectSubfunctionFeatureID}"><i class="fas fa-info-circle"></i></button>\
-                                                    <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/ProjectSubfunctionFeature/Delete/${full.projectSubfunctionFeatureID}"><i class="fas fa-trash-alt"></i></button>
+                                                    <button type="button" class="btn btn-circle bg-turqoise text-white mr-1" onclick="modalScript(this)" data-url="/ProjectPhase/Edit/${full.projectPhaseID}"><i class="fas fa-edit"></i></a>\
+                                                    <button type="button" class="btn btn-circle bg-warning text-white mr-1" onclick="modalScript(this)" data-url="/ProjectPhase/Details/${full.projectPhaseID}"><i class="fas fa-info-circle"></i></button>\
+                                                    <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/ProjectPhase/Delete/${full.projectPhaseID}"><i class="fas fa-trash-alt"></i></button>
                                                 </div>`;
                         }
                     },
@@ -110,37 +119,43 @@
                 <a class="nav-link" id="project-field-tab" href="/Project/EditProjectField/@ViewBag.ProjectID">Proje Alanı</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="subfunction-tab" data-toggle="tab" href="#subfunction" role="tab" aria-controls="subfunction" aria-selected="false">Fonksiyon</a>
+                <a class="nav-link" id="subfunction-tab" href="/ProjectSubfunctionFeature/Index/@ViewBag.ProjectID ">Fonksiyon</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="schedule-tab" href="/ProjectPhase/Index/@ViewBag.ProjectID ">Takvim/Süreç</a>
+                <a class="nav-link active" id="schedule-tab" data-toggle="tab" href="#schedule" role="tab" aria-controls="schedule" aria-selected="false">Takvim/Süreç</a>
             </li>
         </ul>
     </div>
     <div class="card-body">
         <div class="tab-content my-3" id="formContent">
-            <div class="tab-pane fade active show" id="subfunction" role="tabpanel" aria-labelledby="subfunction-tab">
+            <div class="tab-pane fade active show" id="schedule" role="tabpanel" aria-labelledby="schedule-tab">
                 <div class="row">
                     <div class="col-12">
-                        <h4 class="text-primary border-bottom pb-2">Fonksiyon</h4>
+                        <h4 class="text-primary border-bottom pb-2">Takvim/Süreç</h4>
 
                         <div class="table-responsive position-relative">
                             <table class="table table-hover display" id="dataTableSubfunction" width="100%" cellspacing="20">
                                 <thead class="bg-navy-blue">
                                     <tr class="filter h-100 bg-white">
-                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="subfunctionTitle" name="subfunctionTitle" value="" /></th>
-                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="subfunctionFeatureTitle" name="subfunctionFeatureTitle" value="" /></th>
-                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="subfunctionTitle" name="subfunctionTitle" value="" /></th>
+                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="phaseTitle" name="phaseTitle" value="" /></th>
+                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="phaseStatusTitle" name="phaseStatusTitle" value="" /></th>
+                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="projectPhaseStartDate" name="projectPhaseStartDate" value="" /></th>
+                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="projectPhaseFinishDate" name="projectPhaseFinishDate" value="" /></th>
+                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="projectPhaseRecordedStartDate" name="projectPhaseRecordedStartDate" value="" /></th>
+                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="projectPhaseRecordedFinishDate" name="projectPhaseRecordedFinishDate" value="" /></th>
                                         <th scope="col">
-                                            <button type="button" class="btn btn-success d-block w-100" onclick="modalScript(this)" data-url="/ProjectSubfunctionFeature/Create/@ViewBag.ProjectID">
+                                            <button type="button" class="btn btn-success d-block w-100" onclick="modalScript(this)" data-url="/ProjectPhase/Create/@ViewBag.ProjectID">
                                                 <i class="fas fa-plus mr-2"></i> EKLE
                                             </button>
                                         </th>
                                     </tr>
                                     <tr id="tableLabels">
-                                        <th scope="col" class="text-white text-sm">Fonksiyon</th>
-                                        <th scope="col" class="text-white text-sm">Özellik</th>
-                                        <th scope="col" class="text-white text-sm">Değer</th>
+                                        <th scope="col" class="text-white text-sm">Faz</th>
+                                        <th scope="col" class="text-white text-sm">Faz Durumu</th>
+                                        <th scope="col" class="text-white text-sm">Planlanan Başlangıç Tarihi</th>
+                                        <th scope="col" class="text-white text-sm">Planlanan Bitiş Tarihi</th>
+                                        <th scope="col" class="text-white text-sm">Resmi Başlangıç Tarihi</th>
+                                        <th scope="col" class="text-white text-sm">Resmi Bitiş Tarihi</th>
                                         <th scope="col"></th>
                                     </tr>
                                 </thead>
