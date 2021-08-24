@@ -259,6 +259,8 @@ namespace IBBPortal.Controllers
             {
                 _context.ProjectPerson.Remove(projectPerson);
                 await _context.SaveChangesAsync();
+                TempData["SuccessTitle"] = "BAŞARILI";
+                TempData["SuccessMessage"] = $"{projectPerson.ProjectPersonID} numaralı kayıt başarıyla silindi.";
                 return RedirectToAction(nameof(Index), new { id = projectPerson.ProjectID});
             }
             catch (DbUpdateException ex)

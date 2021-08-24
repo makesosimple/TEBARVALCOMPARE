@@ -1,7 +1,7 @@
 ﻿@model IBBPortal.Models.Organization
 
 @{
-    ViewData["Title"] = "Kategori Düzenle";
+    ViewData["Title"] = "Kurum Düzenle";
 }
 
 <!-- Alert for Exceptions -->
@@ -39,7 +39,7 @@
 
                     <!-- Organisation Title -->
                     <div class="form-group row">
-                        <label asp-for="OrganizationTitle" class="col-12 col-xl-4 col-form-label">Kategori İsmi<span class="text-danger">*</span></label>
+                        <label asp-for="OrganizationTitle" class="col-12 col-xl-4 col-form-label">Kurum İsmi<span class="text-danger">*</span></label>
                         <div class="col-12 col-xl-8">
                             <input asp-for="OrganizationTitle" type="text" class="form-control" required>
                             <span asp-validation-for="OrganizationTitle" class="text-danger"></span>
@@ -48,7 +48,7 @@
 
                     <!-- Organisation Description -->
                     <div class="form-group row">
-                        <label asp-for="OrganizationDescription" class="col-12 col-xl-4 col-form-label">Kategori Açıklaması</label>
+                        <label asp-for="OrganizationDescription" class="col-12 col-xl-4 col-form-label">Kurum Açıklaması</label>
                         <div class="col-12 col-xl-8">
                             <textarea asp-for="OrganizationDescription" class="form-control"></textarea>
                             <span asp-validation-for="OrganizationDescription" class="text-danger"></span>

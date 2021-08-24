@@ -153,6 +153,7 @@
     $('#selectProjectPerson').select2({
         theme: "ibb",
         language: "tr",
+        dropdownParent: $(".modal"),
         ajax: {
             url: '/Person/JsonSelectData',
             dataType: 'json',
@@ -168,6 +169,7 @@
     $('#selectProjectPersonJobTitle').select2({
         theme: "ibb",
         language: "tr",
+        dropdownParent: $(".modal"),
         ajax: {
             url: '/JobTitle/JsonSelectData',
             dataType: 'json',

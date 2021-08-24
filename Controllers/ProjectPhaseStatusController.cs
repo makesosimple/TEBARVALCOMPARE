@@ -98,7 +98,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.ProjectPhaseStatusID.ToString(),
                                         text = x.ProjectPhaseStatusTitle
-                                    });
+                                    }).Take(10);
 
                 if (!String.IsNullOrEmpty(term))
                 {

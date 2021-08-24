@@ -94,10 +94,11 @@ namespace IBBPortal.Controllers
             {
 
                 var ProjectImportanceData = _context.ProjectImportance
-                                    .Select(x => new {
+                                    .Select(x => new
+                                    {
                                         id = x.ProjectImportanceID.ToString(),
                                         text = x.ProjectImportanceTitle
-                                    });
+                                    }).Take(10);
 
                 if (!String.IsNullOrEmpty(term))
                 {
