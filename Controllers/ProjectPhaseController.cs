@@ -155,6 +155,12 @@ namespace IBBPortal.Controllers
                     projectPhase.CreationDate = DateTime.Now;
                     projectPhase.UserID = _userManager.GetUserId(HttpContext.User);
 
+                    //Manage Extended Dates
+                    if (!String.IsNullOrEmpty(projectPhase.ProjectPhaseTimeExtension.ToString()))
+                    {
+                        projectPhase.ProjectPhaseTimeExtentedFinish = projectPhase.ProjectPhaseFinish.HasValue ? projectPhase.ProjectPhaseFinish.Value.AddDays((double)projectPhase.ProjectPhaseTimeExtension) : null;
+                    }
+
                     _context.Add(projectPhase);
                     await _context.SaveChangesAsync();
                     TempData["SuccessTitle"] = "BAŞARILI";
@@ -195,34 +201,49 @@ namespace IBBPortal.Controllers
         // POST: ProjectPhase/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProjectPhaseID,ProjectID,PhaseID,ProjectPhaseStatusID,ProjectPhaseStatusDescription,ProjectPhaseStart,ProjectPhaseFinish,ProjectPhaseRecordedStart,ProjectPhaseRecordedFinish,ProjectPhaseTimeExtension,ProjectPhaseTimeExtentedFinish,ProjectPhaseExtensionReason,UserID,CreationDate,UpdateDate,DeletionDate")] ProjectPhase projectPhase)
+        public async Task<IActionResult> EditProjectPhase(int ?id)
         {
-            if (id != projectPhase.ProjectPhaseID)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            if (!ProjectPhaseChecker(projectPhase))
+            var projectPhaseToUpdate = _context.ProjectPhase.Find(id);
+
+            projectPhaseToUpdate.UpdateDate = DateTime.Now;
+
+            //Manage Extended Dates
+            if (!String.IsNullOrEmpty(projectPhaseToUpdate.ProjectPhaseTimeExtension.ToString()))
             {
-                TempData["ErrorTitle"] = "HATA";
-                TempData["ErrorMessage"] = $"Sunum tipi olmayan fazlar sadece bir kere eklenebilir.";
-                return RedirectToAction(nameof(Index), new { id = projectPhase.ProjectID });
+                projectPhaseToUpdate.ProjectPhaseTimeExtentedFinish = projectPhaseToUpdate.ProjectPhaseFinish.HasValue ? projectPhaseToUpdate.ProjectPhaseFinish.Value.AddDays((double)projectPhaseToUpdate.ProjectPhaseTimeExtension) : null;
             }
 
-            if (ModelState.IsValid)
+            if (await TryUpdateModelAsync<ProjectPhase>(projectPhaseToUpdate, "",
+                x => x.PhaseID, x => x.ProjectPhaseStatusID, x => x.ProjectPhaseStatusDescription, x => x.ProjectPhaseStart, x => x.ProjectPhaseFinish, 
+                x => x.ProjectPhaseRecordedStart, x => x.ProjectPhaseRecordedFinish, x => x.ProjectPhaseTimeExtension, 
+                x => x.ProjectPhaseTimeExtentedFinish, x => x.ProjectPhaseExtensionReason, x => x.UpdateDate))
             {
                 try
                 {
-                    projectPhase.UpdateDate = DateTime.Now;
+                    bool IsProjectPhaseModified = _context.Entry(projectPhaseToUpdate).Property(e => e.PhaseID).IsModified;
 
-                    _context.Update(projectPhase);
+                    if (IsProjectPhaseModified)
+                    {
+                        TempData["ErrorTitle"] = "HATA";
+                        TempData["ErrorMessage"] = $"Sunum tipi olmayan fazlar sadece bir kere eklenebilir.";
+                        return RedirectToAction(nameof(Index), new { id = projectPhaseToUpdate.ProjectID });
+                    }
+
                     await _context.SaveChangesAsync();
+
+                    TempData["SuccessTitle"] = "BAŞARILI";
+                    TempData["SuccessMessage"] = $"Kayıt başarıyla düzenlendi.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProjectPhaseExists(projectPhase.ProjectPhaseID))
+                    if (!ProjectPhaseExists(projectPhaseToUpdate.ProjectPhaseID))
                     {
                         return NotFound();
                     }
@@ -231,9 +252,9 @@ namespace IBBPortal.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index), new { id = projectPhase.ProjectID });
+                return RedirectToAction(nameof(Index), new { id = projectPhaseToUpdate.ProjectID });
             }
-            return View(projectPhase);
+            return View(projectPhaseToUpdate);
         }
 
         // GET: ProjectPhase/Delete/5
@@ -299,13 +320,15 @@ namespace IBBPortal.Controllers
             //If Phase that is being created is a Presentation, there is nothing to check.
             else if (PhaseResults.isPresentation) return true;
 
+            //This is for edit function. Check if user is changing the Phase ID. If not, then edit should not be stuck to false.
+
             else
             {
                 //Check if the user had created the main Phase before. If true then don't allow user to enter a main Phase twice!
                 bool DoesPhaseExistInCurrentContext = ProjectPhaseResults.Exists(x => x.PhaseID == projectPhase.PhaseID);
 
                 if (DoesPhaseExistInCurrentContext) return false;
-                else return true;
+                return true;
             }
 
 

@@ -1,5 +1,9 @@
 ﻿@model IBBPortal.Models.ProjectPhase
 
+@{ 
+    var cultureInfo = CultureInfo.CreateSpecificCulture("tr-TR");
+    var ExtendedDate = Model.ProjectPhaseTimeExtentedFinish.HasValue ? Model.ProjectPhaseTimeExtentedFinish.Value.ToString("d MMMMM yyyy", cultureInfo) : "";
+}
 <!-- Modal -->
 <div class="modal fade" id="ProjectPhaseEditModal" tabindex="-1" aria-labelledby="ProjectPhaseEditModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -127,9 +131,7 @@
                         <div class="form-group row">
                             <label asp-for="ProjectPhaseTimeExtentedFinish" class="col-12 col-xl-4 col-form-label">Uzatılmış Bitiş Tarihi</label>
                             <div class="col-12 col-xl-8">
-                                <input asp-for="ProjectPhaseTimeExtentedFinish" type="text" class="form-control datepicker">
-                                <i class="fas fa-calendar-alt"></i>
-                                <span asp-validation-for="ProjectPhaseTimeExtentedFinish" class="text-danger"></span>
+                                <div class="col-form-label">@ExtendedDate</div>
                             </div>
                         </div>
 
