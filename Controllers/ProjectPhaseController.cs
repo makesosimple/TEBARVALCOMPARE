@@ -105,6 +105,28 @@ namespace IBBPortal.Controllers
             }
         }
 
+        public JsonResult JsonDataForGantt(int? id)
+        {
+            if (id == null)
+            {
+                return Json(new { error = "No ID was sent!", errorCode = "404 Bad Request"});
+            }
+
+            var data = _context.ProjectPhase.Select(x => new
+            {
+                x.ProjectID,
+                id = x.ProjectPhaseID.ToString(),
+                name = x.Phase.PhaseOrder + ". " + x.Phase.PhaseTitle,
+                start = x.ProjectPhaseStart.Value.ToString("yyyy-MM-dd"),
+                end = x.ProjectPhaseFinish.Value.ToString("yyyy-MM-dd"),
+                progress = 100
+            })
+                .ToList()
+                .Where(x => x.ProjectID == id)
+                .OrderBy(x => x.start);
+
+            return Json(new { tasks = data });
+        }
         // GET: ProjectPhase/Details/5
         public async Task<IActionResult> Details(int? id)
         {

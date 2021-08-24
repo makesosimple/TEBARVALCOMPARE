@@ -65,6 +65,52 @@
             });
         });
     </script>
+    <script>
+
+        function ajaxCall(callback) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: '/ProjectPhase/JsonDataForGantt',
+                    dataType: 'json',
+                    data: {id: @ViewBag.ProjectID},
+                    type: 'GET',
+                    contentType: 'application/json',
+                    success: resolve,
+                    error: reject
+                });
+            });
+        }
+
+        ajaxCall()
+            .then(result => {
+                let gantt = new Gantt("#ganttChart", result.tasks, {
+                    header_height: 50,
+                    language: 'tr',
+                    column_width: 30,
+                    step: 24,
+                    view_modes: ['Quarter Day', 'Half Day', 'Day', 'Week', 'Month'],
+                    bar_height: 20,
+                    bar_corner_radius: 3,
+                    arrow_curve: 5,
+                    padding: 18,
+                    view_mode: 'Month',
+                    date_format: 'YYYY-MM-DD',
+                    custom_popup_html: null
+                });
+            })
+            .catch(err => {
+                alert("No data!");
+            });
+
+        //const startDate = gantt.gantt_start.getTime();
+        //gantt.gantt_start = startDate;
+        //gantt.options.focus = startDate;
+        //gantt.set_scroll_position();
+
+
+
+
+    </script>
 }
 
 <div id="GeneralModal"></div>
@@ -167,6 +213,14 @@
 
                             </table>
                         </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <h4 class="text-primary">Proje Takvimi</h4>
+                    </div>
+                    <div class="col-12">
+                        <svg id="ganttChart"></svg>
                     </div>
                 </div>
             </div>
