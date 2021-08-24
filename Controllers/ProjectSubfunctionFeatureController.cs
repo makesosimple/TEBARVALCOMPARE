@@ -251,6 +251,8 @@ namespace IBBPortal.Controllers
             {
                 _context.ProjectSubfunctionFeature.Remove(projectSubfunctionFeature);
                 await _context.SaveChangesAsync();
+                TempData["SuccessTitle"] = "BAŞARILI";
+                TempData["SuccessMessage"] = $"{projectSubfunctionFeature.ProjectSubfunctionFeatureID} numaralı kayıt başarıyla silindi.";
                 return RedirectToAction(nameof(Index), new { id = projectSubfunctionFeature.ProjectID });
             }
             catch (DbUpdateException ex)

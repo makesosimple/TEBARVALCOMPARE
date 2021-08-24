@@ -20,6 +20,9 @@ namespace IBBPortal.Models
         [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirisniz.")]
         public string? TransactionTypeDescription { get; set; }
 
+        [MaxLength(64, ErrorMessage = "Bu alana maksimum 64 karakter girebilirisniz.")]
+        public string? TransactionTypeSlug { get; set; }
+
         public string UserID { get; set; }
         [ForeignKey("UserID")]
         public ApplicationUser User { get; set; }

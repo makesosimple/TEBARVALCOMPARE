@@ -107,6 +107,7 @@
     $('#selectSubfunction').select2({
         theme: "ibb",
         language: "tr",
+        dropdownParent: $(".modal"),
         ajax: {
             url: '/Subfunction/JsonSelectData',
             dataType: 'json',
@@ -122,6 +123,7 @@
     $('#selectSubfunctionFeature').select2({
         theme: "ibb",
         language: "tr",
+        dropdownParent: $(".modal"),
         ajax: {
             url: '/SubfunctionFeature/JsonSelectData',
             dataType: 'json',

@@ -98,6 +98,7 @@
     $('#selectRelatedProject').select2({
         theme: "ibb",
         language: "tr",
+        dropdownParent: $(".modal"),
         ajax: {
             url: '/Project/JsonSelectData',
             dataType: 'json',
@@ -113,6 +114,7 @@
     $('#selectRelationType').select2({
         theme: "ibb",
         language: "tr",
+        dropdownParent: $(".modal"),
         ajax: {
             url: '/RelationType/JsonSelectData',
             dataType: 'json',

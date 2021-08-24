@@ -225,7 +225,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.ProjectID.ToString(),
                                         text = x.ProjectTitle
-                                    });
+                                    }).Take(10);
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -410,7 +410,7 @@ namespace IBBPortal.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Edit));
             }
             return View(project);
         }

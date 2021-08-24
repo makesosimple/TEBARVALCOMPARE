@@ -253,6 +253,8 @@ namespace IBBPortal.Controllers
             {
                 _context.ProjectRelation.Remove(projectRelation);
                 await _context.SaveChangesAsync();
+                TempData["SuccessTitle"] = "BAŞARILI";
+                TempData["SuccessMessage"] = $"{projectRelation.ProjectRelationID} numaralı kayıt başarıyla silindi.";
                 return RedirectToAction(nameof(Index), new { id = projectRelation.ProjectID });
             }
             catch (DbUpdateException ex)

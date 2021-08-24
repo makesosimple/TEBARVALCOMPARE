@@ -154,7 +154,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TransactionTypeID,TransactionTypeName,TransactionTypeDescription,UserID,CreationDate,UpdateDate,DeletionDate")] TransactionTypes transactionTypes)
+        public async Task<IActionResult> Create([Bind("TransactionTypeID,TransactionTypeName,TransactionTypeDescription,TransactionTypeSlug,UserID,CreationDate,UpdateDate,DeletionDate")] TransactionTypes transactionTypes)
         {
             if (ModelState.IsValid)
             {
@@ -200,7 +200,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TransactionTypeID,TransactionTypeName,TransactionTypeDescription,UserID,CreationDate,UpdateDate,DeletionDate")] TransactionTypes transactionTypes)
+        public async Task<IActionResult> Edit(int id, [Bind("TransactionTypeID,TransactionTypeName,TransactionTypeDescription,TransactionTypeSlug,UserID,CreationDate,UpdateDate,DeletionDate")] TransactionTypes transactionTypes)
         {
             if (id != transactionTypes.TransactionTypeID)
             {
