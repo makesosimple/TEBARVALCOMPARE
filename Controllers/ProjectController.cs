@@ -132,10 +132,10 @@ namespace IBBPortal.Controllers
         {
             //try
             //{
-            var projectKeyword = HttpContext.Request.Query["projectKeyword"];
+            string projectKeyword = HttpContext.Request.Query["projectKeyword"];
             var selectedDistrict = HttpContext.Request.Query["districtID"];
             var respDepartmentID = HttpContext.Request.Query["respDepartmentID"];
-            var ProjectOwnerID = HttpContext.Request.Query["ProjectOwnerID"];
+            var projectOwnerID = HttpContext.Request.Query["ProjectOwnerID"];
             var yearSelected = HttpContext.Request.Query["yearSelected"];
 
             var data = _context.ProjectField.Select(c => new
@@ -151,24 +151,61 @@ namespace IBBPortal.Controllers
                 OwnerFullName = c.Project.ProjectOwnerPerson.PersonName.Trim() + " " + c.Project.ProjectOwnerPerson.PersonSurname.Trim(),
                 ServiceAreaTitle = c.Project.ProjectServiceArea.ServiceAreaTitle,
                 ProjectImportanceTitle = c.Project.ProjectImportance.ProjectImportanceTitle,
-                RequestingDepartmentID = c.Project.RequestingDepartment.DepartmentID,
+                RequestingDepartmentID = c.Project.RequestingDepartmentID == null ? 0 : c.Project.RequestingDepartmentID,
+                ResponsibleDepartmentID = c.Project.ResponsibleDepartmentID == null ? 0 : c.Project.ResponsibleDepartmentID,
                 DistrictID = c.DistrictID == null ? 0 : c.DistrictID,
+                ProjectOwnerID = c.Project.ProjectOwnerPersonID == null ? 0 : c.Project.ProjectOwnerPersonID,
             });
 
-            
-            
-
-
-                //Sorting
+            if (Int32.TryParse(selectedDistrict, out int selectedDistrictInt))
+            {
+                if (selectedDistrictInt != 0)
+                {
+                    data = data.Where(c => c.DistrictID == selectedDistrictInt);
+                }
                 
+            } else
+            {
+                selectedDistrictInt = -1;
+            }
 
-                //total number of rows count   
-                var recordsTotal = data.Count();
+            if (Int32.TryParse(respDepartmentID, out int respDepartmentIDInt))
+            {
+                data = data.Where(c => c.ResponsibleDepartmentID == respDepartmentIDInt);
+            } else
+            {
+                respDepartmentIDInt = -1;
+            }
+
+            if (Int32.TryParse(projectOwnerID, out int projectOwnerIDint))
+            {
+                data = data.Where(c => c.ProjectOwnerID == projectOwnerIDint);
+            } else
+            {
+                projectOwnerIDint = -1;
+            }
+
+            if (projectKeyword == null)
+            {
+                projectKeyword = "";
+            }
+
+            if(projectKeyword.Length > 1)
+            {
+                data = data.Where(c => c.ProjectTitle.Contains(projectKeyword));
+            }
+
+
+            //Sorting
+
+
+            //total number of rows count   
+            //var recordsTotal = data.Count();
                 //Paging   
                 var passData = data.ToList();
 
                 //Returning Json Data  
-                return Json(new { data = passData });
+                return Json(new { data = passData, districtID = selectedDistrictInt, ProjectKeyword = projectKeyword });
 
             //}
 
