@@ -4,12 +4,13 @@ function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
       center: { lat: 40.97871410284052, lng: 29.04875532823787 },
       disableDefaultUI: true,
-    zoom: 8,
+    zoom: 10,
   });
 }
 
 function buildMap() {
 
+    initMap();
     const projectTitle = $("#projectTitle").val();
     
     const selectYear = $("#selectYear").val();
@@ -21,16 +22,46 @@ function buildMap() {
     
 
     var queryString = "projectKeyword=" + projectTitle;
-    queryString += "districtID=" + selectDistrict;
-    queryString += "respDepartmentID=" + selectDepartment;
-    queryString += "ProjectOwnerID=" + selectProjectOwner;
-    queryString += "yearSelected=" + selectYear;
+    queryString += "&districtID=" + selectDistrict;
+    queryString += "&respDepartmentID=" + selectDepartment;
+    queryString += "&ProjectOwnerID=" + selectProjectOwner;
+    queryString += "&yearSelected=" + selectYear;
 
     console.log(queryString);
 
-    $.getJSON("/Project/MapData/?" + queryString, function (data) {
-        console.log("data",data);
+    $.getJSON("/Project/MapData/?" + queryString, function (json) {
+        //console.log("data", data);
+        //console.log(json.data[0]);
+        console.log(json);
+        for (var i = 0; i < json.data.length; i++) {
+            showMarker(json.data[i]);
+        }
+
     });
+}
+
+function showMarker(m) {
+    
+
+    const image = {
+        url: "/images/" + m.responsibleDepartmentID + ".png",
+        
+        scaledSize: new google.maps.Size(32, 32),
+        
+        //origin: new google.maps.Point(-16, -16),
+        
+        anchor: new google.maps.Point(16, 16),
+    };
+
+    const LatLng = { lat: parseFloat(m.latitude), lng: parseFloat(m.longitude) };
+    const marker = new google.maps.Marker({
+        position: LatLng,
+        map,
+        title: m.projectTitle,
+        icon: image,
+    });
+    console.log(marker);
+    //map.setCenter(marker.getPosition());
 }
 
 $(document).ready(function () {
@@ -119,4 +150,6 @@ $(document).ready(function () {
     $('#toggleFilter').click(function () {
         buildMap();
     })
+
+    buildMap();
 });
