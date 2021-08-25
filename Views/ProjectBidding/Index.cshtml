@@ -1,5 +1,10 @@
-﻿@{
+﻿@model Project
+@{
     ViewData["Title"] = "Proje Düzenle";
+
+    var cultureInfo = CultureInfo.CreateSpecificCulture("tr-TR");
+
+    var EstimatedProjectCost = Model.EstimatedProjectCost.HasValue ? Model.EstimatedProjectCost.Value.ToString("N2", cultureInfo) : "";
 }
 
 @section Scripts {
@@ -141,6 +146,28 @@
                 <div class="row">
                     <div class="col-12">
                         <h4 class="text-primary border-bottom pb-2">Maliyet</h4>
+
+                        <!-- Estimated Cost Form -->
+                        <form method="post" asp-action="AddEstimatedProjectCost" class="form-inline py-4">
+
+                            <input type="hidden" asp-for="ProjectID" value="@ViewBag.ProjectID"/>
+
+                            <!-- Estimated Project Cost -->
+                            <div class="form-group">
+                                <label asp-for="EstimatedProjectCost" class="col-form-label">Tahmini Yapım Bedeli</label>
+                                <input asp-for="EstimatedProjectCost" type="text" class="form-control" data-input-type="length" data-val="false" value="@EstimatedProjectCost">
+                            </div>
+
+                            <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i>Kaydet</button>
+                        </form>
+
+                        <!-- Summary For Costs -->
+                        <div class="col-12 bg-info py-2 rounded">
+                            <p class="m-0 text-white text-center">
+                                Toplam Bedel : @ViewBag.TotalContractCost <br />
+                                Toplam Hakediş Bedeli: @ViewBag.TotalProgressPayment
+                            </p>
+                        </div>
 
                         <div class="table-responsive position-relative">
                             <table class="table table-hover display" id="dataTableBidding" width="100%" cellspacing="20">

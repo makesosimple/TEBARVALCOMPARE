@@ -23,10 +23,33 @@ namespace IBBPortal.Controllers
         }
 
         // GET: ProjectPerson
-        public IActionResult Index(int id)
+        public async Task<IActionResult> Index(int id)
         {
+            //Culture Info for Formatting
+            var cultureInfo = CultureInfo.CreateSpecificCulture("tr-TR");
+
+            //Send Project Model for Estimated Project Cost Update!
+            var project = await _context.Project.FirstOrDefaultAsync(x => x.ProjectID == id);
+
+            //Total Sum of Contract Cost and Progress Payment
+            var projectBidding = _context.ProjectBidding.Select(x => new
+            {
+                x.ProjectID,
+                ContractCost = x.BiddingContractCost,
+                ProgressPayment = x.BiddingProgressPayment
+            })
+                .Where(x => x.ProjectID == id);
+
+            if (projectBidding != null)
+            {
+                var TotalContractCost = projectBidding.Sum(x => x.ContractCost);
+                var TotalProgressPayment = projectBidding.Sum(x => x.ProgressPayment);
+
+                ViewBag.TotalContractCost = "₺ " + TotalContractCost.ToString("N2", cultureInfo);
+                ViewBag.TotalProgressPayment = "₺ " +  TotalProgressPayment.ToString("N2", cultureInfo); 
+            }
             ViewBag.ProjectID = id;
-            return View();
+            return View(project);
         }
 
         [HttpPost]
@@ -234,6 +257,49 @@ namespace IBBPortal.Controllers
                 return RedirectToAction(nameof(Index), new { id = projectBiddingToUpdate.ProjectID });
             }
             return View(projectBiddingToUpdate);
+        }
+
+
+
+        // POST: ProjectBidding/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddEstimatedProjectCost()
+        {
+            int? id = Int32.Parse(Request.Form["ProjectID"].FirstOrDefault());
+
+            if (id == null)
+            {
+                TempData["SuccessTitle"] = "HATA";
+                TempData["SuccessMessage"] = $"Kayıt düzenlenenemedi. Lütfen Sistem Yöneticinizle görüşün.";
+                return RedirectToAction(nameof(Index), new { id = id });
+            }
+
+            var projectToUpdate = await _context.Project.FindAsync(id);
+
+            projectToUpdate.UpdateDate = DateTime.Now;
+
+            projectToUpdate.EstimatedProjectCost = (decimal?) Convert.ToDouble(Request.Form["EstimatedProjectCost"].FirstOrDefault());
+
+            if (await TryUpdateModelAsync<Project>(projectToUpdate, "", x => x.EstimatedProjectCost, x => x.UpdateDate))
+            {
+                try
+                {
+
+                    await _context.SaveChangesAsync();
+
+                    TempData["SuccessTitle"] = "BAŞARILI";
+                    TempData["SuccessMessage"] = $"Kayıt başarıyla düzenlendi.";
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    TempData["SuccessTitle"] = "HATA";
+                    TempData["SuccessMessage"] = $"Kayıt düzenlenenemedi. Lütfen Sistem Yöneticinizle görüşün.";
+                }
+            }
+            return RedirectToAction(nameof(Index), new { id = id });
         }
 
         // GET: ProjectBidding/Delete/5
