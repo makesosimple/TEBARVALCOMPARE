@@ -1,0 +1,225 @@
+﻿@model IBBPortal.Models.ProjectBidding
+
+@{ 
+    var cultureInfo = CultureInfo.CreateSpecificCulture("tr-TR");
+
+    var ContractCost = Model.BiddingContractCost.ToString("N2", cultureInfo);
+    var ProgressPayment = Model.BiddingProgressPayment.ToString("N2", cultureInfo);
+}
+<!-- Modal -->
+<div class="modal fade" id="ProjectBiddingEditModal" tabindex="-1" aria-labelledby="ProjectBiddingEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <form asp-action="Edit">
+                <input type="hidden" asp-for="ProjectPhaseID" />
+                <div class="modal-header">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-between">
+                                <h5 class="modal-title" id="exampleModalLabel">İhale Düzenle</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- Validation Part. Must be still for all views!! -->
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <!-- Bidding Title -->
+                        <div class="form-group row">
+                            <label asp-for="BiddingTitle" class="col-12 col-xl-4 col-form-label">İhale İsmi<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8">
+                                <input asp-for="BiddingTitle" type="text" class="form-control">
+                                <span asp-validation-for="BiddingTitle" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Project Phase ID -->
+                        <div class="form-group row">
+                            <label asp-for="ProjectPhaseID" class="col-12 col-xl-4 col-form-label">Faz<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8">
+                                <select asp-for="ProjectPhaseID" class="form-control" id="selectProjectPhase" style="width: 100%;" required>
+                                    @if (Model.ProjectPhase is not null)
+                                    {
+                                        <option value="@Model.ProjectPhase.Phase.PhaseID">@Model.ProjectPhase.Phase.PhaseTitle</option>
+                                    }
+
+                                    else
+                                    {
+                                        <option value="">Faz Seçin</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="ProjectPhaseID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Department ID -->
+                        <div class="form-group row">
+                            <label asp-for="DepartmentID" class="col-12 col-xl-4 col-form-label">Müdürlük<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8">
+                                <select asp-for="DepartmentID" class="form-control" id="selectDepartment" style="width: 100%;" required>
+                                    @if (Model.Department is not null)
+                                    {
+                                        <option value="@Model.Department.DepartmentID">@Model.Department.DepartmentTitle</option>
+                                    }
+
+                                    else
+                                    {
+                                        <option value="">Müdürlük Seçin</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="DepartmentID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Bidding Code -->
+                        <div class="form-group row">
+                            <label asp-for="BiddingCode" class="col-12 col-xl-4 col-form-label">Sözleşme Kodu<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8">
+                                <input asp-for="BiddingCode" type="text" class="form-control" required>
+                                <span asp-validation-for="BiddingCode" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Bidding Date -->
+                        <div class="form-group row">
+                            <label asp-for="BiddingDate" class="col-12 col-xl-4 col-form-label">İhale Tarihi</label>
+                            <div class="col-12 col-xl-8">
+                                <input asp-for="BiddingDate" type="text" class="form-control datepicker">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span asp-validation-for="BiddingDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <!-- Bidding Contract Cost -->
+                        <div class="form-group row">
+                            <label asp-for="BiddingContractCost" class="col-12 col-xl-4 col-form-label">Sözleşme Bedeli<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8">
+                                <input asp-for="BiddingContractCost" type="text" class="form-control" data-input-type="length" data-val="false" value="@ContractCost">
+                                <i class="fas fa-coins"></i>
+                                <span asp-validation-for="BiddingContractCost" class="text-danger"></span>
+                            </div>
+                        </div>
+
+
+
+                        <!-- Bidding Progress Payment -->
+                        <div class="form-group row">
+                            <label asp-for="BiddingProgressPayment" class="col-12 col-xl-4 col-form-label">Hakediş Bedeli<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8">
+                                <input asp-for="BiddingProgressPayment" type="text" class="form-control" data-input-type="length" data-val="false" value="@ProgressPayment">
+                                <i class="fas fa-coins"></i>
+                                <span asp-validation-for="BiddingProgressPayment" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Contractor ID -->
+                        <div class="form-group row">
+                            <label asp-for="ContractorID" class="col-12 col-xl-4 col-form-label">Yüklenici<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8">
+                                <select asp-for="ContractorID" class="form-control" id="selectContractor" style="width: 100%;" required>
+                                    @if (Model.Contractor is not null)
+                                    {
+                                        <option value="@Model.Contractor.ContractorID">@Model.Contractor.Title</option>
+                                    }
+
+                                    else
+                                    {
+                                        <option value="">Yüklenici Seçin</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="ContractorID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <!-- Bidding Description -->
+                        <div class="form-group row">
+                            <label asp-for="BiddingDescription" class="col-12 col-xl-4 col-form-label">İhale Açıklaması</label>
+                            <div class="col-12 col-xl-8">
+                                <textarea asp-for="BiddingDescription" class="form-control"></textarea>
+                                <span asp-validation-for="BiddingDescription" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="buttons">
+                        <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
+                        <a asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#selectProjectPhase').select2({
+        theme: "ibb",
+        language: "tr",
+        dropdownParent: $(".modal"),
+        ajax: {
+            url: '/ProjectPhase/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
+
+                return {
+                    results: response.results,
+                };
+            }
+        }
+    });
+
+    $('#selectDepartment').select2({
+        theme: "ibb",
+        language: "tr",
+        dropdownParent: $(".modal"),
+        ajax: {
+            url: '/Department/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
+
+                return {
+                    results: response.results,
+                };
+            }
+        }
+    });
+
+    $('#selectContractor').select2({
+        theme: "ibb",
+        language: "tr",
+        dropdownParent: $(".modal"),
+        ajax: {
+            url: '/Contractor/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
+
+                return {
+                    results: response.results,
+                };
+            }
+        }
+    });
+
+    //Initialize Datepicker
+    $('.datepicker').each(function () {
+        $(this).datepicker({
+            format: "dd.mm.yyyy",
+            todayBtn: "linked",
+            clearBtn: true,
+            language: "tr",
+            autoclose: true,
+        });
+    });
+</script>
+

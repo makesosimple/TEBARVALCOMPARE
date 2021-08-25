@@ -4,9 +4,9 @@
 
 @section Scripts {
     <script>
-        //ProjectPhase Datatable
+        //ProjectBidding Datatable
         $(document).ready(function () {
-            let table = $("#dataTablePhase").DataTable({
+            let table = $("#dataTableBidding").DataTable({
                 "dom": 'rt<"d-flex justify-content-between flex-column align-items-baseline flex-md-row mt-3"ipl><"clear">',
                 "language": {
                     "url": "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Turkish.json",
@@ -16,32 +16,38 @@
                 "filter": true, // this is for disable filter (search box)
                 "orderMulti": false, // for disable multiple column at once
                 "ajax": {
-                    "url": "/ProjectPhase/JSONData",
+                    "url": "/ProjectBidding/JSONData",
                     "data": function (d) {
                         d.projectID = @ViewBag.ProjectID;
                     },
                     "type": "POST"
                 },
                 "columns": [
+                    { "data": "biddingTitle", "autoWidth": true },
                     { "data": "phaseTitle", "autoWidth": true },
+                    { "data": "departmentTitle", "autoWidth": true },
+                    { "data": "contractorTitle", "autoWidth": true },
                     {
-                        "data": "phaseStatusTitle",
+                        "data": "biddingContractCost",
                         "render": function (data) {
-                            return `<div class="btn btn-warning text-sm">${data}</div>`;
+                            return `₺ ${data}`;
                         },
                         "autoWidth": true
                     },
-                    { "data": "projectPhaseStartDate", "autoWidth": true },
-                    { "data": "projectPhaseFinishDate", "autoWidth": true },
-                    { "data": "projectPhaseRecordedStartDate", "autoWidth": true },
-                    { "data": "projectPhaseRecordedFinishDate", "autoWidth": true },
+                    {
+                        "data": "biddingProgressPayment",
+                        "render": function (data) {
+                            return `₺ ${data}`;
+                        },
+                        "autoWidth": true
+                    },
                     {
                         "data": null,
                         "render": function (data, type, full, meta, row) {
                             return `<div class="d-flex align-items-center justify-content-end">\
-                                                    <button type="button" class="btn btn-circle bg-turqoise text-white mr-1" onclick="modalScript(this)" data-url="/ProjectPhase/Edit/${full.projectPhaseID}"><i class="fas fa-edit"></i></a>\
-                                                    <button type="button" class="btn btn-circle bg-warning text-white mr-1" onclick="modalScript(this)" data-url="/ProjectPhase/Details/${full.projectPhaseID}"><i class="fas fa-info-circle"></i></button>\
-                                                    <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/ProjectPhase/Delete/${full.projectPhaseID}"><i class="fas fa-trash-alt"></i></button>
+                                                    <button type="button" class="btn btn-circle bg-turqoise text-white mr-1" onclick="modalScript(this)" data-url="/ProjectBidding/Edit/${full.projectBiddingID}"><i class="fas fa-edit"></i></a>\
+                                                    <button type="button" class="btn btn-circle bg-warning text-white mr-1" onclick="modalScript(this)" data-url="/ProjectBidding/Details/${full.projectBiddingID}"><i class="fas fa-info-circle"></i></button>\
+                                                    <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/ProjectBidding/Delete/${full.projectBiddingID}"><i class="fas fa-trash-alt"></i></button>
                                                 </div>`;
                         }
                     },
@@ -64,52 +70,6 @@
                 }
             });
         });
-    </script>
-    <script>
-
-        function ajaxCall(callback) {
-            return new Promise((resolve, reject) => {
-                $.ajax({
-                    url: '/ProjectPhase/JsonDataForGantt',
-                    dataType: 'json',
-                    data: {id: @ViewBag.ProjectID},
-                    type: 'GET',
-                    contentType: 'application/json',
-                    success: resolve,
-                    error: reject
-                });
-            });
-        }
-
-        ajaxCall()
-            .then(result => {
-                let gantt = new Gantt("#ganttChart", result.tasks, {
-                    header_height: 50,
-                    language: 'tr',
-                    column_width: 30,
-                    step: 24,
-                    view_modes: ['Quarter Day', 'Half Day', 'Day', 'Week', 'Month'],
-                    bar_height: 20,
-                    bar_corner_radius: 3,
-                    arrow_curve: 5,
-                    padding: 18,
-                    view_mode: 'Month',
-                    date_format: 'YYYY-MM-DD',
-                    custom_popup_html: null
-                });
-            })
-            .catch(err => {
-                alert("No data!");
-            });
-
-        //const startDate = gantt.gantt_start.getTime();
-        //gantt.gantt_start = startDate;
-        //gantt.options.focus = startDate;
-        //gantt.set_scroll_position();
-
-
-
-
     </script>
 }
 
@@ -168,43 +128,43 @@
                 <a class="nav-link" id="subfunction-tab" href="/ProjectSubfunctionFeature/Index/@ViewBag.ProjectID ">Fonksiyon</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="schedule-tab" data-toggle="tab" href="#schedule" role="tab" aria-controls="schedule" aria-selected="false">Takvim/Süreç</a>
+                <a class="nav-link" id="schedule-tab" href="/ProjectPhase/Index/@ViewBag.ProjectID">Takvim/Süreç</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="schedule-tab" href="/ProjectBidding/Index/@ViewBag.ProjectID">Maliyet</a>
+                <a class="nav-link active" id="cost-tab" data-toggle="tab" href="#cost" role="tab" aria-controls="cost" aria-selected="false">Maliyet</a>
             </li>
         </ul>
     </div>
     <div class="card-body">
         <div class="tab-content my-3" id="formContent">
-            <div class="tab-pane fade active show" id="schedule" role="tabpanel" aria-labelledby="schedule-tab">
+            <div class="tab-pane fade active show" id="cost" role="tabpanel" aria-labelledby="cost-tab">
                 <div class="row">
                     <div class="col-12">
-                        <h4 class="text-primary border-bottom pb-2">Takvim/Süreç</h4>
+                        <h4 class="text-primary border-bottom pb-2">Maliyet</h4>
 
                         <div class="table-responsive position-relative">
-                            <table class="table table-hover display" id="dataTablePhase" width="100%" cellspacing="20">
+                            <table class="table table-hover display" id="dataTableBidding" width="100%" cellspacing="20">
                                 <thead class="bg-navy-blue">
                                     <tr class="filter h-100 bg-white">
-                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="phaseTitle" name="phaseTitle" value="" /></th>
-                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="phaseStatusTitle" name="phaseStatusTitle" value="" /></th>
-                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="projectPhaseStartDate" name="projectPhaseStartDate" value="" /></th>
-                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="projectPhaseFinishDate" name="projectPhaseFinishDate" value="" /></th>
-                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="projectPhaseRecordedStartDate" name="projectPhaseRecordedStartDate" value="" /></th>
-                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="projectPhaseRecordedFinishDate" name="projectPhaseRecordedFinishDate" value="" /></th>
+                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="biddingTitle" name="biddingTitle" value="" /></th>
+                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="phaseTitle" name="phaseTitle" value="" /></th>
+                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="departmentTitle" name="departmentTitle" value="" /></th>
+                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="contractorTitle" name="contractorTitle" value="" /></th>
+                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="biddingContractCost" name="biddingContractCost" value="" /></th>
+                                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="biddingProgressPayment" name="biddingProgressPayment" value="" /></th>
                                         <th scope="col">
-                                            <button type="button" class="btn btn-success d-block w-100" onclick="modalScript(this)" data-url="/ProjectPhase/Create/@ViewBag.ProjectID">
+                                            <button type="button" class="btn btn-success d-block w-100" onclick="modalScript(this)" data-url="/ProjectBidding/Create/@ViewBag.ProjectID">
                                                 <i class="fas fa-plus mr-2"></i> EKLE
                                             </button>
                                         </th>
                                     </tr>
                                     <tr id="tableLabels">
+                                        <th scope="col" class="text-white text-sm">İhale İsmi</th>
                                         <th scope="col" class="text-white text-sm">Faz</th>
-                                        <th scope="col" class="text-white text-sm">Faz Durumu</th>
-                                        <th scope="col" class="text-white text-sm">Planlanan Başlangıç Tarihi</th>
-                                        <th scope="col" class="text-white text-sm">Planlanan Bitiş Tarihi</th>
-                                        <th scope="col" class="text-white text-sm">Resmi Başlangıç Tarihi</th>
-                                        <th scope="col" class="text-white text-sm">Resmi Bitiş Tarihi</th>
+                                        <th scope="col" class="text-white text-sm">Müdürlük</th>
+                                        <th scope="col" class="text-white text-sm">Yüklenici</th>
+                                        <th scope="col" class="text-white text-sm">Sözleşme Bedeli</th>
+                                        <th scope="col" class="text-white text-sm">Hakediş Bedeli</th>
                                         <th scope="col"></th>
                                     </tr>
                                 </thead>
@@ -216,14 +176,6 @@
 
                             </table>
                         </div>
-                    </div>
-                </div>
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <h4 class="text-primary">Proje Takvimi</h4>
-                    </div>
-                    <div class="col-12">
-                        <svg id="ganttChart"></svg>
                     </div>
                 </div>
             </div>

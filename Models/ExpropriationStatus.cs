@@ -16,7 +16,7 @@ namespace IBBPortal.Models
         [MaxLength(50, ErrorMessage = "Bu alana maksimum 50 karakter girebilirsiniz.")]
         public string ExpropriationStatusTitle { get; set; }
 
-        [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebiiirsiniz.")]
+        [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
         public string? ExpropriationStatusDescription { get; set; }
 
         public string UserID { get; set; }

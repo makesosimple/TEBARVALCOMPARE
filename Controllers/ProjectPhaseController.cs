@@ -105,6 +105,40 @@ namespace IBBPortal.Controllers
             }
         }
 
+        [HttpGet]
+        public JsonResult JsonSelectData(string term)
+        {
+            try
+            {
+
+                var ProjectPhaseData = _context.ProjectPhase
+                                    .Select(x => new {
+                                        id = x.ProjectPhaseID.ToString(),
+                                        text = x.Phase.PhaseOrder + ". " + x.Phase.PhaseTitle,
+                                    }).Take(10);
+
+                if (!String.IsNullOrEmpty(term))
+                {
+                    ProjectPhaseData = ProjectPhaseData.Where(m => m.text.Contains(term));
+                }
+
+                //Count 
+                var totalCount = ProjectPhaseData.Count();
+
+                //Paging   
+                var passData = ProjectPhaseData.ToList();
+
+
+                //Returning Json Data  
+                return Json(new { results = passData, totalCount = totalCount });
+
+            }
+
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         public JsonResult JsonDataForGantt(int? id)
         {
             if (id == null)
