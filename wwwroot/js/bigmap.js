@@ -1,5 +1,18 @@
 let map;
 
+let colors = [
+    '#003f5c',
+    '#2f4b7c',
+    '#665191',
+    '#a05195',
+    '#d45087',
+    '#f95d6a',
+    '#ff7c43',
+    '#ffa600',
+];
+
+
+
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
       center: { lat: 40.97871410284052, lng: 29.04875532823787 },
@@ -16,7 +29,7 @@ function buildMap() {
     const selectYear = $("#selectYear").val();
     const selectDepartment = $("#selectDepartment").val();
     const selectProjectOwner = $("#selectProjectOwner").val();
-    const showProjectBorders = $("#showProjectBorders").val();
+    const showProjectBorders = $('#showProjectBorders').is(':checked');
     const selectDistrict = $("#selectDistrict").val();
 
     
@@ -26,6 +39,7 @@ function buildMap() {
     queryString += "&respDepartmentID=" + selectDepartment;
     queryString += "&ProjectOwnerID=" + selectProjectOwner;
     queryString += "&yearSelected=" + selectYear;
+    queryString += "&showProjectBorders=" + showProjectBorders;
 
     console.log(queryString);
 
@@ -35,9 +49,40 @@ function buildMap() {
         console.log(json);
         for (var i = 0; i < json.data.length; i++) {
             showMarker(json.data[i]);
+            if (showProjectBorders == true) {
+                console.log('showing border...');
+                showBorders(json.data[i]);
+            } else {
+                console.log('hiding border...');
+                p = showBorders(json.data[i]);
+                p.setMap(null);
+            }
         }
 
     });
+}
+
+function showBorders(m) {
+    const project_coordinates = m.coordinates.split(' ');
+    mapCoors = [];
+    for (i = 0; i < project_coordinates.length; i++) {
+        mapCoors.push({
+            lat: parseFloat(project_coordinates[i].split(',')[1]),
+            lng: parseFloat(project_coordinates[i].split(',')[0]),
+        });
+    }
+
+
+    const projectPolygon = new google.maps.Polygon({
+        paths: mapCoors,
+        strokeColor: colors[m.responsibleDepartmentID],
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: colors[m.responsibleDepartmentID],
+        fillOpacity: 0.35,
+    });
+    projectPolygon.setMap(map);
+    return projectPolygon;
 }
 
 function showMarker(m) {
