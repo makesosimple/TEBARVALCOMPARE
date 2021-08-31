@@ -27,7 +27,7 @@ namespace IBBPortal.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var dashboardSummary = await _context.DashboardSummaryModel.FromSqlRaw("SELECT (SELECT COUNT(ProjectID) FROM Project) AS NumberOfProjects, (SELECT COUNT(ProjectPhaseID) FROM ProjectPhase WHERE ProjectPhase.ProjectPhaseStart >= DATEADD(day, -30, GETDATE()) AND ProjectPhase.ProjectPhaseStart <= GETDATE()) AS ProjectsStartedInLastMonth, ((SELECT COUNT(ProjectID) FROM Project WHERE ProjectStatusID = 10) / (SELECT COUNT(ProjectID) FROM Project)) AS NumberOfCompletedProjects").FirstOrDefaultAsync();
+            var dashboardSummary = await _context.DashboardSummaryModel.FromSqlRaw("SELECT (SELECT COUNT(ProjectID) FROM Project) AS NumberOfProjects, (SELECT COUNT(ProjectPhaseID) FROM ProjectPhase WHERE ProjectPhase.ProjectPhaseStart >= DATEADD(day, -30, GETDATE()) AND ProjectPhase.ProjectPhaseStart <= GETDATE()) AS ProjectsStartedInLastMonth, ((SELECT COUNT(ProjectID) FROM Project WHERE ProjectStatusID = 10) / ((SELECT COUNT(ProjectID) FROM Project)+1)) AS NumberOfCompletedProjects").FirstOrDefaultAsync();
 
             //Console.Writeln(dashboardSummary.Result.NumberOfProjects);
             //var numberOfProjects = await _context.Project.CountAsync();
