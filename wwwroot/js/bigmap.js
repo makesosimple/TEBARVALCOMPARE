@@ -43,6 +43,7 @@ function buildMap() {
 
     console.log(queryString);
     markers = [];
+    $('.loadingDiv').show();
     $.getJSON("/Project/MapData/?" + queryString, function (json) {
         //console.log("data", data);
         //console.log(json.data[0]);
@@ -64,6 +65,10 @@ function buildMap() {
                 "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
         });
 
+        $('.loadingDiv').hide();
+
+    }).fail(function () {
+        alert('Harita bilgileri yüklenirken bir sorun oluştu. Lütfen yeniden deneyin. Hata tekrar ederse sistem yöneticinizle görüşün.');
     });
 }
 
@@ -115,12 +120,12 @@ function showMarker(m) {
         '<div id="content">' +
         '<div id="siteNotice">' +
         "</div>" +
-        '<h4 id="firstHeading" class="firstHeading">'+m.projectTitle+'</h4>' +
+        '<h5 id="firstHeading" class="firstHeading">'+m.projectTitle+'</h4>' +
         '<div id="bodyContent">' +
-        '<p>Hizmet Alanı: ' + m.serviceAreaTitle + '</p>' +
-        '<p>Sorumlu Müdürlük: ' + m.responsibleDepartmentTitle + '</p>' +
-        '<p>Proje Önemi: ' + m.projectImportanceTitle + '</p>' +
-        '<p><a href="/Project/Edit/'+m.projectID+'">Detaylar</a></p>' +
+        'Hizmet Alanı: ' + m.serviceAreaTitle + '<br/>' +
+        'Sorumlu Müdürlük: ' + m.responsibleDepartmentTitle + '<br/>' +
+        'Proje Önemi: ' + m.projectImportanceTitle + '<br/>' +
+        '<p><a class="btn btn-info" href="/Project/Edit/'+m.projectID+'">Detaylar</a></p>' +
         "</div>" +
         "</div>";
     const infowindow = new google.maps.InfoWindow({

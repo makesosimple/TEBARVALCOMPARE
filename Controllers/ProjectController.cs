@@ -521,11 +521,14 @@ namespace IBBPortal.Controllers
                 //projectField.ProjectPolygon = 
                 // Read: https://csharp.hotexamples.com/examples/NetTopologySuite.Geometries/Polygon/-/php-polygon-class-examples.html
                 // Read: https://www.csharpcodi.com/csharp-examples/NetTopologySuite.IO.WKTReader.Read(System.IO.TextReader)/
-                /*var reader = new NetTopologySuite.IO.WKTReader();
-                var geom = reader.Read("POLYGON((" + coordinates + "))");
+                var formattedCoordinates = coordinates.Replace(",", ";").Replace(" ", ",").Replace(";", " ");
+                Console.WriteLine(formattedCoordinates);
+                var reader = new NetTopologySuite.IO.WKTReader();
+                var geom = reader.Read(@"SRID=4326;POLYGON((" + formattedCoordinates + "))");
 
+                //var polygon = new Polygon(null) { SRID = 4326 };
                 var polygon = (Polygon)geom;
-                projectField.ProjectPolygon = polygon;*/
+                projectField.ProjectPolygon = polygon;
                 //projectField.ProjectPolygon = new Polygon(new LinearRing(new LineString()
                 projectField.coordinates = coordinates; // model.ProjectField.KML;
                 projectField.CreationDate = CurrentDate;
@@ -574,11 +577,17 @@ namespace IBBPortal.Controllers
                 projectFieldToUpdate.coordinates = coordinates; // model.ProjectField.KML;
                 projectFieldToUpdate.UpdateDate = CurrentDate;
 
-                //var reader = new NetTopologySuite.IO.WKTReader();
-                //var geom = reader.Read("POLYGON((" + coordinates + "))");
+                var formattedCoordinates = coordinates.Replace(",", ";").Replace(" ", ",").Replace(";", " ");
+                Console.WriteLine(formattedCoordinates);
+                var reader = new NetTopologySuite.IO.WKTReader();
+                var geom = reader.Read(@"SRID=4326;POLYGON((" + formattedCoordinates + "))");
 
+
+                //var polygon = new Polygon(null) { SRID = 4326 };
+                var polygon = (Polygon) geom;
                 //var polygon = (Polygon)geom;
-                //projectFieldToUpdate.ProjectPolygon = polygon;
+                    
+                   projectFieldToUpdate.ProjectPolygon = polygon;
             }
 
             //Project Board Approval

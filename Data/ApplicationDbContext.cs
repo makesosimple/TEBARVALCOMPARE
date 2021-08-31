@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using IBBPortal.Models;
+using IBBPortal.ViewModels;
 using Microsoft.AspNetCore.Identity;
 
 namespace IBBPortal.Data
@@ -48,6 +49,8 @@ namespace IBBPortal.Data
             {
                 b.ToTable("ApplicationUserRole");
             });
+
+            modelBuilder.Entity<DashboardSummaryModel>().HasNoKey();
         }
 
         public DbSet<IBBPortal.Models.ApplicationUser> ApplicationUser { get; set; }
@@ -133,6 +136,13 @@ namespace IBBPortal.Data
         public DbSet<IBBPortal.Models.ProjectPhase> ProjectPhase { get; set; }
 
         public DbSet<IBBPortal.Models.ProjectBidding> ProjectBidding { get; set; }
+
+        public DbSet<IBBPortal.ViewModels.DashboardSummaryModel> DashboardSummaryModel { get; set; }
+
+
+
+
+
     }
 
 
