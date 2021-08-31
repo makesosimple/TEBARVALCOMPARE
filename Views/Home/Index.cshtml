@@ -1,4 +1,6 @@
-﻿<!-- Page Heading -->
+﻿@{ 
+    var numberOfProjects = ViewBag.numberOfProjects;
+}
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">34 Proje Portal</h1>
 </div>
@@ -15,7 +17,7 @@
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                             Projeler
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">2.421</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@numberOfProjects</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-project-diagram fa-2x text-gray-300"></i>
@@ -34,7 +36,7 @@
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                             Son 1 Ayda Başlayanlar
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">37</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">@numberOfProjects</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-file-alt fa-2x text-gray-300"></i>
