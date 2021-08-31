@@ -19,6 +19,7 @@ namespace IBBPortal.Models
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TransactionMessageID { get; set; }
+        public int TransactionLogID { get; set; }
         public int TransactionTypeID { get; set; }
         public int ProjectID { get; set; }
         
@@ -27,7 +28,9 @@ namespace IBBPortal.Models
         public bool TransactionLogRead { get; set; }
 
         public string TransactionLogForUserID { get; set; }
-        
+
+        public string? TransactionLogSlug { get; set; }
+
         public DateTime CreationDate { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]

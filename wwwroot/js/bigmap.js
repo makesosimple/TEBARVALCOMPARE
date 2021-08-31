@@ -1,4 +1,4 @@
-let map;
+﻿let map;
 
 let colors = [
     '#003f5c',
@@ -42,13 +42,14 @@ function buildMap() {
     queryString += "&showProjectBorders=" + showProjectBorders;
 
     console.log(queryString);
-
+    markers = [];
+    $('.loadingDiv').show();
     $.getJSON("/Project/MapData/?" + queryString, function (json) {
         //console.log("data", data);
         //console.log(json.data[0]);
         console.log(json);
         for (var i = 0; i < json.data.length; i++) {
-            showMarker(json.data[i]);
+            markers.push(showMarker(json.data[i]));
             if (showProjectBorders == true) {
                 console.log('showing border...');
                 showBorders(json.data[i]);
@@ -59,6 +60,15 @@ function buildMap() {
             }
         }
 
+        new MarkerClusterer(map, markers, {
+            imagePath:
+                "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
+        });
+
+        $('.loadingDiv').hide();
+
+    }).fail(function () {
+        alert('Harita bilgileri yüklenirken bir sorun oluştu. Lütfen yeniden deneyin. Hata tekrar ederse sistem yöneticinizle görüşün.');
     });
 }
 
@@ -105,7 +115,32 @@ function showMarker(m) {
         title: m.projectTitle,
         icon: image,
     });
-    console.log(marker);
+
+    const contentString =
+        '<div id="content">' +
+        '<div id="siteNotice">' +
+        "</div>" +
+        '<h5 id="firstHeading" class="firstHeading">'+m.projectTitle+'</h4>' +
+        '<div id="bodyContent">' +
+        'Hizmet Alanı: ' + m.serviceAreaTitle + '<br/>' +
+        'Sorumlu Müdürlük: ' + m.responsibleDepartmentTitle + '<br/>' +
+        'Proje Önemi: ' + m.projectImportanceTitle + '<br/>' +
+        '<p><a class="btn btn-info" href="/Project/Edit/'+m.projectID+'">Detaylar</a></p>' +
+        "</div>" +
+        "</div>";
+    const infowindow = new google.maps.InfoWindow({
+        content: contentString,
+    });
+
+    marker.addListener("click", () => {
+        infowindow.open({
+            anchor: marker,
+            map,
+            shouldFocus: false,
+        });
+    });
+
+    return marker;
     //map.setCenter(marker.getPosition());
 }
 

@@ -34,6 +34,8 @@ namespace IBBPortal.Models
         [ForeignKey("UserID")]
         public ApplicationUser User { get; set; }
 
+        public string? TransactionMessageSlug { get; set; }
+
         [Required]
         public DateTime CreationDate { get; set; }
 

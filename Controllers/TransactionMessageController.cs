@@ -48,7 +48,7 @@ namespace IBBPortal.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var data = _context.TransactionMessages.Select(c => new { c.TransactionMessageID, c.TransactionMessageContent, c.TransactionMessageDescription, TransactionTypeName = c.TransactionType.TransactionTypeName, UserName = c.User.UserName });
+                var data = _context.TransactionMessages.Select(c => new { c.TransactionMessageID, c.TransactionMessageContent, c.TransactionMessageDescription, c.TransactionMessageSlug, TransactionTypeName = c.TransactionType.TransactionTypeName, UserName = c.User.UserName });
 
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
@@ -62,7 +62,7 @@ namespace IBBPortal.Controllers
                 //If control checks out, search. If not loop goes on until the end.
                 string columnName, searchValue;
 
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 5; i++)
                 {
                     columnName = Request.Query[$"columns[{i}][data]"].FirstOrDefault();
                     searchValue = Request.Query[$"columns[{i}][search][value]"].FirstOrDefault();
@@ -160,7 +160,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TransactionMessageID,TransactionTypeID,TransactionMessageContent,TransactionMessageDescription,UserID,CreationDate,UpdateDate,DeletionDate")] TransactionMessages transactionMessages)
+        public async Task<IActionResult> Create([Bind("TransactionMessageID,TransactionTypeID,TransactionMessageContent,TransactionMessageDescription,UserID,TransactionMessageSlug,CreationDate,UpdateDate,DeletionDate")] TransactionMessages transactionMessages)
         {
             if (ModelState.IsValid)
             {
@@ -207,7 +207,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TransactionMessageID,TransactionTypeID,TransactionMessageContent,TransactionMessageDescription,UserID,CreationDate,UpdateDate,DeletionDate")] TransactionMessages transactionMessages)
+        public async Task<IActionResult> Edit(int id, [Bind("TransactionMessageID,TransactionTypeID,TransactionMessageContent,TransactionMessageDescription,UserID,TransactionMessageSlug,CreationDate,UpdateDate,DeletionDate")] TransactionMessages transactionMessages)
         {
             if (id != transactionMessages.TransactionMessageID)
             {

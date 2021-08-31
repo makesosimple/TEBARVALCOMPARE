@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using IBBPortal.Models;
+using IBBPortal.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IBBPortal.Data
 {
@@ -47,6 +49,13 @@ namespace IBBPortal.Data
             {
                 entity.ToTable("UserTokens");
             });
+
+            modelBuilder.Entity<DashboardSummaryModel>().HasNoKey();
+            modelBuilder.Entity<ShortcutListModel>().HasNoKey();
+            modelBuilder.Entity < ServicePieChartModel>().HasNoKey();
+            //modelBuilder.Ignore<DashboardSummaryModel>();
+            //modelBuilder.Ignore<ShortcutListModel>();
+
         }
 
         public DbSet<IBBPortal.Models.Board> Board { get; set; }
@@ -128,6 +137,18 @@ namespace IBBPortal.Data
         public DbSet<IBBPortal.Models.ProjectPhase> ProjectPhase { get; set; }
 
         public DbSet<IBBPortal.Models.ProjectBidding> ProjectBidding { get; set; }
+
+        [NotMapped]
+        public DbSet<IBBPortal.ViewModels.DashboardSummaryModel> DashboardSummaryModel { get; set; }
+
+        [NotMapped]
+        public DbSet<IBBPortal.ViewModels.ShortcutListModel> ShortcutListModel { get; set; }
+
+        [NotMapped]
+        public DbSet<IBBPortal.ViewModels.ServicePieChartModel> ServicePieChartModel { get; set; }
+
+
+
     }
 
 

@@ -11,7 +11,27 @@
     border-radius: 5px;
     margin:15px;
     width:90%;
+    z-index: 100;
 
+}
+
+.loadingDiv {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100vh;
+    width: 100%;
+    background: rgba(255,255,255,0.3); 
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.loadingIcon {
+    width: 100px;
+    height:100px;
+    position: absolute;
+    top: 45%;
 }
 
 .floatingFormClosed {

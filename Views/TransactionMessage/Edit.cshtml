@@ -67,6 +67,16 @@
                         </div>
                     </div>
 
+                    <!-- Transaction Message Slug -->
+                    <div class="form-group row">
+                        <label asp-for="TransactionMessageSlug" class="col-12 col-xl-4 col-form-label">Slug</label>
+                        <div class="col-12 col-xl-8">
+                            <input asp-for="TransactionMessageContent" type="text" class="form-control">
+                            <span asp-validation-for="TransactionMessageSlug" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
                     <!-- Default Values for the Database Date Part -->
                     <input type="hidden" asp-for="CreationDate" />
                     <input type="hidden" asp-for="UpdateDate" />
