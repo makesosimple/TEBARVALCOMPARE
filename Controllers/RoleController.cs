@@ -8,6 +8,7 @@ using IBBPortal.Data;
 using IBBPortal.Models;
 using Microsoft.AspNetCore.Identity;
 using IBBPortal.Helpers;
+using IBBPortal.ViewModels;
 
 namespace IBBPortal.Controllers
 {
@@ -15,11 +16,13 @@ namespace IBBPortal.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public RoleController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public RoleController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
             _context = context;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         // GET: Role
@@ -161,12 +164,10 @@ namespace IBBPortal.Controllers
             {
                 try
                 {
-                    applicationRole.NormalizedName = Request.Form["Name"].FirstOrDefault().ToUpper();
                     applicationRole.CreationDate = DateTime.Now;
                     applicationRole.UserID = _userManager.GetUserId(HttpContext.User);
 
-                    _context.Add(applicationRole);
-                    await _context.SaveChangesAsync();
+                    await _roleManager.CreateAsync(applicationRole);
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $" {applicationRole.Id} numaralı kayıt başarıyla oluşturuldu.";
                     return RedirectToAction(nameof(Index));
@@ -190,11 +191,19 @@ namespace IBBPortal.Controllers
             }
 
             var applicationRole = await _context.Roles.FindAsync(id);
+
             if (applicationRole == null)
             {
                 return NotFound();
             }
-            return View(applicationRole);
+
+            EditRoleViewModel model = new EditRoleViewModel
+            {
+                Name = applicationRole.Name,
+                RoleDescription = applicationRole.RoleDescription
+            };
+
+            return View(model);
         }
 
         // POST: Role/Edit/5
@@ -202,7 +211,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditRole(string? id)
+        public async Task<IActionResult> EditRole(string? id, EditRoleViewModel model)
         {
             if (id == null)
             {
@@ -211,17 +220,23 @@ namespace IBBPortal.Controllers
 
             var roleToUpdate = await _context.Roles.FindAsync(id);
 
-            roleToUpdate.UpdateDate = DateTime.Now;
+            if (model.Name != roleToUpdate.Name)
+            {
+                roleToUpdate.Name = model.Name;
+            }
 
-            roleToUpdate.NormalizedName = Request.Form["Name"].FirstOrDefault().ToUpper();
+            if (model.RoleDescription != roleToUpdate.RoleDescription)
+            {
+                roleToUpdate.RoleDescription = model.RoleDescription;
+            }
 
-            if (await TryUpdateModelAsync<ApplicationRole>(roleToUpdate, "",
-                x => x.Name, x => x.NormalizedName, x => x.RoleDescription, x => x.UpdateDate))
+
+            if (ModelState.IsValid)
             {
                 try
                 {
 
-                    await _context.SaveChangesAsync();
+                    await _roleManager.UpdateAsync(roleToUpdate);
 
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $"Kayıt başarıyla düzenlendi.";

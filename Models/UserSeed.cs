@@ -13,9 +13,13 @@ namespace IBBPortal.Models
     public class UserSeed
     {
         private ApplicationDbContext _context;
+        private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserSeed(ApplicationDbContext context)
+        public UserSeed(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
+            _roleManager = roleManager;
+            _userManager = userManager;
             _context = context;
         }
 
@@ -25,20 +29,16 @@ namespace IBBPortal.Models
             {
                 FirstName = "John",
                 LastName = "Doe",
-                UserName = "mail@mail.com",
-                NormalizedUserName = "MAIL@MAIL.COM",
+                UserName = "johndoe",
                 Email = "mail@mail.com",
-                NormalizedEmail = "mail@mail.COM",
                 EmailConfirmed = true,
                 LockoutEnabled = false,
                 SecurityStamp = Guid.NewGuid().ToString()
             };
 
-            var roleStore = new RoleStore<ApplicationRole>(_context);
-
             if (!_context.Roles.Any(r => r.Name == "admin"))
             {
-                await roleStore.CreateAsync(new ApplicationRole { Name = "admin", NormalizedName = "admin" });
+                await _roleManager.CreateAsync(new ApplicationRole { Name = "admin" });
             }
 
             if (!_context.Users.Any(u => u.UserName == user.UserName))
@@ -46,9 +46,8 @@ namespace IBBPortal.Models
                 var password = new PasswordHasher<ApplicationUser>();
                 var hashed = password.HashPassword(user, "Esc86tuo8*");
                 user.PasswordHash = hashed;
-                var userStore = new ApplicationUserStore(_context);
-                await userStore.CreateAsync(user);
-                await userStore.AddToRoleAsync(user , "admin");
+                await _userManager.CreateAsync(user);
+                await _userManager.AddToRoleAsync(user , "ADMIN");
             }
 
             await _context.SaveChangesAsync();

@@ -168,7 +168,9 @@ namespace IBBPortal.Controllers
                         FirstName = model.FirstName, 
                         LastName = model.LastName, 
                         UserName = model.UserName, 
-                        Email = model.Email 
+                        Email = model.Email,
+                        EmailConfirmed = true,
+                        LockoutEnabled = false,
                     };
 
                     user.CreationDate = DateTime.Now;
@@ -210,7 +212,7 @@ namespace IBBPortal.Controllers
             }
 
             var relatedUserRole = await _context.UserRoles.Where(x => x.UserId == id).FirstOrDefaultAsync();
-            var relatedRole = await _context.Roles.FindAsync(relatedUserRole.RoleId);
+            var relatedRole = await _context.Roles.Where( x => x.Id == relatedUserRole.RoleId).FirstOrDefaultAsync();
 
             UserEditViewModel model = new UserEditViewModel
             {

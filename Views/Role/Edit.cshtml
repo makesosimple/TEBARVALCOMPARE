@@ -1,4 +1,4 @@
-﻿@model IBBPortal.Models.ApplicationRole
+﻿@model IBBPortal.ViewModels.EditRoleViewModel
 
 @{
     ViewData["Title"] = "Rol Düzenle";
@@ -6,7 +6,6 @@
 
 <h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
 <form asp-action="Edit">
-    <input type="hidden" asp-for="Id" />
     <div class="card shadow mb-4">
         @*<div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
                 <ul class="nav nav-pills" id="formTabs" role="tablist">
