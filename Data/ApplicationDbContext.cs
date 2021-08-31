@@ -53,6 +53,7 @@ namespace IBBPortal.Data
 
             modelBuilder.Entity<DashboardSummaryModel>().HasNoKey();
             modelBuilder.Entity<ShortcutListModel>().HasNoKey();
+            modelBuilder.Entity < ServicePieChartModel>().HasNoKey();
             //modelBuilder.Ignore<DashboardSummaryModel>();
             //modelBuilder.Ignore<ShortcutListModel>();
 
@@ -147,6 +148,9 @@ namespace IBBPortal.Data
 
         [NotMapped]
         public DbSet<IBBPortal.ViewModels.ShortcutListModel> ShortcutListModel { get; set; }
+
+        [NotMapped]
+        public DbSet<IBBPortal.ViewModels.ServicePieChartModel> ServicePieChartModel { get; set; }
 
 
 
