@@ -50,9 +50,9 @@ namespace IBBPortal.Data
                 entity.ToTable("UserTokens");
             });
 
-            modelBuilder.Entity<DashboardSummaryModel>().HasNoKey();
-            modelBuilder.Entity<ShortcutListModel>().HasNoKey();
-            modelBuilder.Entity < ServicePieChartModel>().HasNoKey();
+            builder.Entity<DashboardSummaryModel>().HasNoKey();
+            builder.Entity<ShortcutListModel>().HasNoKey();
+            builder.Entity < ServicePieChartModel>().HasNoKey();
             //modelBuilder.Ignore<DashboardSummaryModel>();
             //modelBuilder.Ignore<ShortcutListModel>();
 

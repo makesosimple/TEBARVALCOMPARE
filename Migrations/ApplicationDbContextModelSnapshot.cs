@@ -1996,6 +1996,45 @@ namespace IBBPortal.Migrations
                     b.ToTable("ZoningPlanStatus");
                 });
 
+            modelBuilder.Entity("IBBPortal.ViewModels.DashboardSummaryModel", b =>
+                {
+                    b.Property<int>("NumberOfCompletedProjects")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumberOfProjects")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProjectsStartedInLastMonth")
+                        .HasColumnType("int");
+
+                    b.ToTable("DashboardSummaryModel");
+                });
+
+            modelBuilder.Entity("IBBPortal.ViewModels.ServicePieChartModel", b =>
+                {
+                    b.Property<int>("NumberOfProjects")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServiceAreaID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ServiceAreaTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("ServicePieChartModel");
+                });
+
+            modelBuilder.Entity("IBBPortal.ViewModels.ShortcutListModel", b =>
+                {
+                    b.Property<int>("ProjectID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProjectTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("ShortcutListModel");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
