@@ -32,7 +32,12 @@ namespace IBBPortal.Controllers
             //Console.Writeln(dashboardSummary.Result.NumberOfProjects);
             //var numberOfProjects = await _context.Project.CountAsync();
             ViewBag.numberOfProjects = System.Convert.ToInt32(dashboardSummary.NumberOfProjects);
+            ViewBag.numberOfProjectsInAMonth = dashboardSummary.ProjectsStartedInLastMonth;
+            ViewBag.numberOfCompletedProjects = dashboardSummary.NumberOfCompletedProjects;
 
+            var myShortcuts = await _context.ShortcutListModel.FromSqlRaw("SELECT Project.ProjectID, Project.ProjectTitle FROM Shortcuts LEFT JOIN Project ON Project.ProjectID = Shortcuts.ShortcutsProjectID WHERE Shortcuts.UserID = {0}", _userManager.GetUserId(HttpContext.User)).ToListAsync();
+
+            ViewBag.myShortcuts = myShortcuts;
 
             return View();
         }
