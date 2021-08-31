@@ -3,6 +3,7 @@
     var numberOfProjectsInAMonth = String.Format("{0:####}", ViewBag.numberOfProjectsInAMonth);
     var numberOfCompletedProjects = String.Format("{0:N}",ViewBag.numberOfCompletedProjects * 100);
     var myShortcuts = ViewBag.myShortcuts;
+    var serviceAreaList = ViewBag.serviceAreaList;
 }
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">34 Proje Portal</h1>
@@ -152,22 +153,15 @@
                 <div class="chart-pie pt-4 pb-2">
                     <canvas id="myPieChart"></canvas>
                 </div>
-                <div class="mt-4 text-center small">
-                    <span class="mr-2">
-                        <i class="fas fa-circle text-primary"></i> Ulaşım
-                    </span>
-                    <span class="mr-2">
-                        <i class="fas fa-circle text-success"></i> Kent Estetiği
-                    </span>
-                    <span class="mr-2">
-                        <i class="fas fa-circle text-info"></i> Kültür Yapıları
-                    </span>
-                    <span class="mr-2">
-                        <i class="fas fa-circle text-warning"></i> Hizmet Yapıları
-                    </span>
-                    <span class="mr-2">
-                        <i class="fas fa-circle text-danger"></i> Diğer
-                    </span>
+                <div class="mt-4 text-center small" id="chartLegend">
+                    @foreach (var item in serviceAreaList)
+                    {
+                        <span class="mr-2">
+                            <i class="fas fa-circle"></i> @item.ServiceAreaTitle
+                        </span>
+                    }
+
+                    
                 </div>
             </div>
         </div>
@@ -262,6 +256,85 @@
 @section Scripts {
     <!-- Chart Demos -->
     <script src="~/lib/chart.js/Chart.min.js"></script>
-    <script src="~/js/demo/chart-pie-demo.js"></script>
+    <script type="text/javascript">
+
+        let colors = [
+            '#3366CC',
+            '#DC3912',
+            '#FF9900',
+            '#109618',
+            '#990099',
+            '#3B3EAC',
+            '#0099C6',
+            '#DD4477',
+            '#66AA00',
+            '#B82E2E',
+            '#316395',
+            '#994499',
+            '#22AA99',
+            '#AAAA11',
+            '#6633CC',
+            '#E67300',
+            '#8B0707',
+            '#329262',
+            '#5574A6',
+            '#3B3EAC',
+        ];
+
+        $('#chartLegend .fa-circle').each(function (i,elem) {
+            elem.style = 'color:' + colors[i] + ';';
+        });
+
+        Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+        Chart.defaults.global.defaultFontColor = '#858796';
+
+
+        // Pie Chart Example
+        var ctx = document.getElementById("myPieChart");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                    @foreach (var item in serviceAreaList)
+                    {
+                     <text>
+                    "@item.ServiceAreaTitle",
+                    </text>
+                    }
+                ],
+                datasets: [{
+                    data: [
+                        @foreach (var item in serviceAreaList)
+                        {
+                         <text>
+                            @item.NumberOfProjects,
+                        </text>
+                        }
+                    ],
+                    backgroundColor: colors,
+                    hoverBackgroundColor: colors,
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
+                },
+                legend: {
+                    display: false
+                },
+                cutoutPercentage: 80,
+            },
+        });
+
+    </script>
     <script src="~/js/demo/chart-area-demo.js"></script>
 }

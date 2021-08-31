@@ -39,6 +39,19 @@ namespace IBBPortal.Controllers
 
             ViewBag.myShortcuts = myShortcuts;
 
+            var serviceAreaList = await _context.ServicePieChartModel.FromSqlRaw(@"SELECT
+                       ServiceAreaID,
+                       ServiceAreaTitle,
+                       (COUNT(ProjectID)) AS NumberOfProjects
+                       
+                    FROM Project
+                    LEFT JOIN ServiceArea ON Project.ProjectServiceAreaID = ServiceArea.ServiceAreaID
+                    GROUP BY ServiceAreaID, ServiceAreaTitle
+                    ORDER BY NumberOfProjects DESC
+                    ").ToListAsync();
+
+            ViewBag.serviceAreaList = serviceAreaList;
+
             return View();
         }
 
