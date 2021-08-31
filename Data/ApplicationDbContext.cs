@@ -6,6 +6,7 @@ using System.Text;
 using IBBPortal.Models;
 using IBBPortal.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IBBPortal.Data
 {
@@ -51,6 +52,10 @@ namespace IBBPortal.Data
             });
 
             modelBuilder.Entity<DashboardSummaryModel>().HasNoKey();
+            modelBuilder.Entity<ShortcutListModel>().HasNoKey();
+            //modelBuilder.Ignore<DashboardSummaryModel>();
+            //modelBuilder.Ignore<ShortcutListModel>();
+
         }
 
         public DbSet<IBBPortal.Models.ApplicationUser> ApplicationUser { get; set; }
@@ -137,9 +142,11 @@ namespace IBBPortal.Data
 
         public DbSet<IBBPortal.Models.ProjectBidding> ProjectBidding { get; set; }
 
+        [NotMapped]
         public DbSet<IBBPortal.ViewModels.DashboardSummaryModel> DashboardSummaryModel { get; set; }
 
-
+        [NotMapped]
+        public DbSet<IBBPortal.ViewModels.ShortcutListModel> ShortcutListModel { get; set; }
 
 
 
