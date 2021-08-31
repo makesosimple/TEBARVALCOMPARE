@@ -50,6 +50,15 @@
                         </div>
                     </div>
 
+                    <!-- Transaction Message Slug -->
+                    <div class="form-group row">
+                        <label asp-for="TransactionMessageSlug" class="col-12 col-xl-4 col-form-label">Slug</label>
+                        <div class="col-12 col-xl-8">
+                            <input asp-for="TransactionMessageContent" type="text" class="form-control">
+                            <span asp-validation-for="TransactionMessageSlug" class="text-danger"></span>
+                        </div>
+                    </div>
+
                     <div class="buttons mt-3 my-md-0">
                         <button type="submit" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
                         <a asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
