@@ -34,9 +34,13 @@ namespace IBBPortal
                     Configuration.GetConnectionString("DefaultConnection"), x => x.UseNetTopologySuite()));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentity<ApplicationUser, ApplicationRole>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddUserStore<ApplicationUserStore>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
             services.AddControllersWithViews();
+
+            services.AddRazorPages();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -51,7 +55,7 @@ namespace IBBPortal
                 // Lockout settings.
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
                 options.Lockout.MaxFailedAccessAttempts = 3;
-                options.Lockout.AllowedForNewUsers = true;
+                options.Lockout.AllowedForNewUsers = false;
 
                 // User settings.
                 options.User.AllowedUserNameCharacters =

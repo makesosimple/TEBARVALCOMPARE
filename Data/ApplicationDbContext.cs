@@ -8,51 +8,46 @@ using Microsoft.AspNetCore.Identity;
 
 namespace IBBPortal.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(builder);
 
-            modelBuilder.Entity<IdentityUserClaim<string>>(b =>
+            builder.Entity<ApplicationUser>(entity =>
             {
-                b.ToTable("ApplicationUserClaim");
+                entity.ToTable(name: "User");
             });
-
-            modelBuilder.Entity<IdentityUserLogin<string>>(b =>
+            builder.Entity<ApplicationRole>(entity =>
             {
-                b.ToTable("ApplicationUserLogin");
+                entity.ToTable(name: "Role");
             });
-
-            modelBuilder.Entity<IdentityUserToken<string>>(b =>
+            builder.Entity<IdentityUserRole<string>>(entity =>
             {
-                b.ToTable("ApplicationUserToken");
+                entity.ToTable("UserRoles");
             });
-
-            modelBuilder.Entity<IdentityRole>(b =>
+            builder.Entity<IdentityUserClaim<string>>(entity =>
             {
-                b.ToTable("ApplicationRole");
+                entity.ToTable("UserClaims");
             });
-
-            modelBuilder.Entity<IdentityRoleClaim<string>>(b =>
+            builder.Entity<IdentityUserLogin<string>>(entity =>
             {
-                b.ToTable("ApplicationRoleClaim");
+                entity.ToTable("UserLogins");
             });
-
-            modelBuilder.Entity<IdentityUserRole<string>>(b =>
+            builder.Entity<IdentityRoleClaim<string>>(entity =>
             {
-                b.ToTable("ApplicationUserRole");
+                entity.ToTable("RoleClaims");
+            });
+            builder.Entity<IdentityUserToken<string>>(entity =>
+            {
+                entity.ToTable("UserTokens");
             });
         }
-
-        public DbSet<IBBPortal.Models.ApplicationUser> ApplicationUser { get; set; }
-
-        public DbSet<IBBPortal.Models.ApplicationRole> ApplicationRole { get; set; }
 
         public DbSet<IBBPortal.Models.Board> Board { get; set; }
 

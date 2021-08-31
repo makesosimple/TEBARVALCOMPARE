@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
+using IndexAttribute = Microsoft.EntityFrameworkCore.IndexAttribute;
 
 namespace IBBPortal.Models
 {

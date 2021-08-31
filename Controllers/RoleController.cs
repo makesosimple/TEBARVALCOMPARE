@@ -8,25 +8,21 @@ using IBBPortal.Data;
 using IBBPortal.Models;
 using Microsoft.AspNetCore.Identity;
 using IBBPortal.Helpers;
-using IBBPortal.ViewModels;
-using System.Collections.Generic;
 
 namespace IBBPortal.Controllers
 {
-    public class UserController : Controller
+    public class RoleController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public UserController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+        public RoleController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
-            _roleManager = roleManager;
         }
 
-        // GET: User
+        // GET: Role
         public IActionResult Index()
         {
             return View();
@@ -37,6 +33,7 @@ namespace IBBPortal.Controllers
         {
             try
             {
+
                 var draw = HttpContext.Request.Form["draw"].FirstOrDefault();
                 // Skiping number of Rows count  
                 var start = Request.Form["start"].FirstOrDefault();
@@ -52,7 +49,7 @@ namespace IBBPortal.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var data = _context.Users.Select(c => new { c.Id, c.UserName, FullName = c.FirstName + " " + c.LastName, c.Email });
+                var data = _context.Roles.Select(c => new { c.Id, c.Name, Creator = c.User.FirstName + " " + c.User.LastName });
 
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
@@ -66,7 +63,7 @@ namespace IBBPortal.Controllers
                 //If control checks out, search. If not loop goes on until the end.
                 string columnName, searchValue;
 
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     columnName = Request.Query[$"columns[{i}][data]"].FirstOrDefault();
                     searchValue = Request.Query[$"columns[{i}][search][value]"].FirstOrDefault();
@@ -99,22 +96,22 @@ namespace IBBPortal.Controllers
             try
             {
 
-                var UserData = _context.Users
+                var RoleData = _context.Roles
                                     .Select(x => new {
                                         id = x.Id,
-                                        text = x.FirstName + " " + x.LastName
+                                        text = x.Name
                                     });
 
                 if (!String.IsNullOrEmpty(term))
                 {
-                    UserData = UserData.Where(m => m.text.Contains(term));
+                    RoleData = RoleData.Where(m => m.text.Contains(term));
                 }
 
                 //Count 
-                var totalCount = UserData.Count();
+                var totalCount = RoleData.Count();
 
                 //Paging   
-                var passData = UserData.ToList().Take(10);
+                var passData = RoleData.ToList().Take(10);
 
 
                 //Returning Json Data  
@@ -128,7 +125,7 @@ namespace IBBPortal.Controllers
             }
         }
 
-        // GET: User/Details/5
+        // GET: Role/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -136,52 +133,42 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var applicationUser = await _context.Users
+            var applicationRole = await _context.Roles
                 .Include(m => m.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (applicationUser == null)
+            if (applicationRole == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DetailsModal", applicationUser);
+            return PartialView("_DetailsModal", applicationRole);
         }
 
-        // GET: User/Create
+        // GET: Role/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: User/Create
+        // POST: Role/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(UserFormViewModel model)
+        public async Task<IActionResult> Create([Bind("RoleDescription,Id,Name,NormalizedName,ConcurrencyStamp,UserID,CreationDate,UpdateDate,DeletionDate")] ApplicationRole applicationRole)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var user = new ApplicationUser { 
-                        FirstName = model.FirstName, 
-                        LastName = model.LastName, 
-                        UserName = model.UserName, 
-                        Email = model.Email 
-                    };
+                    applicationRole.NormalizedName = Request.Form["Name"].FirstOrDefault().ToUpper();
+                    applicationRole.CreationDate = DateTime.Now;
+                    applicationRole.UserID = _userManager.GetUserId(HttpContext.User);
 
-                    user.CreationDate = DateTime.Now;
-                    user.UserID = _userManager.GetUserId(HttpContext.User);
-
-                    await _userManager.CreateAsync(user, model.Password);
-
-                    var roleToAdd = await _roleManager.FindByIdAsync(model.RoleID);
-
-                    await _userManager.AddToRoleAsync(user, roleToAdd.NormalizedName);
-
+                    _context.Add(applicationRole);
+                    await _context.SaveChangesAsync();
                     TempData["SuccessTitle"] = "BAŞARILI";
-                    TempData["SuccessMessage"] = $"Kayıt başarıyla oluşturuldu.";
+                    TempData["SuccessMessage"] = $" {applicationRole.Id} numaralı kayıt başarıyla oluşturuldu.";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -191,7 +178,7 @@ namespace IBBPortal.Controllers
                     return RedirectToAction(nameof(Index));
                 }
             }
-            return View(model);
+            return View(applicationRole);
         }
 
         // GET: Role/Edit/5
@@ -202,26 +189,12 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var applicationUserToEdit = await _context.Users.FindAsync(id);
-
-            if (applicationUserToEdit == null)
+            var applicationRole = await _context.Roles.FindAsync(id);
+            if (applicationRole == null)
             {
                 return NotFound();
             }
-
-            var relatedUserRole = await _context.UserRoles.Where(x => x.UserId == id).FirstOrDefaultAsync();
-            var relatedRole = await _context.Roles.FindAsync(relatedUserRole.RoleId);
-
-            UserEditViewModel model = new UserEditViewModel
-            {
-                FirstName = applicationUserToEdit.FirstName,
-                LastName = applicationUserToEdit.LastName,
-                UserName = applicationUserToEdit.UserName,
-                Email = applicationUserToEdit.Email,
-                RoleID = relatedRole.Id,
-                Role = relatedRole
-            };
-            return View(model);
+            return View(applicationRole);
         }
 
         // POST: Role/Edit/5
@@ -229,54 +202,33 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditUser(string? id, UserEditViewModel model)
+        public async Task<IActionResult> EditRole(string? id)
         {
-
             if (id == null)
             {
                 return NotFound();
             }
 
-            var userToUpdate = await _context.Users.FindAsync(id);
+            var roleToUpdate = await _context.Roles.FindAsync(id);
 
-            if (model.FirstName != userToUpdate.FirstName)
-            {
-                userToUpdate.FirstName = model.FirstName;
-            }
+            roleToUpdate.UpdateDate = DateTime.Now;
 
-            if (model.LastName != userToUpdate.LastName)
-            {
-                userToUpdate.LastName = model.LastName;
-            }
+            roleToUpdate.NormalizedName = Request.Form["Name"].FirstOrDefault().ToUpper();
 
-            if (model.UserName != userToUpdate.UserName)
-            {
-                userToUpdate.UserName = model.UserName;
-            }
-
-            if (model.Email != userToUpdate.Email)
-            {
-                userToUpdate.Email = model.Email;
-            }
-
-            userToUpdate.UpdateDate = DateTime.Now;
-
-            if (ModelState.IsValid)
+            if (await TryUpdateModelAsync<ApplicationRole>(roleToUpdate, "",
+                x => x.Name, x => x.NormalizedName, x => x.RoleDescription, x => x.UpdateDate))
             {
                 try
                 {
-                    var roleToAdd = await _roleManager.FindByIdAsync(model.RoleID);
 
-                    await _userManager.AddToRoleAsync(userToUpdate, roleToAdd.NormalizedName);
-
-                    await _userManager.UpdateAsync(userToUpdate);
+                    await _context.SaveChangesAsync();
 
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $"Kayıt başarıyla düzenlendi.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ApplicationUserExists(userToUpdate.Id))
+                    if (!ApplicationRoleExists(roleToUpdate.Id))
                     {
                         return NotFound();
                     }
@@ -285,9 +237,9 @@ namespace IBBPortal.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { id = roleToUpdate.Id });
             }
-            return View(userToUpdate);
+            return View(roleToUpdate);
         }
 
         // GET: Role/Delete/5
@@ -298,14 +250,14 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var applicationUser = await _context.Users
+            var applicationRole = await _context.Roles
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (applicationUser == null)
+            if (applicationRole == null)
             {
                 return NotFound();
             }
 
-            return PartialView("_DeleteModal", applicationUser);
+            return PartialView("_DeleteModal", applicationRole);
         }
 
         // POST: Role/Delete/5
@@ -313,13 +265,13 @@ namespace IBBPortal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var applicationUser = await _context.Users.FindAsync(id);
+            var applicationRole = await _context.Roles.FindAsync(id);
             try
             {
-                _context.Users.Remove(applicationUser);
+                _context.Roles.Remove(applicationRole);
                 await _context.SaveChangesAsync();
                 TempData["SuccessTitle"] = "BAŞARILI";
-                TempData["SuccessMessage"] = $"{applicationUser.Id} numaralı kayıt başarıyla silindi.";
+                TempData["SuccessMessage"] = $"{applicationRole.Id} numaralı kayıt başarıyla silindi.";
                 return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateException ex)
@@ -330,9 +282,9 @@ namespace IBBPortal.Controllers
             }
         }
 
-        private bool ApplicationUserExists(string id)
+        private bool ApplicationRoleExists(string id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.Roles.Any(e => e.Id == id);
         }
     }
 }

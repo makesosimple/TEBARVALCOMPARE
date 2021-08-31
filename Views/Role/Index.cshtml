@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Kullanıcı Yönetimi";
+    ViewData["Title"] = "Rol Yönetimi";
 }
 
 @section Scripts
@@ -19,20 +19,19 @@
                 "filter": true, // this is for disable filter (search box)
                 "orderMulti": false, // for disable multiple column at once
                 "ajax": {
-                    "url": "/User/JSONData",
+                    "url": "/Role/JSONData",
                     "type": "POST"
                 },
                 "columns": [
-                    { "data": "fullName", "autoWidth": true },
-                    { "data": "userName", "autoWidth": true },
-                    { "data": "email", "autoWidth": true },
+                    { "data": "name", "autoWidth": true },
+                    { "data": "creator", "autoWidth": true },
                     {
                         "data": null,
                         "render": function (data, type, full, meta, row) {
                             return `<div class="d-flex align-items-center justify-content-end">\
-                                                <a class="btn btn-circle bg-turqoise text-white mr-1" href="/User/Edit/${full.id}"><i class="fas fa-edit"></i></a>\
-                                                <button type="button" class="btn btn-circle bg-warning text-white mr-1" onclick="modalScript(this)" data-url="/User/Details/${full.id}"><i class="fas fa-info-circle"></i></button>\
-                                                <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/User/Delete/${full.id}"><i class="fas fa-trash-alt"></i></button>
+                                                <a class="btn btn-circle bg-turqoise text-white mr-1" href="/Role/Edit/${full.id}"><i class="fas fa-edit"></i></a>\
+                                                <button type="button" class="btn btn-circle bg-warning text-white mr-1" onclick="modalScript(this)" data-url="/Role/Details/${full.id}"><i class="fas fa-info-circle"></i></button>\
+                                                <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/Role/Delete/${full.id}"><i class="fas fa-trash-alt"></i></button>
                                             </div>`;
                         }
                     },
@@ -108,15 +107,13 @@
             <table class="table table-hover display" id="dataTable" width="100%">
                 <thead class="bg-navy-blue">
                     <tr class="filter h-100 bg-white">
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="fullName" name="fullName" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="userName" name="userName" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="email" name="email" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="name" name="name" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="creator" name="creator" value="" /></th>
                         <th scope="col"></th>
                     </tr>
                     <tr id="tableLabels">
-                        <th scope="col" class="text-white text-sm">İsim</th>
-                        <th scope="col" class="text-white text-sm">Kullanıcı İsmi</th>
-                        <th scope="col" class="text-white text-sm">E-Posta</th>
+                        <th scope="col" class="text-white text-sm">Rol İsmi</th>
+                        <th scope="col" class="text-white text-sm">Oluşturan</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>

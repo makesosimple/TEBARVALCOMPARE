@@ -1,7 +1,7 @@
-﻿@model IBBPortal.Models.ApplicationUser
+﻿@model IBBPortal.Models.ApplicationRole
 
 <!-- Modal -->
-<div class="modal fade" id="ApplicationUserModal" tabindex="-1" aria-labelledby="ApplicationUserModalLabel" aria-hidden="true">
+<div class="modal fade" id="ApplicationRoleModal" tabindex="-1" aria-labelledby="ApplicationRoleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
@@ -19,16 +19,12 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Kullanıcı</p></div>
-                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.FirstName @Model.LastName</p></div>
+                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Rol</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.Name</p></div>
                     </div>
                     <div class="row">
-                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Kullanıcı Adı</p></div>
-                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.UserName</p></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">E-Posta</p></div>
-                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.Email</p></div>
+                        <div class="col-12 col-xl-4"><p class="text-primary font-weight-bold">Açıklama</p></div>
+                        <div class="col-12 col-xl-8"><p class="text-primary">@Model.RoleDescription</p></div>
                     </div>
                     <hr />
                     @if (Model.User is not null)

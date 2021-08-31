@@ -175,9 +175,6 @@ namespace IBBPortal.Controllers
                     TempData["ErrorMessage"] = $"Kayıt oluşturulamadı.";
                     return RedirectToAction(nameof(Index));
                 }
-                //_context.Add(department);
-                //await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
             }
 
             return View(department);

@@ -1,12 +1,5 @@
 ﻿@{
-    if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
-    {
-        Layout = (string)parentLayout;
-    }
-    else
-    {
-        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
-    }
+    Layout = "/Views/Shared/Layouts/_LayoutMain.cshtml";
 }
 
 <h1 class="h3 mb-4 text-gray-800">Profil Yönetimi</h1>

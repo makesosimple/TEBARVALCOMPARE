@@ -6,6 +6,7 @@ using IBBPortal.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using IndexAttribute = Microsoft.EntityFrameworkCore.IndexAttribute;
 
 namespace IBBPortal.Models
 {
@@ -24,10 +25,10 @@ namespace IBBPortal.Models
             {
                 FirstName = "John",
                 LastName = "Doe",
-                UserName = "email@email.com",
-                NormalizedUserName = "EMAIL@EMAIL.COM",
-                Email = "email@email.com",
-                NormalizedEmail = "EMAIL@EMAIL.COM",
+                UserName = "mail@mail.com",
+                NormalizedUserName = "MAIL@MAIL.COM",
+                Email = "mail@mail.com",
+                NormalizedEmail = "mail@mail.COM",
                 EmailConfirmed = true,
                 LockoutEnabled = false,
                 SecurityStamp = Guid.NewGuid().ToString()
@@ -35,7 +36,7 @@ namespace IBBPortal.Models
 
             var roleStore = new RoleStore<ApplicationRole>(_context);
 
-            if (!_context.ApplicationRole.Any(r => r.Name == "admin"))
+            if (!_context.Roles.Any(r => r.Name == "admin"))
             {
                 await roleStore.CreateAsync(new ApplicationRole { Name = "admin", NormalizedName = "admin" });
             }
@@ -45,9 +46,9 @@ namespace IBBPortal.Models
                 var password = new PasswordHasher<ApplicationUser>();
                 var hashed = password.HashPassword(user, "Esc86tuo8*");
                 user.PasswordHash = hashed;
-                var userStore = new UserStore<ApplicationUser>(_context);
+                var userStore = new ApplicationUserStore(_context);
                 await userStore.CreateAsync(user);
-                await userStore.AddToRoleAsync(user, "admin");
+                await userStore.AddToRoleAsync(user , "admin");
             }
 
             await _context.SaveChangesAsync();

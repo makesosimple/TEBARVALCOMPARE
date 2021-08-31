@@ -4,50 +4,23 @@ using NetTopologySuite.Geometries;
 
 namespace IBBPortal.Migrations
 {
-    public partial class IBBPortalSchemaVol4 : Migration
+    public partial class IBBPortalSchemaVol5 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ApplicationRole",
+                name: "Role",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RoleDescription = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ApplicationRole", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.PrimaryKey("PK_Role", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -70,7 +43,45 @@ namespace IBBPortal.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ApplicationRoleClaim",
+                name: "User",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ProfilePicture = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletionDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_User_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RoleClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -81,96 +92,11 @@ namespace IBBPortal.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ApplicationRoleClaim", x => x.Id);
+                    table.PrimaryKey("PK_RoleClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ApplicationRoleClaim_ApplicationRole_RoleId",
+                        name: "FK_RoleClaims_Role_RoleId",
                         column: x => x.RoleId,
-                        principalTable: "ApplicationRole",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ApplicationUserClaim",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApplicationUserClaim", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ApplicationUserClaim_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ApplicationUserLogin",
-                columns: table => new
-                {
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApplicationUserLogin", x => new { x.LoginProvider, x.ProviderKey });
-                    table.ForeignKey(
-                        name: "FK_ApplicationUserLogin_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ApplicationUserRole",
-                columns: table => new
-                {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApplicationUserRole", x => new { x.UserId, x.RoleId });
-                    table.ForeignKey(
-                        name: "FK_ApplicationUserRole_ApplicationRole_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "ApplicationRole",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ApplicationUserRole_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ApplicationUserToken",
-                columns: table => new
-                {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApplicationUserToken", x => new { x.UserId, x.LoginProvider, x.Name });
-                    table.ForeignKey(
-                        name: "FK_ApplicationUserToken_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "Role",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -192,9 +118,9 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_Authority", x => x.AuthorityID);
                     table.ForeignKey(
-                        name: "FK_Authority_AspNetUsers_UserID",
+                        name: "FK_Authority_User_UserID",
                         column: x => x.UserID,
-                        principalTable: "AspNetUsers",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -216,9 +142,9 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_Board", x => x.BoardID);
                     table.ForeignKey(
-                        name: "FK_Board_AspNetUsers_UserID",
+                        name: "FK_Board_User_UserID",
                         column: x => x.UserID,
-                        principalTable: "AspNetUsers",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -240,9 +166,9 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_City", x => x.CityID);
                     table.ForeignKey(
-                        name: "FK_City_AspNetUsers_UserID",
+                        name: "FK_City_User_UserID",
                         column: x => x.UserID,
-                        principalTable: "AspNetUsers",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -264,9 +190,9 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_ContractorType", x => x.ContractorTypeID);
                     table.ForeignKey(
-                        name: "FK_ContractorType_AspNetUsers_UserID",
+                        name: "FK_ContractorType_User_UserID",
                         column: x => x.UserID,
-                        principalTable: "AspNetUsers",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -288,16 +214,16 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_Department", x => x.DepartmentID);
                     table.ForeignKey(
-                        name: "FK_Department_AspNetUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Department_Department_ParentDepartmentID",
                         column: x => x.ParentDepartmentID,
                         principalTable: "Department",
                         principalColumn: "DepartmentID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Department_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -318,9 +244,9 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_ExpropriationStatus", x => x.ExpropriationStatusID);
                     table.ForeignKey(
-                        name: "FK_ExpropriationStatus_AspNetUsers_UserID",
+                        name: "FK_ExpropriationStatus_User_UserID",
                         column: x => x.UserID,
-                        principalTable: "AspNetUsers",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -344,16 +270,16 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_FileCategory", x => x.FileCategoryID);
                     table.ForeignKey(
-                        name: "FK_FileCategory_AspNetUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_FileCategory_FileCategory_ParentFileCategoryID",
                         column: x => x.ParentFileCategoryID,
                         principalTable: "FileCategory",
                         principalColumn: "FileCategoryID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FileCategory_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -374,9 +300,9 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_JobField", x => x.JobFieldID);
                     table.ForeignKey(
-                        name: "FK_JobField_AspNetUsers_UserID",
+                        name: "FK_JobField_User_UserID",
                         column: x => x.UserID,
-                        principalTable: "AspNetUsers",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -398,9 +324,9 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_JobTitle", x => x.JobTitleID);
                     table.ForeignKey(
-                        name: "FK_JobTitle_AspNetUsers_UserID",
+                        name: "FK_JobTitle_User_UserID",
                         column: x => x.UserID,
-                        principalTable: "AspNetUsers",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -422,9 +348,9 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_Organization", x => x.OrganizationID);
                     table.ForeignKey(
-                        name: "FK_Organization_AspNetUsers_UserID",
+                        name: "FK_Organization_User_UserID",
                         column: x => x.UserID,
-                        principalTable: "AspNetUsers",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -449,16 +375,16 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_Phase", x => x.PhaseID);
                     table.ForeignKey(
-                        name: "FK_Phase_AspNetUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Phase_Phase_PreviousPhaseID",
                         column: x => x.PreviousPhaseID,
                         principalTable: "Phase",
                         principalColumn: "PhaseID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Phase_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -479,9 +405,9 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_ProjectImportance", x => x.ProjectImportanceID);
                     table.ForeignKey(
-                        name: "FK_ProjectImportance_AspNetUsers_UserID",
+                        name: "FK_ProjectImportance_User_UserID",
                         column: x => x.UserID,
-                        principalTable: "AspNetUsers",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -503,9 +429,9 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_ProjectPhaseStatus", x => x.ProjectPhaseStatusID);
                     table.ForeignKey(
-                        name: "FK_ProjectPhaseStatus_AspNetUsers_UserID",
+                        name: "FK_ProjectPhaseStatus_User_UserID",
                         column: x => x.UserID,
-                        principalTable: "AspNetUsers",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -527,9 +453,9 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_ProjectStatus", x => x.ProjectStatusID);
                     table.ForeignKey(
-                        name: "FK_ProjectStatus_AspNetUsers_UserID",
+                        name: "FK_ProjectStatus_User_UserID",
                         column: x => x.UserID,
-                        principalTable: "AspNetUsers",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -551,9 +477,9 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_ProjectTeamCategory", x => x.ProjectTeamCategoryID);
                     table.ForeignKey(
-                        name: "FK_ProjectTeamCategory_AspNetUsers_UserID",
+                        name: "FK_ProjectTeamCategory_User_UserID",
                         column: x => x.UserID,
-                        principalTable: "AspNetUsers",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -575,9 +501,9 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_PropertyStatus", x => x.PropertyStatusID);
                     table.ForeignKey(
-                        name: "FK_PropertyStatus_AspNetUsers_UserID",
+                        name: "FK_PropertyStatus_User_UserID",
                         column: x => x.UserID,
-                        principalTable: "AspNetUsers",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -599,9 +525,9 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_RelationType", x => x.RelationTypeID);
                     table.ForeignKey(
-                        name: "FK_RelationType_AspNetUsers_UserID",
+                        name: "FK_RelationType_User_UserID",
                         column: x => x.UserID,
-                        principalTable: "AspNetUsers",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -624,16 +550,16 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_ServiceArea", x => x.ServiceAreaID);
                     table.ForeignKey(
-                        name: "FK_ServiceArea_AspNetUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_ServiceArea_ServiceArea_ParentServiceAreaID",
                         column: x => x.ParentServiceAreaID,
                         principalTable: "ServiceArea",
                         principalColumn: "ServiceAreaID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ServiceArea_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -654,9 +580,9 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_Subfunction", x => x.SubfunctionID);
                     table.ForeignKey(
-                        name: "FK_Subfunction_AspNetUsers_UserID",
+                        name: "FK_Subfunction_User_UserID",
                         column: x => x.UserID,
-                        principalTable: "AspNetUsers",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -669,6 +595,7 @@ namespace IBBPortal.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TransactionTypeName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     TransactionTypeDescription = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    TransactionTypeSlug = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
                     UserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -678,11 +605,96 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_TransactionTypes", x => x.TransactionTypeID);
                     table.ForeignKey(
-                        name: "FK_TransactionTypes_AspNetUsers_UserID",
+                        name: "FK_TransactionTypes_User_UserID",
                         column: x => x.UserID,
-                        principalTable: "AspNetUsers",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserClaims_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_UserLogins_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Role_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Role",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserRoles_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_UserTokens_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -702,9 +714,9 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_ZoningPlanModificationStatus", x => x.ZoningPlanModificationStatusID);
                     table.ForeignKey(
-                        name: "FK_ZoningPlanModificationStatus_AspNetUsers_UserID",
+                        name: "FK_ZoningPlanModificationStatus_User_UserID",
                         column: x => x.UserID,
-                        principalTable: "AspNetUsers",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -726,9 +738,9 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_ZoningPlanStatus", x => x.ZoningPlanStatusID);
                     table.ForeignKey(
-                        name: "FK_ZoningPlanStatus_AspNetUsers_UserID",
+                        name: "FK_ZoningPlanStatus_User_UserID",
                         column: x => x.UserID,
-                        principalTable: "AspNetUsers",
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -751,17 +763,17 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_District", x => x.DistrictID);
                     table.ForeignKey(
-                        name: "FK_District_AspNetUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_District_City_CityID",
                         column: x => x.CityID,
                         principalTable: "City",
                         principalColumn: "CityID",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_District_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -783,16 +795,16 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_SubfunctionFeature", x => x.SubfunctionFeatureID);
                     table.ForeignKey(
-                        name: "FK_SubfunctionFeature_AspNetUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_SubfunctionFeature_Subfunction_SubfunctionID",
                         column: x => x.SubfunctionID,
                         principalTable: "Subfunction",
                         principalColumn: "SubfunctionID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SubfunctionFeature_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -814,16 +826,16 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_TransactionMessages", x => x.TransactionMessageID);
                     table.ForeignKey(
-                        name: "FK_TransactionMessages_AspNetUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_TransactionMessages_TransactionTypes_TransactionTypeID",
                         column: x => x.TransactionTypeID,
                         principalTable: "TransactionTypes",
                         principalColumn: "TransactionTypeID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_TransactionMessages_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -853,12 +865,6 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_Contractor", x => x.ContractorID);
                     table.ForeignKey(
-                        name: "FK_Contractor_AspNetUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Contractor_City_CityID",
                         column: x => x.CityID,
                         principalTable: "City",
@@ -875,6 +881,12 @@ namespace IBBPortal.Migrations
                         column: x => x.DistrictID,
                         principalTable: "District",
                         principalColumn: "DistrictID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Contractor_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -901,12 +913,6 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_Person", x => x.PersonID);
                     table.ForeignKey(
-                        name: "FK_Person_AspNetUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Person_Contractor_ContractorID",
                         column: x => x.ContractorID,
                         principalTable: "Contractor",
@@ -924,6 +930,12 @@ namespace IBBPortal.Migrations
                         principalTable: "JobTitle",
                         principalColumn: "JobTitleID",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Person_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -934,7 +946,7 @@ namespace IBBPortal.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProjectTitle = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     ProjectCode = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
-                    ProjectIBBCode = table.Column<int>(type: "int", nullable: false),
+                    ProjectIBBCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RequestingDepartmentID = table.Column<int>(type: "int", nullable: true),
                     ResponsibleDepartmentID = table.Column<int>(type: "int", nullable: true),
                     ProjectOwnerPersonID = table.Column<int>(type: "int", nullable: true),
@@ -943,8 +955,7 @@ namespace IBBPortal.Migrations
                     ProjectStatusID = table.Column<int>(type: "int", nullable: true),
                     ProjectStatusDescription = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
                     ProjectStatusDescriptionDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsFeasibilityNeeded = table.Column<bool>(type: "bit", nullable: false),
-                    HasRelatedProject = table.Column<bool>(type: "bit", nullable: false),
+                    EstimatedProjectCost = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     UserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -953,12 +964,6 @@ namespace IBBPortal.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Project", x => x.ProjectID);
-                    table.ForeignKey(
-                        name: "FK_Project_AspNetUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Project_Department_RequestingDepartmentID",
                         column: x => x.RequestingDepartmentID,
@@ -995,6 +1000,12 @@ namespace IBBPortal.Migrations
                         principalTable: "ServiceArea",
                         principalColumn: "ServiceAreaID",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Project_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -1017,12 +1028,6 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_ProjectBoardApproval", x => x.ProjectBoardApprovalID);
                     table.ForeignKey(
-                        name: "FK_ProjectBoardApproval_AspNetUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_ProjectBoardApproval_Board_BoardID",
                         column: x => x.BoardID,
                         principalTable: "Board",
@@ -1033,6 +1038,12 @@ namespace IBBPortal.Migrations
                         column: x => x.ProjectID,
                         principalTable: "Project",
                         principalColumn: "ProjectID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectBoardApproval_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1060,12 +1071,6 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_ProjectExpropriation", x => x.ProjectExpropriationID);
                     table.ForeignKey(
-                        name: "FK_ProjectExpropriation_AspNetUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_ProjectExpropriation_ExpropriationStatus_ExpropriationStatusID",
                         column: x => x.ExpropriationStatusID,
                         principalTable: "ExpropriationStatus",
@@ -1082,6 +1087,59 @@ namespace IBBPortal.Migrations
                         column: x => x.PropertyStatusID,
                         principalTable: "PropertyStatus",
                         principalColumn: "PropertyStatusID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectExpropriation_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProjectFeasibility",
+                columns: table => new
+                {
+                    ProjectFeasibilityID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IsFeasibilityNeeded = table.Column<bool>(type: "bit", nullable: false),
+                    ProjectID = table.Column<int>(type: "int", nullable: true),
+                    ContractorID = table.Column<int>(type: "int", nullable: true),
+                    PersonID = table.Column<int>(type: "int", nullable: true),
+                    ProjectFeasibilityOutsource = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    ProjectFeasibilityDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ProjectFeasibilityCost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletionDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjectFeasibility", x => x.ProjectFeasibilityID);
+                    table.ForeignKey(
+                        name: "FK_ProjectFeasibility_Contractor_ContractorID",
+                        column: x => x.ContractorID,
+                        principalTable: "Contractor",
+                        principalColumn: "ContractorID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectFeasibility_Person_PersonID",
+                        column: x => x.PersonID,
+                        principalTable: "Person",
+                        principalColumn: "PersonID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectFeasibility_Project_ProjectID",
+                        column: x => x.ProjectID,
+                        principalTable: "Project",
+                        principalColumn: "ProjectID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectFeasibility_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1100,7 +1158,7 @@ namespace IBBPortal.Migrations
                     ProjectConstructionArea = table.Column<double>(type: "float", nullable: true),
                     ProjectPaysageArea = table.Column<double>(type: "float", nullable: true),
                     ProjectPaftaAdaParsel = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
-                    KML = table.Column<string>(type: "nvarchar(max)", maxLength: 16000, nullable: true),
+                    KML = table.Column<string>(type: "varchar(MAX)", nullable: true),
                     ProjectLongitude = table.Column<decimal>(type: "decimal(9,6)", nullable: true),
                     ProjectLatitude = table.Column<decimal>(type: "decimal(9,6)", nullable: true),
                     ProjectPoint = table.Column<Point>(type: "geography", nullable: true),
@@ -1116,12 +1174,6 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_ProjectField", x => x.ProjectFieldID);
                     table.ForeignKey(
-                        name: "FK_ProjectField_AspNetUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_ProjectField_District_DistrictID",
                         column: x => x.DistrictID,
                         principalTable: "District",
@@ -1132,6 +1184,12 @@ namespace IBBPortal.Migrations
                         column: x => x.ProjectID,
                         principalTable: "Project",
                         principalColumn: "ProjectID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectField_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1155,12 +1213,6 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_ProjectPermission", x => x.ProjectPermissionID);
                     table.ForeignKey(
-                        name: "FK_ProjectPermission_AspNetUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_ProjectPermission_Organization_OrganizationID",
                         column: x => x.OrganizationID,
                         principalTable: "Organization",
@@ -1171,6 +1223,12 @@ namespace IBBPortal.Migrations
                         column: x => x.ProjectID,
                         principalTable: "Project",
                         principalColumn: "ProjectID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectPermission_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1195,12 +1253,6 @@ namespace IBBPortal.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProjectPerson", x => x.ProjectPersonID);
-                    table.ForeignKey(
-                        name: "FK_ProjectPerson_AspNetUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ProjectPerson_Contractor_ContractorID",
                         column: x => x.ContractorID,
@@ -1231,6 +1283,63 @@ namespace IBBPortal.Migrations
                         principalTable: "Project",
                         principalColumn: "ProjectID",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectPerson_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProjectPhase",
+                columns: table => new
+                {
+                    ProjectPhaseID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProjectID = table.Column<int>(type: "int", nullable: true),
+                    PhaseID = table.Column<int>(type: "int", nullable: true),
+                    ProjectPhaseStatusID = table.Column<int>(type: "int", nullable: true),
+                    ProjectPhaseStatusDescription = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ProjectPhaseStart = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ProjectPhaseFinish = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ProjectPhaseRecordedStart = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ProjectPhaseRecordedFinish = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ProjectPhaseTimeExtension = table.Column<int>(type: "int", nullable: true),
+                    ProjectPhaseTimeExtentedFinish = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ProjectPhaseExtensionReason = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
+                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletionDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjectPhase", x => x.ProjectPhaseID);
+                    table.ForeignKey(
+                        name: "FK_ProjectPhase_Phase_PhaseID",
+                        column: x => x.PhaseID,
+                        principalTable: "Phase",
+                        principalColumn: "PhaseID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectPhase_Project_ProjectID",
+                        column: x => x.ProjectID,
+                        principalTable: "Project",
+                        principalColumn: "ProjectID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectPhase_ProjectPhaseStatus_ProjectPhaseStatusID",
+                        column: x => x.ProjectPhaseStatusID,
+                        principalTable: "ProjectPhaseStatus",
+                        principalColumn: "ProjectPhaseStatusID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectPhase_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -1252,12 +1361,6 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_ProjectRelation", x => x.ProjectRelationID);
                     table.ForeignKey(
-                        name: "FK_ProjectRelation_AspNetUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_ProjectRelation_Project_ProjectID",
                         column: x => x.ProjectID,
                         principalTable: "Project",
@@ -1274,6 +1377,57 @@ namespace IBBPortal.Migrations
                         column: x => x.RelationTypeID,
                         principalTable: "RelationType",
                         principalColumn: "RelationTypeID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectRelation_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProjectSubfunctionFeature",
+                columns: table => new
+                {
+                    ProjectSubfunctionFeatureID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProjectID = table.Column<int>(type: "int", nullable: true),
+                    SubfunctionID = table.Column<int>(type: "int", nullable: true),
+                    SubfunctionFeatureID = table.Column<int>(type: "int", nullable: true),
+                    SubfunctionFeatureValue = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    SubfunctionFeatureValueDescription = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletionDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjectSubfunctionFeature", x => x.ProjectSubfunctionFeatureID);
+                    table.ForeignKey(
+                        name: "FK_ProjectSubfunctionFeature_Project_ProjectID",
+                        column: x => x.ProjectID,
+                        principalTable: "Project",
+                        principalColumn: "ProjectID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectSubfunctionFeature_Subfunction_SubfunctionID",
+                        column: x => x.SubfunctionID,
+                        principalTable: "Subfunction",
+                        principalColumn: "SubfunctionID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectSubfunctionFeature_SubfunctionFeature_SubfunctionFeatureID",
+                        column: x => x.SubfunctionFeatureID,
+                        principalTable: "SubfunctionFeature",
+                        principalColumn: "SubfunctionFeatureID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectSubfunctionFeature_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -1303,12 +1457,6 @@ namespace IBBPortal.Migrations
                 {
                     table.PrimaryKey("PK_ProjectZoningPlan", x => x.ProjectZoningPlanID);
                     table.ForeignKey(
-                        name: "FK_ProjectZoningPlan_AspNetUsers_UserID",
-                        column: x => x.UserID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_ProjectZoningPlan_Person_ZoningPlanResponsiblePersonID",
                         column: x => x.ZoningPlanResponsiblePersonID,
                         principalTable: "Person",
@@ -1319,6 +1467,12 @@ namespace IBBPortal.Migrations
                         column: x => x.ProjectID,
                         principalTable: "Project",
                         principalColumn: "ProjectID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectZoningPlan_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ProjectZoningPlan_ZoningPlanModificationStatus_ZoningPlanModificationStatusID",
@@ -1340,44 +1494,61 @@ namespace IBBPortal.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "RoleNameIndex",
-                table: "ApplicationRole",
-                column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApplicationRoleClaim_RoleId",
-                table: "ApplicationRoleClaim",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApplicationUserClaim_UserId",
-                table: "ApplicationUserClaim",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApplicationUserLogin_UserId",
-                table: "ApplicationUserLogin",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApplicationUserRole_RoleId",
-                table: "ApplicationUserRole",
-                column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "EmailIndex",
-                table: "AspNetUsers",
-                column: "NormalizedEmail");
-
-            migrationBuilder.CreateIndex(
-                name: "UserNameIndex",
-                table: "AspNetUsers",
-                column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+            migrationBuilder.CreateTable(
+                name: "ProjectBidding",
+                columns: table => new
+                {
+                    ProjectBiddingID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProjectID = table.Column<int>(type: "int", nullable: true),
+                    BiddingTitle = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    ProjectPhaseID = table.Column<int>(type: "int", nullable: true),
+                    DepartmentID = table.Column<int>(type: "int", nullable: false),
+                    BiddingCode = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
+                    BiddingDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    BiddingContractCost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    BiddingProgressPayment = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ContractorID = table.Column<int>(type: "int", nullable: true),
+                    BiddingDescription = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DeletionDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjectBidding", x => x.ProjectBiddingID);
+                    table.ForeignKey(
+                        name: "FK_ProjectBidding_Contractor_ContractorID",
+                        column: x => x.ContractorID,
+                        principalTable: "Contractor",
+                        principalColumn: "ContractorID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectBidding_Department_DepartmentID",
+                        column: x => x.DepartmentID,
+                        principalTable: "Department",
+                        principalColumn: "DepartmentID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProjectBidding_Project_ProjectID",
+                        column: x => x.ProjectID,
+                        principalTable: "Project",
+                        principalColumn: "ProjectID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectBidding_ProjectPhase_ProjectPhaseID",
+                        column: x => x.ProjectPhaseID,
+                        principalTable: "ProjectPhase",
+                        principalColumn: "ProjectPhaseID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectBidding_User_UserID",
+                        column: x => x.UserID,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Authority_UserID",
@@ -1540,6 +1711,31 @@ namespace IBBPortal.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProjectBidding_ContractorID",
+                table: "ProjectBidding",
+                column: "ContractorID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectBidding_DepartmentID",
+                table: "ProjectBidding",
+                column: "DepartmentID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectBidding_ProjectID",
+                table: "ProjectBidding",
+                column: "ProjectID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectBidding_ProjectPhaseID",
+                table: "ProjectBidding",
+                column: "ProjectPhaseID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectBidding_UserID",
+                table: "ProjectBidding",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProjectBoardApproval_BoardID",
                 table: "ProjectBoardApproval",
                 column: "BoardID");
@@ -1572,6 +1768,26 @@ namespace IBBPortal.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_ProjectExpropriation_UserID",
                 table: "ProjectExpropriation",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectFeasibility_ContractorID",
+                table: "ProjectFeasibility",
+                column: "ContractorID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectFeasibility_PersonID",
+                table: "ProjectFeasibility",
+                column: "PersonID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectFeasibility_ProjectID",
+                table: "ProjectFeasibility",
+                column: "ProjectID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectFeasibility_UserID",
+                table: "ProjectFeasibility",
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
@@ -1640,6 +1856,26 @@ namespace IBBPortal.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProjectPhase_PhaseID",
+                table: "ProjectPhase",
+                column: "PhaseID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectPhase_ProjectID",
+                table: "ProjectPhase",
+                column: "ProjectID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectPhase_ProjectPhaseStatusID",
+                table: "ProjectPhase",
+                column: "ProjectPhaseStatusID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectPhase_UserID",
+                table: "ProjectPhase",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProjectPhaseStatus_UserID",
                 table: "ProjectPhaseStatus",
                 column: "UserID");
@@ -1667,6 +1903,26 @@ namespace IBBPortal.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_ProjectStatus_UserID",
                 table: "ProjectStatus",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectSubfunctionFeature_ProjectID",
+                table: "ProjectSubfunctionFeature",
+                column: "ProjectID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectSubfunctionFeature_SubfunctionFeatureID",
+                table: "ProjectSubfunctionFeature",
+                column: "SubfunctionFeatureID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectSubfunctionFeature_SubfunctionID",
+                table: "ProjectSubfunctionFeature",
+                column: "SubfunctionID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectSubfunctionFeature_UserID",
+                table: "ProjectSubfunctionFeature",
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
@@ -1713,6 +1969,18 @@ namespace IBBPortal.Migrations
                 name: "IX_RelationType_UserID",
                 table: "RelationType",
                 column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "Role",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RoleClaims_RoleId",
+                table: "RoleClaims",
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ServiceArea_ParentServiceAreaID",
@@ -1765,6 +2033,38 @@ namespace IBBPortal.Migrations
                 column: "UserID");
 
             migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "User",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_UserID",
+                table: "User",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "User",
+                column: "NormalizedUserName",
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserClaims_UserId",
+                table: "UserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserLogins_UserId",
+                table: "UserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRoles_RoleId",
+                table: "UserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ZoningPlanModificationStatus_UserID",
                 table: "ZoningPlanModificationStatus",
                 column: "UserID");
@@ -1778,34 +2078,22 @@ namespace IBBPortal.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ApplicationRoleClaim");
-
-            migrationBuilder.DropTable(
-                name: "ApplicationUserClaim");
-
-            migrationBuilder.DropTable(
-                name: "ApplicationUserLogin");
-
-            migrationBuilder.DropTable(
-                name: "ApplicationUserRole");
-
-            migrationBuilder.DropTable(
-                name: "ApplicationUserToken");
-
-            migrationBuilder.DropTable(
                 name: "Authority");
 
             migrationBuilder.DropTable(
                 name: "FileCategory");
 
             migrationBuilder.DropTable(
-                name: "Phase");
+                name: "ProjectBidding");
 
             migrationBuilder.DropTable(
                 name: "ProjectBoardApproval");
 
             migrationBuilder.DropTable(
                 name: "ProjectExpropriation");
+
+            migrationBuilder.DropTable(
+                name: "ProjectFeasibility");
 
             migrationBuilder.DropTable(
                 name: "ProjectField");
@@ -1817,10 +2105,10 @@ namespace IBBPortal.Migrations
                 name: "ProjectPerson");
 
             migrationBuilder.DropTable(
-                name: "ProjectPhaseStatus");
+                name: "ProjectRelation");
 
             migrationBuilder.DropTable(
-                name: "ProjectRelation");
+                name: "ProjectSubfunctionFeature");
 
             migrationBuilder.DropTable(
                 name: "ProjectTeamCategory");
@@ -1829,16 +2117,28 @@ namespace IBBPortal.Migrations
                 name: "ProjectZoningPlan");
 
             migrationBuilder.DropTable(
-                name: "Shortcuts");
+                name: "RoleClaims");
 
             migrationBuilder.DropTable(
-                name: "SubfunctionFeature");
+                name: "Shortcuts");
 
             migrationBuilder.DropTable(
                 name: "TransactionMessages");
 
             migrationBuilder.DropTable(
-                name: "ApplicationRole");
+                name: "UserClaims");
+
+            migrationBuilder.DropTable(
+                name: "UserLogins");
+
+            migrationBuilder.DropTable(
+                name: "UserRoles");
+
+            migrationBuilder.DropTable(
+                name: "UserTokens");
+
+            migrationBuilder.DropTable(
+                name: "ProjectPhase");
 
             migrationBuilder.DropTable(
                 name: "Board");
@@ -1859,7 +2159,7 @@ namespace IBBPortal.Migrations
                 name: "RelationType");
 
             migrationBuilder.DropTable(
-                name: "Project");
+                name: "SubfunctionFeature");
 
             migrationBuilder.DropTable(
                 name: "ZoningPlanModificationStatus");
@@ -1868,10 +2168,22 @@ namespace IBBPortal.Migrations
                 name: "ZoningPlanStatus");
 
             migrationBuilder.DropTable(
-                name: "Subfunction");
+                name: "TransactionTypes");
 
             migrationBuilder.DropTable(
-                name: "TransactionTypes");
+                name: "Role");
+
+            migrationBuilder.DropTable(
+                name: "Phase");
+
+            migrationBuilder.DropTable(
+                name: "Project");
+
+            migrationBuilder.DropTable(
+                name: "ProjectPhaseStatus");
+
+            migrationBuilder.DropTable(
+                name: "Subfunction");
 
             migrationBuilder.DropTable(
                 name: "Person");
@@ -1904,7 +2216,7 @@ namespace IBBPortal.Migrations
                 name: "City");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "User");
         }
     }
 }

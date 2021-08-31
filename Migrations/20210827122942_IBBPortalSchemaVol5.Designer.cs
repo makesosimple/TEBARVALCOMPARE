@@ -11,8 +11,8 @@ using NetTopologySuite.Geometries;
 namespace IBBPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210823134327_IBBPortalSchemaVol4.2")]
-    partial class IBBPortalSchemaVol42
+    [Migration("20210827122942_IBBPortalSchemaVol5")]
+    partial class IBBPortalSchemaVol5
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,6 +21,37 @@ namespace IBBPortal.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("IBBPortal.Models.ApplicationRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("RoleDescription")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("Role");
+                });
 
             modelBuilder.Entity("IBBPortal.Models.ApplicationUser", b =>
                 {
@@ -33,6 +64,12 @@ namespace IBBPortal.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -74,11 +111,20 @@ namespace IBBPortal.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<byte[]>("ProfilePicture")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
@@ -94,7 +140,9 @@ namespace IBBPortal.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers");
+                    b.HasIndex("UserID");
+
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("IBBPortal.Models.Authority", b =>
@@ -695,6 +743,9 @@ namespace IBBPortal.Migrations
                     b.Property<DateTime?>("DeletionDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<decimal?>("EstimatedProjectCost")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("ProjectCode")
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
@@ -756,6 +807,78 @@ namespace IBBPortal.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("Project");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.ProjectBidding", b =>
+                {
+                    b.Property<int>("ProjectBiddingID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("BiddingCode")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<decimal>("BiddingContractCost")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("BiddingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("BiddingDescription")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<decimal>("BiddingProgressPayment")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("BiddingTitle")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int?>("ContractorID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DepartmentID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProjectID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProjectPhaseID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ProjectBiddingID");
+
+                    b.HasIndex("ContractorID");
+
+                    b.HasIndex("DepartmentID");
+
+                    b.HasIndex("ProjectID");
+
+                    b.HasIndex("ProjectPhaseID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("ProjectBidding");
                 });
 
             modelBuilder.Entity("IBBPortal.Models.ProjectBoardApproval", b =>
@@ -1139,6 +1262,73 @@ namespace IBBPortal.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("ProjectPerson");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.ProjectPhase", b =>
+                {
+                    b.Property<int>("ProjectPhaseID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("PhaseID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProjectID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProjectPhaseExtensionReason")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<DateTime?>("ProjectPhaseFinish")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ProjectPhaseRecordedFinish")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ProjectPhaseRecordedStart")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ProjectPhaseStart")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ProjectPhaseStatusDescription")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int?>("ProjectPhaseStatusID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProjectPhaseTimeExtension")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ProjectPhaseTimeExtentedFinish")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ProjectPhaseID");
+
+                    b.HasIndex("PhaseID");
+
+                    b.HasIndex("ProjectID");
+
+                    b.HasIndex("ProjectPhaseStatusID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("ProjectPhase");
                 });
 
             modelBuilder.Entity("IBBPortal.Models.ProjectPhaseStatus", b =>
@@ -1703,6 +1893,10 @@ namespace IBBPortal.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
+                    b.Property<string>("TransactionTypeSlug")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
@@ -1787,39 +1981,6 @@ namespace IBBPortal.Migrations
                     b.ToTable("ZoningPlanStatus");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("ApplicationRole");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRole");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -1841,7 +2002,7 @@ namespace IBBPortal.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("ApplicationRoleClaim");
+                    b.ToTable("RoleClaims");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -1865,18 +2026,16 @@ namespace IBBPortal.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ApplicationUserClaim");
+                    b.ToTable("UserClaims");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -1889,7 +2048,7 @@ namespace IBBPortal.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ApplicationUserLogin");
+                    b.ToTable("UserLogins");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
@@ -1904,7 +2063,7 @@ namespace IBBPortal.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("ApplicationUserRole");
+                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -1913,26 +2072,26 @@ namespace IBBPortal.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("ApplicationUserToken");
+                    b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("IBBPortal.Models.ApplicationRole", b =>
+            modelBuilder.Entity("IBBPortal.Models.ApplicationUser", b =>
                 {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
+                    b.HasOne("IBBPortal.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID");
 
-                    b.HasDiscriminator().HasValue("ApplicationRole");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("IBBPortal.Models.Authority", b =>
@@ -2170,6 +2329,41 @@ namespace IBBPortal.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("IBBPortal.Models.ProjectBidding", b =>
+                {
+                    b.HasOne("IBBPortal.Models.Contractor", "Contractor")
+                        .WithMany()
+                        .HasForeignKey("ContractorID");
+
+                    b.HasOne("IBBPortal.Models.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IBBPortal.Models.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectID");
+
+                    b.HasOne("IBBPortal.Models.ProjectPhase", "ProjectPhase")
+                        .WithMany()
+                        .HasForeignKey("ProjectPhaseID");
+
+                    b.HasOne("IBBPortal.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID");
+
+                    b.Navigation("Contractor");
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Project");
+
+                    b.Navigation("ProjectPhase");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("IBBPortal.Models.ProjectBoardApproval", b =>
                 {
                     b.HasOne("IBBPortal.Models.Board", "Board")
@@ -2331,6 +2525,33 @@ namespace IBBPortal.Migrations
                     b.Navigation("Person");
 
                     b.Navigation("Project");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.ProjectPhase", b =>
+                {
+                    b.HasOne("IBBPortal.Models.Phase", "Phase")
+                        .WithMany()
+                        .HasForeignKey("PhaseID");
+
+                    b.HasOne("IBBPortal.Models.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectID");
+
+                    b.HasOne("IBBPortal.Models.ProjectPhaseStatus", "ProjectPhaseStatus")
+                        .WithMany()
+                        .HasForeignKey("ProjectPhaseStatusID");
+
+                    b.HasOne("IBBPortal.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID");
+
+                    b.Navigation("Phase");
+
+                    b.Navigation("Project");
+
+                    b.Navigation("ProjectPhaseStatus");
 
                     b.Navigation("User");
                 });
@@ -2556,7 +2777,7 @@ namespace IBBPortal.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("IBBPortal.Models.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2583,7 +2804,7 @@ namespace IBBPortal.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("IBBPortal.Models.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)

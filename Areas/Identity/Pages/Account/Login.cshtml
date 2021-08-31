@@ -13,10 +13,10 @@
 </div>
 <form class="user" id="account" method="post">
     <div class="form-group">
-        <input asp-for="Input.Email" type="email" class="form-control form-control-user"
-               id="exampleInputEmail" aria-describedby="emailHelp"
-               placeholder="E-Posta Adresinizi Girin">
-        <span asp-validation-for="Input.Email" class="text-danger"></span>
+        <input asp-for="Input.UserName" class="form-control form-control-user"
+               id="exampleInputUserName" aria-describedby="userNameHelp"
+               placeholder="Kullanıcı Adınızı Girin">
+        <span asp-validation-for="Input.UserName" class="text-danger"></span>
     </div>
     <div class="form-group">
         <input asp-for="Input.Password" type="password" class="form-control form-control-user"
