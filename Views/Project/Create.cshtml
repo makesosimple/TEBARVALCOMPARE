@@ -39,6 +39,25 @@
                             </div>
                         </div>
 
+                        <!-- Project End Time -->
+                        <div class="form-group row">
+                            <label asp-for="ProjectEndTime" class="col-12 col-xl-4 col-form-label">Proje Bitiş Tarihi</label>
+                            <div class="col-12 col-xl-8">
+                                <input asp-for="ProjectEndTime" type="text" class="form-control datepicker">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span asp-validation-for="ProjectEndTime" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Project Year -->
+                        <div class="form-group row">
+                            <label asp-for="ProjectYear" class="col-12 col-lg-4 col-form-label">Proje Yılı</label>
+                            <div class="col-12 col-lg-8">
+                                <input asp-for="ProjectYear" type="number" class="form-control">
+                                <span asp-validation-for="ProjectYear" class="text-danger"></span>
+                            </div>
+                        </div>
+
                         <hr />
 
                         <!-- Requesting Department ID -->
@@ -71,6 +90,17 @@
                                     <option value="">Proje Sahibi Seçin</option>
                                 </select>
                                 <span asp-validation-for="ProjectOwnerPersonID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Project Manager ID -->
+                        <div class="form-group row">
+                            <label asp-for="ProjectManagerID" class="col-12 col-xl-4 col-form-label">Proje Müdürü</label>
+                            <div class="col-12 col-xl-8">
+                                <select asp-for="ProjectManagerID" class="form-control" id="selectProjectManager" style="width: 100%;">
+                                    <option value="">Proje Müdürü Seçin</option>
+                                </select>
+                                <span asp-validation-for="ProjectManagerID" class="text-danger"></span>
                             </div>
                         </div>
 
@@ -128,11 +158,91 @@
                             </div>
                         </div>
 
+                    </div>
+                    <div class="col-12 col-xl-6">
+                        <!-- Project Title (Production) -->
+                        <div class="form-group row">
+                            <label asp-for="ProjectProductionName" class="col-12 col-lg-4 col-form-label">Proje Başlığı (Yapım)</label>
+                            <div class="col-12 col-lg-8">
+                                <input asp-for="ProjectProductionName" type="text" class="form-control">
+                                <span asp-validation-for="ProjectProductionName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Project Status Description Date -->
+                        <div class="form-group row">
+                            <label asp-for="ProjectProductionEndTime" class="col-12 col-xl-4 col-form-label">Proje Bitiş Tarihi (Yapım)</label>
+                            <div class="col-12 col-xl-8">
+                                <input asp-for="ProjectProductionEndTime" type="text" class="form-control datepicker">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span asp-validation-for="ProjectProductionEndTime" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Production Responsible Department ID -->
+                        <div class="form-group row">
+                            <label asp-for="ProjectProductionRespDepartmentID" class="col-12 col-xl-4 col-form-label">Sorumlu Müdürlük (Yapım)</label>
+                            <div class="col-12 col-xl-8">
+                                <select asp-for="ProjectProductionRespDepartmentID" class="form-control" id="selectProductionResponsibleDepartment" style="width: 100%;" required>
+                                    <option value="">Sorumlu Müdürlük Seçin</option>
+                                </select>
+                                <span asp-validation-for="ProjectProductionRespDepartmentID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <!-- Project Object ID -->
+                        <div class="form-group row">
+                            <label asp-for="ProjectObjectID" class="col-12 col-lg-4 col-form-label">Nesne No.</label>
+                            <div class="col-12 col-lg-8">
+                                <input asp-for="ProjectObjectID" type="number" class="form-control">
+                                <span asp-validation-for="ProjectObjectID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Project UID -->
+                        <div class="form-group row">
+                            <label asp-for="ProjectUID" class="col-12 col-lg-4 col-form-label">UID</label>
+                            <div class="col-12 col-lg-8">
+                                <input asp-for="ProjectUID" type="text" class="form-control">
+                                <span asp-validation-for="ProjectUID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Project Global ID -->
+                        <div class="form-group row">
+                            <label asp-for="ProjectGlobalID" class="col-12 col-lg-4 col-form-label">Global Proje No.</label>
+                            <div class="col-12 col-lg-8">
+                                <input asp-for="ProjectGlobalID" type="text" class="form-control">
+                                <span asp-validation-for="ProjectGlobalID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Project File Number -->
+                        <div class="form-group row">
+                            <label asp-for="ProjectFileNumber" class="col-12 col-lg-4 col-form-label">Proje Dosya No.</label>
+                            <div class="col-12 col-lg-8">
+                                <input asp-for="ProjectFileNumber" type="text" class="form-control">
+                                <span asp-validation-for="ProjectFileNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Project Package Number -->
+                        <div class="form-group row">
+                            <label asp-for="ProjectPackageNumber" class="col-12 col-lg-4 col-form-label">Proje Paket No.</label>
+                            <div class="col-12 col-lg-8">
+                                <input asp-for="ProjectPackageNumber" type="text" class="form-control">
+                                <span asp-validation-for="ProjectPackageNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-12">
                         <div class="buttons mt-3 my-md-0">
                             <button type="submit" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
                             <a asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -159,7 +269,7 @@
             }
         });
 
-        $('#selectResponsibleDepartment').select2({
+        $('#selectResponsibleDepartment, #selectProductionResponsibleDepartment').select2({
             theme: "ibb",
             language: "tr",
             ajax: {
@@ -174,7 +284,7 @@
             }
         });
 
-        $('#selectProjectOwner').select2({
+        $('#selectProjectOwner, #selectProjectManager').select2({
             theme: "ibb",
             language: "tr",
             ajax: {

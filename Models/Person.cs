@@ -45,8 +45,6 @@ namespace IBBPortal.Models
         [ForeignKey("ContractorID")]
         public Contractor Contractor { get; set; }
 
-        public List<Project> RelatedProjects { get; set; }
-
         public string UserID { get; set; }
         [ForeignKey("UserID")]
         public ApplicationUser User { get; set; }

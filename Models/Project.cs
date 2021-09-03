@@ -7,21 +7,15 @@ using IndexAttribute = Microsoft.EntityFrameworkCore.IndexAttribute;
 
 namespace IBBPortal.Models
 {
-
-    //[Index(nameof(ProjectCoordinatorPersonID))]
-    //[Index(nameof(DistrictID))]
-    //[Index(nameof(ProjectFeasibilityID))]
-    //[Index(nameof(ProjectExpropriationID))]
-    //[Index(nameof(ProjectZoningPlanID))]
-    //[Index(nameof(ProjectBoardApprovalID))]
     [Index(nameof(RequestingDepartmentID))]
     [Index(nameof(ResponsibleDepartmentID))]
     [Index(nameof(ProjectOwnerPersonID))]
+    [Index(nameof(ProjectManagerID))]
     [Index(nameof(ProjectServiceAreaID))]
     [Index(nameof(ProjectImportanceID))]
     [Index(nameof(ProjectStatusID))]
     [Index(nameof(UserID))]
-
+    [Index(nameof(ProjectProductionRespDepartmentID))]
     public class Project
     {   
         //Primary Key. Common on all tables
@@ -81,6 +75,39 @@ namespace IBBPortal.Models
         //This Value will come from the Bidding tab!
         [Column(TypeName = "decimal(18, 2)")]
         public decimal? EstimatedProjectCost { get; set; }
+
+        //Project Right Column Section
+        public int? ProjectObjectID { get; set; }
+
+        [MaxLength(64, ErrorMessage = "Bu alana maksimum 64 karakter girebilirsiniz.")]
+        public string? ProjectUID { get; set; }
+
+        [MaxLength(64, ErrorMessage = "Bu alana maksimum 64 karakter girebilirsiniz.")]
+        public string? ProjectGlobalID { get; set; }
+
+        public int? ProjectYear { get; set; }
+
+        public int? ProjectProductionRespDepartmentID { get; set; }
+        [ForeignKey("ProjectProductionRespDepartmentID")]
+        public Department ProjectProductionRespDepartment { get; set; }
+
+        [MaxLength(64, ErrorMessage = "Bu alana maksimum 64 karakter girebilirsiniz.")]
+        public string? ProjectFileNumber { get; set; }
+
+        [MaxLength(64, ErrorMessage = "Bu alana maksimum 64 karakter girebilirsiniz.")]
+        public string? ProjectPackageNumber { get; set; }
+
+        public int? ProjectManagerID { get; set; }
+        [ForeignKey("ProjectManagerID")]
+        public Person ProjectManager { get; set; }
+
+        [MaxLength(1024, ErrorMessage = "Bu alana maksimum 1024 karakter girebilirsiniz.")]
+        public string? ProjectProductionName { get; set; }
+
+        public DateTime? ProjectEndTime { get; set; }
+
+        public DateTime? ProjectProductionEndTime { get; set; }
+        //End of Project Right Column Section
 
         public string UserID { get; set; }
         [ForeignKey("UserID")]
