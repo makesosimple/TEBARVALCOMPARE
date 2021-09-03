@@ -53,7 +53,7 @@ namespace IBBPortal.Controllers
                 int recordsTotal = 0;
 
                 var data = _context.Users.Select(c => new { c.Id, c.UserName, FullName = c.FirstName + " " + c.LastName, c.Email });
-
+                var fullData = data;
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
                 {
@@ -83,7 +83,7 @@ namespace IBBPortal.Controllers
                 var passData = data.Skip(skip).Take(pageSize).ToList();
 
                 //Returning Json Data  
-                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = passData });
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = passData, fullData = fullData });
 
             }
 
@@ -183,7 +183,7 @@ namespace IBBPortal.Controllers
                     await _userManager.AddToRoleAsync(user, roleToAdd.NormalizedName);
 
                     TempData["SuccessTitle"] = "BAŞARILI";
-                    TempData["SuccessMessage"] = $"Kayıt başarıyla oluşturuldu.";
+                    TempData["SuccessMessage"] = $"Kayıt başarıyla oluşturuldu:" + user.FirstName;
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
