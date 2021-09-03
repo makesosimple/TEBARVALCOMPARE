@@ -24,10 +24,10 @@ namespace IBBPortal.Models
         public TransactionTypes TransactionType { get; set; }
         
         [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
-        [MaxLength(64, ErrorMessage = "Bu alana maksimum 64 karakter girebilirsiniz.")]
+        [MaxLength(512, ErrorMessage = "Bu alana maksimum 512 karakter girebilirsiniz.")]
         public string TransactionMessageContent { get; set; }
 
-        [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
+        [MaxLength(512, ErrorMessage = "Bu alana maksimum 512 karakter girebilirsiniz.")]
         public string? TransactionMessageDescription { get; set; }
 
         public string UserID { get; set; }

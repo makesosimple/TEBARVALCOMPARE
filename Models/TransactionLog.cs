@@ -18,25 +18,38 @@ namespace IBBPortal.Models
     public class TransactionLog
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int TransactionMessageID { get; set; }
         public int TransactionLogID { get; set; }
-        public int TransactionTypeID { get; set; }
-        public int ProjectID { get; set; }
-        
+
+        public int TransactionMessageID { get; set; }
+        [ForeignKey("TransactionMessageID")]
+        public TransactionMessages TransactionMessage { get; set; }
+
+        public int? TransactionTypeID { get; set; }
+        [ForeignKey("TransactionTypeID")]
+        public TransactionTypes TransactionType { get; set; }
+
+        public int? ProjectID { get; set; }
+        [ForeignKey("ProjectID")]
+        public Project Project { get; set; }
+
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
+        [MaxLength(512, ErrorMessage = "Bu alana maksimum 512 karakter girebilirsiniz.")]
         public string TransactionLogMessageContent { get; set; }
 
         public bool TransactionLogRead { get; set; }
 
-        public string TransactionLogForUserID { get; set; }
+        public string? TransactionLogForUserID { get; set; }
+        [ForeignKey("TransactionLogForUserID")]
+        public ApplicationUser TransactionLogForUser { get; set; }
 
+        [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
         public string? TransactionLogSlug { get; set; }
 
-        public DateTime CreationDate { get; set; }
+        [Required]
+        public DateTime CreationDate { get; set; } = DateTime.Now;
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? UpdateDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? DeletionDate { get; set; }
 
     }
