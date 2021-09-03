@@ -30,6 +30,15 @@
                             </div>
                         </div>
 
+                        <!-- Service Area Level -->
+                        <div class="form-group row">
+                            <label asp-for="ServiceAreaLevel" class="col-12 col-xl-4 col-form-label">Hizmet Alanı Seviyesi<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8">
+                                <input asp-for="ServiceAreaLevel" type="number" class="form-control" required>
+                                <span asp-validation-for="ServiceAreaLevel" class="text-danger"></span>
+                            </div>
+                        </div>
+
                         <!-- Parent Service Area ID -->
                         <div class="form-group row">
                             <label asp-for="ParentServiceAreaID" class="col-12 col-xl-4 col-form-label">Bağlı Olduğu Hizmet Alanı</label>
