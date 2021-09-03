@@ -396,6 +396,8 @@ namespace IBBPortal.Controllers
                     _context.Update(project);
                     await _context.SaveChangesAsync();
 
+                    
+
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $"{project.ProjectID} numaralı kayıt başarıyla düzenlendi.";
                 }
@@ -483,6 +485,7 @@ namespace IBBPortal.Controllers
             if (projectFieldToUpdate == null)
             {
                 ProjectField projectField = new ProjectField();
+                
 
                 double projectLongitude = Convert.ToDouble(Request.Form["ProjectLongitude"].FirstOrDefault());
                 double projectLatitude = Convert.ToDouble(Request.Form["ProjectLatitude"].FirstOrDefault());
