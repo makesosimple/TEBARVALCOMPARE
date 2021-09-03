@@ -2,7 +2,7 @@
 
 namespace IBBPortal.Migrations
 {
-    public partial class IBBPortalSchemaVol503 : Migration
+    public partial class IBBPortalSchemaVol504 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
