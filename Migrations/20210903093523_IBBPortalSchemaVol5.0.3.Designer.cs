@@ -4,15 +4,17 @@ using IBBPortal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 
 namespace IBBPortal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210903093523_IBBPortalSchemaVol5.0.3")]
+    partial class IBBPortalSchemaVol503
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -762,17 +764,6 @@ namespace IBBPortal.Migrations
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
-                    b.Property<DateTime?>("ProjectEndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ProjectFileNumber")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<string>("ProjectGlobalID")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
                     b.Property<string>("ProjectIBBCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -780,27 +771,7 @@ namespace IBBPortal.Migrations
                     b.Property<int?>("ProjectImportanceID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ProjectManagerID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ProjectObjectID")
-                        .HasColumnType("int");
-
                     b.Property<int?>("ProjectOwnerPersonID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ProjectPackageNumber")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<DateTime?>("ProjectProductionEndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ProjectProductionName")
-                        .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
-
-                    b.Property<int?>("ProjectProductionRespDepartmentID")
                         .HasColumnType("int");
 
                     b.Property<int?>("ProjectServiceAreaID")
@@ -821,13 +792,6 @@ namespace IBBPortal.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("ProjectUID")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<int?>("ProjectYear")
-                        .HasColumnType("int");
-
                     b.Property<int?>("RequestingDepartmentID")
                         .HasColumnType("int");
 
@@ -844,11 +808,7 @@ namespace IBBPortal.Migrations
 
                     b.HasIndex("ProjectImportanceID");
 
-                    b.HasIndex("ProjectManagerID");
-
                     b.HasIndex("ProjectOwnerPersonID");
-
-                    b.HasIndex("ProjectProductionRespDepartmentID");
 
                     b.HasIndex("ProjectServiceAreaID");
 
@@ -2398,17 +2358,9 @@ namespace IBBPortal.Migrations
                         .WithMany("RelatedProjects")
                         .HasForeignKey("ProjectImportanceID");
 
-                    b.HasOne("IBBPortal.Models.Person", "ProjectManager")
-                        .WithMany()
-                        .HasForeignKey("ProjectManagerID");
-
                     b.HasOne("IBBPortal.Models.Person", "ProjectOwnerPerson")
-                        .WithMany()
+                        .WithMany("RelatedProjects")
                         .HasForeignKey("ProjectOwnerPersonID");
-
-                    b.HasOne("IBBPortal.Models.Department", "ProjectProductionRespDepartment")
-                        .WithMany()
-                        .HasForeignKey("ProjectProductionRespDepartmentID");
 
                     b.HasOne("IBBPortal.Models.ServiceArea", "ProjectServiceArea")
                         .WithMany("RelatedProjects")
@@ -2432,11 +2384,7 @@ namespace IBBPortal.Migrations
 
                     b.Navigation("ProjectImportance");
 
-                    b.Navigation("ProjectManager");
-
                     b.Navigation("ProjectOwnerPerson");
-
-                    b.Navigation("ProjectProductionRespDepartment");
 
                     b.Navigation("ProjectServiceArea");
 
@@ -2976,6 +2924,11 @@ namespace IBBPortal.Migrations
             modelBuilder.Entity("IBBPortal.Models.JobTitle", b =>
                 {
                     b.Navigation("RelatedPeople");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.Person", b =>
+                {
+                    b.Navigation("RelatedProjects");
                 });
 
             modelBuilder.Entity("IBBPortal.Models.ProjectImportance", b =>

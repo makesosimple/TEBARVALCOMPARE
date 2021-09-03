@@ -19,6 +19,8 @@ namespace IBBPortal.Models
         [MaxLength(50, ErrorMessage = "Bu alana maksimum 50 karakter girebilirsiniz.")]
         public string ServiceAreaTitle { get; set; }
 
+        public int? ServiceAreaLevel { get; set; }
+
         [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
         public string? ServiceAreaDescription { get; set; }
 

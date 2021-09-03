@@ -154,7 +154,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ServiceAreaID,ServiceAreaTitle,ServiceAreaDescription,ParentServiceAreaID,UserID,CreationDate,UpdateDate,DeletionDate")] ServiceArea serviceArea)
+        public async Task<IActionResult> Create([Bind("ServiceAreaID,ServiceAreaTitle,ServiceAreaLevel,ServiceAreaDescription,ParentServiceAreaID,UserID,CreationDate,UpdateDate,DeletionDate")] ServiceArea serviceArea)
         {
             if (ModelState.IsValid)
             {
@@ -201,7 +201,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ServiceAreaID,ServiceAreaTitle,ServiceAreaDescription,ParentServiceAreaID,UserID,CreationDate,UpdateDate,DeletionDate")] ServiceArea serviceArea)
+        public async Task<IActionResult> Edit(int id, [Bind("ServiceAreaID,ServiceAreaTitle,ServiceAreaLevel,ServiceAreaDescription,ParentServiceAreaID,UserID,CreationDate,UpdateDate,DeletionDate")] ServiceArea serviceArea)
         {
             if (id != serviceArea.ServiceAreaID)
             {
