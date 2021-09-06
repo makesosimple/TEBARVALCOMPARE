@@ -53,21 +53,20 @@ namespace IBBPortal.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var data = _context.Project.Select(c => new 
-                { 
-                    c.ProjectID, 
+                var data = _context.Project.Select(c => new
+                {
+                    c.ProjectID,
                     c.ProjectTitle,
-                    RequestingDepartmentTitle = c.RequestingDepartment.DepartmentTitle, 
-                    ResponsibleDepartmentTitle = c.ResponsibleDepartment.DepartmentTitle, 
+                    RequestingDepartmentTitle = c.RequestingDepartment.DepartmentTitle,
+                    ResponsibleDepartmentTitle = c.ResponsibleDepartment.DepartmentTitle,
                     OwnerFullName = c.ProjectOwnerPerson.PersonName.Trim() + " " + c.ProjectOwnerPerson.PersonSurname.Trim(),
                     ServiceAreaTitle = c.ProjectServiceArea.ServiceAreaTitle,
                     ProjectStatusTitle = c.ProjectStatus.ProjectStatusTitle,
                     ProjectImportanceTitle = c.ProjectImportance.ProjectImportanceTitle,
-                    
-                    //_context.Shortcuts.Where(s => s.UserID == _userManager.GetUserId(HttpContext.User), s => s.ShortcutsProjectID == c.ProjectID)
+                    ShortcutID = _context.Shortcuts.Where(s => (s.UserID == _userManager.GetUserId(HttpContext.User) && s.ShortcutsProjectID == c.ProjectID)).ToList(),
                 });
 
-                var shortcuts = _context.Shortcuts.Where(s => s.UserID == _userManager.GetUserId(HttpContext.User)).ToList();
+                //var shortcuts = _context.Shortcuts.Where(s => s.UserID == _userManager.GetUserId(HttpContext.User)).ToList();
 
                 /*var data = _context.Project.Join(_context.Shortcuts.Where(s => s.UserID == _userManager.GetUserId(HttpContext.User)), 
                     p => p.ProjectID, 
@@ -117,7 +116,7 @@ namespace IBBPortal.Controllers
                 var passData = data.Skip(skip).Take(pageSize).ToList();
 
                 //Returning Json Data  
-                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = passData, shortCuts = shortcuts });
+                return Json(new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = passData});
 
             }
 
