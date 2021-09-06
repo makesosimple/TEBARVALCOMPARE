@@ -98,7 +98,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.PhaseID.ToString(),
                                         text = x.PhaseOrder + ". " + x.PhaseTitle
-                                    });
+                                    }).Take(10);
 
                 if (!String.IsNullOrEmpty(term))
                 {

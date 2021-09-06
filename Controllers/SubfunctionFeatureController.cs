@@ -100,7 +100,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.SubfunctionFeatureID.ToString(),
                                         text = x.SubfunctionFeatureTitle
-                                    });
+                                    }).Take(10);
 
                 if (!String.IsNullOrEmpty(term))
                 {

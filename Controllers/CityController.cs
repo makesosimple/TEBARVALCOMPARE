@@ -99,9 +99,9 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.CityID.ToString(),
                                         text = x.CityName
-                                    });
+                                    }).Take(10);
 
-                if(!String.IsNullOrEmpty(term))
+                if (!String.IsNullOrEmpty(term))
                 {
                     CityData = CityData.Where(m => m.text.Contains(term));
                 }
