@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using IBBPortal.Data;
 using System.Threading.Tasks;
 using IBBPortal.ViewModels;
+using System;
 
 namespace IBBPortal.Controllers
 {
@@ -35,22 +36,48 @@ namespace IBBPortal.Controllers
             ViewBag.numberOfProjectsInAMonth = dashboardSummary.ProjectsStartedInLastMonth;
             ViewBag.numberOfCompletedProjects = dashboardSummary.NumberOfCompletedProjects;
 
+            //List myShortcuts = new List();
+            //try
+            //{
+            // Console.WriteLine("_userManager.GetUserId(HttpContext.User)=", _userManager.GetUserId(HttpContext.User));
             var myShortcuts = await _context.ShortcutListModel.FromSqlRaw("SELECT Project.ProjectID, Project.ProjectTitle FROM Shortcuts LEFT JOIN Project ON Project.ProjectID = Shortcuts.ShortcutsProjectID WHERE Shortcuts.UserID = {0}", _userManager.GetUserId(HttpContext.User)).ToListAsync();
+                //} catch (Exception e)
+                //{
+                //myShortcuts = "";
+                //}
+
+
 
             ViewBag.myShortcuts = myShortcuts;
 
             var serviceAreaList = await _context.ServicePieChartModel.FromSqlRaw(@"SELECT
-                       ServiceAreaID,
-                       ServiceAreaTitle,
+                       Project.ProjectStatusID AS ServiceAreaID,
+                       ProjectStatusTitle AS ServiceAreaTitle,
                        (COUNT(ProjectID)) AS NumberOfProjects
                        
                     FROM Project
-                    LEFT JOIN ServiceArea ON Project.ProjectServiceAreaID = ServiceArea.ServiceAreaID
-                    GROUP BY ServiceAreaID, ServiceAreaTitle
+                    LEFT JOIN ProjectStatus ON Project.ProjectStatusID = ProjectStatus.ProjectStatusID
+                    GROUP BY Project.ProjectStatusID, ProjectStatus.ProjectStatusTitle
                     ORDER BY NumberOfProjects DESC
                     ").ToListAsync();
 
+            var projectCountByYear = await _context.DashboardLineGraphModel.FromSqlRaw(@"SELECT 
+                    
+                    ProjectYear,
+                    COUNT(ProjectID) AS NumberOfProjects
+                    
+                    FROM Project
+                    GROUP BY ProjectYear
+                    ORDER BY ProjectYear ASC
+                    
+            ").ToListAsync();
+
+
+
+            
+
             ViewBag.serviceAreaList = serviceAreaList;
+            ViewBag.projectCountByYear = projectCountByYear;
 
             return View();
         }
