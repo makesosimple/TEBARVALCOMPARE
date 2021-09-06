@@ -42,7 +42,7 @@ namespace IBBPortal.Models
 
         public double? ProjectPaysageArea { get; set; }
 
-        [MaxLength(64, ErrorMessage = "Bu alana maksimum 64 karakter girebilirsiniz.")]
+        [MaxLength(1024, ErrorMessage = "Bu alana maksimum 1024 karakter girebilirsiniz.")]
         public string? ProjectPaftaAdaParsel { get; set; }
 
         //Project Physical Location and Shape (Important as this data will be projected to Map.)

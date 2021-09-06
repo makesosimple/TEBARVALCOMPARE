@@ -8,6 +8,7 @@ using IndexAttribute = Microsoft.EntityFrameworkCore.IndexAttribute;
 namespace IBBPortal.Models
 {
     [Index(nameof(RequestingDepartmentID))]
+    [Index(nameof(RequestingAuthorityID))]
     [Index(nameof(ResponsibleDepartmentID))]
     [Index(nameof(ProjectOwnerPersonID))]
     [Index(nameof(ProjectManagerID))]
@@ -39,6 +40,10 @@ namespace IBBPortal.Models
         public int? RequestingDepartmentID { get; set; }
         [ForeignKey("RequestingDepartmentID")]
         public Department RequestingDepartment { get; set; }
+
+        public int? RequestingAuthorityID { get; set; }
+        [ForeignKey("RequestingAuthorityID")]
+        public Authority RequestingAuthority { get; set; }
 
         //Responsible Department. Bind to Department Model.
         public int? ResponsibleDepartmentID { get; set; }

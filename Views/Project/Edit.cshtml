@@ -125,6 +125,25 @@
                                 </div>
                             </div>
 
+                            <!-- Requesting Authority ID -->
+                            <div class="form-group row">
+                                <label asp-for="RequestingAuthorityID" class="col-12 col-xl-4 col-form-label">Talep Eden Makam<span class="text-danger">*</span></label>
+                                <div class="col-12 col-xl-8">
+                                    <select asp-for="RequestingAuthorityID" class="form-control" id="selectRequestingAuthority" style="width: 100%;" required>
+                                        @if (@Model.RequestingAuthority is not null)
+                                        {
+                                            <option value="@Model.RequestingAuthority.AuthorityID">@Model.RequestingAuthority.AuthorityTitle</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="">Talep Eden Makam Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="RequestingAuthorityID" class="text-danger"></span>
+                                </div>
+                            </div>
+
                             <!-- Responsible Management ID -->
                             <div class="form-group row">
                                 <label asp-for="ResponsibleDepartmentID" class="col-12 col-xl-4 col-form-label">Sorumlu Müdürlük<span class="text-danger">*</span></label>
@@ -407,6 +426,21 @@
             language: "tr",
             ajax: {
                 url: '/Person/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
+        });
+
+        $('#selectRequestingAuthority').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/Authority/JsonSelectData',
                 dataType: 'json',
                 processResults: function (response) {
 
