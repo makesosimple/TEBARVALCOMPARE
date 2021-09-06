@@ -99,7 +99,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.ContractorTypeID.ToString(),
                                         text = x.ContractorTypeTitle
-                                    });
+                                    }).Take(10);
 
                 if (!String.IsNullOrEmpty(term))
                 {

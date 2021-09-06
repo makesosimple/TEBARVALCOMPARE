@@ -98,7 +98,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.ZoningPlanModificationStatusID.ToString(),
                                         text = x.ZoningPlanModificationStatusTitle
-                                    });
+                                    }).Take(10);
 
                 if (!String.IsNullOrEmpty(term))
                 {

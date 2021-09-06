@@ -103,7 +103,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.Id,
                                         text = x.Name
-                                    });
+                                    }).Take(10);
 
                 if (!String.IsNullOrEmpty(term))
                 {

@@ -99,7 +99,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.JobFieldID.ToString(),
                                         text = x.JobFieldTitle
-                                    });
+                                    }).Take(10);
 
                 if (!String.IsNullOrEmpty(term))
                 {
