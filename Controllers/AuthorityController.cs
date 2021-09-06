@@ -106,7 +106,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.AuthorityID.ToString(),
                                         text = x.AuthorityTitle
-                                    });
+                                    }).Take(10);
 
                 if (!String.IsNullOrEmpty(term))
                 {

@@ -101,7 +101,7 @@ namespace IBBPortal.Controllers
                                         text = x.DistrictName,
                                         city = x.CityID,
                                         cityCode = x.City.CityCode
-                                    });
+                                    }).Take(10);
 
                 if (!String.IsNullOrEmpty(term))
                 {

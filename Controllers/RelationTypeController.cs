@@ -97,7 +97,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.RelationTypeID.ToString(),
                                         text = x.RelationTypeTitle
-                                    });
+                                    }).Take(10);
 
                 if (!String.IsNullOrEmpty(term))
                 {
