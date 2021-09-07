@@ -8,8 +8,8 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            /* Primary Buttons for DataTable. Must be common on all tables. */
-            $.fn.dataTable.ext.buttons.alert = {
+            /* Primary Buttons for Project Table */
+            $.fn.dataTable.ext.buttons.map = {
                 className: 'btn btn-primary btn-circle border-0',
 
                 action: function (e, dt, node, config) {
@@ -17,18 +17,41 @@
                 }
             };
 
+            $.fn.dataTable.ext.buttons.columnVis = {
+                className: 'btn btn-info btn-circle border-0',
+                action: function (e, dt, node, config) {
+                    $("#columnModal").modal('show');
+                }
+            };
+
             let table = $("#dataTable").DataTable({
                 "dom": '<"top d-flex justify-content-start my-2"B>rt<"d-flex justify-content-between flex-column align-items-baseline flex-md-row mt-3"ipl><"clear">',
-                buttons: [
+                "buttons": [
                     {
-                        extend: 'alert',
+                        extend: 'map',
                         text: '<i class="fas fa-map-marker-alt"></i>',
-                        className: 'bg-primary',
+                        className: 'bg-primary'
                     },
+                    {
+                        extend: 'columnVis',
+                        text: '<i class="fas fa-eye-slash"></i>'
+                    },
+                    {
+                        extend: 'excel',
+                        autoFilter: true,
+                        text: '<i class="fas fa-file-excel"></i>',
+                        className: 'btn btn-success btn-circle border-0'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        text: '<i class="fas fa-file-pdf"></i>',
+                        className: 'btn btn-danger btn-circle border-0'
+                    }
                 ],
                 "language": {
                     "url": "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Turkish.json",
                 },
+                "order": [[1, "asc"]],
                 "processing": false, // for show progress bar
                 "serverSide": true, // for process server side
                 "filter": true, // this is for disable filter (search box)
@@ -48,15 +71,15 @@
                             }
 
                             const icons =
-                                `<div class="d-flex align-items-center cem">
-                                    <a href="#" class="dtActionButton" id="gotoFiles"><i class="far fa-folder"></i></a>
-                                    <a href="#" class="dtActionButton" id="seeImages"><i class="far fa-image"></i></a>
-                                    <a href="#" class="dtActionButton" id="seeStatistics"><i class="fas fa-chart-line"></i></a>
-                                    <a href="#" class="dtActionButton" id="exportProject"><i class="fas fa-sign-out-alt"></i></a>
-                                    <a href="#" class="dtActionButton ${classActive}" id="addShortcut" code="${row.projectID}"></i><i class="fas fa-heart"></i></a>
-                                  </div>`;
+                                `<div class="d-flex align-items-center">
+                                        <a href="#" class="dtActionButton" id="gotoFiles"><i class="far fa-folder"></i></a>
+                                        <a href="#" class="dtActionButton" id="seeImages"><i class="far fa-image"></i></a>
+                                        <a href="#" class="dtActionButton" id="seeStatistics"><i class="fas fa-chart-line"></i></a>
+                                        <a href="#" class="dtActionButton" id="exportProject"><i class="fas fa-sign-out-alt"></i></a>
+                                        <a href="#" class="dtActionButton ${classActive}" id="addShortcut" code="${row.projectID}"></i><i class="fas fa-heart"></i></a>
+                                      </div>`;
 
-                            
+
                             return icons;
 
                         }
@@ -65,7 +88,7 @@
                         "data": "projectTitle",
                         "autoWidth": true,
                         "render": function (data, type, row) {
-                            return '<a href="/Project/Edit/'+row.projectID+'">'+data+'</a>';
+                            return '<a href="/Project/Edit/' + row.projectID + '">' + data + '</a>';
                         }
                     },
                     { "data": "requestingDepartmentTitle", "autoWidth": true },
@@ -90,15 +113,15 @@
                         "data": null,
                         "render": function (data, type, full, meta, row) {
                             return `<div class="d-flex align-items-center justify-content-end">\
-                                                <a class="btn btn-circle bg-turqoise text-white mr-1" href="/Project/Edit/${full.projectID}"><i class="fas fa-edit"></i></a>\
-                                                <button type="button" class="btn btn-circle bg-warning text-white mr-1" onclick="modalScript(this)" data-url="/Project/Details/${full.projectID}"><i class="fas fa-info-circle"></i></button>\
-                                                <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/Project/Delete/${full.projectID}"><i class="fas fa-trash-alt"></i></button>
-                                            </div>`;
+                                                    <a class="btn btn-circle bg-turqoise text-white mr-1" href="/Project/Edit/${full.projectID}"><i class="fas fa-edit"></i></a>\
+                                                    <button type="button" class="btn btn-circle bg-warning text-white mr-1" onclick="modalScript(this)" data-url="/Project/Details/${full.projectID}"><i class="fas fa-info-circle"></i></button>\
+                                                    <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/Project/Delete/${full.projectID}"><i class="fas fa-trash-alt"></i></button>
+                                                </div>`;
                         }
                     },
                 ],
                 "columnDefs": [
-                    { "targets": -1, "orderable": false },
+                    { "targets": [-1, 0], "orderable": false },
                 ],
                 "initComplete": function () {
                     let api = this.api();
@@ -128,12 +151,96 @@
 
                 $(this).toggleClass('active');
             });
+
+            /* 
+             * Extract Table Headings with their target values for Column Visibility Buttons
+             * @@return headingMap: Map
+             */
+            function getTableHeadings() {
+                const headingsRaw = $("#dataTable thead #tableLabels th");
+                const headingsMap = new Map();
+                for (let i = 0; i < headingsRaw.length; i++) {
+                    const currentItem = headingsRaw[i].innerHTML;
+                    if (currentItem != undefined && currentItem != "") {
+                        headingsMap.set(i, currentItem);
+                    }
+                }
+                return headingsMap;
+            }
+
+            /*
+             * Construct HTML for Visibility Buttons
+             * @@return template: string
+             */
+            function constructHtmlForColumnVisibility() {
+                const headings = getTableHeadings();
+                let template = "";
+                for (let [key, value] of headings) {
+                    template += `
+                        <div class="col-12 col-md-6 py-2">
+                            <button type="button" class="btn btn-secondary toggleColumn w-100" data-target="${key}" data-activated="false">${value}</button>
+                        </div>
+                    `;
+                }
+                return template;
+            }
+
+            /* 
+             * Add Template To String
+             * Future notes to developer: It's been 6 hours and I can't cracked the problem of state saving so right now I am marking this
+             * to Phase 2(after release). Basic idea of what I am trying to do: I want to keep track of the user's column visibility choice so on future logins,
+             * the user won't have to deal with closing columns all over again. Also this is a general property of all the tables in the application, we need to add this structure to a class
+             * and generalize it.
+            */
+            $("#columnModal .modal-body .row").html(constructHtmlForColumnVisibility());
+
+            $(".toggleColumn").on('click', function () {
+
+                const columnState = $(this).data("activated");
+                const target = $(this).data("target");
+                const columnTargeted = table.column(target);
+
+                if (!columnState) {
+                    $(this).removeClass("btn-secondary");
+                    $(this).addClass("btn-success");
+                    $(this).attr("data-activated", true);
+                }
+                else {
+                    $(this).removeClass("btn-success");
+                    $(this).addClass("btn-secondary");
+                    $(this).attr("data-activated", false);
+                }
+
+                columnTargeted.visible(!columnTargeted.visible());
+
+            });
+
         });
     </script>
 
 }
 
 <div id="GeneralModal"></div>
+
+<!-- DataTable Column Visibility -->
+<div class="modal fade" id="columnModal" tabindex="-1" aria-labelledby="columnModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <button type="button" class="btn btn-secondary toggleColumn" data-target="1" data-activated="false">Proje Adı</button>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <button type="button" class="btn btn-secondary toggleColumn" data-target="2" data-activated="false">Proje Adı</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Alert for Exceptions -->
 @if (@TempData["ErrorTitle"] is not null)
@@ -182,18 +289,18 @@
             <table class="table table-hover display" id="dataTable" width="100%">
                 <thead class="bg-navy-blue">
                     <tr class="filter h-100 bg-white">
-                        <th>&nbsp;</th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="projectTitle" name="projectTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="requestingDepartmentTitle" name="requestingDepartmentTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="responsibleDepartmentTitle" name="responsibleDepartmentTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="3" type="text" placeholder="Ara..." id="ownerFullName" name="ownerFullName" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="4" type="text" placeholder="Ara..." id="serviceAreaTitle" name="serviceAreaTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="5" type="text" placeholder="Ara..." id="projectStatusTitle" name="projectStatusTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="6" type="text" placeholder="Ara..." id="projectImportanceTitle" name="projectImportanceTitle" value="" /></th>
+                        <th></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="projectTitle" name="projectTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="requestingDepartmentTitle" name="requestingDepartmentTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="3" type="text" placeholder="Ara..." id="responsibleDepartmentTitle" name="responsibleDepartmentTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="4" type="text" placeholder="Ara..." id="ownerFullName" name="ownerFullName" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="5" type="text" placeholder="Ara..." id="serviceAreaTitle" name="serviceAreaTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="6" type="text" placeholder="Ara..." id="projectStatusTitle" name="projectStatusTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="7" type="text" placeholder="Ara..." id="projectImportanceTitle" name="projectImportanceTitle" value="" /></th>
                         <th scope="col"></th>
                     </tr>
                     <tr id="tableLabels">
-                        <th>&nbsp;</th>
+                        <th></th>
                         <th scope="col" class="text-white text-sm">Proje İsmi</th>
                         <th scope="col" class="text-white text-sm">Talep Eden Müdürlük</th>
                         <th scope="col" class="text-white text-sm">Sorumlu Müdürlük</th>

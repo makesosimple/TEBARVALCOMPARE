@@ -432,6 +432,8 @@ namespace IBBPortal.Controllers
             EditProjectFieldViewModel model = new EditProjectFieldViewModel();
 
             //Attach Desired Entities to ViewModel
+            model.ProjectTitle = _context.Project.Single(m => m.ProjectID == id).ProjectTitle;
+
             model.ProjectField = await _context.ProjectField
                 .Include(p => p.District)
                 .FirstOrDefaultAsync(m => m.ProjectID == id);
