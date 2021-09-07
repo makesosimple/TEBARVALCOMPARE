@@ -98,7 +98,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.ProjectPhaseStatusID.ToString(),
                                         text = x.ProjectPhaseStatusTitle
-                                    }).Take(10);
+                                    });
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -109,7 +109,7 @@ namespace IBBPortal.Controllers
                 var totalCount = ProjectPhaseStatusData.Count();
 
                 //Paging   
-                var passData = ProjectPhaseStatusData.ToList();
+                var passData = ProjectPhaseStatusData.Take(10).ToList();
 
 
                 //Returning Json Data  

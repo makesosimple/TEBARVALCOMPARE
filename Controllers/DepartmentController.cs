@@ -98,7 +98,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.DepartmentID.ToString(),
                                         text = x.DepartmentTitle
-                                    }).Take(10);
+                                    });
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -109,7 +109,7 @@ namespace IBBPortal.Controllers
                 var totalCount = DepartmentData.Count();
 
                 //Paging   
-                var passData = DepartmentData.ToList();
+                var passData = DepartmentData.Take(10).ToList();
 
 
                 //Returning Json Data  

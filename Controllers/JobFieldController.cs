@@ -99,7 +99,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.JobFieldID.ToString(),
                                         text = x.JobFieldTitle
-                                    }).Take(10);
+                                    });
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -110,7 +110,7 @@ namespace IBBPortal.Controllers
                 var totalCount = JobFieldData.Count();
 
                 //Paging   
-                var passData = JobFieldData.ToList();
+                var passData = JobFieldData.Take(10).ToList();
 
 
                 //Returning Json Data  
