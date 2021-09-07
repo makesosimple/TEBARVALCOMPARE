@@ -61,23 +61,23 @@ namespace IBBPortal.Controllers
                     ORDER BY NumberOfProjects DESC
                     ").ToListAsync();
 
-            var projectCountByYear = await _context.DashboardLineGraphModel.FromSqlRaw(@"SELECT 
+            //var projectCountByYear = await _context.DashboardLineGraphModel.FromSqlRaw(@"SELECT 
                     
-                    ProjectYear,
-                    COUNT(ProjectID) AS NumberOfProjects
+            //        ProjectYear,
+            //        COUNT(ProjectID) AS NumberOfProjects
                     
-                    FROM Project
-                    GROUP BY ProjectYear
-                    ORDER BY ProjectYear ASC
+            //        FROM Project
+            //        GROUP BY ProjectYear
+            //        ORDER BY ProjectYear ASC
                     
-            ").ToListAsync();
+            //").ToListAsync();
 
 
 
             
 
             ViewBag.serviceAreaList = serviceAreaList;
-            ViewBag.projectCountByYear = projectCountByYear;
+            //ViewBag.projectCountByYear = projectCountByYear;
 
             return View();
         }
