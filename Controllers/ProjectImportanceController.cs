@@ -98,7 +98,7 @@ namespace IBBPortal.Controllers
                                     {
                                         id = x.ProjectImportanceID.ToString(),
                                         text = x.ProjectImportanceTitle
-                                    }).Take(10);
+                                    });
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -109,7 +109,7 @@ namespace IBBPortal.Controllers
                 var totalCount = ProjectImportanceData.Count();
 
                 //Paging   
-                var passData = ProjectImportanceData.ToList();
+                var passData = ProjectImportanceData.Take(10).ToList();
 
 
                 //Returning Json Data  

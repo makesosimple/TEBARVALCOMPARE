@@ -98,7 +98,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.ServiceAreaID.ToString(),
                                         text = x.ServiceAreaTitle
-                                    }).Take(10);
+                                    });
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -109,7 +109,7 @@ namespace IBBPortal.Controllers
                 var totalCount = ServiceAreaData.Count();
 
                 //Paging   
-                var passData = ServiceAreaData.ToList();
+                var passData = ServiceAreaData.Take(10).ToList();
 
 
                 //Returning Json Data  

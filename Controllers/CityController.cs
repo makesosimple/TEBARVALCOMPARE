@@ -99,7 +99,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.CityID.ToString(),
                                         text = x.CityName
-                                    }).Take(10);
+                                    });
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -110,7 +110,7 @@ namespace IBBPortal.Controllers
                 var totalCount = CityData.Count();
 
                 //Paging   
-                var passData = CityData.ToList();
+                var passData = CityData.Take(10).ToList();
 
 
                 //Returning Json Data  

@@ -99,7 +99,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.TransactionTypeID.ToString(),
                                         text = x.TransactionTypeName
-                                    }).Take(10);
+                                    });
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -110,7 +110,7 @@ namespace IBBPortal.Controllers
                 var totalCount = TransactionTypeData.Count();
 
                 //Paging   
-                var passData = TransactionTypeData.ToList();
+                var passData = TransactionTypeData.Take(10).ToList();
 
 
                 //Returning Json Data  

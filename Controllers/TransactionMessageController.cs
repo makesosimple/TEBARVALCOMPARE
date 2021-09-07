@@ -100,7 +100,7 @@ namespace IBBPortal.Controllers
                                         id = x.TransactionMessageID.ToString(),
                                         text = x.TransactionMessageContent,
                                         transactionType = x.TransactionTypeID
-                                    }).Take(10);
+                                    });
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -116,7 +116,7 @@ namespace IBBPortal.Controllers
                 var totalCount = TransactionMessageData.Count();
 
                 //Paging   
-                var passData = TransactionMessageData.ToList();
+                var passData = TransactionMessageData.Take(10).ToList();
 
 
                 //Returning Json Data  

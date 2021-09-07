@@ -99,7 +99,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.PropertyStatusID.ToString(),
                                         text = x.PropertyStatusTitle
-                                    }).Take(10);
+                                    });
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -110,7 +110,7 @@ namespace IBBPortal.Controllers
                 var totalCount = PropertyStatusData.Count();
 
                 //Paging   
-                var passData = PropertyStatusData.ToList();
+                var passData = PropertyStatusData.Take(10).ToList();
 
 
                 //Returning Json Data  

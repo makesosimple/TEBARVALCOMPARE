@@ -98,7 +98,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.PhaseID.ToString(),
                                         text = x.PhaseOrder + ". " + x.PhaseTitle
-                                    }).Take(10);
+                                    });
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -113,7 +113,7 @@ namespace IBBPortal.Controllers
                 var totalCount = PhaseData.Count();
 
                 //Paging   
-                var passData = PhaseData.ToList();
+                var passData = PhaseData.Take(10).ToList();
 
 
                 //Returning Json Data  

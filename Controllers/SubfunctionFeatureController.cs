@@ -100,7 +100,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.SubfunctionFeatureID.ToString(),
                                         text = x.SubfunctionFeatureTitle
-                                    }).Take(10);
+                                    });
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -111,7 +111,7 @@ namespace IBBPortal.Controllers
                 var totalCount = SubfunctionFeatureData.Count();
 
                 //Paging   
-                var passData = SubfunctionFeatureData.ToList();
+                var passData = SubfunctionFeatureData.Take(10).ToList();
 
 
                 //Returning Json Data  

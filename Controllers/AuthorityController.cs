@@ -106,7 +106,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.AuthorityID.ToString(),
                                         text = x.AuthorityTitle
-                                    }).Take(10);
+                                    });
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -117,7 +117,7 @@ namespace IBBPortal.Controllers
                 var totalCount = AuthorityData.Count();
 
                 //Paging   
-                var passData = AuthorityData.ToList();
+                var passData = AuthorityData.Take(10).ToList();
 
 
                 //Returning Json Data  

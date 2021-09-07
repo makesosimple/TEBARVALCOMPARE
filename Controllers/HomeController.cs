@@ -60,8 +60,8 @@ namespace IBBPortal.Controllers
                     GROUP BY Project.ProjectStatusID, ProjectStatus.ProjectStatusTitle
                     ORDER BY NumberOfProjects DESC
                     ").ToListAsync();
-
-            var projectCountByYear = await _context.DashboardLineGraphModel.FromSqlRaw(@"SELECT 
+              
+             var projectCountByYear = await _context.DashboardLineGraphModel.FromSqlRaw(@"SELECT 
                     
                     ProjectYear,
                     COUNT(ProjectID) AS NumberOfProjects
