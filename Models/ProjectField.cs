@@ -9,6 +9,8 @@ using IndexAttribute = Microsoft.EntityFrameworkCore.IndexAttribute;
 
 namespace IBBPortal.Models
 {
+    [Index(nameof(DistrictID))]
+    [Index(nameof(CityID))]
     public class ProjectField
     {
         /** Project Field Tab Information **/
@@ -27,6 +29,10 @@ namespace IBBPortal.Models
         public int? DistrictID { get; set; }
         [ForeignKey("DistrictID")]
         public District District { get; set; }
+
+        public int? CityID { get; set; }
+        [ForeignKey("CityID")]
+        public City City { get; set; }
 
         //Not required as all project will be displayed on Map but it's for a quick reference.
         [MaxLength(256)]

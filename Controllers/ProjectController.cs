@@ -436,6 +436,7 @@ namespace IBBPortal.Controllers
 
             model.ProjectField = await _context.ProjectField
                 .Include(p => p.District)
+                .Include(p => p.City)
                 .FirstOrDefaultAsync(m => m.ProjectID == id);
 
             model.ProjectBoardApproval = await _context.ProjectBoardApproval
@@ -500,6 +501,7 @@ namespace IBBPortal.Controllers
                 projectField.ProjectID = id;
                 projectField.IsProjectInIstanbul = model.ProjectField.IsProjectInIstanbul;
                 projectField.DistrictID = model.ProjectField.DistrictID;
+                projectField.CityID = model.ProjectField.CityID;
                 projectField.ProjectAddress = model.ProjectField.ProjectAddress;
                 projectField.ProjectArea = model.ProjectField.ProjectArea;
                 projectField.ProjectConstructionArea = model.ProjectField.ProjectConstructionArea;
@@ -569,6 +571,7 @@ namespace IBBPortal.Controllers
                 projectFieldToUpdate.ProjectID = id;
                 projectFieldToUpdate.IsProjectInIstanbul = model.ProjectField.IsProjectInIstanbul;
                 projectFieldToUpdate.DistrictID = model.ProjectField.DistrictID;
+                projectFieldToUpdate.CityID = model.ProjectField.CityID;
                 projectFieldToUpdate.ProjectAddress = model.ProjectField.ProjectAddress;
                 projectFieldToUpdate.ProjectArea = model.ProjectField.ProjectArea;
                 projectFieldToUpdate.ProjectConstructionArea = model.ProjectField.ProjectConstructionArea;
@@ -760,10 +763,9 @@ namespace IBBPortal.Controllers
             }
             catch (Exception)
             {
-                throw;
-                //TempData["ErrorTitle"] = "HATA";
-                //TempData["ErrorMessage"] = $"Kayıt düzenlenirken bir hata oluştu. Lütfen sistem yöneticinizle görüşün.";
-                //return RedirectToAction(nameof(EditProjectField), new { id = projectFieldToUpdate.ProjectID.ToString() });
+                TempData["ErrorTitle"] = "HATA";
+                TempData["ErrorMessage"] = $"Kayıt düzenlenirken bir hata oluştu. Lütfen sistem yöneticinizle görüşün.";
+                return RedirectToAction(nameof(EditProjectField), new { id = projectFieldToUpdate.ProjectID.ToString() });
             }
 
             return RedirectToAction(nameof(EditProjectField), new { id = projectFieldToUpdate.ProjectID.ToString() });
