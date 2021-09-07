@@ -101,32 +101,36 @@ namespace IBBPortal.Controllers
                                         text = x.DistrictName,
                                         city = x.CityID,
                                         cityCode = x.City.CityCode
-                                    }).Take(10);
+                                    });
 
+                var check = "";
                 if (!String.IsNullOrEmpty(term))
                 {
                     DistrictData = DistrictData.Where(m => m.text.Contains(term));
+                    check = "Term is included.";
                 }
 
                 if (!String.IsNullOrEmpty(cityID.ToString()))
                 {
                     DistrictData = DistrictData.Where(m => m.city == cityID);
+                    check += "CityID is included";
                 }
 
                 if (!String.IsNullOrEmpty(cityCode.ToString()))
                 {
                     DistrictData = DistrictData.Where(m => m.cityCode == cityCode);
+                    check += "cityCode is included";
                 }
 
                 //Count 
                 var totalCount = DistrictData.Count();
 
                 //Paging   
-                var passData = DistrictData.ToList();
+                var passData = DistrictData.Take(10).ToList();
 
 
                 //Returning Json Data  
-                return Json(new { results = passData, totalCount = totalCount });
+                return Json(new { check = check, results = passData, term = term, cityID = cityID, cityCode = cityCode, totalCount = totalCount });
 
             }
 

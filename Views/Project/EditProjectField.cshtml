@@ -1,7 +1,7 @@
 ﻿@model IBBPortal.ViewModels.EditProjectFieldViewModel
 
 @{
-    ViewData["Title"] = "Proje Düzenle";
+    ViewData["Title"] = @Model.ProjectTitle;
 
     //Defined so that we can show full decimal points to user
     var Longitude = Model.ProjectField != null ? Model.ProjectField.ProjectLongitude : null;
@@ -661,13 +661,13 @@
             theme: "ibb",
             language: "tr",
             ajax: {
-                url: '/District/JsonSelectData',
-                data: function () {
+                url: '/District/JsonSelectData?cityCode=34',
+                /*data: function () {
                     let query = {
                         cityCode: 34,
                     }
                     return query;
-                },
+                },*/
                 dataType: 'json',
                 processResults: function (response) {
 
