@@ -12,7 +12,7 @@ namespace IBBPortal.Data
 {
     public class SecondaryDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
-        public SecondaryDbContext(DbContextOptions<ApplicationDbContext> options)
+        public SecondaryDbContext(DbContextOptions<SecondaryDbContext> options)
             : base(options)
         {
         }

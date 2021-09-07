@@ -49,10 +49,12 @@ namespace IBBPortal.Models
         [Column(TypeName = "varchar(MAX)")]
         public string? KML { get; set; }
 
-        [Column(TypeName = "decimal(9, 6)")]
+        [Column(TypeName = "decimal(18, 15)")]
+        [RegularExpression(@"[+-]?([0-9]*[,])?[0-9]+", ErrorMessage = "xxx,yyyyyyyyyyyyyyy formatında girmeniz gerekiyor!")]
         public decimal? ProjectLongitude { get; set; }
 
-        [Column(TypeName = "decimal(9, 6)")]
+        [Column(TypeName = "decimal(18, 15)")]
+        [RegularExpression(@"[+-]?([0-9]*[,])?[0-9]+", ErrorMessage = "xxx,yyyyyyyyyyyyyyy formatında girmeniz gerekiyor!")]
         public decimal? ProjectLatitude { get; set; }
 
         public Point ProjectPoint { get; set; }
