@@ -12,7 +12,7 @@ using IBBPortal.Helpers;
 using NetTopologySuite.Geometries;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
-
+using System.Diagnostics;
 
 namespace IBBPortal.Controllers
 {
@@ -513,9 +513,17 @@ namespace IBBPortal.Controllers
                 {
                     try
                     {
-                        Regex regex = new Regex(@"\<coordinates\>(.*)\</coordinates\>");
-                        var v = regex.Match(model.ProjectField.KML);
-                        coordinates = v.Groups[1].Value;
+                        var rx_coordinates = new Regex("<coordinates>(.|\n)*?</coordinates>");
+                        coordinates = rx_coordinates.Match(model.ProjectField.KML).Groups[0].Value;
+                        coordinates = coordinates.Replace("<coordinates>", "");
+                        coordinates = coordinates.Replace("</coordinates>", "");
+                        Debug.WriteLine("model.ProjectField.KML = " + model.ProjectField.KML);
+                        //coordinates = v.Groups[1].Value;
+                        coordinates = coordinates.Replace("\n", "").Replace("\r", "");
+                        coordinates = coordinates.Replace(",0", " ");
+                        coordinates = Regex.Replace(coordinates, @"\s+", " ");
+                        coordinates = coordinates.Trim();
+                        Debug.WriteLine("coordinates = " + coordinates);
                     } 
                     catch
                     {
@@ -527,14 +535,20 @@ namespace IBBPortal.Controllers
                 //projectField.ProjectPolygon = 
                 // Read: https://csharp.hotexamples.com/examples/NetTopologySuite.Geometries/Polygon/-/php-polygon-class-examples.html
                 // Read: https://www.csharpcodi.com/csharp-examples/NetTopologySuite.IO.WKTReader.Read(System.IO.TextReader)/
-                var formattedCoordinates = coordinates.Replace(",", ";").Replace(" ", ",").Replace(";", " ");
-                Console.WriteLine(formattedCoordinates);
-                var reader = new NetTopologySuite.IO.WKTReader();
-                var geom = reader.Read(@"SRID=4326;POLYGON((" + formattedCoordinates + "))");
-
-                //var polygon = new Polygon(null) { SRID = 4326 };
-                var polygon = (Polygon)geom;
-                projectField.ProjectPolygon = polygon;
+                if (coordinates!=null)
+                {
+                    var formattedCoordinates = coordinates.Replace(",", ";").Replace(" ", ",").Replace(";", " ");
+                    Console.WriteLine(formattedCoordinates);
+                    var reader = new NetTopologySuite.IO.WKTReader();
+                    //var geom = reader.Read(@"SRID=4326;POLYGON((" + formattedCoordinates + "))");
+                    var geomls = reader.Read(@"SRID=4326;LINESTRING(" + formattedCoordinates + ")");
+                    //var polygon = new Polygon(null) { SRID = 4326 };
+                    //var polygon = (Polygon)geom;
+                    var linestring = (LineString)geomls;
+                    //projectField.ProjectPolygon = polygon;
+                    projectField.ProjectLineString = linestring;
+                }
+                
                 //projectField.ProjectPolygon = new Polygon(new LinearRing(new LineString()
                 projectField.coordinates = coordinates; // model.ProjectField.KML;
                 projectField.CreationDate = CurrentDate;
@@ -569,9 +583,17 @@ namespace IBBPortal.Controllers
                 {
                     try
                     {
-                        Regex regex = new Regex(@"\<coordinates\>(.*)\</coordinates\>");
-                        var v = regex.Match(model.ProjectField.KML);
-                        coordinates = v.Groups[1].Value;
+                        var rx_coordinates = new Regex("<coordinates>(.|\n)*?</coordinates>");
+                        coordinates = rx_coordinates.Match(model.ProjectField.KML).Groups[0].Value;
+                        coordinates = coordinates.Replace("<coordinates>", "");
+                        coordinates = coordinates.Replace("</coordinates>", "");
+                        Debug.WriteLine("model.ProjectField.KML = " + model.ProjectField.KML);
+                        //coordinates = v.Groups[1].Value;
+                        coordinates = coordinates.Replace("\n", "").Replace("\r", "");
+                        coordinates = coordinates.Replace(",0", " ");
+                        coordinates = Regex.Replace(coordinates, @"\s+", " ");
+                        coordinates = coordinates.Trim();
+                        Debug.WriteLine("coordinates = " + coordinates);
                     }
                     catch
                     {
@@ -583,17 +605,19 @@ namespace IBBPortal.Controllers
                 projectFieldToUpdate.coordinates = coordinates; // model.ProjectField.KML;
                 projectFieldToUpdate.UpdateDate = CurrentDate;
 
-                var formattedCoordinates = coordinates.Replace(",", ";").Replace(" ", ",").Replace(";", " ");
-                Console.WriteLine(formattedCoordinates);
-                var reader = new NetTopologySuite.IO.WKTReader();
-                var geom = reader.Read(@"SRID=4326;POLYGON((" + formattedCoordinates + "))");
-
-
-                //var polygon = new Polygon(null) { SRID = 4326 };
-                var polygon = (Polygon) geom;
-                //var polygon = (Polygon)geom;
-                    
-                   projectFieldToUpdate.ProjectPolygon = polygon;
+                if (coordinates != null)
+                {
+                    var formattedCoordinates = coordinates.Replace(",", ";").Replace(" ", ",").Replace(";", " ");
+                    Debug.WriteLine("formattedCoordinates="+formattedCoordinates);
+                    var reader = new NetTopologySuite.IO.WKTReader();
+                    //var geom = reader.Read(@"SRID=4326;POLYGON((" + formattedCoordinates + "))");
+                    var geomls = reader.Read(@"SRID=4326;LINESTRING(" + formattedCoordinates + ")");
+                    //var polygon = new Polygon(null) { SRID = 4326 };
+                    //var polygon = (Polygon)geom;
+                    var linestring = (LineString)geomls;
+                    //projectFieldToUpdate.ProjectPolygon = polygon;
+                    projectFieldToUpdate.ProjectLineString = linestring;
+                }
             }
 
             //Project Board Approval
