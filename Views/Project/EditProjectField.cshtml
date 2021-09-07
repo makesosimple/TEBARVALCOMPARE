@@ -180,7 +180,7 @@
                             <div class="form-group row" data-dependent-on="#ProjectField_IsProjectInIstanbul" data-dependent-value="checked">
                                 <label asp-for="ProjectField.ProjectLatitude" class="col-12 col-xl-4 col-form-label">Enlem</label>
                                 <div class="col-12 col-xl-8">
-                                    <input asp-for="ProjectField.ProjectLatitude" class="form-control" value="@Latitude" data-val="false">
+                                    <input asp-for="ProjectField.ProjectLatitude" class="form-control" value="@Latitude">
                                     <span asp-validation-for="ProjectField.ProjectLatitude" class="text-danger"></span>
                                 </div>
                             </div>
@@ -189,7 +189,7 @@
                             <div class="form-group row" data-dependent-on="#ProjectField_IsProjectInIstanbul" data-dependent-value="checked">
                                 <label asp-for="ProjectField.ProjectLongitude" class="col-12 col-xl-4 col-form-label">Boylam</label>
                                 <div class="col-12 col-xl-8">
-                                    <input asp-for="ProjectField.ProjectLongitude" class="form-control" value="@Longitude" data-val="false">
+                                    <input asp-for="ProjectField.ProjectLongitude" class="form-control" value="@Longitude">
                                     <span asp-validation-for="ProjectField.ProjectLongitude" class="text-danger"></span>
                                 </div>
                             </div>
@@ -805,6 +805,10 @@
             });
 
         });
+
+        $.validator.methods.number = function (value, element) {
+            return this.optional(element) || /-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
+        }
 
         let project_coordinates = ('@coordinates').split(' ');
         console.log('project_coordinates', project_coordinates);
