@@ -99,7 +99,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.SubfunctionID.ToString(),
                                         text = x.SubfunctionTitle
-                                    }).Take(10);
+                                    });
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -110,7 +110,7 @@ namespace IBBPortal.Controllers
                 var totalCount = SubfunctionData.Count();
 
                 //Paging   
-                var passData = SubfunctionData.ToList();
+                var passData = SubfunctionData.Take(10).ToList();
 
 
                 //Returning Json Data  

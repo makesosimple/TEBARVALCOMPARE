@@ -98,7 +98,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.ZoningPlanStatusID.ToString(),
                                         text = x.ZoningPlanStatusTitle
-                                    }).Take(10);
+                                    });
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -109,7 +109,7 @@ namespace IBBPortal.Controllers
                 var totalCount = ZoningPlanStatusData.Count();
 
                 //Paging   
-                var passData = ZoningPlanStatusData.ToList();
+                var passData = ZoningPlanStatusData.Take(10).ToList();
 
 
                 //Returning Json Data  

@@ -99,7 +99,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.ContractorTypeID.ToString(),
                                         text = x.ContractorTypeTitle
-                                    }).Take(10);
+                                    });
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -110,7 +110,7 @@ namespace IBBPortal.Controllers
                 var totalCount = ContractorTypeData.Count();
 
                 //Paging   
-                var passData = ContractorTypeData.ToList();
+                var passData = ContractorTypeData.Take(10).ToList();
 
 
                 //Returning Json Data  

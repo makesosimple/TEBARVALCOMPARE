@@ -225,7 +225,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.ProjectID.ToString(),
                                         text = x.ProjectTitle
-                                    }).Take(10);
+                                    });
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -236,7 +236,7 @@ namespace IBBPortal.Controllers
                 var totalCount = ProjectData.Count();
 
                 //Paging   
-                var passData = ProjectData.ToList();
+                var passData = ProjectData.Take(10).ToList();
 
 
                 //Returning Json Data  

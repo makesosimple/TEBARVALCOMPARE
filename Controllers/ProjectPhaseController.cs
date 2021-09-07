@@ -115,7 +115,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.ProjectPhaseID.ToString(),
                                         text = x.Phase.PhaseOrder + ". " + x.Phase.PhaseTitle,
-                                    }).Take(10);
+                                    });
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -126,7 +126,7 @@ namespace IBBPortal.Controllers
                 var totalCount = ProjectPhaseData.Count();
 
                 //Paging   
-                var passData = ProjectPhaseData.ToList();
+                var passData = ProjectPhaseData.Take(10).ToList();
 
 
                 //Returning Json Data  

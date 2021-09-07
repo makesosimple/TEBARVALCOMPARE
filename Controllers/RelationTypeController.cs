@@ -97,7 +97,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.RelationTypeID.ToString(),
                                         text = x.RelationTypeTitle
-                                    }).Take(10);
+                                    });
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -108,7 +108,7 @@ namespace IBBPortal.Controllers
                 var totalCount = RelationTypeData.Count();
 
                 //Paging   
-                var passData = RelationTypeData.ToList();
+                var passData = RelationTypeData.Take(10).ToList();
 
 
                 //Returning Json Data  
