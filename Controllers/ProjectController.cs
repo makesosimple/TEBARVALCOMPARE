@@ -201,7 +201,7 @@ namespace IBBPortal.Controllers
             //total number of rows count   
             //var recordsTotal = data.Count();
                 //Paging   
-                var passData = data.ToList();
+                var passData = data.Take(100).ToList();
 
                 //Returning Json Data  
                 return Json(new { data = passData, districtID = selectedDistrictInt, ProjectKeyword = projectKeyword });
