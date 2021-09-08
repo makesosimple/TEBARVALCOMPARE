@@ -153,6 +153,8 @@ namespace IBBPortal.Data
         [NotMapped]
         public DbSet<IBBPortal.ViewModels.DashboardLineGraphModel> DashboardLineGraphModel { get; set; }
 
+        public DbSet<IBBPortal.Models.TransactionLog> TransactionLog { get; set; }
+
         
 
 

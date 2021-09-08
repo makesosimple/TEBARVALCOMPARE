@@ -1,0 +1,84 @@
+﻿@{
+    ViewData["Title"] = "İşlem Yönetimi";
+}
+@section Scripts
+{
+    <!-- Table Script -->
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            let table = $("#dataTable").DataTable({
+                "dom": 'rt<"d-flex justify-content-between flex-column align-items-baseline flex-md-row mt-3"ipl><"clear">',
+                "language": {
+                    "url": "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Turkish.json",
+                },
+                "processing": false, // for show progress bar
+                "serverSide": true, // for process server side
+                "filter": true, // this is for disable filter (search box)
+                "orderMulti": true, // for disable multiple column at once
+                "ajax": {
+                    "url": "/TransactionLog/JSONData",
+                    "type": "GET"
+                },
+                "columns": [
+                    { "data": "transactionMessage", "autoWidth": true },
+                    { "data": "transactionType", "autoWidth": true },
+                    { "data": "project", "autoWidth": true },
+                    { "data": "transactionLogForUser", "autoWidth": true }
+                ],
+                "initComplete": function () {
+                    let api = this.api();
+
+                    $('input.searchInput').on('input', function () {
+                        let columnIndex = $(this).data("index");
+                        let desiredColumn = api.columns(columnIndex);
+                        if (desiredColumn.search() !== this.value) {
+                            desiredColumn
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+}
+<div class="row">
+    <div class="justify-content-between py-2 col-12 d-flex">
+        <h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
+        @*<a asp-action="Create" class="btn btn-success shadow mb-4">
+            <i class="fas fa-plus mr-2"></i> EKLE
+        </a>*@
+    </div>
+</div>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive position-relative">
+            <table class="table table-hover display" id="dataTable" width="100%">
+                <thead class="bg-navy-blue">
+                    <tr class="filter h-100 bg-white">
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="transactionMessage" name="transactionMessage" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="transactionType" name="transactionType" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="project" name="project" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="3" type="text" placeholder="Ara..." id="transactionLogForUser" name="transactionLogForUser" value="" /></th>
+                    </tr>
+                    <tr id="tableLabels">
+                        <th scope="col" class="text-white text-sm">İşlem Mesajı</th>
+                        <th scope="col" class="text-white text-sm">İşlem Tipi</th>
+                        <th scope="col" class="text-white text-sm">Proje</th>
+                        <th scope="col" class="text-white text-sm">Kişi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+
+                </tfoot>
+
+            </table>
+        </div>
+    </div>
+</div>
