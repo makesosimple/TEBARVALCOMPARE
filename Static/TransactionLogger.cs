@@ -15,18 +15,30 @@ namespace IBBPortal.Static
         {
 
             //ApplicationDbContext _transactionContext = new ApplicationDbContext();
-
-            string message = _c.TransactionMessages.Where(c => c.TransactionMessageSlug == slug).FirstOrDefault().TransactionMessageContent;
+            string message;
+            try
+            {
+                 message = _c.TransactionMessages.Where(c => c.TransactionMessageSlug == slug).First().TransactionMessageContent;
+            } catch
+            {
+                 message = slug + " temalı mesaj denemesi oluştu";
+            }
+            
 
             TransactionLog transactionLog = new TransactionLog();
 
-            
-            
             transactionLog.ProjectID = projectID;
             transactionLog.TransactionLogSlug = slug;
             transactionLog.TransactionLogRead = false;
-            transactionLog.TransactionLogMessageContent = message;
-            
+            transactionLog.TransactionLogForUserID = UserID;
+            if (message != null)
+            {
+                transactionLog.TransactionLogMessageContent = message;
+            }
+
+            transactionLog.CreationDate = DateTime.Now;
+            _c.Add(transactionLog);
+            _c.SaveChanges();
 
             return transactionLog;
         }
