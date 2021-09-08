@@ -10,7 +10,7 @@
         $(document).ready(function () {
             /* Primary Buttons for Project Table */
             $.fn.dataTable.ext.buttons.map = {
-                className: 'btn btn-primary btn-circle border-0',
+                className: 'btn btn-primary border-0',
 
                 action: function (e, dt, node, config) {
                     window.location = '/ProjectMap';
@@ -18,34 +18,34 @@
             };
 
             $.fn.dataTable.ext.buttons.columnVis = {
-                className: 'btn btn-info btn-circle border-0',
+                className: 'btn btn-info border-0',
                 action: function (e, dt, node, config) {
                     $("#columnModal").modal('show');
                 }
             };
 
             let table = $("#dataTable").DataTable({
-                "dom": '<"top d-flex justify-content-start my-2"B>rt<"d-flex justify-content-between flex-column align-items-baseline flex-md-row mt-3"ipl><"clear">',
+                "dom": '<"top d-flex justify-content-start my-2 ml-1"B>rt<"d-flex justify-content-between flex-column align-items-baseline flex-md-row mt-3"ipl><"clear">',
                 "buttons": [
                     {
                         extend: 'map',
-                        text: '<i class="fas fa-map-marker-alt"></i>',
+                        text: '<i class="fas fa-map-marker-alt"></i>&nbsp;Harita',
                         className: 'bg-primary'
                     },
                     {
                         extend: 'columnVis',
-                        text: '<i class="fas fa-eye-slash"></i>'
+                        text: '<i class="fas fa-columns"></i> &nbsp;Kolonlar'
                     },
                     {
                         extend: 'excel',
                         autoFilter: true,
-                        text: '<i class="fas fa-file-excel"></i>',
-                        className: 'btn btn-success btn-circle border-0'
+                        text: '<i class="fas fa-file-excel"></i> &nbsp;Excel',
+                        className: 'btn btn-success border-0'
                     },
                     {
                         extend: 'pdfHtml5',
-                        text: '<i class="fas fa-file-pdf"></i>',
-                        className: 'btn btn-danger btn-circle border-0'
+                        text: '<i class="fas fa-file-pdf"></i> &nbsp;PDF',
+                        className: 'btn btn-danger border-0'
                     }
                 ],
                 "language": {
@@ -135,6 +135,8 @@
                                 .draw();
                         }
                     });
+
+                    $(".dt-buttons").addClass('btn-group');
                 }
             });
 
