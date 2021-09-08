@@ -391,6 +391,10 @@ namespace IBBPortal.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
+                    b.Property<string>("MapIcon")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
                     b.Property<int?>("ParentDepartmentID")
                         .HasColumnType("int");
 
@@ -1110,6 +1114,9 @@ namespace IBBPortal.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("CityID")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
@@ -1142,13 +1149,13 @@ namespace IBBPortal.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal?>("ProjectLatitude")
-                        .HasColumnType("decimal(9,6)");
+                        .HasColumnType("decimal(18,15)");
 
                     b.Property<LineString>("ProjectLineString")
                         .HasColumnType("geography");
 
                     b.Property<decimal?>("ProjectLongitude")
-                        .HasColumnType("decimal(9,6)");
+                        .HasColumnType("decimal(18,15)");
 
                     b.Property<string>("ProjectPaftaAdaParsel")
                         .HasMaxLength(1024)
@@ -1174,6 +1181,8 @@ namespace IBBPortal.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ProjectFieldID");
+
+                    b.HasIndex("CityID");
 
                     b.HasIndex("DistrictID");
 
@@ -1893,6 +1902,59 @@ namespace IBBPortal.Migrations
                     b.ToTable("SubfunctionFeature");
                 });
 
+            modelBuilder.Entity("IBBPortal.Models.TransactionLog", b =>
+                {
+                    b.Property<int>("TransactionLogID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ProjectID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TransactionLogForUserID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TransactionLogMessageContent")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<bool>("TransactionLogRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("TransactionLogSlug")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("TransactionMessageID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TransactionTypeID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("TransactionLogID");
+
+                    b.HasIndex("ProjectID");
+
+                    b.HasIndex("TransactionLogForUserID");
+
+                    b.HasIndex("TransactionMessageID");
+
+                    b.HasIndex("TransactionTypeID");
+
+                    b.ToTable("TransactionLog");
+                });
+
             modelBuilder.Entity("IBBPortal.Models.TransactionMessages", b =>
                 {
                     b.Property<int>("TransactionMessageID")
@@ -2044,6 +2106,17 @@ namespace IBBPortal.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("ZoningPlanStatus");
+                });
+
+            modelBuilder.Entity("IBBPortal.ViewModels.DashboardLineGraphModel", b =>
+                {
+                    b.Property<int>("NumberOfProjects")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProjectYear")
+                        .HasColumnType("int");
+
+                    b.ToTable("DashboardLineGraphModel");
                 });
 
             modelBuilder.Entity("IBBPortal.ViewModels.DashboardSummaryModel", b =>
@@ -2572,6 +2645,10 @@ namespace IBBPortal.Migrations
 
             modelBuilder.Entity("IBBPortal.Models.ProjectField", b =>
                 {
+                    b.HasOne("IBBPortal.Models.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityID");
+
                     b.HasOne("IBBPortal.Models.District", "District")
                         .WithMany()
                         .HasForeignKey("DistrictID");
@@ -2583,6 +2660,8 @@ namespace IBBPortal.Migrations
                     b.HasOne("IBBPortal.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserID");
+
+                    b.Navigation("City");
 
                     b.Navigation("District");
 
@@ -2862,6 +2941,35 @@ namespace IBBPortal.Migrations
                     b.Navigation("Subfunction");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("IBBPortal.Models.TransactionLog", b =>
+                {
+                    b.HasOne("IBBPortal.Models.Project", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectID");
+
+                    b.HasOne("IBBPortal.Models.ApplicationUser", "TransactionLogForUser")
+                        .WithMany()
+                        .HasForeignKey("TransactionLogForUserID");
+
+                    b.HasOne("IBBPortal.Models.TransactionMessages", "TransactionMessage")
+                        .WithMany()
+                        .HasForeignKey("TransactionMessageID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IBBPortal.Models.TransactionTypes", "TransactionType")
+                        .WithMany()
+                        .HasForeignKey("TransactionTypeID");
+
+                    b.Navigation("Project");
+
+                    b.Navigation("TransactionLogForUser");
+
+                    b.Navigation("TransactionMessage");
+
+                    b.Navigation("TransactionType");
                 });
 
             modelBuilder.Entity("IBBPortal.Models.TransactionMessages", b =>

@@ -99,8 +99,8 @@ function showMarker(m) {
     
 
     const image = {
-        url: "/images/" + m.responsibleDepartmentID + ".png",
-        
+        //url: "/images/" + m.responsibleDepartmentID + ".png",
+        url: "/images/default.png",
         scaledSize: new google.maps.Size(32, 32),
         
         //origin: new google.maps.Point(-16, -16),
@@ -121,11 +121,12 @@ function showMarker(m) {
         '<div id="siteNotice">' +
         "</div>" +
         '<h5 id="firstHeading" class="firstHeading">'+m.projectTitle+'</h4>' +
-        '<div id="bodyContent">' +
+        '<div id="bodyContent"><p>' +
         'Hizmet Alanı: ' + m.serviceAreaTitle + '<br/>' +
         'Sorumlu Müdürlük: ' + m.responsibleDepartmentTitle + '<br/>' +
         'Proje Önemi: ' + m.projectImportanceTitle + '<br/>' +
-        '<p><a class="btn btn-info" href="/Project/Edit/'+m.projectID+'">Detaylar</a></p>' +
+        '</p>' +
+        '<p><a class="btn btn-info btn-sm" href="/Project/Edit/'+m.projectID+'">Detaylar</a></p>' +
         "</div>" +
         "</div>";
     const infowindow = new google.maps.InfoWindow({
@@ -160,13 +161,13 @@ $(document).ready(function () {
         theme: "ibb",
         language: "tr",
         ajax: {
-            url: '/District/JsonSelectData',
-            data: function () {
+            url: '/District/JsonSelectData?cityCode=34',
+            /*data: function () {
                 let query = {
                     cityCode: 34,
                 }
                 return query;
-            },
+            },*/
             dataType: 'json',
             processResults: function (response) {
 
@@ -212,7 +213,7 @@ $(document).ready(function () {
     var d = new Date();
     var n = d.getFullYear();
 
-    for (var i = 0; i < 25; i++) {
+    for (var i = 0; i < 10; i++) {
         var y = n - i;
         $('#selectYear').append('<option value="'+y+'">'+y+'</option>');
     }

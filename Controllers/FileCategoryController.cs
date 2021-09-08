@@ -109,7 +109,7 @@ namespace IBBPortal.Controllers
                 var totalCount = FileCategoryData.Count();
 
                 //Paging   
-                var passData = FileCategoryData.ToList();
+                var passData = FileCategoryData.Take(10).ToList();
 
 
                 //Returning Json Data  

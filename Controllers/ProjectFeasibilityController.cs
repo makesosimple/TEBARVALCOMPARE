@@ -40,9 +40,9 @@ namespace IBBPortal.Controllers
             {
                 ViewBag.ProjectID = id;
                 projectFeasibility = new ProjectFeasibility();
-                return View(projectFeasibility);
             }
 
+            ViewBag.ProjectTitle = _context.Project.Single(m => m.ProjectID == id).ProjectTitle;
             return View(projectFeasibility);
 
         }

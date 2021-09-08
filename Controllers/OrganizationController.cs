@@ -99,7 +99,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.OrganizationID.ToString(),
                                         text = x.OrganizationTitle
-                                    }).Take(10);
+                                    });
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -110,7 +110,7 @@ namespace IBBPortal.Controllers
                 var totalCount = OrganizationData.Count();
 
                 //Paging   
-                var passData = OrganizationData.ToList();
+                var passData = OrganizationData.Take(10).ToList();
 
 
                 //Returning Json Data  

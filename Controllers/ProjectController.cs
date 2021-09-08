@@ -12,7 +12,8 @@ using IBBPortal.Helpers;
 using NetTopologySuite.Geometries;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
-
+using System.Diagnostics;
+using IBBPortal.Static;
 
 namespace IBBPortal.Controllers
 {
@@ -155,7 +156,10 @@ namespace IBBPortal.Controllers
                 ResponsibleDepartmentID = c.Project.ResponsibleDepartmentID == null ? 0 : c.Project.ResponsibleDepartmentID,
                 DistrictID = c.DistrictID == null ? 0 : c.DistrictID,
                 ProjectOwnerID = c.Project.ProjectOwnerPersonID == null ? 0 : c.Project.ProjectOwnerPersonID,
+                ProjectYear = c.Project.ProjectYear,
             });
+
+            
 
             if (Int32.TryParse(selectedDistrict, out int selectedDistrictInt))
             {
@@ -167,6 +171,19 @@ namespace IBBPortal.Controllers
             } else
             {
                 selectedDistrictInt = -1;
+            }
+
+            if (Int32.TryParse(yearSelected, out int yearSelectedInt))
+            {
+                if (selectedDistrictInt != 0)
+                {
+                    data = data.Where(c => c.ProjectYear == yearSelectedInt);
+                }
+
+            }
+            else
+            {
+                yearSelectedInt = -1;
             }
 
             if (Int32.TryParse(respDepartmentID, out int respDepartmentIDInt))
@@ -202,7 +219,7 @@ namespace IBBPortal.Controllers
             //total number of rows count   
             //var recordsTotal = data.Count();
                 //Paging   
-                var passData = data.ToList();
+                var passData = data.Take(500).ToList();
 
                 //Returning Json Data  
                 return Json(new { data = passData, districtID = selectedDistrictInt, ProjectKeyword = projectKeyword });
@@ -225,7 +242,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.ProjectID.ToString(),
                                         text = x.ProjectTitle
-                                    }).Take(10);
+                                    });
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -236,7 +253,7 @@ namespace IBBPortal.Controllers
                 var totalCount = ProjectData.Count();
 
                 //Paging   
-                var passData = ProjectData.ToList();
+                var passData = ProjectData.Take(10).ToList();
 
 
                 //Returning Json Data  
@@ -339,12 +356,18 @@ namespace IBBPortal.Controllers
                     await _context.SaveChangesAsync();
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $" {project.ProjectID} numaralı kayıt başarıyla oluşturuldu.";
+
+                    TransactionLogger.logTransaction(_context, project.ProjectID, "created-new-project", _userManager.GetUserId(HttpContext.User));
+
                     return RedirectToAction(nameof(Index), new { id = project.ProjectID.ToString() });
                 }
                 catch (Exception ex)
                 {
                     TempData["ErrorTitle"] = "HATA";
                     TempData["ErrorMessage"] = $"Kayıt oluşturulamadı.";
+
+                    TransactionLogger.logTransaction(_context, project.ProjectID, "error-created-new-project", _userManager.GetUserId(HttpContext.User));
+
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -400,7 +423,7 @@ namespace IBBPortal.Controllers
                     _context.Update(project);
                     await _context.SaveChangesAsync();
 
-                    
+                    TransactionLogger.logTransaction(_context, project.ProjectID, "updated-project", _userManager.GetUserId(HttpContext.User));
 
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $"{project.ProjectID} numaralı kayıt başarıyla düzenlendi.";
@@ -415,6 +438,8 @@ namespace IBBPortal.Controllers
                     {
                         throw;
                     }
+
+                    TransactionLogger.logTransaction(_context, project.ProjectID, "error-updating-project", _userManager.GetUserId(HttpContext.User));
                 }
                 return RedirectToAction(nameof(Edit));
             }
@@ -433,8 +458,11 @@ namespace IBBPortal.Controllers
             EditProjectFieldViewModel model = new EditProjectFieldViewModel();
 
             //Attach Desired Entities to ViewModel
+            model.ProjectTitle = _context.Project.Single(m => m.ProjectID == id).ProjectTitle;
+
             model.ProjectField = await _context.ProjectField
                 .Include(p => p.District)
+                .Include(p => p.City)
                 .FirstOrDefaultAsync(m => m.ProjectID == id);
 
             model.ProjectBoardApproval = await _context.ProjectBoardApproval
@@ -499,6 +527,7 @@ namespace IBBPortal.Controllers
                 projectField.ProjectID = id;
                 projectField.IsProjectInIstanbul = model.ProjectField.IsProjectInIstanbul;
                 projectField.DistrictID = model.ProjectField.DistrictID;
+                projectField.CityID = model.ProjectField.CityID;
                 projectField.ProjectAddress = model.ProjectField.ProjectAddress;
                 projectField.ProjectArea = model.ProjectField.ProjectArea;
                 projectField.ProjectConstructionArea = model.ProjectField.ProjectConstructionArea;
@@ -514,9 +543,17 @@ namespace IBBPortal.Controllers
                 {
                     try
                     {
-                        Regex regex = new Regex(@"\<coordinates\>(.*)\</coordinates\>");
-                        var v = regex.Match(model.ProjectField.KML);
-                        coordinates = v.Groups[1].Value;
+                        var rx_coordinates = new Regex("<coordinates>(.|\n)*?</coordinates>");
+                        coordinates = rx_coordinates.Match(model.ProjectField.KML).Groups[0].Value;
+                        coordinates = coordinates.Replace("<coordinates>", "");
+                        coordinates = coordinates.Replace("</coordinates>", "");
+                        Debug.WriteLine("model.ProjectField.KML = " + model.ProjectField.KML);
+                        //coordinates = v.Groups[1].Value;
+                        coordinates = coordinates.Replace("\n", "").Replace("\r", "");
+                        coordinates = coordinates.Replace(",0", " ");
+                        coordinates = Regex.Replace(coordinates, @"\s+", " ");
+                        coordinates = coordinates.Trim();
+                        Debug.WriteLine("coordinates = " + coordinates);
                     } 
                     catch
                     {
@@ -528,14 +565,20 @@ namespace IBBPortal.Controllers
                 //projectField.ProjectPolygon = 
                 // Read: https://csharp.hotexamples.com/examples/NetTopologySuite.Geometries/Polygon/-/php-polygon-class-examples.html
                 // Read: https://www.csharpcodi.com/csharp-examples/NetTopologySuite.IO.WKTReader.Read(System.IO.TextReader)/
-                var formattedCoordinates = coordinates.Replace(",", ";").Replace(" ", ",").Replace(";", " ");
-                Console.WriteLine(formattedCoordinates);
-                var reader = new NetTopologySuite.IO.WKTReader();
-                var geom = reader.Read(@"SRID=4326;POLYGON((" + formattedCoordinates + "))");
-
-                //var polygon = new Polygon(null) { SRID = 4326 };
-                var polygon = (Polygon)geom;
-                projectField.ProjectPolygon = polygon;
+                if (coordinates!=null)
+                {
+                    var formattedCoordinates = coordinates.Replace(",", ";").Replace(" ", ",").Replace(";", " ");
+                    Console.WriteLine(formattedCoordinates);
+                    var reader = new NetTopologySuite.IO.WKTReader();
+                    //var geom = reader.Read(@"SRID=4326;POLYGON((" + formattedCoordinates + "))");
+                    var geomls = reader.Read(@"SRID=4326;LINESTRING(" + formattedCoordinates + ")");
+                    //var polygon = new Polygon(null) { SRID = 4326 };
+                    //var polygon = (Polygon)geom;
+                    var linestring = (LineString)geomls;
+                    //projectField.ProjectPolygon = polygon;
+                    projectField.ProjectLineString = linestring;
+                }
+                
                 //projectField.ProjectPolygon = new Polygon(new LinearRing(new LineString()
                 projectField.coordinates = coordinates; // model.ProjectField.KML;
                 projectField.CreationDate = CurrentDate;
@@ -554,6 +597,7 @@ namespace IBBPortal.Controllers
                 projectFieldToUpdate.ProjectID = id;
                 projectFieldToUpdate.IsProjectInIstanbul = model.ProjectField.IsProjectInIstanbul;
                 projectFieldToUpdate.DistrictID = model.ProjectField.DistrictID;
+                projectFieldToUpdate.CityID = model.ProjectField.CityID;
                 projectFieldToUpdate.ProjectAddress = model.ProjectField.ProjectAddress;
                 projectFieldToUpdate.ProjectArea = model.ProjectField.ProjectArea;
                 projectFieldToUpdate.ProjectConstructionArea = model.ProjectField.ProjectConstructionArea;
@@ -570,9 +614,17 @@ namespace IBBPortal.Controllers
                 {
                     try
                     {
-                        Regex regex = new Regex(@"\<coordinates\>(.*)\</coordinates\>");
-                        var v = regex.Match(model.ProjectField.KML);
-                        coordinates = v.Groups[1].Value;
+                        var rx_coordinates = new Regex("<coordinates>(.|\n)*?</coordinates>");
+                        coordinates = rx_coordinates.Match(model.ProjectField.KML).Groups[0].Value;
+                        coordinates = coordinates.Replace("<coordinates>", "");
+                        coordinates = coordinates.Replace("</coordinates>", "");
+                        Debug.WriteLine("model.ProjectField.KML = " + model.ProjectField.KML);
+                        //coordinates = v.Groups[1].Value;
+                        coordinates = coordinates.Replace("\n", "").Replace("\r", "");
+                        coordinates = coordinates.Replace(",0", " ");
+                        coordinates = Regex.Replace(coordinates, @"\s+", " ");
+                        coordinates = coordinates.Trim();
+                        Debug.WriteLine("coordinates = " + coordinates);
                     }
                     catch
                     {
@@ -584,17 +636,19 @@ namespace IBBPortal.Controllers
                 projectFieldToUpdate.coordinates = coordinates; // model.ProjectField.KML;
                 projectFieldToUpdate.UpdateDate = CurrentDate;
 
-                var formattedCoordinates = coordinates.Replace(",", ";").Replace(" ", ",").Replace(";", " ");
-                Console.WriteLine(formattedCoordinates);
-                var reader = new NetTopologySuite.IO.WKTReader();
-                var geom = reader.Read(@"SRID=4326;POLYGON((" + formattedCoordinates + "))");
-
-
-                //var polygon = new Polygon(null) { SRID = 4326 };
-                var polygon = (Polygon) geom;
-                //var polygon = (Polygon)geom;
-                    
-                   projectFieldToUpdate.ProjectPolygon = polygon;
+                if (coordinates != null)
+                {
+                    var formattedCoordinates = coordinates.Replace(",", ";").Replace(" ", ",").Replace(";", " ");
+                    Debug.WriteLine("formattedCoordinates="+formattedCoordinates);
+                    var reader = new NetTopologySuite.IO.WKTReader();
+                    //var geom = reader.Read(@"SRID=4326;POLYGON((" + formattedCoordinates + "))");
+                    var geomls = reader.Read(@"SRID=4326;LINESTRING(" + formattedCoordinates + ")");
+                    //var polygon = new Polygon(null) { SRID = 4326 };
+                    //var polygon = (Polygon)geom;
+                    var linestring = (LineString)geomls;
+                    //projectFieldToUpdate.ProjectPolygon = polygon;
+                    projectFieldToUpdate.ProjectLineString = linestring;
+                }
             }
 
             //Project Board Approval
@@ -735,10 +789,9 @@ namespace IBBPortal.Controllers
             }
             catch (Exception)
             {
-                throw;
-                //TempData["ErrorTitle"] = "HATA";
-                //TempData["ErrorMessage"] = $"Kayıt düzenlenirken bir hata oluştu. Lütfen sistem yöneticinizle görüşün.";
-                //return RedirectToAction(nameof(EditProjectField), new { id = projectFieldToUpdate.ProjectID.ToString() });
+                TempData["ErrorTitle"] = "HATA";
+                TempData["ErrorMessage"] = $"Kayıt düzenlenirken bir hata oluştu. Lütfen sistem yöneticinizle görüşün.";
+                return RedirectToAction(nameof(EditProjectField), new { id = projectFieldToUpdate.ProjectID.ToString() });
             }
 
             return RedirectToAction(nameof(EditProjectField), new { id = projectFieldToUpdate.ProjectID.ToString() });

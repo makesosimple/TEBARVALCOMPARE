@@ -129,6 +129,8 @@ namespace IBBPortal.Data
 
         public DbSet<IBBPortal.Models.TransactionMessages> TransactionMessages { get; set; }
 
+        
+
         public DbSet<IBBPortal.Models.ExpropriationStatus> ExpropriationStatus { get; set; }
 
         public DbSet<IBBPortal.Models.ProjectFeasibility> ProjectFeasibility { get; set; }
@@ -150,6 +152,8 @@ namespace IBBPortal.Data
 
         [NotMapped]
         public DbSet<IBBPortal.ViewModels.DashboardLineGraphModel> DashboardLineGraphModel { get; set; }
+
+        public DbSet<IBBPortal.Models.TransactionLog> TransactionLog { get; set; }
 
         
 

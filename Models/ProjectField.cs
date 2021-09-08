@@ -9,6 +9,8 @@ using IndexAttribute = Microsoft.EntityFrameworkCore.IndexAttribute;
 
 namespace IBBPortal.Models
 {
+    [Index(nameof(DistrictID))]
+    [Index(nameof(CityID))]
     public class ProjectField
     {
         /** Project Field Tab Information **/
@@ -27,6 +29,10 @@ namespace IBBPortal.Models
         public int? DistrictID { get; set; }
         [ForeignKey("DistrictID")]
         public District District { get; set; }
+
+        public int? CityID { get; set; }
+        [ForeignKey("CityID")]
+        public City City { get; set; }
 
         //Not required as all project will be displayed on Map but it's for a quick reference.
         [MaxLength(256)]
@@ -49,10 +55,12 @@ namespace IBBPortal.Models
         [Column(TypeName = "varchar(MAX)")]
         public string? KML { get; set; }
 
-        [Column(TypeName = "decimal(9, 6)")]
+        [Column(TypeName = "decimal(18, 15)")]
+        [RegularExpression(@"[+-]?([0-9]*[,])?[0-9]+", ErrorMessage = "xxx,yyyyyyyyyyyyyyy formatında girmeniz gerekiyor!")]
         public decimal? ProjectLongitude { get; set; }
 
-        [Column(TypeName = "decimal(9, 6)")]
+        [Column(TypeName = "decimal(18, 15)")]
+        [RegularExpression(@"[+-]?([0-9]*[,])?[0-9]+", ErrorMessage = "xxx,yyyyyyyyyyyyyyy formatında girmeniz gerekiyor!")]
         public decimal? ProjectLatitude { get; set; }
 
         public Point ProjectPoint { get; set; }

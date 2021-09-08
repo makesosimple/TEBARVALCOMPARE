@@ -98,7 +98,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.DepartmentID.ToString(),
                                         text = x.DepartmentTitle
-                                    }).Take(10);
+                                    });
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -109,7 +109,7 @@ namespace IBBPortal.Controllers
                 var totalCount = DepartmentData.Count();
 
                 //Paging   
-                var passData = DepartmentData.ToList();
+                var passData = DepartmentData.Take(10).ToList();
 
 
                 //Returning Json Data  
@@ -154,7 +154,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DepartmentID,DepartmentTitle,ParentDepartmentID,UserID,CreationDate,UpdateDate,DeletionDate")] Department department)
+        public async Task<IActionResult> Create([Bind("DepartmentID,DepartmentTitle,MapIcon,ParentDepartmentID,UserID,CreationDate,UpdateDate,DeletionDate")] Department department)
         {
             if (ModelState.IsValid)
             {
@@ -201,7 +201,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DepartmentID,DepartmentTitle,ParentDepartmentID,CreationDate,UpdateDate,DeletionDate")] Department department)
+        public async Task<IActionResult> Edit(int id, [Bind("DepartmentID,DepartmentTitle,MapIcon,ParentDepartmentID,UserID,CreationDate,UpdateDate,DeletionDate")] Department department)
         {
             if (id != department.DepartmentID)
             {

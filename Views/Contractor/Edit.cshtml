@@ -222,13 +222,14 @@
             language: "tr",
             ajax: {
                 url: '/District/JsonSelectData',
-                data: function () {
+                data: function (params) {
 
                     //Get the cityID from the user
                     const cityID = $("#selectCity").val();
 
                     let query = {
                         cityID: cityID,
+                        term: params.term
                     }
                     return query;
                 },

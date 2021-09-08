@@ -48,6 +48,7 @@ namespace IBBPortal.Controllers
                 ViewBag.TotalContractCost = "₺ " + TotalContractCost.ToString("N2", cultureInfo);
                 ViewBag.TotalProgressPayment = "₺ " +  TotalProgressPayment.ToString("N2", cultureInfo); 
             }
+            ViewBag.ProjectTitle = _context.Project.Single(m => m.ProjectID == id).ProjectTitle;
             ViewBag.ProjectID = id;
             return View(project);
         }

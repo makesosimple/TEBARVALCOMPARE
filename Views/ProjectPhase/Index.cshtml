@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Proje Düzenle";
+    ViewData["Title"] = ViewBag.ProjectTitle;
 }
 
 @section Scripts {
@@ -99,7 +99,7 @@
                 });
             })
             .catch(err => {
-                alert("No data!");
+                console.error("Error! =>", err);
             });
 
         //const startDate = gantt.gantt_start.getTime();

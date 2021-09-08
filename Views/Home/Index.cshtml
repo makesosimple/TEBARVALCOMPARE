@@ -299,7 +299,7 @@
                     @foreach (var item in serviceAreaList)
                     {
                      <text>
-                    "@item.ServiceAreaTitle",
+                    "@Html.Raw(item.ServiceAreaTitle)",
                     </text>
                     }
                 ],

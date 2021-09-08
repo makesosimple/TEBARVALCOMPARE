@@ -64,6 +64,11 @@
                         <label asp-for="Password" class="col-12 col-xl-4 col-form-label">Şifre</label>
                         <div class="col-12 col-xl-8">
                             <input asp-for="Password" type="password" class="form-control" autocomplete="off">
+                            <small id="passwordHelp" class="form-text text-muted">Şifre:<br />
+                            1. En az bir küçük harf,<br />
+                            2. En az bir büyük harf,<br />
+                            3. En az bir özel karakter içermelidir.<br />
+                            4. En az 6 karakterden oluşmalıdır.</small>
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
                     </div>

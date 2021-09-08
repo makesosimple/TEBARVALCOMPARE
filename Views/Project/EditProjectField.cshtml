@@ -1,7 +1,7 @@
 ﻿@model IBBPortal.ViewModels.EditProjectFieldViewModel
 
 @{
-    ViewData["Title"] = "Proje Düzenle";
+    ViewData["Title"] = Model.ProjectTitle;
 
     //Defined so that we can show full decimal points to user
     var Longitude = Model.ProjectField != null ? Model.ProjectField.ProjectLongitude : null;
@@ -79,13 +79,13 @@
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                             <!-- Is Project In İstanbul ? -->
-                            <div class="form-group row">
+                            <div class="form-group row" style="display: none;">
                                 <label asp-for="ProjectField.IsProjectInIstanbul" class="col-form-label col-12 col-xl-4">Proje İstanbulda mı?<span class="text-danger">*</span></label>
                                 <div class="col-12 col-xl-8">
                                     <div class="text-center d-inline-block col-form-label">
                                         <div class="vc-toggle-container">
                                             <label class="vc-switch">
-                                                <input type="checkbox" class="vc-switch-input" asp-for="ProjectField.IsProjectInIstanbul">
+                                                <input type="checkbox" class="vc-switch-input" asp-for="ProjectField.IsProjectInIstanbul" checked>
                                                 <span data-on="Evet" data-off="Hayır" class="vc-switch-label"></span>
                                                 <span class="vc-handle"></span>
                                                 <span asp-validation-for="ProjectField.IsProjectInIstanbul" class="text-danger"></span>
@@ -97,6 +97,33 @@
 
                             <!-- District ID -->
                             <div class="form-group row" data-dependent-on="#ProjectField_IsProjectInIstanbul" data-dependent-value="checked">
+                                <label asp-for="ProjectField.CityID" class="col-12 col-xl-4 col-form-label">İl</label>
+                                <div class="col-12 col-xl-8">
+                                    <select asp-for="ProjectField.CityID" class="form-control" id="selectCity" style="width: 100%;">
+                                        @if (Model.ProjectField is not null)
+                                        {
+                                            if (Model.ProjectField.City is not null)
+                                            {
+                                                <option value="@Model.ProjectField.City.CityID">@Model.ProjectField.City.CityName</option>
+                                            }
+
+                                            else
+                                            {
+                                                <option selected value="">İl Seçin</option>
+                                            }
+                                        }
+
+                                        else
+                                        {
+                                            <option selected value="">İl Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ProjectField.CityID" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- District ID -->
+                            <div class="form-group row" data-dependent-on-city="ProjectField_selectCity">
                                 <label asp-for="ProjectField.DistrictID" class="col-12 col-xl-4 col-form-label">İlçe</label>
                                 <div class="col-12 col-xl-8">
                                     <select asp-for="ProjectField.DistrictID" class="form-control" id="selectDistrict" style="width: 100%;">
@@ -180,7 +207,7 @@
                             <div class="form-group row" data-dependent-on="#ProjectField_IsProjectInIstanbul" data-dependent-value="checked">
                                 <label asp-for="ProjectField.ProjectLatitude" class="col-12 col-xl-4 col-form-label">Enlem</label>
                                 <div class="col-12 col-xl-8">
-                                    <input asp-for="ProjectField.ProjectLatitude" class="form-control" value="@Latitude" data-val="false">
+                                    <input asp-for="ProjectField.ProjectLatitude" class="form-control" value="@Latitude">
                                     <span asp-validation-for="ProjectField.ProjectLatitude" class="text-danger"></span>
                                 </div>
                             </div>
@@ -189,7 +216,7 @@
                             <div class="form-group row" data-dependent-on="#ProjectField_IsProjectInIstanbul" data-dependent-value="checked">
                                 <label asp-for="ProjectField.ProjectLongitude" class="col-12 col-xl-4 col-form-label">Boylam</label>
                                 <div class="col-12 col-xl-8">
-                                    <input asp-for="ProjectField.ProjectLongitude" class="form-control" value="@Longitude" data-val="false">
+                                    <input asp-for="ProjectField.ProjectLongitude" class="form-control" value="@Longitude">
                                     <span asp-validation-for="ProjectField.ProjectLongitude" class="text-danger"></span>
                                 </div>
                             </div>
@@ -657,14 +684,54 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
+        $('#selectCity').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/City/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
+        });
+
+        //Get City Field Value and if not empty or undefined, open up the District Field
+        //First Version of dependent Field on the Project. Will be updated.
+
+        //Initial Position for District Field
+        $("[data-dependent-on-city=ProjectField_selectCity").hide();
+
+        //Check on Edit Form
+        let tempValue = $('#selectCity').val();
+        if (tempValue && tempValue !== "") {
+            $("[data-dependent-on-city=ProjectField_selectCity").show();
+        }
+
+        $('#selectCity').on('input', function () {
+            cityValue = $(this).val();
+
+            if (cityValue && cityValue !== "") {
+                $("[data-dependent-on-city=ProjectField_selectCity").show();
+            }
+        });
+
         $('#selectDistrict').select2({
             theme: "ibb",
             language: "tr",
             ajax: {
                 url: '/District/JsonSelectData',
-                data: function () {
+                data: function (params) {
+
+                    //Get the cityID from the user
+                    const cityID = $("#selectCity").val();
+
                     let query = {
-                        cityCode: 34,
+                        cityID: cityID,
+                        term: params.term
                     }
                     return query;
                 },
@@ -805,6 +872,10 @@
             });
 
         });
+
+        $.validator.methods.number = function (value, element) {
+            return this.optional(element) || /-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
+        }
 
         let project_coordinates = ('@coordinates').split(' ');
         console.log('project_coordinates', project_coordinates);

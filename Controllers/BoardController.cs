@@ -100,7 +100,7 @@ namespace IBBPortal.Controllers
                                     .Select(x => new {
                                         id = x.BoardID.ToString(),
                                         text = x.BoardTitle
-                                    }).Take(10);
+                                    });
 
                 if (!String.IsNullOrEmpty(term))
                 {
@@ -111,7 +111,7 @@ namespace IBBPortal.Controllers
                 var totalCount = BoardData.Count();
 
                 //Paging   
-                var passData = BoardData.ToList();
+                var passData = BoardData.Take(10).ToList();
 
 
                 //Returning Json Data  
