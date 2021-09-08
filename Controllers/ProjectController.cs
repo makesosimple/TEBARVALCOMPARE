@@ -38,7 +38,7 @@ namespace IBBPortal.Controllers
             try
             {
 
-                var draw = HttpContext.Request.Form["draw"].FirstOrDefault();
+                var draw = Request.Form["draw"].FirstOrDefault();
                 // Skiping number of Rows count  
                 var start = Request.Form["start"].FirstOrDefault();
                 // Paging Length 10,20  
@@ -57,6 +57,7 @@ namespace IBBPortal.Controllers
                 {
                     c.ProjectID,
                     c.ProjectTitle,
+                    RequestingDepartmentID = c.RequestingDepartment.DepartmentID,
                     RequestingDepartmentTitle = c.RequestingDepartment.DepartmentTitle,
                     ResponsibleDepartmentTitle = c.ResponsibleDepartment.DepartmentTitle,
                     OwnerFullName = c.ProjectOwnerPerson.PersonName.Trim() + " " + c.ProjectOwnerPerson.PersonSurname.Trim(),

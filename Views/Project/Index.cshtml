@@ -8,8 +8,8 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            /* Primary Buttons for DataTable. Must be common on all tables. */
-            $.fn.dataTable.ext.buttons.alert = {
+            /* Primary Buttons for Project Table */
+            $.fn.dataTable.ext.buttons.map = {
                 className: 'btn btn-primary btn-circle border-0',
 
                 action: function (e, dt, node, config) {
@@ -17,13 +17,24 @@
                 }
             };
 
+            $.fn.dataTable.ext.buttons.columnVis = {
+                className: 'btn btn-info btn-circle border-0',
+                action: function (e, dt, node, config) {
+                    $("#columnModal").modal('show');
+                }
+            };
+
             let table = $("#dataTable").DataTable({
                 "dom": '<"top d-flex justify-content-start my-2"B>rt<"d-flex justify-content-between flex-column align-items-baseline flex-md-row mt-3"ipl><"clear">',
-                buttons: [
+                "buttons": [
                     {
-                        extend: 'alert',
+                        extend: 'map',
                         text: '<i class="fas fa-map-marker-alt"></i>',
                         className: 'bg-primary',
+                    },
+                    {
+                        extend: 'columnVis',
+                        text: '<i class="fas fa-eye-slash"></i>',
                     },
                 ],
                 "language": {
@@ -48,7 +59,7 @@
                             }
 
                             const icons =
-                                `<div class="d-flex align-items-center cem">
+                                `<div class="d-flex align-items-center">
                                     <a href="#" class="dtActionButton" id="gotoFiles"><i class="far fa-folder"></i></a>
                                     <a href="#" class="dtActionButton" id="seeImages"><i class="far fa-image"></i></a>
                                     <a href="#" class="dtActionButton" id="seeStatistics"><i class="fas fa-chart-line"></i></a>
@@ -68,7 +79,13 @@
                             return '<a href="/Project/Edit/'+row.projectID+'">'+data+'</a>';
                         }
                     },
-                    { "data": "requestingDepartmentTitle", "autoWidth": true },
+                    {
+                        "data": "requestingDepartmentID",
+                        "autoWidth": true,
+                        "render": function (data, type, row) {
+                            return row.requestingDepartmentTitle;
+                        }
+                    },
                     { "data": "responsibleDepartmentTitle", "autoWidth": true },
                     { "data": "ownerFullName", "autoWidth": true },
                     { "data": "serviceAreaTitle", "autoWidth": true },
@@ -99,6 +116,7 @@
                 ],
                 "columnDefs": [
                     { "targets": -1, "orderable": false },
+                    { "targets": 0, "orderable": false },
                 ],
                 "initComplete": function () {
                     let api = this.api();
@@ -112,6 +130,9 @@
                                 .draw();
                         }
                     });
+
+                    console.log(api.columns())
+                    //$("#columModal .modalBody .row")
                 }
             });
 
@@ -128,12 +149,40 @@
 
                 $(this).toggleClass('active');
             });
+
+            $(".toggleColumn").on('click', function () {
+                const target = $(this).data("target");
+                const columnTargeted = table.column(target);
+                columnTargeted.visible(!columnTargeted.visible());
+
+            });
+
         });
     </script>
 
 }
 
 <div id="GeneralModal"></div>
+
+<!-- DataTable Column Visibility -->
+<div class="modal fade" id="columnModal" tabindex="-1" aria-labelledby="columnModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <button type="button" class="btn btn-secondary toggleColumn" data-target="1" data-activated="false">Proje Adı</button>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <button type="button" class="btn btn-secondary toggleColumn" data-target="2" data-activated="false">Proje Adı</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Alert for Exceptions -->
 @if (@TempData["ErrorTitle"] is not null)
@@ -183,13 +232,13 @@
                 <thead class="bg-navy-blue">
                     <tr class="filter h-100 bg-white">
                         <th>&nbsp;</th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="projectTitle" name="projectTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="requestingDepartmentTitle" name="requestingDepartmentTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="responsibleDepartmentTitle" name="responsibleDepartmentTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="3" type="text" placeholder="Ara..." id="ownerFullName" name="ownerFullName" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="4" type="text" placeholder="Ara..." id="serviceAreaTitle" name="serviceAreaTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="5" type="text" placeholder="Ara..." id="projectStatusTitle" name="projectStatusTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="6" type="text" placeholder="Ara..." id="projectImportanceTitle" name="projectImportanceTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="projectTitle" name="projectTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="requestingDepartmentTitle" name="requestingDepartmentTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="3" type="text" placeholder="Ara..." id="responsibleDepartmentTitle" name="responsibleDepartmentTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="4" type="text" placeholder="Ara..." id="ownerFullName" name="ownerFullName" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="5" type="text" placeholder="Ara..." id="serviceAreaTitle" name="serviceAreaTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="6" type="text" placeholder="Ara..." id="projectStatusTitle" name="projectStatusTitle" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="7" type="text" placeholder="Ara..." id="projectImportanceTitle" name="projectImportanceTitle" value="" /></th>
                         <th scope="col"></th>
                     </tr>
                     <tr id="tableLabels">
