@@ -13,6 +13,7 @@ using NetTopologySuite.Geometries;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using IBBPortal.Static;
 
 namespace IBBPortal.Controllers
 {
@@ -154,7 +155,10 @@ namespace IBBPortal.Controllers
                 ResponsibleDepartmentID = c.Project.ResponsibleDepartmentID == null ? 0 : c.Project.ResponsibleDepartmentID,
                 DistrictID = c.DistrictID == null ? 0 : c.DistrictID,
                 ProjectOwnerID = c.Project.ProjectOwnerPersonID == null ? 0 : c.Project.ProjectOwnerPersonID,
+                ProjectYear = c.Project.ProjectYear,
             });
+
+            
 
             if (Int32.TryParse(selectedDistrict, out int selectedDistrictInt))
             {
@@ -166,6 +170,19 @@ namespace IBBPortal.Controllers
             } else
             {
                 selectedDistrictInt = -1;
+            }
+
+            if (Int32.TryParse(yearSelected, out int yearSelectedInt))
+            {
+                if (selectedDistrictInt != 0)
+                {
+                    data = data.Where(c => c.ProjectYear == yearSelectedInt);
+                }
+
+            }
+            else
+            {
+                yearSelectedInt = -1;
             }
 
             if (Int32.TryParse(respDepartmentID, out int respDepartmentIDInt))
@@ -201,7 +218,7 @@ namespace IBBPortal.Controllers
             //total number of rows count   
             //var recordsTotal = data.Count();
                 //Paging   
-                var passData = data.Take(100).ToList();
+                var passData = data.Take(500).ToList();
 
                 //Returning Json Data  
                 return Json(new { data = passData, districtID = selectedDistrictInt, ProjectKeyword = projectKeyword });
@@ -338,12 +355,18 @@ namespace IBBPortal.Controllers
                     await _context.SaveChangesAsync();
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $" {project.ProjectID} numaralı kayıt başarıyla oluşturuldu.";
+
+                    TransactionLogger.logTransaction(_context, project.ProjectID, "created-new-project", _userManager.GetUserId(HttpContext.User));
+
                     return RedirectToAction(nameof(Index), new { id = project.ProjectID.ToString() });
                 }
                 catch (Exception ex)
                 {
                     TempData["ErrorTitle"] = "HATA";
                     TempData["ErrorMessage"] = $"Kayıt oluşturulamadı.";
+
+                    TransactionLogger.logTransaction(_context, project.ProjectID, "error-created-new-project", _userManager.GetUserId(HttpContext.User));
+
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -399,7 +422,7 @@ namespace IBBPortal.Controllers
                     _context.Update(project);
                     await _context.SaveChangesAsync();
 
-                    
+                    TransactionLogger.logTransaction(_context, project.ProjectID, "updated-project", _userManager.GetUserId(HttpContext.User));
 
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $"{project.ProjectID} numaralı kayıt başarıyla düzenlendi.";
@@ -414,6 +437,8 @@ namespace IBBPortal.Controllers
                     {
                         throw;
                     }
+
+                    TransactionLogger.logTransaction(_context, project.ProjectID, "error-updating-project", _userManager.GetUserId(HttpContext.User));
                 }
                 return RedirectToAction(nameof(Edit));
             }
