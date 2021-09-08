@@ -154,7 +154,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DepartmentID,DepartmentTitle,ParentDepartmentID,UserID,CreationDate,UpdateDate,DeletionDate")] Department department)
+        public async Task<IActionResult> Create([Bind("DepartmentID,DepartmentTitle,MapIcon,ParentDepartmentID,UserID,CreationDate,UpdateDate,DeletionDate")] Department department)
         {
             if (ModelState.IsValid)
             {
@@ -201,7 +201,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DepartmentID,DepartmentTitle,ParentDepartmentID,CreationDate,UpdateDate,DeletionDate")] Department department)
+        public async Task<IActionResult> Edit(int id, [Bind("DepartmentID,DepartmentTitle,MapIcon,ParentDepartmentID,UserID,CreationDate,UpdateDate,DeletionDate")] Department department)
         {
             if (id != department.DepartmentID)
             {

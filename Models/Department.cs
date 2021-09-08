@@ -19,6 +19,9 @@ namespace IBBPortal.Models
         [MaxLength(128, ErrorMessage = "Bu alana maksimum 128 karakter girebilirsiniz.")]
         public string DepartmentTitle { get; set; }
 
+        [MaxLength(64, ErrorMessage = "Bu alana maksimum 64 karakter girebilirsiniz.")]
+        public string? MapIcon { get; set; }
+
         public int? ParentDepartmentID { get; set; }
         [ForeignKey("ParentDepartmentID")]
         public Department ParentDepartment { get; set; }

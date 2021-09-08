@@ -108,9 +108,9 @@
 
                             <!-- Requesting Management ID -->
                             <div class="form-group row">
-                                <label asp-for="RequestingDepartmentID" class="col-12 col-xl-4 col-form-label">Talep Eden Müdürlük<span class="text-danger">*</span></label>
+                                <label asp-for="RequestingDepartmentID" class="col-12 col-xl-4 col-form-label">Talep Eden Müdürlük</label>
                                 <div class="col-12 col-xl-8">
-                                    <select asp-for="RequestingDepartmentID" class="form-control" id="selectRequestingDepartment" style="width: 100%;" required>
+                                    <select asp-for="RequestingDepartmentID" class="form-control" id="selectRequestingDepartment" style="width: 100%;">
                                         @if (@Model.RequestingDepartment is not null)
                                         {
                                             <option value="@Model.RequestingDepartment.DepartmentID">@Model.RequestingDepartment.DepartmentTitle</option>
@@ -127,9 +127,9 @@
 
                             <!-- Requesting Authority ID -->
                             <div class="form-group row">
-                                <label asp-for="RequestingAuthorityID" class="col-12 col-xl-4 col-form-label">Talep Eden Makam<span class="text-danger">*</span></label>
+                                <label asp-for="RequestingAuthorityID" class="col-12 col-xl-4 col-form-label">Talep Eden Maka</label>
                                 <div class="col-12 col-xl-8">
-                                    <select asp-for="RequestingAuthorityID" class="form-control" id="selectRequestingAuthority" style="width: 100%;" required>
+                                    <select asp-for="RequestingAuthorityID" class="form-control" id="selectRequestingAuthority" style="width: 100%;">
                                         @if (@Model.RequestingAuthority is not null)
                                         {
                                             <option value="@Model.RequestingAuthority.AuthorityID">@Model.RequestingAuthority.AuthorityTitle</option>
@@ -146,9 +146,9 @@
 
                             <!-- Responsible Management ID -->
                             <div class="form-group row">
-                                <label asp-for="ResponsibleDepartmentID" class="col-12 col-xl-4 col-form-label">Sorumlu Müdürlük<span class="text-danger">*</span></label>
+                                <label asp-for="ResponsibleDepartmentID" class="col-12 col-xl-4 col-form-label">Sorumlu Müdürlük</label>
                                 <div class="col-12 col-xl-8">
-                                    <select asp-for="ResponsibleDepartmentID" class="form-control" id="selectResponsibleDepartment" style="width: 100%;" required>
+                                    <select asp-for="ResponsibleDepartmentID" class="form-control" id="selectResponsibleDepartment" style="width: 100%;">
                                         @if (@Model.ResponsibleDepartment is not null)
                                         {
                                             <option value="@Model.ResponsibleDepartment.DepartmentID">@Model.ResponsibleDepartment.DepartmentTitle</option>
@@ -222,9 +222,9 @@
 
                             <!-- Project Importance ID -->
                             <div class="form-group row">
-                                <label asp-for="ProjectImportanceID" class="col-12 col-xl-4 col-form-label">Proje Önemi<span class="text-danger">*</span></label>
+                                <label asp-for="ProjectImportanceID" class="col-12 col-xl-4 col-form-label">Proje Önemi</label>
                                 <div class="col-12 col-xl-8">
-                                    <select asp-for="ProjectImportanceID" class="form-control" id="selectProjectImportance" style="width: 100%;" required>
+                                    <select asp-for="ProjectImportanceID" class="form-control" id="selectProjectImportance" style="width: 100%;">
                                         @if (@Model.ProjectImportance is not null)
                                         {
                                             <option value="@Model.ProjectImportance.ProjectImportanceID">@Model.ProjectImportance.ProjectImportanceTitle</option>
@@ -311,7 +311,7 @@
                             <div class="form-group row">
                                 <label asp-for="ProjectProductionRespDepartmentID" class="col-12 col-xl-4 col-form-label">Sorumlu Müdürlük (Yapım)</label>
                                 <div class="col-12 col-xl-8">
-                                    <select asp-for="ProjectProductionRespDepartmentID" class="form-control" id="selectProductionResponsibleDepartment" style="width: 100%;" required>
+                                    <select asp-for="ProjectProductionRespDepartmentID" class="form-control" id="selectProductionResponsibleDepartment" style="width: 100%;">
                                         @if (@Model.ProjectProductionRespDepartment is not null)
                                         {
                                             <option value="@Model.ProjectProductionRespDepartment.DepartmentID">@Model.ProjectProductionRespDepartment.DepartmentTitle</option>
