@@ -213,7 +213,7 @@ $(document).ready(function () {
     var d = new Date();
     var n = d.getFullYear();
 
-    for (var i = 0; i < 25; i++) {
+    for (var i = 0; i < 10; i++) {
         var y = n - i;
         $('#selectYear').append('<option value="'+y+'">'+y+'</option>');
     }
