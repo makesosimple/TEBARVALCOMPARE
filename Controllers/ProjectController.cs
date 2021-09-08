@@ -60,12 +60,18 @@ namespace IBBPortal.Controllers
                     c.ProjectTitle,
                     RequestingDepartmentID = c.RequestingDepartment.DepartmentID,
                     RequestingDepartmentTitle = c.RequestingDepartment.DepartmentTitle,
+                    ResponsibleDepartmentID = c.ResponsibleDepartment.DepartmentID,
                     ResponsibleDepartmentTitle = c.ResponsibleDepartment.DepartmentTitle,
+                    OwnerID = c.ProjectOwnerPerson.PersonID,
                     OwnerFullName = c.ProjectOwnerPerson.PersonName.Trim() + " " + c.ProjectOwnerPerson.PersonSurname.Trim(),
+                    ServiceAreaID = c.ProjectServiceArea.ServiceAreaID,
                     ServiceAreaTitle = c.ProjectServiceArea.ServiceAreaTitle,
+                    ProjectStatusID = c.ProjectStatus.ProjectStatusID,
                     ProjectStatusTitle = c.ProjectStatus.ProjectStatusTitle,
+                    ProjectImportanceID = c.ProjectImportance.ProjectImportanceID,
                     ProjectImportanceTitle = c.ProjectImportance.ProjectImportanceTitle,
-                    ShortcutID = _context.Shortcuts.Where(s => (s.UserID == _userManager.GetUserId(HttpContext.User) && s.ShortcutsProjectID == c.ProjectID)).ToList(),
+
+                    ShortcutID = _context.Shortcuts.Where(s => (s.UserID == _userManager.GetUserId(HttpContext.User) && s.ShortcutsProjectID == c.ProjectID)).ToList()
                 });
 
                 //var shortcuts = _context.Shortcuts.Where(s => s.UserID == _userManager.GetUserId(HttpContext.User)).ToList();

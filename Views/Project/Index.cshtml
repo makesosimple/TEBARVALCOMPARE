@@ -10,11 +10,7 @@
         $(document).ready(function () {
             /* Primary Buttons for Project Table */
             $.fn.dataTable.ext.buttons.map = {
-<<<<<<< HEAD
-                className: 'btn btn-primary btn-circle border-0',
-=======
-                className: 'btn btn-primary border-0',
->>>>>>> f35914ab6e7633f9bf40ebb2bf5e0ece1d0130b7
+                className: 'btn btn-success border-0',
 
                 action: function (e, dt, node, config) {
                     window.location = '/ProjectMap';
@@ -22,36 +18,19 @@
             };
 
             $.fn.dataTable.ext.buttons.columnVis = {
-<<<<<<< HEAD
-                className: 'btn btn-info btn-circle border-0',
-=======
-                className: 'btn btn-info border-0',
->>>>>>> f35914ab6e7633f9bf40ebb2bf5e0ece1d0130b7
+                className: 'btn btn-success border-0',
                 action: function (e, dt, node, config) {
                     $("#columnModal").modal('show');
                 }
             };
 
             let table = $("#dataTable").DataTable({
-<<<<<<< HEAD
-                "dom": '<"top d-flex justify-content-start my-2"B>rt<"d-flex justify-content-between flex-column align-items-baseline flex-md-row mt-3"ipl><"clear">',
-                "buttons": [
-                    {
-                        extend: 'map',
-                        text: '<i class="fas fa-map-marker-alt"></i>',
-                        className: 'bg-primary',
-                    },
-                    {
-                        extend: 'columnVis',
-                        text: '<i class="fas fa-eye-slash"></i>',
-                    },
-=======
                 "dom": '<"top d-flex justify-content-start my-2 ml-1"B>rt<"d-flex justify-content-between flex-column align-items-baseline flex-md-row mt-3"ipl><"clear">',
                 "buttons": [
                     {
                         extend: 'map',
                         text: '<i class="fas fa-map-marker-alt"></i>&nbsp;Harita',
-                        className: 'bg-primary'
+                        className: 'bg-success'
                     },
                     {
                         extend: 'columnVis',
@@ -66,9 +45,8 @@
                     {
                         extend: 'pdfHtml5',
                         text: '<i class="fas fa-file-pdf"></i> &nbsp;PDF',
-                        className: 'btn btn-danger border-0'
+                        className: 'btn btn-success border-0'
                     }
->>>>>>> f35914ab6e7633f9bf40ebb2bf5e0ece1d0130b7
                 ],
                 "language": {
                     "url": "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Turkish.json",
@@ -94,25 +72,14 @@
 
                             const icons =
                                 `<div class="d-flex align-items-center">
-<<<<<<< HEAD
-                                    <a href="#" class="dtActionButton" id="gotoFiles"><i class="far fa-folder"></i></a>
-                                    <a href="#" class="dtActionButton" id="seeImages"><i class="far fa-image"></i></a>
-                                    <a href="#" class="dtActionButton" id="seeStatistics"><i class="fas fa-chart-line"></i></a>
-                                    <a href="#" class="dtActionButton" id="exportProject"><i class="fas fa-sign-out-alt"></i></a>
-                                    <a href="#" class="dtActionButton ${classActive}" id="addShortcut" code="${row.projectID}"></i><i class="fas fa-heart"></i></a>
-                                  </div>`;
-
-                            
-=======
-                                        <a href="#" class="dtActionButton" id="gotoFiles"><i class="far fa-folder"></i></a>
-                                        <a href="#" class="dtActionButton" id="seeImages"><i class="far fa-image"></i></a>
-                                        <a href="#" class="dtActionButton" id="seeStatistics"><i class="fas fa-chart-line"></i></a>
-                                        <a href="#" class="dtActionButton" id="exportProject"><i class="fas fa-sign-out-alt"></i></a>
-                                        <a href="#" class="dtActionButton ${classActive}" id="addShortcut" code="${row.projectID}"></i><i class="fas fa-heart"></i></a>
-                                      </div>`;
+                                            <a href="#" class="dtActionButton" id="gotoFiles"><i class="far fa-folder"></i></a>
+                                            <a href="#" class="dtActionButton" id="seeImages"><i class="far fa-image"></i></a>
+                                            <a href="#" class="dtActionButton" id="seeStatistics"><i class="fas fa-chart-line"></i></a>
+                                            <a href="#" class="dtActionButton" id="exportProject"><i class="fas fa-sign-out-alt"></i></a>
+                                            <a href="#" class="dtActionButton ${classActive}" id="addShortcut" code="${row.projectID}"></i><i class="fas fa-heart"></i></a>
+                                          </div>`;
 
 
->>>>>>> f35914ab6e7633f9bf40ebb2bf5e0ece1d0130b7
                             return icons;
 
                         }
@@ -131,20 +98,38 @@
                             return row.requestingDepartmentTitle;
                         }
                     },
-                    { "data": "responsibleDepartmentTitle", "autoWidth": true },
-                    { "data": "ownerFullName", "autoWidth": true },
-                    { "data": "serviceAreaTitle", "autoWidth": true },
                     {
-                        "data": "projectStatusTitle",
-                        "render": function (data) {
-                            return `<div class="btn btn-info text-sm">${data}</div>`;
+                        "data": "responsibleDepartmentID",
+                        "autoWidth": true,
+                        "render": function (data, type, row) {
+                            return row.responsibleDepartmentTitle;
+                        }
+                    },
+                    {
+                        "data": "ownerID",
+                        "autoWidth": true,
+                        "render": function (data, type, row) {
+                            return row.ownerFullName;
+                        }
+                    },
+                    {
+                        "data": "serviceAreaID",
+                        "autoWidth": true,
+                        "render": function (data, type, row) {
+                            return row.serviceAreaTitle;
+                        }
+                    },
+                    {
+                        "data": "projectStatusID",
+                        "render": function (data, type, row) {
+                            return `<div class="btn btn-info text-sm">${row.projectStatusTitle}</div>`;
                         },
                         "autoWidth": true
                     },
                     {
-                        "data": "projectImportanceTitle",
-                        "render": function (data) {
-                            return `<div class="btn btn-info text-sm">${data}</div>`;
+                        "data": "projectImportanceID",
+                        "render": function (data, type, row) {
+                            return `<div class="btn btn-info text-sm">${row.projectImportanceTitle}</div>`;
                         },
                         "autoWidth": true
                     },
@@ -152,25 +137,20 @@
                         "data": null,
                         "render": function (data, type, full, meta, row) {
                             return `<div class="d-flex align-items-center justify-content-end">\
-                                                    <a class="btn btn-circle bg-turqoise text-white mr-1" href="/Project/Edit/${full.projectID}"><i class="fas fa-edit"></i></a>\
-                                                    <button type="button" class="btn btn-circle bg-warning text-white mr-1" onclick="modalScript(this)" data-url="/Project/Details/${full.projectID}"><i class="fas fa-info-circle"></i></button>\
-                                                    <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/Project/Delete/${full.projectID}"><i class="fas fa-trash-alt"></i></button>
-                                                </div>`;
+                                                        <a class="btn btn-circle bg-turqoise text-white mr-1" href="/Project/Edit/${full.projectID}"><i class="fas fa-edit"></i></a>\
+                                                        <button type="button" class="btn btn-circle bg-warning text-white mr-1" onclick="modalScript(this)" data-url="/Project/Details/${full.projectID}"><i class="fas fa-info-circle"></i></button>\
+                                                        <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/Project/Delete/${full.projectID}"><i class="fas fa-trash-alt"></i></button>
+                                                    </div>`;
                         }
                     },
                 ],
                 "columnDefs": [
-<<<<<<< HEAD
-                    { "targets": -1, "orderable": false },
-                    { "targets": 0, "orderable": false },
-=======
                     { "targets": [-1, 0], "orderable": false },
->>>>>>> f35914ab6e7633f9bf40ebb2bf5e0ece1d0130b7
                 ],
                 "initComplete": function () {
                     let api = this.api();
 
-                    $('input.searchInput').on('input', function () {
+                    $('input.searchInput, select.searchInput').on('input', function () {
                         let columnIndex = $(this).data("index");
                         let desiredColumn = api.columns(columnIndex);
                         if (desiredColumn.search() !== this.value) {
@@ -180,12 +160,7 @@
                         }
                     });
 
-<<<<<<< HEAD
-                    console.log(api.columns())
-                    //$("#columModal .modalBody .row")
-=======
                     $(".dt-buttons").addClass('btn-group');
->>>>>>> f35914ab6e7633f9bf40ebb2bf5e0ece1d0130b7
                 }
             });
 
@@ -203,12 +178,7 @@
                 $(this).toggleClass('active');
             });
 
-<<<<<<< HEAD
-            $(".toggleColumn").on('click', function () {
-                const target = $(this).data("target");
-                const columnTargeted = table.column(target);
-=======
-            /* 
+            /*
              * Extract Table Headings with their target values for Column Visibility Buttons
              * @@return headingMap: Map
              */
@@ -233,15 +203,15 @@
                 let template = "";
                 for (let [key, value] of headings) {
                     template += `
-                        <div class="col-12 col-md-6 py-2">
-                            <button type="button" class="btn btn-secondary toggleColumn w-100" data-target="${key}" data-activated="false">${value}</button>
-                        </div>
-                    `;
+                            <div class="col-12 col-md-6 py-2">
+                                <button type="button" class="btn btn-secondary toggleColumn w-100" data-target="${key}" data-activated="false">${value}</button>
+                            </div>
+                        `;
                 }
                 return template;
             }
 
-            /* 
+            /*
              * Add Template To String
              * Future notes to developer: It's been 6 hours and I can't cracked the problem of state saving so right now I am marking this
              * to Phase 2(after release). Basic idea of what I am trying to do: I want to keep track of the user's column visibility choice so on future logins,
@@ -257,21 +227,92 @@
                 const columnTargeted = table.column(target);
 
                 if (!columnState) {
-                    $(this).removeClass("btn-secondary");
-                    $(this).addClass("btn-success");
-                    $(this).attr("data-activated", true);
+                    $(this).removeClass("btn-secondary").addClass("btn-success").attr("data-activated", true);
                 }
                 else {
-                    $(this).removeClass("btn-success");
-                    $(this).addClass("btn-secondary");
-                    $(this).attr("data-activated", false);
+                    $(this).removeClass("btn-success").addClass("btn-secondary").attr("data-activated", false);
                 }
 
->>>>>>> f35914ab6e7633f9bf40ebb2bf5e0ece1d0130b7
                 columnTargeted.visible(!columnTargeted.visible());
 
             });
 
+        });
+    </script>
+    <script>
+        $('#selectRequestingDepartment, #selectResponsibleDepartment').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/Department/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
+        });
+
+        $('#selectOwner').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/Person/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
+        });
+
+        $('#selectServiceArea').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/ServiceArea/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
+        });
+
+        $('#selectProjectStatus').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/ProjectStatus/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
+        });
+
+        $('#selectProjectImportance').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/ProjectImportance/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
         });
     </script>
 
@@ -346,18 +387,40 @@
             <table class="table table-hover display" id="dataTable" width="100%">
                 <thead class="bg-navy-blue">
                     <tr class="filter h-100 bg-white">
-<<<<<<< HEAD
-                        <th>&nbsp;</th>
-=======
                         <th></th>
->>>>>>> f35914ab6e7633f9bf40ebb2bf5e0ece1d0130b7
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="projectTitle" name="projectTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="requestingDepartmentTitle" name="requestingDepartmentTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="3" type="text" placeholder="Ara..." id="responsibleDepartmentTitle" name="responsibleDepartmentTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="4" type="text" placeholder="Ara..." id="ownerFullName" name="ownerFullName" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="5" type="text" placeholder="Ara..." id="serviceAreaTitle" name="serviceAreaTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="6" type="text" placeholder="Ara..." id="projectStatusTitle" name="projectStatusTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="7" type="text" placeholder="Ara..." id="projectImportanceTitle" name="projectImportanceTitle" value="" /></th>
+                        <th scope="col">
+                            <input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="projectTitle" name="projectTitle" value="" />
+                        </th>
+                        <th scope="col">
+                            <select class="form-control searchInput" data-index="2" id="selectRequestingDepartment" name="selectRequestingDepartment" style="width: 100%;">
+                                <option value="" selected>Ara...</option>
+                            </select>
+                        </th>
+                        <th scope="col">
+                            <select class="form-control searchInput" data-index="3" id="selectResponsibleDepartment" name="selectResponsibleDepartment" style="width: 100%;">
+                                <option value="" selected>Ara...</option>
+                            </select>
+                        </th>
+                        <th scope="col">
+                            <select class="form-control searchInput" data-index="4" id="selectOwner" name="selectOwner" style="width: 100%;">
+                                <option value="" selected>Ara...</option>
+                            </select>
+                        </th>
+                        <th scope="col">
+                            <select class="form-control searchInput" data-index="5" id="selectServiceArea" name="selectServiceArea" style="width: 100%;">
+                                <option value="" selected>Ara...</option>
+                            </select>
+                        </th>
+                        <th scope="col">
+                            <select class="form-control searchInput" data-index="6" id="selectProjectStatus" name="selectProjectStatus" style="width: 100%;">
+                                <option value="" selected>Ara...</option>
+                            </select>
+                        </th>
+                        <th scope="col">
+                            <select class="form-control searchInput" data-index="7" id="selectProjectImportance" name="selectProjectImportance" style="width: 100%;">
+                                <option value="" selected>Ara...</option>
+                            </select>
+                        </th>
                         <th scope="col"></th>
                     </tr>
                     <tr id="tableLabels">
