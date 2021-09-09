@@ -1,5 +1,4 @@
 ﻿@model IBBPortal.ViewModels.ProjectMapDetailViewModel
-
 <!-- Alert for Exceptions -->
 @if (@TempData["SuccessTitle"] is not null)
 {
@@ -20,35 +19,94 @@
     <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
         <ul class="nav nav-pills" id="formTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="tag-tab" data-toggle="tab" href="#tag" role="tab" aria-controls="tag" aria-selected="false">Künye</a>
+                <a class="nav-link" id="tag-tab" data-toggle="tab" href="/Project/@Model.ProjectID" role="tab" aria-controls="tag" aria-selected="false">Künye</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="feasibility-tab" href="/ProjectFeasibility/Form/">Fizibilite</a>
+                <a class="nav-link" id="feasibility-tab" href="/ProjectFeasibility/Form/@Model.ProjectID">Fizibilite</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="associates-tab" href="/ProjectPerson/Index/">Kişiler</a>
+                <a class="nav-link" id="associates-tab" href="/ProjectPerson/Index/@Model.ProjectID">Kişiler</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="project-relation-tab" href="/ProjectRelation/Index/">İlişkili Projeler</a>
+                <a class="nav-link" id="project-relation-tab" href="/ProjectRelation/Index/@Model.ProjectID">İlişkili Projeler</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="project-field-tab" href="/Project/EditProjectField/">Proje Alanı</a>
+                <a class="nav-link" id="project-field-tab" href="/Project/EditProjectField/@Model.ProjectID">Proje Alanı</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="subfunction-tab" href="/ProjectSubfunctionFeature/Index/">Fonksiyon</a>
+                <a class="nav-link active" id="project-field-tab" href="/ProjectMap/ProjectDetail/@Model.ProjectID">Proje Haritası</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="schedule-tab" href="/ProjectPhase/Index/">Takvim/Süreç</a>
+                <a class="nav-link" id="subfunction-tab" href="/ProjectSubfunctionFeature/Index/@Model.ProjectID">Fonksiyon</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="schedule-tab" href="/ProjectBidding/Index/">Maliyet</a>
+                <a class="nav-link" id="schedule-tab" href="/ProjectPhase/Index/@Model.ProjectID">Takvim/Süreç</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="schedule-tab" href="/ProjectBidding/Index/@Model.ProjectID">Maliyet</a>
             </li>
         </ul>
     </div>
-    <div class="card-body">
-        <div class="tab-content my-3" id="formContent">
+    <div class="card-body" style="padding:0px;">
+        <div class="tab-content" id="formContent">
             <div class="tab-pane fade active show" id="tag" role="tabpanel" aria-labelledby="tag-tab">
+                <script src="https://unpkg.com/@Html.Raw("@")google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+                <div id="mapDetail" style="height: 100vh; min-height: 600px; width: 100%;">
 
+
+                </div>
+                <div class="loadingDiv">
+                    <div class="loadingIcon">
+                        <svg version="1.1" id="L2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                             viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                            <circle fill="none" stroke="#0a1a33" stroke-width="4" stroke-miterlimit="10" cx="50" cy="50" r="48" />
+                            <line fill="none" stroke-linecap="round" stroke="#0a1a33" stroke-width="4" stroke-miterlimit="10" x1="50" y1="50" x2="85" y2="50.5">
+                                                    <animateTransform attributeName="transform"
+                                                                      dur="2s"
+                                                                      type="rotate"
+                                                                      from="0 50 50"
+                                                                      to="360 50 50"
+                                                                      repeatCount="indefinite" />
+                            </line>
+                            <line fill="none" stroke-linecap="round" stroke="#0a1a33" stroke-width="4" stroke-miterlimit="10" x1="50" y1="50" x2="49.5" y2="74">
+                                                    <animateTransform attributeName="transform"
+                                                                      dur="15s"
+                                                                      type="rotate"
+                                                                      from="0 50 50"
+                                                                      to="360 50 50"
+                                                                      repeatCount="indefinite" />
+                            </line>
+                            </svg>
+                    </div>
+                </div>
+                <div class="floatingFormForDetailPage">
+
+
+                    <form class="form-inline">
+
+                        <input type="text" id="projectTitle" placeholder="Proje..." name="projectTitle" class="form-control">
+
+                        <label for="showIntersectingProjects">Çakışanlar</label>
+                        <input type="checkbox" id="showIntersectingProjects" placeholder="Çakışanlar" name="showProjectBorders" class="form-control">
+
+                        <label for="closeProjectsKM">Yakındakiler (KM)</label>
+                        <input type="range" id="closeProjectsKM" class="form-range" min="5" max="100">
+
+
+                        &nbsp;
+                        <button id="toggleFilter" type="button" class="btn btn-success"><i class="fa fa-filter"></i> Göster</button>
+                        <button id="closeFilter" type="button" class="btn btn-danger"><i class="fa fa-times-circle"></i></button>
+                        <input name="projectTitle" id="projectTitle" type="hidden" value="@Model.ProjectTitle" />
+                        <input name="projectID" id="projectID" type="hidden" value="@Model.ProjectID" />
+                    </form>
+
+                </div>
+                <div class="floatingFormClosedForDetailPage">
+                    <form class="form-inline">
+                        <button id="openFilter" type="button" class="btn btn-success"><i class="fa fa-filter"></i></button>
+                    </form>
+                </div>
+                
             </div>
         </div>
     </div>
@@ -56,8 +114,55 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMYG7cNdDYUUxT8FSVxCtaxvSv9Ic2UZw&libraries=&v=weekly"></script>
     <script>
-        console.log("test");
+        var map;
+        let latValue = parseFloat(("@Model.ProjectLatitude").split(",").join("."));
+        let lngValue = parseFloat(("@Model.ProjectLongitude").split(",").join("."));
+        function initMap() {
+
+
+
+
+
+            map = new google.maps.Map(document.getElementById("mapDetail"), {
+                center: { lat: latValue, lng: lngValue },
+                disableDefaultUI: true,
+                zoom: 18,
+            });
+
+        }
+
+        
     </script>
+    <script src="~/js/project_map.js"></script>
+    <script>
+        var currentProject = {
+            latitude: latValue,
+            longitude: lngValue,
+            projectTitle: "@Model.ProjectTitle",
+            serviceAreaTitle: "@Model.ServiceAreaTitle",
+            responsibleDepartmentTitle: "@Model.ServiceAreaTitle",
+            projectImportanceTitle: "@Model.ProjectImportanceTitle",
+            projectID: @Model.ProjectID,
+            coordinates: "@Model.coordinates",
+
+        };
+
+        $(document).ready(function () {
+           /* var mainmarkers = [];
+            mainmarkers.push(showMarker(currentProject));
+
+            new MarkerClusterer(map, mainmarkers, {
+                imagePath:
+                    "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
+            });
+
+            showBorders(currentProject, true);*/
+            buildMap();
+        });
+
+        
+    </script>
+    
 }

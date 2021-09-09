@@ -225,7 +225,7 @@ namespace IBBPortal.Controllers
             //total number of rows count   
             //var recordsTotal = data.Count();
                 //Paging   
-                var passData = data.Take(500).ToList();
+                var passData = data.ToList();
 
                 //Returning Json Data  
                 return Json(new { data = passData, districtID = selectedDistrictInt, ProjectKeyword = projectKeyword });
@@ -235,6 +235,138 @@ namespace IBBPortal.Controllers
             //catch (Exception)
             //{
               //  throw;
+            //}
+        }
+
+        [HttpGet]
+        public JsonResult MapDetail()
+        {
+            //try
+            //{
+            string projectKeyword = HttpContext.Request.Query["projectKeyword"];
+            var showIntersectingProjects = HttpContext.Request.Query["showIntersectingProjects"];
+            var closeProjectsKM = HttpContext.Request.Query["closeProjectsKM"];
+            var projectID = HttpContext.Request.Query["projectID"];
+
+            if (Int32.TryParse(closeProjectsKM, out int closeProjectsKMInt))
+            {
+                //do nothing;
+
+            }
+            else
+            {
+                closeProjectsKMInt = 0;
+
+            }
+
+            if (Int32.TryParse(projectID, out int projectIDparsed))
+            {
+                //do nothing;
+
+            }
+            else
+            {
+                projectIDparsed = -1;
+
+            }
+
+            var currentProject = _context.ProjectField.Select(c => new
+            {
+                c.ProjectLineString,
+                c.ProjectPoint,
+                c.ProjectPolygon,
+                c.ProjectID,
+
+            }).Where(c => c.ProjectID == projectIDparsed).First();
+
+            if (currentProject == null)
+            {
+                return Json(new { data = false, ProjectKeyword = projectKeyword });
+            }
+            
+
+            var data = _context.ProjectField.Select(c => new
+            {
+                c.ProjectID,
+                ProjectTitle = c.Project.ProjectTitle,
+                DistrictName = c.District.DistrictName,
+                Longitude = c.ProjectLongitude,
+                Latitude = c.ProjectLatitude,
+                Coordinates = c.coordinates,
+                RequestingDepartmentTitle = c.Project.RequestingDepartment.DepartmentTitle,
+                ResponsibleDepartmentTitle = c.Project.ResponsibleDepartment.DepartmentTitle,
+                OwnerFullName = c.Project.ProjectOwnerPerson.PersonName.Trim() + " " + c.Project.ProjectOwnerPerson.PersonSurname.Trim(),
+                ServiceAreaTitle = c.Project.ProjectServiceArea.ServiceAreaTitle,
+                ProjectImportanceTitle = c.Project.ProjectImportance.ProjectImportanceTitle,
+                RequestingDepartmentID = c.Project.RequestingDepartmentID == null ? 0 : c.Project.RequestingDepartmentID,
+                ResponsibleDepartmentID = c.Project.ResponsibleDepartmentID == null ? 0 : c.Project.ResponsibleDepartmentID,
+                DistrictID = c.DistrictID == null ? 0 : c.DistrictID,
+                ProjectOwnerID = c.Project.ProjectOwnerPersonID == null ? 0 : c.Project.ProjectOwnerPersonID,
+                ProjectYear = c.Project.ProjectYear,
+                ProjectLineString = c.ProjectLineString,
+                ProjectPoint = c.ProjectPoint,
+                Distance = c.ProjectPoint.Distance(currentProject.ProjectPoint),
+            });
+
+            data = data.Where(c => c.ProjectID != projectIDparsed);
+
+
+            
+           if (projectIDparsed != 0 && currentProject!=null && currentProject.ProjectLineString!=null && showIntersectingProjects=="true")
+           {
+              data = data.Where(c => c.ProjectLineString.Intersects(currentProject.ProjectLineString));
+           }
+
+            if (projectIDparsed != 0 && currentProject != null && currentProject.ProjectPoint != null)
+            {
+                data = data.Where(c => c.ProjectPoint.Distance(currentProject.ProjectPoint) < closeProjectsKMInt * 1000);
+
+            }
+
+
+
+
+
+
+
+
+            //Sorting
+
+
+            //total number of rows count   
+            //var recordsTotal = data.Count();
+            //Paging   
+            var passData = data.Select(
+                c => new
+                {
+                    c.ProjectID,
+                    c.ProjectTitle,
+                    c.DistrictName,
+                    c.Longitude,
+                    c.Latitude,
+                    c.Coordinates,
+                    c.RequestingDepartmentTitle,
+                    c.ResponsibleDepartmentTitle,
+                    c.OwnerFullName,
+                    c.ServiceAreaTitle,
+                    c.ProjectImportanceTitle,
+                    c.RequestingDepartmentID,
+                    c.ResponsibleDepartmentID,
+                    c.DistrictID,
+                    c.ProjectOwnerID,
+                    c.ProjectYear,
+                    c.Distance,
+                }
+                ).Take(100).ToList();
+
+            //Returning Json Data  
+            return Json(new { data = passData, ProjectKeyword = projectKeyword, closeProjectsKMInt = closeProjectsKMInt, showIntersectingProjects = showIntersectingProjects });
+
+            //}
+
+            //catch (Exception)
+            //{
+            //  throw;
             //}
         }
 
@@ -445,7 +577,7 @@ namespace IBBPortal.Controllers
                         throw;
                     }
 
-                    TransactionLogger.logTransaction(_context, project.ProjectID, "error-updating-project", _userManager.GetUserId(HttpContext.User));
+                    var unused = TransactionLogger.logTransaction(_context, project.ProjectID, "error-updating-project", _userManager.GetUserId(HttpContext.User));
                 }
                 return RedirectToAction(nameof(Edit));
             }
