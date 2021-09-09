@@ -16,12 +16,19 @@ namespace IBBPortal.Static
 
             //ApplicationDbContext _transactionContext = new ApplicationDbContext();
             string message;
+            int messageID;
+            int messageType;
             try
             {
-                 message = _c.TransactionMessages.Where(c => c.TransactionMessageSlug == slug).First().TransactionMessageContent;
+                message = _c.TransactionMessages.Where(c => c.TransactionMessageSlug == slug).First().TransactionMessageContent;
+                messageID = _c.TransactionMessages.Where(c => c.TransactionMessageSlug == slug).First().TransactionMessageID;
+                messageType = (int)_c.TransactionMessages.Where(c => c.TransactionMessageSlug == slug).First().TransactionTypeID;
             } catch
             {
-                 message = slug + " temalı mesaj denemesi oluştu";
+                message = _c.TransactionMessages.First().TransactionMessageContent + slug;
+                messageID = _c.TransactionMessages.First().TransactionMessageID;
+                messageType = (int)_c.TransactionMessages.First().TransactionTypeID;
+                slug = "unknown-transaction";
             }
             
 
@@ -31,6 +38,8 @@ namespace IBBPortal.Static
             transactionLog.TransactionLogSlug = slug;
             transactionLog.TransactionLogRead = false;
             transactionLog.TransactionLogForUserID = UserID;
+            transactionLog.TransactionMessageID = messageID;
+            transactionLog.TransactionTypeID = messageType;
             if (message != null)
             {
                 transactionLog.TransactionLogMessageContent = message;
