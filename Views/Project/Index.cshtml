@@ -226,11 +226,17 @@
                 const target = $(this).data("target");
                 const columnTargeted = table.column(target);
 
+                console.log(columnState);
+
                 if (!columnState) {
-                    $(this).removeClass("btn-secondary").addClass("btn-success").attr("data-activated", true);
+                    $(this).data("activated", true);
+                    $(this).removeClass("btn-secondary");
+                    $(this).addClass("btn-success");
                 }
                 else {
-                    $(this).removeClass("btn-success").addClass("btn-secondary").attr("data-activated", false);
+                    $(this).removeClass("btn-success");
+                    $(this).addClass("btn-secondary");
+                    $(this).data("activated", false);
                 }
 
                 columnTargeted.visible(!columnTargeted.visible());
@@ -327,12 +333,7 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-12 col-md-6">
-                            <button type="button" class="btn btn-secondary toggleColumn" data-target="1" data-activated="false">Proje Adı</button>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <button type="button" class="btn btn-secondary toggleColumn" data-target="2" data-activated="false">Proje Adı</button>
-                        </div>
+
                     </div>
                 </div>
             </div>
