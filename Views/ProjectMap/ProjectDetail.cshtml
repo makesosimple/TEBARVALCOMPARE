@@ -1,0 +1,63 @@
+﻿@model IBBPortal.ViewModels.ProjectMapDetailViewModel
+
+<!-- Alert for Exceptions -->
+@if (@TempData["SuccessTitle"] is not null)
+{
+    <div class="alert bg-gradient-success alert-dismissible fade show border-0" role="alert">
+        <h4 class="alert-heading text-white">
+            <i class="fas fa-check"></i>
+            @TempData["SuccessTitle"]
+            <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </h4>
+        <p class="text-white">@TempData["SuccessMessage"]</p>
+    </div>
+}
+
+<h1 class="h3 mb-4 text-gray-800">@Model.ProjectTitle</h1>
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
+        <ul class="nav nav-pills" id="formTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="tag-tab" data-toggle="tab" href="#tag" role="tab" aria-controls="tag" aria-selected="false">Künye</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="feasibility-tab" href="/ProjectFeasibility/Form/">Fizibilite</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="associates-tab" href="/ProjectPerson/Index/">Kişiler</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="project-relation-tab" href="/ProjectRelation/Index/">İlişkili Projeler</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="project-field-tab" href="/Project/EditProjectField/">Proje Alanı</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="subfunction-tab" href="/ProjectSubfunctionFeature/Index/">Fonksiyon</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="schedule-tab" href="/ProjectPhase/Index/">Takvim/Süreç</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="schedule-tab" href="/ProjectBidding/Index/">Maliyet</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content my-3" id="formContent">
+            <div class="tab-pane fade active show" id="tag" role="tabpanel" aria-labelledby="tag-tab">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        console.log("test");
+    </script>
+}

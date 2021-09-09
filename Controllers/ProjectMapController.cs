@@ -1,5 +1,6 @@
 ﻿using IBBPortal.Data;
 using IBBPortal.Models;
+using IBBPortal.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -26,18 +27,39 @@ namespace IBBPortal.Controllers
             return View();
         }
 
-        // GET: ProjectDetail/5
-        public async Task<IActionResult> ProjectDetail(int? projectID)
+        // GET: https://localhost:44360/ProjectMap/ProjectDetail/?projectID=168
+        public async Task<IActionResult> ProjectDetail(int? id)
         {
 
-            var projectField = await _context.ProjectField
-                .Include(m => m.Project.ProjectTitle)
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            /*var projectField = await _context.ProjectField
+                //.Include(m => m.Project.ProjectTitle)
                 .Include(m => m.coordinates)
-                .Include(m => m.Project.ProjectIBBCode)
+                //.Include(m => m.Project.ProjectIBBCode)
                 .Include(m => m.ProjectLatitude)
                 .Include(m => m.ProjectLongitude)
-                .FirstOrDefaultAsync(m => m.ProjectID == projectID);
-            return View();
+                .FirstOrDefaultAsync(m => m.ProjectID == projectID);*/
+
+            var projectDetail = await _context.ProjectField.Select(m => new ProjectMapDetailViewModel
+            {
+                ProjectTitle = m.Project.ProjectTitle,
+                ProjectID = m.ProjectID,
+                ProjectLatitude = m.ProjectLatitude,
+                ProjectLongitude = m.ProjectLongitude,
+                coordinates = m.coordinates,
+            })
+                .FirstOrDefaultAsync(m => m.ProjectID == id);
+
+            if (projectDetail == null)
+            {
+                return NotFound();
+            }
+
+            return View(projectDetail);
         }
     }
 }
