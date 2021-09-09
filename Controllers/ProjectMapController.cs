@@ -1,5 +1,6 @@
 ﻿using IBBPortal.Data;
 using IBBPortal.Models;
+using IBBPortal.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,10 +28,10 @@ namespace IBBPortal.Controllers
         }
 
         // GET: https://localhost:44360/ProjectMap/ProjectDetail/?projectID=168
-        public async Task<IActionResult> ProjectDetail(int? projectID)
+        public async Task<IActionResult> ProjectDetail(int? id)
         {
 
-            if (projectID == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -43,24 +44,22 @@ namespace IBBPortal.Controllers
                 .Include(m => m.ProjectLongitude)
                 .FirstOrDefaultAsync(m => m.ProjectID == projectID);*/
 
-            var projectDetail = await _context.ProjectField.Select(m => new
+            var projectDetail = await _context.ProjectField.Select(m => new ProjectMapDetailViewModel
             {
                 ProjectTitle = m.Project.ProjectTitle,
-                m.ProjectID,
-                m.ProjectLatitude,
-                m.ProjectLongitude,
-                m.coordinates,
-            }).FirstOrDefaultAsync(m => m.ProjectID == projectID);
+                ProjectID = m.ProjectID,
+                ProjectLatitude = m.ProjectLatitude,
+                ProjectLongitude = m.ProjectLongitude,
+                coordinates = m.coordinates,
+            })
+                .FirstOrDefaultAsync(m => m.ProjectID == id);
 
             if (projectDetail == null)
             {
                 return NotFound();
             }
 
-            ViewBag.projectDetail = projectDetail;
-            //ViewBag.projectField = projectField;
-
-            return View();
+            return View(projectDetail);
         }
     }
 }

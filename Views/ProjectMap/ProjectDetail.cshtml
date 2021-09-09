@@ -1,9 +1,4 @@
-﻿@{
-
-    var projectDetail = ViewBag.projectDetail;
-    // ViewData["Title"] = projectField.ProjectTitle;
-    //https://localhost:44360/ProjectMap/ProjectDetail/?projectID=168
-}
+﻿@model IBBPortal.ViewModels.ProjectMapDetailViewModel
 
 <!-- Alert for Exceptions -->
 @if (@TempData["SuccessTitle"] is not null)
@@ -20,7 +15,7 @@
     </div>
 }
 
-<h1 class="h3 mb-4 text-gray-800">@projectDetail.ProjectTitle</h1>
+<h1 class="h3 mb-4 text-gray-800">@Model.ProjectTitle</h1>
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
         <ul class="nav nav-pills" id="formTabs" role="tablist">
@@ -53,7 +48,7 @@
     <div class="card-body">
         <div class="tab-content my-3" id="formContent">
             <div class="tab-pane fade active show" id="tag" role="tabpanel" aria-labelledby="tag-tab">
-                
+
             </div>
         </div>
     </div>
