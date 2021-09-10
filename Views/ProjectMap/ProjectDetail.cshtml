@@ -89,8 +89,8 @@
                         <label for="showIntersectingProjects">Çakışanlar</label>
                         <input type="checkbox" id="showIntersectingProjects" placeholder="Çakışanlar" name="showProjectBorders" class="form-control">
 
-                        <label for="closeProjectsKM">Yakındakiler (KM)</label>
-                        <input type="range" id="closeProjectsKM" class="form-range" min="5" max="100">
+                        <label for="closeProjectsKM">Yakındakiler (m)</label>
+                        <input type="range" id="closeProjectsKM" class="form-range" min="100" max="10000" oninput="this.nextElementSibling.value = this.value" value="250"><output>250</output>m
 
 
                         &nbsp;
