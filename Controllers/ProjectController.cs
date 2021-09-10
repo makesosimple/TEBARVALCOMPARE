@@ -319,7 +319,7 @@ namespace IBBPortal.Controllers
 
             if (projectIDparsed != 0 && currentProject != null && currentProject.ProjectPoint != null)
             {
-                data = data.Where(c => c.ProjectPoint.Distance(currentProject.ProjectPoint) < closeProjectsKMInt * 1000);
+                data = data.Where(c => c.ProjectPoint.Distance(currentProject.ProjectPoint) < closeProjectsKMInt);
 
             }
 
