@@ -37,6 +37,7 @@ namespace IBBPortal
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection"), x => x.UseNetTopologySuite()));
             services.AddDatabaseDeveloperPageExceptionFilter();
+            
 
             services.AddIdentity<ApplicationUser, ApplicationRole>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddUserStore<ApplicationUserStore>()

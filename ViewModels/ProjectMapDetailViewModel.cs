@@ -23,5 +23,10 @@ namespace IBBPortal.ViewModels
 
         [MaxLength(16000, ErrorMessage = "Bu alana maksimum 16000 karakter girebilirsiniz.")]
         public string? coordinates { get; set; }
+
+        public string? ServiceAreaTitle { get; set; }
+        public string? ResponsibleDepartmentTitle { get; set; }
+
+        public string? ProjectImportanceTitle { get; set; }
     }
 }

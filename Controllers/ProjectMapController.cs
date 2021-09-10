@@ -51,8 +51,10 @@ namespace IBBPortal.Controllers
                 ProjectLatitude = m.ProjectLatitude,
                 ProjectLongitude = m.ProjectLongitude,
                 coordinates = m.coordinates,
-            })
-                .FirstOrDefaultAsync(m => m.ProjectID == id);
+                ServiceAreaTitle = m.Project.ProjectServiceArea.ServiceAreaTitle,
+                ResponsibleDepartmentTitle = m.Project.ResponsibleDepartment.DepartmentTitle,
+                ProjectImportanceTitle = m.Project.ProjectImportance.ProjectImportanceTitle,
+            }).FirstOrDefaultAsync(m => m.ProjectID == id);
 
             if (projectDetail == null)
             {
