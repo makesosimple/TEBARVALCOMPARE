@@ -11714,7 +11714,6 @@ body.sidebar-toggled footer.sticky-footer {
 /* Form Headers */
 #formTabs {
   flex-wrap: nowrap;
-  overflow-x: scroll;
   -ms-overflow-style: none;
   /* IE and Edge */
   scrollbar-width: none;

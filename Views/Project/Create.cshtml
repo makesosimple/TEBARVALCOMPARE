@@ -4,11 +4,15 @@
     ViewData["Title"] = "Proje Ekle";
 }
 
-<h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
+<div class="row">
+    <div class="justify-content-between py-2 col-12 d-flex">
+        <h1 class="h3 text-gray-800">@ViewData["Title"]</h1>
+    </div>
+</div>
 <form asp-action="Create">
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
-            <ul class="nav nav-pills" id="formTabs" role="tablist">
+            <ul class="nav nav-pills" role="tablist">
                 <li class="nav-item" role="presentation">
                     <a class="nav-link active" id="tag-tab" data-toggle="tab" href="#tag" role="tab" aria-controls="tag" arsia-selected="false">Künye</a>
                 </li>
