@@ -3,16 +3,14 @@
     position: absolute;
     top: 15px;
     left: 0px;
-    padding:10px;
+    padding: 10px;
     padding-left: 15px;
     padding-right: 15px;
-    
     background-color: white;
     border-radius: 5px;
-    margin:15px;
+    margin: 15px;
     width:90%;
     z-index: 100;
-
 }
 
 .floatingFormForDetailPage {
@@ -25,9 +23,8 @@
     background-color: white;
     border-radius: 5px;
     margin: 15px;
-    width: 90%;
+    /*width: 90%;*/
     z-index: 100;
-    border: 3px solid red;
 }
 
 .loadingDiv {
@@ -111,8 +108,9 @@
         }
 
 #closeFilter {
-    position: absolute;
-    right: 15px;
+    /*position: absolute;
+    right: 15px;*/
+    margin-left:15px;
 }
 
 #openFilter {
@@ -124,11 +122,22 @@
             /*background-color: dodgerblue;*/
         }
 
+.form-inline .select2 {
+    margin-bottom: 0px;
+    margin-right: 10px;
+}
+
 /* Add responsiveness - display the form controls vertically instead of horizontally on screens that are less than 800px wide */
 @media (max-width: 800px) {
     .form-inline input {
         margin: 5px 0;
-       
+        margin-bottom:10px;
+    }
+
+    .form-inline .select2 {
+        margin-bottom: 10px;
+        margin-right:0px;
+        min-width:100px;
     }
 
     .form-inline select {
@@ -149,7 +158,7 @@
         position: relative;
         /*bottom: 15px;*/
         margin-top: 5px;
-        margin-left: 15px;
+        margin-left: 0px;
     }
 
     h1 .h3 {
