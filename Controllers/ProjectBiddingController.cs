@@ -9,9 +9,11 @@ using Microsoft.AspNetCore.Identity;
 using System.Linq.Dynamic.Core;
 using IBBPortal.Helpers;
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IBBPortal.Controllers
 {
+    [Authorize]
     public class ProjectBiddingController : Controller
     {
         private readonly ApplicationDbContext _context;

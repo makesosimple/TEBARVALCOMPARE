@@ -10,9 +10,11 @@ using Microsoft.AspNetCore.Identity;
 using IBBPortal.Helpers;
 using IBBPortal.ViewModels;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IBBPortal.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly ApplicationDbContext _context;

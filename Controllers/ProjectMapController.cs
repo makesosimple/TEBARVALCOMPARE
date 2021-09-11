@@ -1,6 +1,7 @@
 ﻿using IBBPortal.Data;
 using IBBPortal.Models;
 using IBBPortal.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace IBBPortal.Controllers
 {
+    [Authorize]
     public class ProjectMapController : Controller
     {
         private readonly ApplicationDbContext _context;

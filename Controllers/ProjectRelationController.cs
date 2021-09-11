@@ -11,9 +11,11 @@ using Microsoft.AspNetCore.Identity;
 using System.Linq.Dynamic.Core;
 using System.Globalization;
 using IBBPortal.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IBBPortal.Controllers
 {
+    [Authorize]
     public class ProjectRelationController : Controller
     {
         private readonly ApplicationDbContext _context;

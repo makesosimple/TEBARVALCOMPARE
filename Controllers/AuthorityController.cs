@@ -9,9 +9,11 @@ using IBBPortal.Models;
 using Microsoft.AspNetCore.Identity;
 using IBBPortal.Helpers;
 using Ganss.XSS;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IBBPortal.Controllers
 {
+    [Authorize]
     public class AuthorityController : Controller
     {
         private readonly ApplicationDbContext _context;

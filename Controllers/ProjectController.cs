@@ -14,9 +14,11 @@ using System.Xml.Linq;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using IBBPortal.Static;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IBBPortal.Controllers
 {
+    [Authorize]
     public class ProjectController : Controller
     {
         private readonly ApplicationDbContext _context;

@@ -10,9 +10,11 @@ using IBBPortal.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Linq.Dynamic.Core;
 using IBBPortal.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IBBPortal.Controllers
 {
+    [Authorize]
     public class ShortcutsController : Controller
     {
 
