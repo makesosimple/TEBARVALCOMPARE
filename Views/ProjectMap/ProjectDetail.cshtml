@@ -158,12 +158,12 @@
         var currentProject = {
             latitude: latValue,
             longitude: lngValue,
-            projectTitle: "@Model.ProjectTitle",
-            serviceAreaTitle: "@Model.ServiceAreaTitle",
-            responsibleDepartmentTitle: "@Model.ServiceAreaTitle",
-            projectImportanceTitle: "@Model.ProjectImportanceTitle",
-            projectID: @Model.ProjectID,
-            coordinates: "@Model.coordinates",
+            projectTitle: "@Html.Raw(Model.ProjectTitle)",
+            serviceAreaTitle: "@Html.Raw(Model.ServiceAreaTitle)",
+            responsibleDepartmentTitle: "@Html.Raw(Model.ServiceAreaTitle)",
+            projectImportanceTitle: "@Html.Raw(Model.ProjectImportanceTitle)",
+            projectID: @Html.Raw(Model.ProjectID),
+            coordinates: "@Html.Raw(Model.coordinates)",
 
         };
 

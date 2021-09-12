@@ -116,6 +116,7 @@ function showMarker(m) {
         icon: image,
     });
 
+
     const contentString =
         '<div id="content">' +
         '<div id="siteNotice">' +
