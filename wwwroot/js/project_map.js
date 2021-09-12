@@ -1,5 +1,3 @@
-
-
 let colors = [
     '#003f5c',
     '#2f4b7c',
@@ -66,7 +64,7 @@ function buildMap() {
         $('.loadingDiv').hide();
 
     }).fail(function () {
-        alert('Harita bilgileri yüklenirken bir sorun oluþtu. Lütfen yeniden deneyin. Hata tekrar ederse sistem yöneticinizle görüþün.');
+        alert('Harita bilgileri yÃ¼klenirken bir sorun oluÅŸtu. LÃ¼tfen yeniden deneyin. Hata tekrar ederse sistem yÃ¶neticinizle gÃ¶rÃ¼ÅŸÃ¼n.');
     });
 }
 
@@ -148,9 +146,9 @@ function showMarker(m, main=false) {
         "</div>" +
         '<h5 id="firstHeading" class="firstHeading">' + m.projectTitle + '</h4>' +
         '<div id="bodyContent"><p>' +
-        'Hizmet Alaný: ' + m.serviceAreaTitle + '<br/>' +
-        'Sorumlu Müdürlük: ' + m.responsibleDepartmentTitle + '<br/>' +
-        'Proje Önemi: ' + m.projectImportanceTitle + '<br/>' +
+        'Hizmet AlanÄ±: ' + m.serviceAreaTitle + '<br/>' +
+        'Sorumlu MÃ¼dÃ¼rlÃ¼k: ' + m.responsibleDepartmentTitle + '<br/>' +
+        'Proje Ã–nemi: ' + m.projectImportanceTitle + '<br/>' +
         '</p>' +
         '<p><a class="btn btn-info btn-sm" href="/Project/Edit/' + m.projectID + '">Detaylar</a></p>' +
         "</div>" +
