@@ -6,8 +6,10 @@
     var serviceAreaList = ViewBag.serviceAreaList;
     var projectCountByYear = ViewBag.projectCountByYear;
 }
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">34 Proje Portal</h1>
+<div class="row">
+    <div class="justify-content-between py-2 col-12 d-flex">
+        <h1 class="h3 text-gray-800">34 Proje Portal</h1>
+     </div>
 </div>
 
 <!-- Content Row -->
@@ -15,21 +17,23 @@
 
     <!-- Earnings (Monthly) Card Example -->
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Projeler
+        <a href="/Project/">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Projeler
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">@numberOfProjects</div>
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">@numberOfProjects</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-project-diagram fa-2x text-gray-300"></i>
+                        <div class="col-auto">
+                            <i class="fas fa-project-diagram fa-2x text-gray-300"></i>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </a>
     </div>
 
     <!-- Earnings (Monthly) Card Example -->

@@ -120,6 +120,8 @@ namespace IBBPortal.Controllers
                     }
                 }
 
+                data = data.Where(d => d.ProjectTitle.Length > 0);
+
                 //total number of rows count   
                 recordsTotal = data.Count();
                 //Paging   

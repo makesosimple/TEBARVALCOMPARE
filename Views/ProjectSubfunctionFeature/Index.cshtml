@@ -90,36 +90,54 @@
     </div>
 }
 
-<h1 class="h3 mb-4 text-gray-800">@ViewData["Title"]</h1>
+<div class="row">
+    <div class="justify-content-between py-2 col-12 d-flex">
+        <h1 class="h3 text-gray-800">@ViewData["Title"]</h1>
+    </div>
+</div>
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
-        <ul class="nav nav-pills" id="formTabs" role="tablist">
-            <li class="nav-item" role="presentation">
+        <ul class="nav nav-pills" role="tablist">
+            <li class="nav-item d-none d-md-block" role="presentation">
                 <a class="nav-link" id="tag-tab" href="/Project/Edit/@ViewBag.ProjectID">Künye</a>
             </li>
-            <li class="nav-item" role="presentation">
+            <li class="nav-item d-none d-md-block" role="presentation">
                 <a class="nav-link" id="associates-tab" href="/ProjectFeasibility/Form/@ViewBag.ProjectID">Fizibilite</a>
             </li>
-            <li class="nav-item" role="presentation">
+            <li class="nav-item d-none d-md-block" role="presentation">
                 <a class="nav-link" id="associates-tab" href="/ProjectPerson/Index/@ViewBag.ProjectID">Kişiler</a>
             </li>
-            <li class="nav-item" role="presentation">
+            <li class="nav-item d-none d-md-block" role="presentation">
                 <a class="nav-link" id="associates-tab" href="/ProjectRelation/Index/@ViewBag.ProjectID">İlişkili Projeler</a>
             </li>
-            <li class="nav-item" role="presentation">
+            <li class="nav-item d-none d-md-block" role="presentation">
                 <a class="nav-link" id="project-field-tab" href="/Project/EditProjectField/@ViewBag.ProjectID">Proje Alanı</a>
             </li>
-            <li class="nav-item" role="presentation">
+            <li class="nav-item d-none d-md-block" role="presentation">
                 <a class="nav-link" id="project-field-tab" href="/ProjectMap/ProjectDetail/@ViewBag.ProjectID">Proje Haritası</a>
             </li>
             <li class="nav-item" role="presentation">
                 <a class="nav-link active" id="subfunction-tab" data-toggle="tab" href="#subfunction" role="tab" aria-controls="subfunction" aria-selected="false">Fonksiyon</a>
             </li>
-            <li class="nav-item" role="presentation">
+            <li class="nav-item d-none d-md-block" role="presentation">
                 <a class="nav-link" id="schedule-tab" href="/ProjectPhase/Index/@ViewBag.ProjectID ">Takvim/Süreç</a>
             </li>
-            <li class="nav-item" role="presentation">
+            <li class="nav-item d-none d-md-block" role="presentation">
                 <a class="nav-link" id="schedule-tab" href="/ProjectBidding/Index/@ViewBag.ProjectID">Maliyet</a>
+            </li>
+            <li class="nav-item dropdown d-md-none" role="presentation">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="other-tab" href="#" aria-expanded="false">Diğer İşlemler</a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/Project/Edit/@ViewBag.ProjectID">Künye</a></li>
+                    <li><a class="dropdown-item" href="/ProjectFeasibility/Form/@ViewBag.ProjectID">Fizibilite</a></li>
+                    <li><a class="dropdown-item" href="/ProjectPerson/Index/@ViewBag.ProjectID">Kişiler</a></li>
+                    <li><a class="dropdown-item" href="/ProjectRelation/Index/@ViewBag.ProjectID">İlişkili Projeler</a></li>
+                    <li><a class="dropdown-item" href="/Project/EditProjectField/@ViewBag.ProjectID">Proje Alanı</a></li>
+                    <li><a class="dropdown-item" href="/ProjectMap/ProjectDetail/@ViewBag.ProjectID">Proje Haritası</a></li>
+                    <!--<li><a class="dropdown-item" href="/ProjectSubfunctionFeature/Index/@ViewBag.ProjectID">Fonksiyon</a></li>-->
+                    <li><a class="dropdown-item" href="/ProjectPhase/Index/@ViewBag.ProjectID ">Takvim/Süreç</a></li>
+                    <li><a class="dropdown-item" href="/ProjectBidding/Index/@ViewBag.ProjectID">Maliyet</a></li>
+                </ul>
             </li>
         </ul>
     </div>
@@ -128,8 +146,15 @@
             <div class="tab-pane fade active show" id="subfunction" role="tabpanel" aria-labelledby="subfunction-tab">
                 <div class="row">
                     <div class="col-12">
-                        <h4 class="text-primary border-bottom pb-2">Fonksiyon</h4>
-
+                       
+                        <div class="row">
+                            <div class="justify-content-between col-12 d-flex border-bottom tabTitle">
+                                <h4 class="text-primary">Fonksiyonlar</h4>
+                                <button type="button" class="btn btn-success d-block" onclick="modalScript(this)" data-url="/ProjectSubfunctionFeature/Create/@ViewBag.ProjectID">
+                                    <i class="fas fa-plus mr-2"></i> EKLE
+                                </button>
+                            </div>
+                        </div>
                         <div class="table-responsive position-relative">
                             <table class="table table-hover display" id="dataTableSubfunction" width="100%" cellspacing="20">
                                 <thead class="bg-navy-blue">
