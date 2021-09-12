@@ -184,3 +184,7 @@ h1 {
 .tabTitle {
     padding-bottom: 1rem;
 }
+
+.opaque {
+    background-color: #ffffff;
+}

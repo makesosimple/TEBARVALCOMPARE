@@ -53,6 +53,13 @@
                 },
                 "order": [[1, "asc"]],
                 "processing": false, // for show progress bar
+                "drawCallback": function (settings) {
+                    $(".loadingDiv").hide();
+                },
+                "preDrawCallback": function (settings) {
+                    //$('#example tbody').off('click', 'td');
+                    $(".loadingDiv").show();
+                },
                 "serverSide": true, // for process server side
                 "filter": true, // this is for disable filter (search box)
                 "orderMulti": false, // for disable multiple column at once
@@ -382,7 +389,33 @@
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-body">
+        <div class="loadingDiv" style="background-color: #ffffff;">
+            <div class="loadingIcon">
+                <p>Yükleniyor...</p>
+                <svg version="1.1" id="L2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                     viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
+                <circle fill="none" stroke="#0a1a33" stroke-width="4" stroke-miterlimit="10" cx="50" cy="50" r="48" />
+                <line fill="none" stroke-linecap="round" stroke="#0a1a33" stroke-width="4" stroke-miterlimit="10" x1="50" y1="50" x2="85" y2="50.5">
+                <animateTransform attributeName="transform"
+                                  dur="2s"
+                                  type="rotate"
+                                  from="0 50 50"
+                                  to="360 50 50"
+                                  repeatCount="indefinite" />
+                            </line>
+                <line fill="none" stroke-linecap="round" stroke="#0a1a33" stroke-width="4" stroke-miterlimit="10" x1="50" y1="50" x2="49.5" y2="74">
+                <animateTransform attributeName="transform"
+                                  dur="15s"
+                                  type="rotate"
+                                  from="0 50 50"
+                                  to="360 50 50"
+                                  repeatCount="indefinite" />
+                            </line>
+                            </svg>
+            </div>
+        </div>
         <div class="table-responsive position-relative">
+
             <table class="table table-hover display" id="dataTable" width="100%">
                 <thead class="bg-navy-blue">
                     <tr class="filter h-100 bg-white">
