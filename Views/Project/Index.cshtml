@@ -26,6 +26,7 @@
 
             let table = $("#dataTable").DataTable({
                 "dom": '<"top d-flex justify-content-start my-2 ml-1"B>rt<"d-flex justify-content-between flex-column align-items-baseline flex-md-row mt-3"ipl><"clear">',
+                "scrollX": true,
                 "buttons": [
                     {
                         extend: 'map',
@@ -55,9 +56,11 @@
                 "processing": false, // for show progress bar
                 "drawCallback": function (settings) {
                     $(".loadingDiv").hide();
+                    
                 },
                 "preDrawCallback": function (settings) {
                     //$('#example tbody').off('click', 'td');
+                    $(".dt-buttons").addClass('btn-group');
                     $(".loadingDiv").show();
                 },
                 "serverSide": true, // for process server side
@@ -93,7 +96,7 @@
                         "data": "projectTitle",
                         "autoWidth": true,
                         "render": function (data, type, row) {
-                            return '<a href="/Project/Edit/' + row.projectID + '">' + data + '</a>';
+                            return '<a href="/Project/Edit/' + row.projectID + '" class="text-truncate" style="max-width: calc(35 * 1vw); display: inline-block; text-overflow: ellipsis;" title="'+data+'">' + data + '</a>';
                         }
                     },
                     {
@@ -166,11 +169,12 @@
                     });
 
                     $(".dt-buttons").addClass('btn-group');
+                    //$(".dt-buttons").show();
                 }
             });
 
 
-            $('#dataTable tbody').on('click', '.dtActionButton', function () {
+            /*$('#dataTable tbody').on('click', '.dtActionButton', function () {
                 let data = table.row($(this).parents('tr')).data();
                 let action = $(this).attr('id');
                 let code = $(this).attr('code');
@@ -181,7 +185,7 @@
                 else if (action == "addShortcut") addToShortCuts(code);
 
                 $(this).toggleClass('active');
-            });
+            });*/
 
             /*
              * Extract Table Headings with their target values for Column Visibility Buttons
