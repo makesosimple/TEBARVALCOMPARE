@@ -167,6 +167,7 @@ namespace IBBPortal.Controllers
                 DistrictID = c.DistrictID == null ? 0 : c.DistrictID,
                 ProjectOwnerID = c.Project.ProjectOwnerPersonID == null ? 0 : c.Project.ProjectOwnerPersonID,
                 ProjectYear = c.Project.ProjectYear,
+                MapIcon = c.Project.ResponsibleDepartment.MapIcon,
             });
 
             

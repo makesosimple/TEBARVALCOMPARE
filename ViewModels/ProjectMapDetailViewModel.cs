@@ -28,5 +28,6 @@ namespace IBBPortal.ViewModels
         public string? ResponsibleDepartmentTitle { get; set; }
 
         public string? ProjectImportanceTitle { get; set; }
+        public string? MapIcon { get; set; }
     }
 }

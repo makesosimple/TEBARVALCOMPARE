@@ -15,7 +15,7 @@ let colors = [
 
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
-      center: { lat: 40.97871410284052, lng: 29.04875532823787 },
+      center: { lat: 41.01871410284052, lng: 29.04875532823787 },
       disableDefaultUI: true,
     zoom: 10,
   });
@@ -97,15 +97,15 @@ function showBorders(m) {
 
 function showMarker(m) {
     
-
+    console.log("/images/mapicons/departments/" + m.mapIcon);
     const image = {
-        //url: "/images/" + m.responsibleDepartmentID + ".png",
-        url: "/images/default.png",
+        url: "/images/mapicons/departments/" + m.mapIcon,
+        //url: "/images/default.png",
         scaledSize: new google.maps.Size(32, 32),
         
         //origin: new google.maps.Point(-16, -16),
         
-        anchor: new google.maps.Point(16, 16),
+        anchor: new google.maps.Point(16, 32),
     };
 
     const LatLng = { lat: parseFloat(m.latitude), lng: parseFloat(m.longitude) };

@@ -54,6 +54,7 @@ namespace IBBPortal.Controllers
                 ServiceAreaTitle = m.Project.ProjectServiceArea.ServiceAreaTitle,
                 ResponsibleDepartmentTitle = m.Project.ResponsibleDepartment.DepartmentTitle,
                 ProjectImportanceTitle = m.Project.ProjectImportance.ProjectImportanceTitle,
+                MapIcon = m.Project.ResponsibleDepartment.MapIcon,
             }).FirstOrDefaultAsync(m => m.ProjectID == id);
 
             if (projectDetail == null)
