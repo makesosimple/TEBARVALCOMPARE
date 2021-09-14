@@ -2,7 +2,7 @@
     ViewData["Title"] = "Harita";
     Layout = "~/Views/Shared/Layouts/_LayoutMap.cshtml";
 }
-<script src="https://unpkg.com/@Html.Raw("@")google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+
 <div id="map" style="height: 100vh; width: 100%;">
 
 
@@ -72,6 +72,7 @@
 
 @section Scripts {
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMYG7cNdDYUUxT8FSVxCtaxvSv9Ic2UZw&libraries=&v=weekly"></script>
+    <script src="https://unpkg.com/@Html.Raw("@")google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
     <script src="~/js/SVGMarker.js"></script>
     <script src="~/js/bigmap.js"></script>
 }

@@ -99,8 +99,8 @@ function showMarker(m) {
     
     console.log("/images/mapicons/departments/" + m.mapIcon);
     const image = {
-        url: "/images/mapicons/departments/" + m.mapIcon,
-        //url: "/images/default.png",
+        //url: "/images/mapicons/departments/" + m.mapIcon,
+        url: "/images/default.png",
         scaledSize: new google.maps.Size(32, 32),
         
         //origin: new google.maps.Point(-16, -16),
@@ -109,14 +109,14 @@ function showMarker(m) {
     };
 
     const LatLng = { lat: parseFloat(m.latitude), lng: parseFloat(m.longitude) };
-    /*const marker = new google.maps.Marker({
+    const marker = new google.maps.Marker({
         position: LatLng,
         map,
         title: m.projectTitle,
         icon: image,
-    });*/
+    });
 
-    const marker = new SVGMarker({
+   /* const marker = new SVGMarker({
         map: map,
         position: new google.maps.LatLng(parseFloat(m.latitude), parseFloat(m.longitude)),
         icon: {
@@ -124,7 +124,7 @@ function showMarker(m) {
             size: new google.maps.Size(60, 30.26),
             url: "/images/mapicons/departments/" + m.mapIcon,
         }
-    });
+    });*/
 
 
     const contentString =
