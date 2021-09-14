@@ -95,7 +95,7 @@ namespace IBBPortal.Areas.Identity.Pages.Account.Manage
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
+                    StatusMessage = "Telefon numarası eklenirken bir sorunla karşılaşıldı.";
                     return RedirectToPage();
                 }
             }
@@ -113,7 +113,7 @@ namespace IBBPortal.Areas.Identity.Pages.Account.Manage
             await _userManager.UpdateAsync(user);
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = "Profiliniz başarıyla güncellendi!";
             return RedirectToPage();
         }
     }

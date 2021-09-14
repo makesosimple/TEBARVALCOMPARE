@@ -98,7 +98,7 @@ namespace IBBPortal.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Geçersiz giriş.");
                     return Page();
                 }
             }

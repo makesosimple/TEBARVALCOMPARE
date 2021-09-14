@@ -32,11 +32,11 @@ namespace IBBPortal
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DebugConnection"), x => x.UseNetTopologySuite()));
+                    Configuration.GetConnectionString("DefaultConnection"), x => x.UseNetTopologySuite()));
 
             services.AddDbContext<SecondaryDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DebugConnection"), x => x.UseNetTopologySuite()));
+                    Configuration.GetConnectionString("DefaultConnection"), x => x.UseNetTopologySuite()));
             services.AddDatabaseDeveloperPageExceptionFilter();
             
 

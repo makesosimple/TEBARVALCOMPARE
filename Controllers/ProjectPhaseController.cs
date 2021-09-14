@@ -198,7 +198,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProjectPhaseID,ProjectID,PhaseID,ProjectPhaseStatusID,ProjectPhaseStatusDescription,ProjectPhaseStart,ProjectPhaseFinish,ProjectPhaseRecordedStart,ProjectPhaseRecordedFinish,ProjectPhaseTimeExtension,ProjectPhaseTimeExtentedFinish,ProjectPhaseExtensionReason,UserID,CreationDate,UpdateDate,DeletionDate")] ProjectPhase projectPhase)
+        public async Task<IActionResult> Create([Bind("ProjectPhaseID,ProjectID,PhaseID,IsPhaseActive,ProjectPhaseStatusID,ProjectPhaseStatusDescription,ProjectPhaseStart,ProjectPhaseFinish,ProjectPhaseRecordedStart,ProjectPhaseRecordedFinish,ProjectPhaseTimeExtension,ProjectPhaseTimeExtentedFinish,ProjectPhaseExtensionReason,UserID,CreationDate,UpdateDate,DeletionDate")] ProjectPhase projectPhase)
         {
             if (!ProjectPhaseChecker(projectPhase))
             {
@@ -280,9 +280,12 @@ namespace IBBPortal.Controllers
             }
 
             if (await TryUpdateModelAsync<ProjectPhase>(projectPhaseToUpdate, "",
-                x => x.PhaseID, x => x.ProjectPhaseStatusID, x => x.ProjectPhaseStatusDescription, x => x.ProjectPhaseStart, x => x.ProjectPhaseFinish, 
-                x => x.ProjectPhaseRecordedStart, x => x.ProjectPhaseRecordedFinish, x => x.ProjectPhaseTimeExtension, 
-                x => x.ProjectPhaseTimeExtentedFinish, x => x.ProjectPhaseExtensionReason, x => x.UpdateDate))
+                x => x.PhaseID, x => x.IsPhaseActive,
+                x => x.ProjectPhaseStatusID, x => x.ProjectPhaseStatusDescription, 
+                x => x.ProjectPhaseStart, x => x.ProjectPhaseFinish, 
+                x => x.ProjectPhaseRecordedStart, x => x.ProjectPhaseRecordedFinish,
+                x => x.ProjectPhaseTimeExtension, x => x.ProjectPhaseTimeExtentedFinish, x => x.ProjectPhaseExtensionReason, 
+                x => x.UpdateDate))
             {
                 try
                 {

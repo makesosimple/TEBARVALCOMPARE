@@ -24,6 +24,9 @@ namespace IBBPortal.Models
         [ForeignKey("PhaseID")]
         public Phase Phase { get; set; }
 
+        [Required]
+        public bool IsPhaseActive { get; set; } = false;
+
         public int? ProjectPhaseStatusID { get; set; }
         [ForeignKey("ProjectPhaseStatusID")]
         public ProjectPhaseStatus ProjectPhaseStatus { get; set; }

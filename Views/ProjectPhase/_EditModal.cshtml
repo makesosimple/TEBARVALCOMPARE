@@ -65,6 +65,23 @@
                             </div>
                         </div>
 
+                        <!-- Is Phase Active? -->
+                        <div class="form-group row">
+                            <label asp-for="IsPhaseActive" class="col-form-label col-12 col-xl-4">Aktif mi?<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8">
+                                <div class="text-center d-inline-block col-form-label">
+                                    <div class="vc-toggle-container">
+                                        <label class="vc-switch">
+                                            <input type="checkbox" class="vc-switch-input" asp-for="IsPhaseActive">
+                                            <span data-on="Evet" data-off="Hayır" class="vc-switch-label"></span>
+                                            <span class="vc-handle"></span>
+                                            <span asp-validation-for="IsPhaseActive" class="text-danger"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Phase Status Description -->
                         <div class="form-group row">
                             <label asp-for="ProjectPhaseStatusDescription" class="col-12 col-xl-4 col-form-label">Durum Açıklaması</label>
@@ -98,7 +115,7 @@
 
                         <!-- Project Phase Recorded Start Date -->
                         <div class="form-group row">
-                            <label asp-for="ProjectPhaseRecordedStart" class="col-12 col-xl-4 col-form-label">Resmi Başlangıç Tarihi</label>
+                            <label asp-for="ProjectPhaseRecordedStart" class="col-12 col-xl-4 col-form-label">Tutanağa Göre Başlangıç Tarihi</label>
                             <div class="col-12 col-xl-8">
                                 <input asp-for="ProjectPhaseRecordedStart" type="text" class="form-control datepicker">
                                 <i class="fas fa-calendar-alt"></i>
@@ -108,7 +125,7 @@
 
                         <!-- Project Phase Recorded Finish Date -->
                         <div class="form-group row">
-                            <label asp-for="ProjectPhaseRecordedFinish" class="col-12 col-xl-4 col-form-label">Resmi Bitiş Tarihi</label>
+                            <label asp-for="ProjectPhaseRecordedFinish" class="col-12 col-xl-4 col-form-label">Tutanağa Göre Bitiş Tarihi</label>
                             <div class="col-12 col-xl-8">
                                 <input asp-for="ProjectPhaseRecordedFinish" type="text" class="form-control datepicker">
                                 <i class="fas fa-calendar-alt"></i>

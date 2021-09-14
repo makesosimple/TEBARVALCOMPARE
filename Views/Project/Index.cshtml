@@ -100,10 +100,14 @@
                         }
                     },
                     {
-                        "data": "requestingDepartmentID",
+                        "data": "projectIBBCode",
+                        "autoWidth": true,
+                    },
+                    {
+                        "data": "requestingAuthorityID",
                         "autoWidth": true,
                         "render": function (data, type, row) {
-                            return row.requestingDepartmentTitle;
+                            return row.requestingAuthorityTitle;
                         }
                     },
                     {
@@ -119,6 +123,10 @@
                         "render": function (data, type, row) {
                             return row.ownerFullName;
                         }
+                    },
+                    {
+                        "data": "estimatedProjectCost",
+                        "autoWidth": true,
                     },
                     {
                         "data": "serviceAreaID",
@@ -255,11 +263,26 @@
         });
     </script>
     <script>
-        $('#selectRequestingDepartment, #selectResponsibleDepartment').select2({
+        $('#selectResponsibleDepartment').select2({
             theme: "ibb",
             language: "tr",
             ajax: {
                 url: '/Department/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
+        });
+
+        $('#selectRequestingAuthority').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/Authority/JsonSelectData',
                 dataType: 'json',
                 processResults: function (response) {
 
@@ -425,35 +448,41 @@
                     <tr class="filter h-100 bg-white">
                         <th></th>
                         <th scope="col">
-                            <input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="projectTitle" name="projectTitle" value="" />
+                            <input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="projectIBBCode" name="projectIBBCode" value="" />
                         </th>
                         <th scope="col">
-                            <select class="form-control searchInput" data-index="2" id="selectRequestingDepartment" name="selectRequestingDepartment" style="width: 100%;">
+                            <input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="projectTitle" name="projectTitle" value="" />
+                        </th>
+                        <th scope="col">
+                            <select class="form-control searchInput" data-index="3" id="selectRequestingAuthority" name="selectRequestingAuthority" style="width: 100%;">
                                 <option value="" selected>Ara...</option>
                             </select>
                         </th>
                         <th scope="col">
-                            <select class="form-control searchInput" data-index="3" id="selectResponsibleDepartment" name="selectResponsibleDepartment" style="width: 100%;">
+                            <select class="form-control searchInput" data-index="4" id="selectResponsibleDepartment" name="selectResponsibleDepartment" style="width: 100%;">
                                 <option value="" selected>Ara...</option>
                             </select>
                         </th>
                         <th scope="col">
-                            <select class="form-control searchInput" data-index="4" id="selectOwner" name="selectOwner" style="width: 100%;">
+                            <select class="form-control searchInput" data-index="5" id="selectOwner" name="selectOwner" style="width: 100%;">
                                 <option value="" selected>Ara...</option>
                             </select>
                         </th>
                         <th scope="col">
-                            <select class="form-control searchInput" data-index="5" id="selectServiceArea" name="selectServiceArea" style="width: 100%;">
+                            <input class="form-control w-100 searchInput" data-index="6" type="text" placeholder="Ara..." id="estimatedProjectCost" name="estimatedProjectCost" value="" />
+                        </th>
+                        <th scope="col">
+                            <select class="form-control searchInput" data-index="7" id="selectServiceArea" name="selectServiceArea" style="width: 100%;">
                                 <option value="" selected>Ara...</option>
                             </select>
                         </th>
                         <th scope="col">
-                            <select class="form-control searchInput" data-index="6" id="selectProjectStatus" name="selectProjectStatus" style="width: 100%;">
+                            <select class="form-control searchInput" data-index="8" id="selectProjectStatus" name="selectProjectStatus" style="width: 100%;">
                                 <option value="" selected>Ara...</option>
                             </select>
                         </th>
                         <th scope="col">
-                            <select class="form-control searchInput" data-index="7" id="selectProjectImportance" name="selectProjectImportance" style="width: 100%;">
+                            <select class="form-control searchInput" data-index="9" id="selectProjectImportance" name="selectProjectImportance" style="width: 100%;">
                                 <option value="" selected>Ara...</option>
                             </select>
                         </th>
@@ -462,9 +491,11 @@
                     <tr id="tableLabels">
                         <th></th>
                         <th scope="col" class="text-white text-sm">Proje İsmi</th>
-                        <th scope="col" class="text-white text-sm">Talep Eden Müdürlük</th>
+                        <th scope="col" class="text-white text-sm">Proje Kodu</th>
+                        <th scope="col" class="text-white text-sm">Talep Eden Makam</th>
                         <th scope="col" class="text-white text-sm">Sorumlu Müdürlük</th>
                         <th scope="col" class="text-white text-sm">Proje Sahibi</th>
+                        <th scope="col" class="text-white text-sm">Proje Bedeli</th>
                         <th scope="col" class="text-white text-sm">Hizmet Alanı</th>
                         <th scope="col" class="text-white text-sm">Proje Durumu</th>
                         <th scope="col" class="text-white text-sm">Proje Önemi</th>

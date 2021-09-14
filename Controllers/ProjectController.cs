@@ -59,9 +59,11 @@ namespace IBBPortal.Controllers
                 var data = _context.Project.Select(c => new
                 {
                     c.ProjectID,
+                    c.ProjectIBBCode,
                     c.ProjectTitle,
-                    RequestingDepartmentID = c.RequestingDepartment != null ? c.RequestingDepartment.DepartmentID : 0,
-                    RequestingDepartmentTitle = c.RequestingDepartment != null ? c.RequestingDepartment.DepartmentTitle : "",
+                    EstimatedProjectCost = c.EstimatedProjectCost != null ? c.EstimatedProjectCost.ToString() + " TL" : "",
+                    RequestingAuthorityID = c.RequestingAuthority != null ? c.RequestingAuthority.AuthorityID : 0,
+                    RequestingAuthorityTitle = c.RequestingAuthority != null ? c.RequestingAuthority.AuthorityTitle : "",
                     ResponsibleDepartmentID = c.ResponsibleDepartment != null ? c.ResponsibleDepartment.DepartmentID : 0,
                     ResponsibleDepartmentTitle = c.ResponsibleDepartment != null ? c.ResponsibleDepartment.DepartmentTitle : "",
                     OwnerID = c.ProjectOwnerPerson != null ? c.ProjectOwnerPerson.PersonID : 0,
@@ -109,7 +111,7 @@ namespace IBBPortal.Controllers
                 //If control checks out, search. If not loop goes on until the end.
                 string columnName, searchValue;
 
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < 10; i++)
                 {
                     columnName = Request.Form[$"columns[{i}][data]"].FirstOrDefault();
                     searchValue = Request.Form[$"columns[{i}][search][value]"].FirstOrDefault();

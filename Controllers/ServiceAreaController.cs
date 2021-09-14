@@ -99,8 +99,10 @@ namespace IBBPortal.Controllers
                 var ServiceAreaData = _context.ServiceArea
                                     .Select(x => new {
                                         id = x.ServiceAreaID.ToString(),
-                                        text = x.ServiceAreaTitle
-                                    });
+                                        text = x.ServiceAreaTitle,
+                                        level = x.ServiceAreaLevel
+                                    })
+                                    .Where(x => x.level == 3);
 
                 if (!String.IsNullOrEmpty(term))
                 {
