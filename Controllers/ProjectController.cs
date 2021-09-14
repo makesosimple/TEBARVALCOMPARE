@@ -159,7 +159,7 @@ namespace IBBPortal.Controllers
                 Coordinates = c.coordinates,
                 RequestingDepartmentTitle = c.Project.RequestingDepartment.DepartmentTitle,
                 ResponsibleDepartmentTitle = c.Project.ResponsibleDepartment.DepartmentTitle,
-                OwnerFullName = c.Project.ProjectOwnerPerson.PersonName.Trim() + " " + c.Project.ProjectOwnerPerson.PersonSurname.Trim(),
+                OwnerFullName = c.Project.ProjectOwnerPerson.PersonName.Trim(), // + " " + c.Project.ProjectOwnerPerson.PersonSurname.Trim(),
                 ServiceAreaTitle = c.Project.ProjectServiceArea.ServiceAreaTitle,
                 ProjectImportanceTitle = c.Project.ProjectImportance.ProjectImportanceTitle,
                 RequestingDepartmentID = c.Project.RequestingDepartmentID == null ? 0 : c.Project.RequestingDepartmentID,
@@ -230,10 +230,10 @@ namespace IBBPortal.Controllers
             //total number of rows count   
             //var recordsTotal = data.Count();
                 //Paging   
-                var passData = data.ToList();
+                //var passData = data.ToList();
 
                 //Returning Json Data  
-                return Json(new { data = passData, districtID = selectedDistrictInt, ProjectKeyword = projectKeyword });
+                return Json(new { data = data.Take(250).ToList(), districtID = selectedDistrictInt, ProjectKeyword = projectKeyword });
 
             //}
 
