@@ -41,19 +41,19 @@
         <select class="form-control" id="selectDistrict" style="width:150px;">
             <option value="">İlçe</option>
         </select>
-        
+
         <select class="form-control" id="selectYear" style="width:150px;">
             <option value="">Yıl</option>
         </select>
-       
+
         <select class="form-control" id="selectDepartment" style="width:150px;">
             <option value="">Sorumlu Müdürlük</option>
         </select>
-      
+
         <select class="form-control" id="selectProjectOwner" style="width:150px;">
             <option value="">Proje Sahibi</option>
         </select>
-        
+
         <label for="showProjectBorders">Sınırları Göster</label>
         <input type="checkbox" id="showProjectBorders" placeholder="Sınırları Göster..." name="showProjectBorders" class="form-control">
 
@@ -72,4 +72,6 @@
 
 @section Scripts {
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMYG7cNdDYUUxT8FSVxCtaxvSv9Ic2UZw&libraries=&v=weekly"></script>
+    <script src="~/js/SVGMarker.js"></script>
+    <script src="~/js/bigmap.js"></script>
 }
