@@ -109,11 +109,21 @@ function showMarker(m) {
     };
 
     const LatLng = { lat: parseFloat(m.latitude), lng: parseFloat(m.longitude) };
-    const marker = new google.maps.Marker({
+    /*const marker = new google.maps.Marker({
         position: LatLng,
         map,
         title: m.projectTitle,
         icon: image,
+    });*/
+
+    const marker = new SVGMarker({
+        map: map,
+        position: new google.maps.LatLng(parseFloat(m.latitude), parseFloat(m.longitude)),
+        icon: {
+            anchor: new google.maps.Point(30, 30.26),
+            size: new google.maps.Size(60, 30.26),
+            url: "/images/mapicons/departments/" + m.mapIcon,
+        }
     });
 
 
