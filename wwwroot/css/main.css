@@ -160,10 +160,6 @@
         margin-top: 5px;
         margin-left: 0px;
     }
-
-    h1 .h3 {
-        font-size:1.25rem;
-    }
 }
 
 h5 .firstHeading {
@@ -173,7 +169,6 @@ h5 .firstHeading {
 
 /*Top bar fix*/
 body {
-    min-height: 2000px;
     padding-top: 70px;
     color: #333333;
 }
