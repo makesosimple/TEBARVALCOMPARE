@@ -7,7 +7,6 @@ using IndexAttribute = Microsoft.EntityFrameworkCore.IndexAttribute;
 namespace IBBPortal.Models
 {
     [Index(nameof(UserID))]
-
     public class ZoningPlanStatus
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

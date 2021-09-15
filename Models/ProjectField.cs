@@ -11,6 +11,8 @@ namespace IBBPortal.Models
 {
     [Index(nameof(DistrictID))]
     [Index(nameof(CityID))]
+    [Index(nameof(ProjectID))]
+    [Index(nameof(UserID))]
     public class ProjectField
     {
         /** Project Field Tab Information **/
