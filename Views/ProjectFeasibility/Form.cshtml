@@ -101,7 +101,7 @@
 
                             <!-- Contractor ID -->
                             <div class="form-group row" data-dependent-on="#IsFeasibilityNeeded" data-dependent-value="checked">
-                                <label asp-for="ContractorID" class="col-12 col-xl-4 col-form-label">Fizibiliteyi Hazırlayacak Yüklenici</label>
+                                <label asp-for="ContractorID" class="col-12 col-xl-4 col-form-label">Fizibiliteyi Hazırlayacak Yüklenici<span class="text-danger">*</span></label>
                                 <div class="col-12 col-xl-8">
                                     <select asp-for="ContractorID" class="form-control" id="selectContractor" style="width: 100%;">
                                         @if (@Model.Contractor is not null)
