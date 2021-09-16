@@ -1,4 +1,5 @@
-﻿<!-- Sidebar -->
+﻿
+<!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
@@ -55,218 +56,221 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Uygulama Ayarları
-    </div>
-
-    <!-- User Management -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
-           aria-expanded="true" aria-controls="collapseUser">
-            <i class="fas fa-user"></i>
-            <span>Kullanıcı Yönetimi</span>
-        </a>
-        <div id="collapseUser" class="collapse" aria-labelledby="headingUser"
-             data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" asp-controller="User" asp-action="Index">Kullanıcılar</a>
-                <a class="collapse-item" asp-controller="Role" asp-action="Index">Roller</a>
-            </div>
+    @if (User.IsInRole("Admin"))
+    {
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Uygulama Ayarları
         </div>
-    </li>
 
-    <!-- People Management -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePerson"
-           aria-expanded="true" aria-controls="collapsePerson">
-            <i class="fas fa-user-friends"></i>
-            <span>Kişi Yönetimi</span>
-        </a>
-        <div id="collapsePerson" class="collapse" aria-labelledby="headingPerson"
-             data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" asp-controller="Person" asp-action="Index">Kişiler</a>
+        <!-- User Management -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser"
+               aria-expanded="true" aria-controls="collapseUser">
+                <i class="fas fa-user"></i>
+                <span>Kullanıcı Yönetimi</span>
+            </a>
+            <div id="collapseUser" class="collapse" aria-labelledby="headingUser"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" asp-controller="User" asp-action="Index">Kullanıcılar</a>
+                    <a class="collapse-item" asp-controller="Role" asp-action="Index">Roller</a>
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
 
-    <!-- Contractor Management-->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseContractor"
-           aria-expanded="true" aria-controls="collapseContractor">
-            <i class="fas fa-city"></i>
-            <span>Yüklenici Yönetimi</span>
-        </a>
-        <div id="collapseContractor" class="collapse" aria-labelledby="headingContractor"
-             data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" asp-controller="Contractor" asp-action="Index">Yükleniciler</a>
-                <a class="collapse-item" asp-controller="ContractorType" asp-action="Index">Yüklenici Tipleri</a>
+        <!-- People Management -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePerson"
+               aria-expanded="true" aria-controls="collapsePerson">
+                <i class="fas fa-user-friends"></i>
+                <span>Kişi Yönetimi</span>
+            </a>
+            <div id="collapsePerson" class="collapse" aria-labelledby="headingPerson"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" asp-controller="Person" asp-action="Index">Kişiler</a>
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
 
-    <!-- Job Management -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseJob"
-           aria-expanded="true" aria-controls="collapseJob">
-            <i class="fas fa-briefcase"></i>
-            <span>Meslek Yönetimi</span>
-        </a>
-        <div id="collapseJob" class="collapse" aria-labelledby="headingJob"
-             data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" asp-controller="JobTitle" asp-action="Index">Meslekler</a>
-                <a class="collapse-item" asp-controller="JobField" asp-action="Index">Meslek Alanları</a>
+        <!-- Contractor Management-->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseContractor"
+               aria-expanded="true" aria-controls="collapseContractor">
+                <i class="fas fa-city"></i>
+                <span>Yüklenici Yönetimi</span>
+            </a>
+            <div id="collapseContractor" class="collapse" aria-labelledby="headingContractor"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" asp-controller="Contractor" asp-action="Index">Yükleniciler</a>
+                    <a class="collapse-item" asp-controller="ContractorType" asp-action="Index">Yüklenici Tipleri</a>
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
 
-    <!-- Transaction Management -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTransaction"
-           aria-expanded="true" aria-controls="collapseTransaction">
-            <i class="fas fa-exchange-alt"></i>
-            <span>İşlem Yönetimi</span>
-        </a>
-        <div id="collapseTransaction" class="collapse" aria-labelledby="headingTransaction"
-             data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" asp-controller="TransactionLog" asp-action="Index">İşlemler</a>
-                <a class="collapse-item" asp-controller="TransactionMessage" asp-action="Index">İşlem Mesajları</a>
-                <a class="collapse-item" asp-controller="TransactionType" asp-action="Index">İşlem Tipleri</a>
+        <!-- Job Management -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseJob"
+               aria-expanded="true" aria-controls="collapseJob">
+                <i class="fas fa-briefcase"></i>
+                <span>Meslek Yönetimi</span>
+            </a>
+            <div id="collapseJob" class="collapse" aria-labelledby="headingJob"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" asp-controller="JobTitle" asp-action="Index">Meslekler</a>
+                    <a class="collapse-item" asp-controller="JobField" asp-action="Index">Meslek Alanları</a>
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
 
-    <!-- Department Management-->
-    <li class="nav-item">
-        <a class="nav-link" asp-controller="Department" asp-action="Index">
-            <i class="fas fa-building"></i>
-            <span>Müdürlük Yönetimi</span>
-        </a>
-    </li>
-
-    <!-- Board Management-->
-    <li class="nav-item">
-        <a class="nav-link" asp-controller="Board" asp-action="Index">
-            <i class="fas fa-handshake"></i>
-            <span>Kurul Yönetimi</span>
-        </a>
-    </li>
-
-    <!-- Authority Management-->
-    <li class="nav-item">
-        <a class="nav-link" asp-controller="Authority" asp-action="Index">
-            <i class="fab fa-black-tie"></i>
-            <span>Makam Yönetimi</span>
-        </a>
-    </li>
-
-    <!-- Organization Management-->
-    <li class="nav-item">
-        <a class="nav-link" asp-controller="Organization" asp-action="Index">
-            <i class="fas fa-sitemap"></i>
-            <span>Kurum Yönetimi</span>
-        </a>
-    </li>
-
-    <!-- Project Importance Management-->
-    <li class="nav-item">
-        <a class="nav-link" asp-controller="ProjectImportance" asp-action="Index">
-            <i class="fas fa-exclamation"></i>
-            <span>Proje Önemi Yönetimi</span>
-        </a>
-    </li>
-
-    <!-- Relation Type Management-->
-    <li class="nav-item">
-        <a class="nav-link" asp-controller="RelationType" asp-action="Index">
-            <i class="fas fa-network-wired"></i>
-            <span>İlişki Tipi Yönetimi</span>
-        </a>
-    </li>
-
-    <!-- Service Area Management-->
-    <li class="nav-item">
-        <a class="nav-link" asp-controller="ServiceArea" asp-action="Index">
-            <i class="fas fa-square"></i>
-            <span>Hizmet Alanı Yönetimi</span>
-        </a>
-    </li>
-
-    <!-- Subfunction Management -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSubfunction"
-           aria-expanded="true" aria-controls="collapseSubfunction">
-            <i class="fas fa-calculator"></i>
-            <span>Fonksiyon Yönetimi</span>
-        </a>
-        <div id="collapseSubfunction" class="collapse" aria-labelledby="headingSubfunction"
-             data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" asp-controller="Subfunction" asp-action="Index">Fonksiyonlar</a>
-                <a class="collapse-item" asp-controller="SubfunctionFeature" asp-action="Index">Fonksiyon Özellikleri</a>
+        <!-- Transaction Management -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTransaction"
+               aria-expanded="true" aria-controls="collapseTransaction">
+                <i class="fas fa-exchange-alt"></i>
+                <span>İşlem Yönetimi</span>
+            </a>
+            <div id="collapseTransaction" class="collapse" aria-labelledby="headingTransaction"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" asp-controller="TransactionLog" asp-action="Index">İşlemler</a>
+                    <a class="collapse-item" asp-controller="TransactionMessage" asp-action="Index">İşlem Mesajları</a>
+                    <a class="collapse-item" asp-controller="TransactionType" asp-action="Index">İşlem Tipleri</a>
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
 
-    <!-- Status / Phase Management -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStatus"
-           aria-expanded="true" aria-controls="collapseStatus">
-            <i class="fas fa-tasks"></i>
-            <span>Durum/Faz Bilgisi Yönetimi</span>
-        </a>
-        <div id="collapseStatus" class="collapse" aria-labelledby="headingStatus"
-             data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" asp-controller="Phase" asp-action="Index">Fazlar</a>
-                <a class="collapse-item" asp-controller="ZoningPlanStatus" asp-action="Index">İmar Planı Durumları</a>
-                <a class="collapse-item" asp-controller="ZoningPlanModificationStatus" asp-action="Index">İmar Planı Değişiklik<br /> Durumları</a>
-                <a class="collapse-item" asp-controller="ProjectStatus" asp-action="Index">Proje Durumları</a>
-                <a class="collapse-item" asp-controller="ProjectPhaseStatus" asp-action="Index">Proje Faz Durumları</a>
-                <a class="collapse-item" asp-controller="PropertyStatus" asp-action="Index">Mülkiyet Durumları</a>
-                <a class="collapse-item" asp-controller="ExpropriationStatus" asp-action="Index">Kamulaştırma Durumları</a>
+        <!-- Department Management-->
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="Department" asp-action="Index">
+                <i class="fas fa-building"></i>
+                <span>Müdürlük Yönetimi</span>
+            </a>
+        </li>
+
+        <!-- Board Management-->
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="Board" asp-action="Index">
+                <i class="fas fa-handshake"></i>
+                <span>Kurul Yönetimi</span>
+            </a>
+        </li>
+
+        <!-- Authority Management-->
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="Authority" asp-action="Index">
+                <i class="fab fa-black-tie"></i>
+                <span>Makam Yönetimi</span>
+            </a>
+        </li>
+
+        <!-- Organization Management-->
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="Organization" asp-action="Index">
+                <i class="fas fa-sitemap"></i>
+                <span>Kurum Yönetimi</span>
+            </a>
+        </li>
+
+        <!-- Project Importance Management-->
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="ProjectImportance" asp-action="Index">
+                <i class="fas fa-exclamation"></i>
+                <span>Proje Önemi Yönetimi</span>
+            </a>
+        </li>
+
+        <!-- Relation Type Management-->
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="RelationType" asp-action="Index">
+                <i class="fas fa-network-wired"></i>
+                <span>İlişki Tipi Yönetimi</span>
+            </a>
+        </li>
+
+        <!-- Service Area Management-->
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="ServiceArea" asp-action="Index">
+                <i class="fas fa-square"></i>
+                <span>Hizmet Alanı Yönetimi</span>
+            </a>
+        </li>
+
+        <!-- Subfunction Management -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSubfunction"
+               aria-expanded="true" aria-controls="collapseSubfunction">
+                <i class="fas fa-calculator"></i>
+                <span>Fonksiyon Yönetimi</span>
+            </a>
+            <div id="collapseSubfunction" class="collapse" aria-labelledby="headingSubfunction"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" asp-controller="Subfunction" asp-action="Index">Fonksiyonlar</a>
+                    <a class="collapse-item" asp-controller="SubfunctionFeature" asp-action="Index">Fonksiyon Özellikleri</a>
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
 
-    <!-- Category Management -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCategory"
-           aria-expanded="true" aria-controls="collapseCategory">
-            <i class="fas fa-tags"></i>
-            <span>Kategori Yönetimi</span>
-        </a>
-        <div id="collapseCategory" class="collapse" aria-labelledby="headingCategory"
-             data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" asp-controller="ProjectTeamCategory" asp-action="Index">Proje Ekibi Kategorisi</a>
-                <a class="collapse-item" asp-controller="FileCategory" asp-action="Index">Dosya Kategorileri</a>
+        <!-- Status / Phase Management -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseStatus"
+               aria-expanded="true" aria-controls="collapseStatus">
+                <i class="fas fa-tasks"></i>
+                <span>Durum/Faz Bilgisi Yönetimi</span>
+            </a>
+            <div id="collapseStatus" class="collapse" aria-labelledby="headingStatus"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" asp-controller="Phase" asp-action="Index">Fazlar</a>
+                    <a class="collapse-item" asp-controller="ZoningPlanStatus" asp-action="Index">İmar Planı Durumları</a>
+                    <a class="collapse-item" asp-controller="ZoningPlanModificationStatus" asp-action="Index">İmar Planı Değişiklik<br /> Durumları</a>
+                    <a class="collapse-item" asp-controller="ProjectStatus" asp-action="Index">Proje Durumları</a>
+                    <a class="collapse-item" asp-controller="ProjectPhaseStatus" asp-action="Index">Proje Faz Durumları</a>
+                    <a class="collapse-item" asp-controller="PropertyStatus" asp-action="Index">Mülkiyet Durumları</a>
+                    <a class="collapse-item" asp-controller="ExpropriationStatus" asp-action="Index">Kamulaştırma Durumları</a>
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
 
-    <!-- City/Distrit Management -->
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCityDistrict"
-           aria-expanded="true" aria-controls="collapseCityDistrict">
-            <i class="fas fa-map-marker-alt"></i>
-            <span>İl/İlçe Yönetimi</span>
-        </a>
-        <div id="collapseCityDistrict" class="collapse" aria-labelledby="headingCityDistrict"
-             data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" asp-controller="City" asp-action="Index">İller</a>
-                <a class="collapse-item" asp-controller="District" asp-action="Index">İlçeler</a>
+        <!-- Category Management -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCategory"
+               aria-expanded="true" aria-controls="collapseCategory">
+                <i class="fas fa-tags"></i>
+                <span>Kategori Yönetimi</span>
+            </a>
+            <div id="collapseCategory" class="collapse" aria-labelledby="headingCategory"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" asp-controller="ProjectTeamCategory" asp-action="Index">Proje Ekibi Kategorisi</a>
+                    <a class="collapse-item" asp-controller="FileCategory" asp-action="Index">Dosya Kategorileri</a>
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block">
+        <!-- City/Distrit Management -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCityDistrict"
+               aria-expanded="true" aria-controls="collapseCityDistrict">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>İl/İlçe Yönetimi</span>
+            </a>
+            <div id="collapseCityDistrict" class="collapse" aria-labelledby="headingCityDistrict"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" asp-controller="City" asp-action="Index">İller</a>
+                    <a class="collapse-item" asp-controller="District" asp-action="Index">İlçeler</a>
+                </div>
+            </div>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+    }
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">

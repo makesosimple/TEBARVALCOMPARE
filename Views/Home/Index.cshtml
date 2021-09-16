@@ -17,16 +17,18 @@
 
     <!-- Earnings (Monthly) Card Example -->
     <div class="col-xl-3 col-md-6 mb-4">
-        <a href="/Project/">
+        <a href="/Project/" class="dashboard-card">
             <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
-                    <div class="row no-gutters align-items-center">
+                    <div class="row no-gutters align-items-center text-primary">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1 underline-effect">
                                 Projeler
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">@numberOfProjects</div>
+                            <br />
+                            <div class="h5 mb-0 font-weight-bold text-gray-800 underline-effect">@numberOfProjects</div>
                         </div>
+                        <br />
                         <div class="col-auto">
                             <i class="fas fa-project-diagram fa-2x text-gray-300"></i>
                         </div>
@@ -38,15 +40,16 @@
 
     <!-- Earnings (Monthly) Card Example -->
     <div class="col-xl-3 col-md-6 mb-4">
-        <a href="/ProjectMap/">
+        <a href="/ProjectMap/" class="dashboard-card">
         <div class="card border-left-success shadow h-100 py-2">
             <div class="card-body">
-                <div class="row no-gutters align-items-center">
+                <div class="row no-gutters align-items-center text-success">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1 underline-effect">
                             Harita
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">PROJE HARİTASI</div>
+                        <br />
+                        <div class="h5 mb-0 font-weight-bold text-gray-800 underline-effect">PROJE HARİTASI</div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-map fa-2x text-gray-300"></i>
@@ -59,13 +62,14 @@
 
     <!-- Earnings (Monthly) Card Example -->
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-info shadow h-100 py-2">
+        <div class="card border-left-info shadow h-100 py-2 dashboard-card">
             <div class="card-body">
-                <div class="row no-gutters align-items-center">
+                <div class="row no-gutters align-items-center text-info">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1 underline-effect">
                             Tamamlananlar
                         </div>
+                        <br />
                         <div class="row no-gutters align-items-center">
                             <div class="col-auto">
                                 <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">@numberOfCompletedProjects%</div>
@@ -89,10 +93,10 @@
 
     <!-- Pending Requests Card Example -->
     <div class="col-xl-3 col-md-6 mb-4">
-        <a href="/Project/Create">
+        <a href="/Project/Create" class="dashboard-card">
             <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body d-flex align-items-center justify-content-between">
-                    <p class="text-lg font-weight-bold m-0 text-warning text-uppercase">YENİ PROJE OLUŞTUR</p>
+                <div class="card-body d-flex align-items-center justify-content-between text-warning">
+                    <p class="text-lg font-weight-bold m-0 text-warning text-uppercase underline-effect">YENİ PROJE OLUŞTUR</p>
                     <i class="fas fa-plus fa-2x text-gray-300"></i>
                 </div>
             </div>
@@ -191,7 +195,11 @@
                 {
                     <div class="shortcut-item mb-3">
                         <p class="text-primary text-md font-weight-bold mb-1">@item.ProjectTitle</p>
-                        <a href="/Project/Edit/@item.ProjectID" class="text-gray-900"><i class="fas fa-arrow-right mr-1"></i> Projeye Git</a>
+                        <a href="/Project/Edit/@item.ProjectID" class="text-gray-900 shortcut-link">
+                            <i class="fas fa-arrow-right mr-1 arrow-before"></i>
+                            <span class="arrow-text">Projeye Git</span>
+                            <i class="fas fa-arrow-right mr-1 arrow-after"></i>
+                        </a>
                     </div>
                 }
 
