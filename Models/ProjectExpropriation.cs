@@ -13,6 +13,7 @@ namespace IBBPortal.Models
     [Index(nameof(ProjectID))]
     [Index(nameof(PropertyStatusID))]
     [Index(nameof(ExpropriationStatusID))]
+    [Index(nameof(UserID))]
     public class ProjectExpropriation
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

@@ -11,6 +11,7 @@ namespace IBBPortal.Models
     [Index(nameof(ProjectID))]
     [Index(nameof(RelatedProjectID))]
     [Index(nameof(RelationTypeID))]
+    [Index(nameof(UserID))]
     public class ProjectRelation
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

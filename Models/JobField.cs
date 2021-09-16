@@ -5,6 +5,7 @@ using IndexAttribute = Microsoft.EntityFrameworkCore.IndexAttribute;
 
 namespace IBBPortal.Models
 {
+    [Index(nameof(UserID))]
     public class JobField
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

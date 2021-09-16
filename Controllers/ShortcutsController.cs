@@ -27,6 +27,7 @@ namespace IBBPortal.Controllers
             _userManager = userManager;
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: ShortcutsController
         public ActionResult Index()
         {

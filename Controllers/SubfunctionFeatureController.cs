@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace IBBPortal.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class SubfunctionFeatureController : Controller
     {
         private readonly ApplicationDbContext _context;

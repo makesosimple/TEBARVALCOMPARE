@@ -10,6 +10,14 @@
     };
   });
 
+  $(window).bind('scroll', function () {
+    if ($(window).scrollTop() > 0) {
+        $('.topbar').addClass('position-fixed w-100 right-0 z-index-1001');
+    } else {
+        $('.topbar').removeClass('position-fixed w-100 right-0 z-index-1001');
+    }
+});
+
   // Close any open menu accordions when window is resized below 768px
   $(window).resize(function() {
     if ($(window).width() < 768) {

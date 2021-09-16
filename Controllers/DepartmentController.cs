@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace IBBPortal.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class DepartmentController : Controller
     {
         private readonly ApplicationDbContext _context;

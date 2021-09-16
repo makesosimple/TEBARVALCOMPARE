@@ -8,6 +8,12 @@ using IndexAttribute = Microsoft.EntityFrameworkCore.IndexAttribute;
 
 namespace IBBPortal.Models
 {
+    [Index(nameof(ProjectID))]
+    [Index(nameof(PersonID))]
+    [Index(nameof(JobTitleID))]
+    [Index(nameof(JobFieldID))]
+    [Index(nameof(ContractorID))]
+    [Index(nameof(UserID))]
     public class ProjectPerson
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
