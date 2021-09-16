@@ -233,7 +233,7 @@ namespace IBBPortal.Controllers
                 //var passData = data.ToList();
 
                 //Returning Json Data  
-                return Json(new { data = data.Take(100).ToList(), districtID = selectedDistrictInt, ProjectKeyword = projectKeyword });
+                return Json(new { data = data.ToList(), districtID = selectedDistrictInt, ProjectKeyword = projectKeyword });
 
             //}
 
