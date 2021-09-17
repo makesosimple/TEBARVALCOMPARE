@@ -9,22 +9,22 @@ namespace IBBPortal.ViewModels
 {
     public class UserEditViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
         [DataType(DataType.Text)]
-        [MaxLength(50)]
+        [MaxLength(50, ErrorMessage = "Bu alana maksimum 50 karakter girebilirsiniz.")]
         public string FirstName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
         [DataType(DataType.Text)]
-        [MaxLength(50)]
+        [MaxLength(50, ErrorMessage = "Bu alana maksimum 50 karakter girebilirsiniz.")]
         public string LastName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
         [DataType(DataType.Text)]
-        [MaxLength(50)]
+        [MaxLength(50, ErrorMessage = "Bu alana maksimum 50 karakter girebilirsiniz.")]
         public string UserName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
