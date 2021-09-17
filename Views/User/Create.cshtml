@@ -30,16 +30,18 @@
                             <div class="row">
                                 <div class="col-6">
                                     <input asp-for="FirstName" type="text" class="form-control">
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
                                 </div>
                                 <div class="col-6">
                                     <input asp-for="LastName" type="text" class="form-control">
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group row">
-                        <label asp-for="UserName" class="col-12 col-xl-4 col-form-label">Kullanıcı Adı</label>
+                        <label asp-for="UserName" class="col-12 col-xl-4 col-form-label">Kullanıcı Adı<span class="text-danger">*</span></label>
                         <div class="col-12 col-xl-8">
                             <input asp-for="UserName" type="text" class="form-control" autocomplete="off">
                             <span asp-validation-for="UserName" class="text-danger"></span>
@@ -65,9 +67,9 @@
                     </div>
 
                     <div class="form-group row">
-                        <label asp-for="Password" class="col-12 col-xl-4 col-form-label">Şifre</label>
+                        <label asp-for="Password" class="col-12 col-xl-4 col-form-label">Şifre<span class="text-danger">*</span></label>
                         <div class="col-12 col-xl-8">
-                            <input asp-for="Password" type="password" class="form-control" autocomplete="off">
+                            <input asp-for="Password" type="password" class="form-control" autocomplete="off" required>
                             <small id="passwordHelp" class="form-text text-muted">Şifre:<br />
                             1. En az bir küçük harf,<br />
                             2. En az bir büyük harf,<br />
@@ -78,9 +80,9 @@
                     </div>
 
                     <div class="form-group row">
-                        <label asp-for="ConfirmPassword" class="col-12 col-xl-4 col-form-label">Şifre (Tekrar)</label>
+                        <label asp-for="ConfirmPassword" class="col-12 col-xl-4 col-form-label">Şifre (Tekrar)<span class="text-danger">*</span></label>
                         <div class="col-12 col-xl-8">
-                            <input asp-for="ConfirmPassword" type="password" class="form-control">
+                            <input asp-for="ConfirmPassword" type="password" class="form-control" required>
                             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                         </div>
                     </div>
