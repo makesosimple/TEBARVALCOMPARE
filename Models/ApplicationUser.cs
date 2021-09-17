@@ -13,13 +13,13 @@ namespace IBBPortal.Models
     public class ApplicationUser : IdentityUser
     {
         [PersonalData]
-        [Required]
-        [MaxLength(50)]
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
+        [MaxLength(50, ErrorMessage = "Bu alana maksimum 50 karakter girebilirsiniz.")]
         public string FirstName { get; set; }
 
         [PersonalData]
-        [Required]
-        [MaxLength(50)]
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
+        [MaxLength(50, ErrorMessage = "Bu alana maksimum 50 karakter girebilirsiniz.")]
         public string LastName { get; set; }
 
         [PersonalData]
