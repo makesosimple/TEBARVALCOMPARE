@@ -10,6 +10,7 @@ using System.Linq.Dynamic.Core;
 using IBBPortal.Helpers;
 using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
+using IBBPortal.Static;
 
 namespace IBBPortal.Controllers
 {
@@ -180,6 +181,7 @@ namespace IBBPortal.Controllers
                     await _context.SaveChangesAsync();
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $"Kayıt başarıyla oluşturuldu.";
+                    TransactionLogger.logTransaction(_context, (int)projectBidding.ProjectID, "project-bidding-created", _userManager.GetUserId(HttpContext.User));
                     return RedirectToAction(nameof(Index), new { id = projectBidding.ProjectID });
                 }
                 catch (Exception ex)
@@ -242,7 +244,7 @@ namespace IBBPortal.Controllers
                 {
 
                     await _context.SaveChangesAsync();
-
+                    TransactionLogger.logTransaction(_context, (int)id, "project-bidding-updated", _userManager.GetUserId(HttpContext.User));
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $"Kayıt başarıyla düzenlendi.";
                 }
@@ -340,12 +342,14 @@ namespace IBBPortal.Controllers
                 await _context.SaveChangesAsync();
                 TempData["SuccessTitle"] = "BAŞARILI";
                 TempData["SuccessMessage"] = $"{projectBidding.ProjectBiddingID} numaralı kayıt başarıyla silindi.";
+                TransactionLogger.logTransaction(_context, (int)projectBidding.ProjectID, "project-bidding-deleted", _userManager.GetUserId(HttpContext.User));
                 return RedirectToAction(nameof(Index), new { id = projectBidding.ProjectID });
             }
             catch (DbUpdateException ex)
             {
                 TempData["ErrorTitle"] = "HATA";
                 TempData["ErrorMessage"] = $"Bu değer, başka alanlarda kullanımda olduğu için silemezsiniz. Lütfen sistem yöneticinizle görüşün.";
+                TransactionLogger.logTransaction(_context, (int)projectBidding.ProjectID, "project-bidding-deleted-attempt", _userManager.GetUserId(HttpContext.User));
                 return RedirectToAction(nameof(Index), new { id = projectBidding.ProjectID });
             }
         }

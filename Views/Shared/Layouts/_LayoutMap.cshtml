@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{
+    Random _random = new Random();
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
 
@@ -24,8 +27,8 @@
     <link rel="stylesheet" href="~/lib/datepicker/bootstrap-datepicker.min.css" />
 
     <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="~/css/sb-admin-2.min.css" />
-    <link rel="stylesheet" href="~/css/main.css?4534534" />
+    <link rel="stylesheet" href="~/css/sb-admin-2.min.css?v=@_random.Next()" />
+    <link rel="stylesheet" href="~/css/main.css?v=@_random.Next()" />
 </head>
 <body id="page-top">
 
@@ -85,7 +88,7 @@
     <script src="~/lib/datepicker/bootstrap-datepicker.min.js"></script>
     <script src="~/lib/datepicker/locales/bootstrap-datepicker.tr.min.js"></script>
     <script src="~/lib/jquery-mask/jquery.mask.min.js"></script>
-    
+
     <script src="~/js/forms.js"></script>
 
     <partial name="../_ValidationScriptsPartial.cshtml" />

@@ -4,6 +4,9 @@
 <!-- FontAwesome -->
 <link rel="stylesheet" href="~/lib/fortawesome/fontawesome-free/css/all.min.css" />
 
+@{ 
+    Random _random = new Random();
+}
 <!-- Datatables -->
 <link rel="stylesheet" href="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.css" />
 <link rel="stylesheet" href="~/lib/datatables.net-buttons-bs4/buttons.bootstrap4.min.css" />
@@ -17,5 +20,5 @@
 <link rel="stylesheet" href="~/lib/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" />
 
 <!-- Main Stylesheet -->
-<link rel="stylesheet" href="~/css/sb-admin-2.min.css" />
-<link rel="stylesheet" href="~/css/main.css" />
+<link rel="stylesheet" href="~/css/sb-admin-2.min.css?v=@_random.Next()" />
+<link rel="stylesheet" href="~/css/main.css?v=@_random.Next()" />

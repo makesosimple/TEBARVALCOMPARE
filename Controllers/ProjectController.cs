@@ -681,7 +681,7 @@ namespace IBBPortal.Controllers
                 projectField.ProjectLongitude = model.ProjectField.ProjectLongitude;
                 projectField.ProjectLatitude = model.ProjectField.ProjectLatitude;
                 projectField.KML = model.ProjectField.KML;
-
+                TransactionLogger.logTransaction(_context, (int)id, "created-project-field", _userManager.GetUserId(HttpContext.User));
                 string coordinates = null;
 
                 if (model.ProjectField.KML!=null)
@@ -731,6 +731,7 @@ namespace IBBPortal.Controllers
 
                 _context.Add(projectField);
                 projectFieldToUpdate = projectField;
+                
             }
             else
             {
@@ -754,6 +755,7 @@ namespace IBBPortal.Controllers
                 //string coordinates = null;
                 projectFieldToUpdate.KML = model.ProjectField.KML;
                 string coordinates = null;
+                TransactionLogger.logTransaction(_context, (int)id, "updated-project-field", _userManager.GetUserId(HttpContext.User));
 
                 if (model.ProjectField.KML != null)
                 {
@@ -841,7 +843,7 @@ namespace IBBPortal.Controllers
                 projectZoningPlan.ZoningPlanResponsiblePersonID = model.ProjectZoningPlan.ZoningPlanResponsiblePersonID;
                 projectZoningPlan.UserID = CurrentUser;
                 projectZoningPlan.CreationDate = CurrentDate;
-
+                TransactionLogger.logTransaction(_context, (int)id, "zoning-plan-created", _userManager.GetUserId(HttpContext.User));
                 _context.Add(projectZoningPlan);
             }
 
@@ -858,6 +860,7 @@ namespace IBBPortal.Controllers
                 projectZoningPlanToUpdate.ModificationProposalDate = model.ProjectZoningPlan.ModificationProposalDate;
                 projectZoningPlanToUpdate.ZoningPlanModificationStatusID = model.ProjectZoningPlan.ZoningPlanModificationStatusID;
                 projectZoningPlanToUpdate.ZoningPlanResponsiblePersonID = model.ProjectZoningPlan.ZoningPlanResponsiblePersonID;
+                TransactionLogger.logTransaction(_context, (int)id, "zoning-plan-updated", _userManager.GetUserId(HttpContext.User));
                 projectZoningPlanToUpdate.UpdateDate = CurrentDate;
             }
 
@@ -879,7 +882,7 @@ namespace IBBPortal.Controllers
                 projectExpropriation.ProjectExpropriationStatusDesc = model.ProjectExpropriation.ProjectExpropriationStatusDesc;
                 projectExpropriation.UserID = CurrentUser;
                 projectExpropriation.CreationDate = CurrentDate;
-
+                TransactionLogger.logTransaction(_context, (int)id, "expropriation-created", _userManager.GetUserId(HttpContext.User));
                 _context.Add(projectExpropriation);
             }
 
@@ -896,6 +899,7 @@ namespace IBBPortal.Controllers
                 projectExpropriationToUpdate.ExpropriationStatusID = model.ProjectExpropriation.ExpropriationStatusID;
                 projectExpropriationToUpdate.ProjectExpropriationStatusDesc = model.ProjectExpropriation.ProjectExpropriationStatusDesc;
                 projectExpropriationToUpdate.UpdateDate = CurrentDate;
+                TransactionLogger.logTransaction(_context, (int)id, "expropriation-updated", _userManager.GetUserId(HttpContext.User));
             }
 
             //Project Permission
@@ -911,7 +915,7 @@ namespace IBBPortal.Controllers
                 projectPermission.ProjectPermissionReason = model.ProjectPermission.ProjectPermissionReason;
                 projectPermission.UserID = CurrentUser;
                 projectPermission.CreationDate = CurrentDate;
-
+                TransactionLogger.logTransaction(_context, (int)id, "permission-created", _userManager.GetUserId(HttpContext.User));
                 _context.Add(projectPermission);
             }
 
@@ -923,6 +927,7 @@ namespace IBBPortal.Controllers
                 projectPermissionToUpdate.ProjectPermissionDate = model.ProjectPermission.ProjectPermissionDate;
                 projectPermissionToUpdate.ProjectPermissionReason = model.ProjectPermission.ProjectPermissionReason;
                 projectPermissionToUpdate.UpdateDate = CurrentDate;
+                TransactionLogger.logTransaction(_context, (int)id, "permission-updated", _userManager.GetUserId(HttpContext.User));
             }
 
             try
@@ -980,12 +985,14 @@ namespace IBBPortal.Controllers
                 await _context.SaveChangesAsync();
                 TempData["SuccessTitle"] = "BAŞARILI";
                 TempData["SuccessMessage"] = $"{project.ProjectID} numaralı kayıt başarıyla silindi.";
+                TransactionLogger.logTransaction(_context, (int)id, "project-deleted", _userManager.GetUserId(HttpContext.User));
                 return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateException ex)
             {
                 TempData["ErrorTitle"] = "HATA";
                 TempData["ErrorMessage"] = $"Bu değer, başka alanlarda kullanımda olduğu için silemezsiniz. Lütfen sistem yöneticinizle görüşün.";
+                TransactionLogger.logTransaction(_context, (int)id, "project-deleted-attempt", _userManager.GetUserId(HttpContext.User));
                 return RedirectToAction(nameof(Index));
             }
         }

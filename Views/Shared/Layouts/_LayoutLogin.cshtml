@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{
+    Random _random = new Random();
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
 
@@ -13,7 +16,7 @@
     <link rel="stylesheet" href="~/lib/fontawesome-free/css/all.min.css" />
 
     <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="~/css/sb-admin-2.min.css" />
+    <link rel="stylesheet" href="~/css/sb-admin-2.min.css?v=@_random.Next()" />
 </head>
 <body class="bg-gradient-white min-vh-100 d-flex flex-column justify-content-center align-items-center">
 
