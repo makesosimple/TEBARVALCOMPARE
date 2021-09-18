@@ -62,6 +62,7 @@
                 "preDrawCallback": function (settings) {
                     //$('#example tbody').off('click', 'td');
                     $(".dt-buttons").addClass('btn-group');
+                    $(".loadingDiv").detach().appendTo(".dataTables_scrollBody");
                     $(".loadingDiv").show();
                     //$(".table-responsive").hide();
                 },
