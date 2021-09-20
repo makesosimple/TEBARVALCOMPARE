@@ -981,7 +981,8 @@ namespace IBBPortal.Controllers
             
             try
             {
-                _context.Project.Remove(project);
+                //_context.Project.Remove(project);
+                project.DeletionDate = DateTime.Now;
                 await _context.SaveChangesAsync();
                 TempData["SuccessTitle"] = "BAŞARILI";
                 TempData["SuccessMessage"] = $"{project.ProjectID} numaralı kayıt başarıyla silindi.";

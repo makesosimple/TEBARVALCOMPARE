@@ -29,7 +29,7 @@ namespace IBBPortal.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var dashboardSummary = await _context.DashboardSummaryModel.FromSqlRaw("SELECT (SELECT COUNT(ProjectID) FROM Project) AS NumberOfProjects, (SELECT COUNT(ProjectPhaseID) FROM ProjectPhase WHERE ProjectPhase.ProjectPhaseStart >= DATEADD(day, -30, GETDATE()) AND ProjectPhase.ProjectPhaseStart <= GETDATE()) AS ProjectsStartedInLastMonth, ((SELECT COUNT(ProjectID) FROM Project WHERE ProjectStatusID = 10) / ((SELECT COUNT(ProjectID) FROM Project)+1)) AS NumberOfCompletedProjects").FirstOrDefaultAsync();
+            var dashboardSummary = await _context.DashboardSummaryModel.FromSqlRaw("SELECT (SELECT COUNT(ProjectID) FROM Project WHERE DeletionDate IS NULL) AS NumberOfProjects, (SELECT COUNT(ProjectPhaseID) FROM ProjectPhase WHERE ProjectPhase.ProjectPhaseStart >= DATEADD(day, -30, GETDATE()) AND ProjectPhase.ProjectPhaseStart <= GETDATE()) AS ProjectsStartedInLastMonth, ((SELECT COUNT(ProjectID) FROM Project WHERE ProjectStatusID = 10 AND DeletionDate IS NULL) / ((SELECT COUNT(ProjectID) FROM Project WHERE DeletionDate IS NULL)+1)) AS NumberOfCompletedProjects").FirstOrDefaultAsync();
 
             //Console.Writeln(dashboardSummary.Result.NumberOfProjects);
             //var numberOfProjects = await _context.Project.CountAsync();
@@ -37,11 +37,12 @@ namespace IBBPortal.Controllers
             ViewBag.numberOfProjectsInAMonth = dashboardSummary.ProjectsStartedInLastMonth;
             ViewBag.numberOfCompletedProjects = dashboardSummary.NumberOfCompletedProjects;
 
+
             //List myShortcuts = new List();
             //try
             //{
             // Console.WriteLine("_userManager.GetUserId(HttpContext.User)=", _userManager.GetUserId(HttpContext.User));
-            var myShortcuts = await _context.ShortcutListModel.FromSqlRaw("SELECT Project.ProjectID, Project.ProjectTitle FROM Shortcuts LEFT JOIN Project ON Project.ProjectID = Shortcuts.ShortcutsProjectID WHERE Shortcuts.UserID = {0}", _userManager.GetUserId(HttpContext.User)).ToListAsync();
+            var myShortcuts = await _context.ShortcutListModel.FromSqlRaw("SELECT Project.ProjectID, Project.ProjectTitle FROM Shortcuts LEFT JOIN Project ON Project.ProjectID = Shortcuts.ShortcutsProjectID WHERE Shortcuts.UserID = {0} AND Project.DeletionDate IS NULL", _userManager.GetUserId(HttpContext.User)).ToListAsync();
             //} catch (Exception e)
             //{
             //myShortcuts = "";
@@ -64,6 +65,7 @@ namespace IBBPortal.Controllers
                        
                     FROM Project
                     LEFT JOIN ProjectStatus ON Project.ProjectStatusID = ProjectStatus.ProjectStatusID
+                    WHERE Project.DeletionDate IS NULL
                     GROUP BY Project.ProjectStatusID, ProjectStatus.ProjectStatusTitle
                     ORDER BY NumberOfProjects DESC
                     ").ToListAsync();
@@ -74,6 +76,7 @@ namespace IBBPortal.Controllers
                     COUNT(ProjectID) AS NumberOfProjects
                     
                     FROM Project
+                    WHERE Project.DeletionDate IS NULL
                     GROUP BY ProjectYear
                     ORDER BY ProjectYear ASC
                     
