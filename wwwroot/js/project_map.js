@@ -16,7 +16,7 @@ function buildMap() {
 
     if (currentProject) {
         showBorders(currentProject, true);
-        showMarker(currentProject);
+        showMarker(currentProject,true);
     }
 
     $('.loadingDiv').hide();
@@ -117,9 +117,9 @@ function showMarker(m, main=false) {
 
     var url = "";
     if (main == true) {
-        url = "/images/main.png"
+        url = "/images/ibb.png";
     } else {
-        url = "/images/default.png"
+        url = "/images/ibb2.png";
     }
 
     const image = {
@@ -129,15 +129,24 @@ function showMarker(m, main=false) {
 
         //origin: new google.maps.Point(-16, -16),
 
-        anchor: new google.maps.Point(16, 16),
+        anchor: new google.maps.Point(16, 32),
+        labelOrigin: new google.maps.Point(0, 40),
+    
     };
 
     const LatLng = { lat: m.latitude, lng: m.longitude };
+    const text = m.projectTitle.slice(0, 32) + '...';
     const marker = new google.maps.Marker({
         position: LatLng,
         map,
         title: m.projectTitle,
         icon: image,
+        label: {
+            text: text,
+            color: "#0a1a33",
+            fontSize: "10pt",
+            fontWeight: "bold",
+        },
     });
 
     const contentString =
