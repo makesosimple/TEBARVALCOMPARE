@@ -56,19 +56,32 @@ namespace IBBPortal.Static
         public static string UpdateMessageContent(string message, int ProjectID, string UserID, ApplicationDbContext _c)
         {
 
-            var project = _c.Project.Where(c => c.ProjectID == ProjectID).First();
-            var user = _c.Users.Where(c => c.Id == UserID).First();
+            var project = _c.Project.Where(c => c.ProjectID == ProjectID).FirstOrDefault();
+            var user = _c.Users.Where(c => c.Id == UserID).FirstOrDefault();
+            
 
             if (project != null)
             {
-                
-                message = message.Replace("[ProjectID]", project.ProjectID.ToString());
-                message = message.Replace("[ProjectTitle]", project.ProjectTitle);
+
+                try
+                {
+                    message = message.Replace("[ProjectID]", project.ProjectID.ToString());
+                    message = message.Replace("[ProjectTitle]", project.ProjectTitle);
+                } catch
+                {
+
+                }
             }
 
             if (user != null)
             {
-                message = message.Replace("[UserName]", user.UserName);
+                try
+                {
+                    message = message.Replace("[UserName]", user.UserName);
+                } catch
+                {
+
+                }
             }
             
 

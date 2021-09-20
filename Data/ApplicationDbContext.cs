@@ -57,6 +57,8 @@ namespace IBBPortal.Data
             builder.Entity<DashboardLineGraphModel>().HasNoKey();
             //modelBuilder.Ignore<DashboardSummaryModel>();
             //modelBuilder.Ignore<ShortcutListModel>();
+            builder.Entity<Project>().HasQueryFilter(p => p.DeletionDate == null);
+
 
         }
 

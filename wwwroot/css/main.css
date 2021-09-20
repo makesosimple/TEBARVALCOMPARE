@@ -188,3 +188,7 @@ table, td {
 .opaque {
     background-color: #ffffff;
 }
+
+.dataTables_scrollBody {
+    min-height:50rem;
+}
