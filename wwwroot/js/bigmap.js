@@ -17,7 +17,8 @@ function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
       center: { lat: 41.01871410284052, lng: 29.04875532823787 },
       disableDefaultUI: true,
-    zoom: 10,
+      zoom: 10,
+      styles: [{ "featureType": "water", "elementType": "geometry", "stylers": [{ "color": "#3399CC" }, { "lightness": 17 }] }, { "featureType": "landscape", "elementType": "geometry", "stylers": [{ "color": "#f5f5f5" }, { "lightness": 20 }] }, { "featureType": "road.highway", "elementType": "geometry.fill", "stylers": [{ "color": "#ffffff" }, { "lightness": 17 }] }, { "featureType": "road.highway", "elementType": "geometry.stroke", "stylers": [{ "color": "#ffffff" }, { "lightness": 29 }, { "weight": 0.2 }] }, { "featureType": "road.arterial", "elementType": "geometry", "stylers": [{ "color": "#ffffff" }, { "lightness": 18 }] }, { "featureType": "road.local", "elementType": "geometry", "stylers": [{ "color": "#ffffff" }, { "lightness": 16 }] }, { "featureType": "poi", "elementType": "geometry", "stylers": [{ "color": "#f5f5f5" }, { "lightness": 21 }] }, { "featureType": "poi.park", "elementType": "geometry", "stylers": [{ "color": "#dedede" }, { "lightness": 21 }] }, { "elementType": "labels.text.stroke", "stylers": [{ "visibility": "on" }, { "color": "#ffffff" }, { "lightness": 16 }] }, { "elementType": "labels.text.fill", "stylers": [{ "saturation": 36 }, { "color": "#333333" }, { "lightness": 40 }] }, { "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "featureType": "transit", "elementType": "geometry", "stylers": [{ "color": "#f2f2f2" }, { "lightness": 19 }] }, { "featureType": "administrative", "elementType": "geometry.fill", "stylers": [{ "color": "#fefefe" }, { "lightness": 20 }] }, { "featureType": "administrative", "elementType": "geometry.stroke", "stylers": [{ "color": "#fefefe" }, { "lightness": 17 }, { "weight": 1.2 }] }],
   });
 }
 
@@ -106,13 +107,23 @@ function showMarker(m) {
         //origin: new google.maps.Point(-16, -16),
         
         anchor: new google.maps.Point(16, 32),
+        labelOrigin: new google.maps.Point(0, 40),
     };
 
     const LatLng = { lat: parseFloat(m.latitude), lng: parseFloat(m.longitude) };
+    const text = m.projectTitle.slice(0,32)+'...';
     const marker = new google.maps.Marker({
         position: LatLng,
         map,
         title: m.projectTitle,
+        label: {
+            text: text,
+            color: "#0a1a33",
+            fontSize: "10pt",
+            fontWeight: "bold",
+        },
+        labelClass: "btn",
+        
         icon: image,
     });
 
@@ -137,7 +148,7 @@ function showMarker(m) {
         'Sorumlu Müdürlük: ' + m.responsibleDepartmentTitle + '<br/>' +
         'Proje Önemi: ' + m.projectImportanceTitle + '<br/>' +
         '</p>' +
-        '<p><a class="btn btn-info btn-sm" href="/Project/Edit/'+m.projectID+'">Detaylar</a></p>' +
+        '<p><a class="link" href="/Project/Edit/' + m.projectID + '">Proje <i class="fas fa-arrow-circle-right"></i></a></p>' +
         "</div>" +
         "</div>";
     const infowindow = new google.maps.InfoWindow({
