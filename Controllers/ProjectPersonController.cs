@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Linq.Dynamic.Core;
 using IBBPortal.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using IBBPortal.Static;
 
 namespace IBBPortal.Controllers
 {
@@ -151,6 +152,8 @@ namespace IBBPortal.Controllers
 
                     _context.Add(projectPerson);
                     await _context.SaveChangesAsync();
+                    TransactionLogger.logTransaction(_context, (int)projectPerson.ProjectID, "project-person-added", _userManager.GetUserId(HttpContext.User));
+
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $"Kayıt başarıyla oluşturuldu.";
                     return RedirectToAction(nameof(Index), new { id = projectPerson.ProjectID});
@@ -210,6 +213,7 @@ namespace IBBPortal.Controllers
 
                     _context.Update(projectPerson);
                     await _context.SaveChangesAsync();
+                    TransactionLogger.logTransaction(_context, (int)projectPerson.ProjectID, "project-person-changed", _userManager.GetUserId(HttpContext.User));
                 }
                 catch (DbUpdateConcurrencyException)
                 {

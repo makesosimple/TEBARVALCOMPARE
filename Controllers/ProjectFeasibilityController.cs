@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Linq.Dynamic.Core;
 using IBBPortal.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using IBBPortal.Static;
 
 namespace IBBPortal.Controllers
 {
@@ -66,7 +67,7 @@ namespace IBBPortal.Controllers
                         projectFeasibility.CreationDate = DateTime.Now;
                         projectFeasibility.UserID = _userManager.GetUserId(HttpContext.User);
                         _context.Add(projectFeasibility);
-
+                        TransactionLogger.logTransaction(_context, (int)projectFeasibility.ProjectID, "project-feasiblity-added", _userManager.GetUserId(HttpContext.User));
                         TempData["SuccessTitle"] = "BAŞARILI";
                         TempData["SuccessMessage"] = $"Kayıt başarıyla oluşturuldu.";
                     }
@@ -77,6 +78,8 @@ namespace IBBPortal.Controllers
                         _context.Update(projectFeasibility);
                         TempData["SuccessTitle"] = "BAŞARILI";
                         TempData["SuccessMessage"] = $"Kayıt başarıyla düzenlendi.";
+                        TransactionLogger.logTransaction(_context, (int)projectFeasibility.ProjectID, "project-feasiblity-updated", _userManager.GetUserId(HttpContext.User));
+
                     }
 
                     await _context.SaveChangesAsync();

@@ -40,9 +40,10 @@ namespace IBBPortal.Static
             transactionLog.TransactionLogForUserID = UserID;
             transactionLog.TransactionMessageID = messageID;
             transactionLog.TransactionTypeID = messageType;
+            
             if (message != null)
             {
-                transactionLog.TransactionLogMessageContent = message;
+                transactionLog.TransactionLogMessageContent = UpdateMessageContent(message, projectID, UserID, _c);
             }
 
             transactionLog.CreationDate = DateTime.Now;
@@ -51,5 +52,29 @@ namespace IBBPortal.Static
 
             return transactionLog;
         }
+
+        public static string UpdateMessageContent(string message, int ProjectID, string UserID, ApplicationDbContext _c)
+        {
+
+            var project = _c.Project.Where(c => c.ProjectID == ProjectID).First();
+            var user = _c.Users.Where(c => c.Id == UserID).First();
+
+            if (project != null)
+            {
+                
+                message = message.Replace("[ProjectID]", project.ProjectID.ToString());
+                message = message.Replace("[ProjectTitle]", project.ProjectTitle);
+            }
+
+            if (user != null)
+            {
+                message = message.Replace("[UserName]", user.UserName);
+            }
+            
+
+            return message;
+        }
     }
+
+    
 }

@@ -9,6 +9,7 @@ using IBBPortal.Data;
 using System.Threading.Tasks;
 using IBBPortal.ViewModels;
 using System;
+using System.Linq;
 
 namespace IBBPortal.Controllers
 {
@@ -41,12 +42,18 @@ namespace IBBPortal.Controllers
             //{
             // Console.WriteLine("_userManager.GetUserId(HttpContext.User)=", _userManager.GetUserId(HttpContext.User));
             var myShortcuts = await _context.ShortcutListModel.FromSqlRaw("SELECT Project.ProjectID, Project.ProjectTitle FROM Shortcuts LEFT JOIN Project ON Project.ProjectID = Shortcuts.ShortcutsProjectID WHERE Shortcuts.UserID = {0}", _userManager.GetUserId(HttpContext.User)).ToListAsync();
-                //} catch (Exception e)
-                //{
-                //myShortcuts = "";
-                //}
+            //} catch (Exception e)
+            //{
+            //myShortcuts = "";
+            //}
 
+            var myLog = await _context.TransactionLog.OrderByDescending(c => c.TransactionLogID).Take(10).ToListAsync();
+                
+                
+                /*Select(c => new { c.TransactionLogID, c.TransactionLogMessageContent, c.ProjectID, c.TransactionLogRead, c.UpdateDate}).
+                OrderByDescending(c => c.TransactionLogID).ToList();*/
 
+            ViewBag.myLog = myLog;
 
             ViewBag.myShortcuts = myShortcuts;
 

@@ -5,10 +5,11 @@
     var myShortcuts = ViewBag.myShortcuts;
     var serviceAreaList = ViewBag.serviceAreaList;
     var projectCountByYear = ViewBag.projectCountByYear;
+    var myLog = ViewBag.myLog;
 }
 <div class="row">
     <div class="justify-content-between py-2 col-12 d-flex">
-        <h1 class="h3 text-gray-800">34 Proje Portal</h1>
+        <h1 class="h3">34 Proje Portal</h1>
      </div>
 </div>
 
@@ -144,20 +145,7 @@
             <!-- Card Header - Dropdown -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Proje Dağılımı</h6>
-                <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                         aria-labelledby="dropdownMenuLink">
-                        <div class="dropdown-header">Dropdown Header:</div>
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                </div>
+                
             </div>
             <!-- Card Body -->
             <div class="card-body">
@@ -215,23 +203,13 @@
             <div class="card-header py-3 bg-turqoise">
                 <h6 class="m-0 font-weight-bold text-white">Güncellemeler</h6>
             </div>
-            <div class="card-body d-flex flex-column justify-content-between">
-                <div class="shortcut-item mb-3">
-                    <p class="text-primary text-md font-weight-bold mb-1">Bilge Kobaş, 3400210201XX kodlu Arnavutköy Bilim Merkezi projesinde değişiklik yaptı.</p>
-                    <a href="#" class="text-gray-900"><i class="fas fa-arrow-right mr-1"></i> Projeye Git</a>
-                </div>
-                <div class="shortcut-item mb-3">
-                    <p class="text-primary text-md font-weight-bold mb-1">Cem Üstün, 3400210201XX kodlu proje için bir rapor üretti.</p>
-                    <a href="#" class="text-gray-900"><i class="fas fa-arrow-right mr-1"></i> Rapora Git</a>
-                </div>
-                <div class="shortcut-item mb-3">
-                    <p class="text-primary text-md font-weight-bold mb-1">Kentsel Tasarım Müdürlüğü, 3400210201XX kodlu Arnavutköy Bilim Merkezi projesi için görüş raporu talep etti. </p>
-                    <a href="#" class="text-gray-900"><i class="fas fa-arrow-right mr-1"></i> Projeye Git</a>
-                </div>
-                <div class="shortcut-item">
-                    <p class="text-primary text-md font-weight-bold mb-1">Selçuk Orhan, 3400210201XX kodlu Beyoğlu Hizmet Binası projesi için parsel bilgisi girdi.</p>
-                    <a href="#" class="text-gray-900"><i class="fas fa-arrow-right mr-1"></i> Projeye Git</a>
-                </div>
+            <div class="card-body d-flex flex-column">
+                @foreach (var item in myLog)
+                {
+                    <div class="shortcut-item">
+                        <p class="text-primary text-md">@Html.Raw(item.TransactionLogMessageContent)</p>
+                    </div>
+                }
             </div>
         </div>
     </div>
