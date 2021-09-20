@@ -7,6 +7,7 @@ function initMap() {
           lng: parseFloat(project_coordinates[0].split(',')[0]),
               },
       disableDefaultUI: true,
+      zoomControl: true,
     zoom: 16,
   });
     mapCoors = [];

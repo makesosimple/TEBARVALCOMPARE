@@ -101,23 +101,21 @@
 
 
                     <form class="form-inline">
-                       
+
                         <input type="text" id="projectTitle" placeholder="Proje ara..." name="projectTitle" class="form-control">
 
-                        <label for="showIntersectingProjects">Çakışanlar</label>
-                        <input type="checkbox" id="showIntersectingProjects" placeholder="Çakışanlar" name="showProjectBorders" class="form-control">
+                        <label for="showIntersectingProjects"><input type="checkbox" id="showIntersectingProjects" placeholder="Çakışanlar" name="showProjectBorders"> Çakışanlar</label>
+                        
 
                         <label for="closeProjectsKM">Yakındakiler (m)</label>
-                        <input type="range" id="closeProjectsKM" class="form-range" min="100" max="10000" oninput="this.nextElementSibling.value = this.value" value="250"><output>250</output>m
-
-
+                        <input type="range" id="closeProjectsKM" class="form-range" min="100" max="10000" oninput="this.nextElementSibling.value = this.value+'m'" value="250"><output>250m</output>
                         &nbsp;
                         <button id="toggleFilter" type="button" class="btn btn-success"><i class="fa fa-filter"></i> Göster</button>
-                        <button id="closeFilter" type="button" class="btn btn-danger"><i class="fa fa-times-circle"></i></button>
+                        
                         <input name="projectTitle" id="projectTitle" type="hidden" value="@Model.ProjectTitle" />
                         <input name="projectID" id="projectID" type="hidden" value="@Model.ProjectID" />
                     </form>
-
+                    <span id="closeFilter"><i class="fa fa-times-circle"></i></span>
                 </div>
                 <div class="floatingFormClosedForDetailPage">
                     <form class="form-inline">
@@ -139,14 +137,12 @@
         let lngValue = parseFloat(("@Model.ProjectLongitude").split(",").join("."));
         function initMap() {
 
-
-
-
-
             map = new google.maps.Map(document.getElementById("mapDetail"), {
                 center: { lat: latValue, lng: lngValue },
                 disableDefaultUI: true,
+                zoomControl: true,
                 zoom: 18,
+                styles: [{ "featureType": "water", "elementType": "geometry", "stylers": [{ "color": "#3399CC" }, { "lightness": 17 }] }, { "featureType": "landscape", "elementType": "geometry", "stylers": [{ "color": "#f5f5f5" }, { "lightness": 20 }] }, { "featureType": "road.highway", "elementType": "geometry.fill", "stylers": [{ "color": "#ffffff" }, { "lightness": 17 }] }, { "featureType": "road.highway", "elementType": "geometry.stroke", "stylers": [{ "color": "#ffffff" }, { "lightness": 29 }, { "weight": 0.2 }] }, { "featureType": "road.arterial", "elementType": "geometry", "stylers": [{ "color": "#ffffff" }, { "lightness": 18 }] }, { "featureType": "road.local", "elementType": "geometry", "stylers": [{ "color": "#ffffff" }, { "lightness": 16 }] }, { "featureType": "poi", "elementType": "geometry", "stylers": [{ "color": "#f5f5f5" }, { "lightness": 21 }] }, { "featureType": "poi.park", "elementType": "geometry", "stylers": [{ "color": "#dedede" }, { "lightness": 21 }] }, { "elementType": "labels.text.stroke", "stylers": [{ "visibility": "on" }, { "color": "#ffffff" }, { "lightness": 16 }] }, { "elementType": "labels.text.fill", "stylers": [{ "saturation": 36 }, { "color": "#333333" }, { "lightness": 40 }] }, { "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] }, { "featureType": "transit", "elementType": "geometry", "stylers": [{ "color": "#f2f2f2" }, { "lightness": 19 }] }, { "featureType": "administrative", "elementType": "geometry.fill", "stylers": [{ "color": "#fefefe" }, { "lightness": 20 }] }, { "featureType": "administrative", "elementType": "geometry.stroke", "stylers": [{ "color": "#fefefe" }, { "lightness": 17 }, { "weight": 1.2 }] }],
             });
 
         }

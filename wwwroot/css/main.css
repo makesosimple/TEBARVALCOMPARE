@@ -160,8 +160,10 @@
    
 }
 
-h5 .firstHeading {
+h5.firstHeading {
     font-size: 1rem;
+    width: 20rem;
+    word-wrap:normal;
 }
 
 
