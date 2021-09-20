@@ -36,7 +36,7 @@
 
     <form class="form-inline">
 
-        <input type="text" id="projectTitle" placeholder="Proje..." name="projectTitle" class="form-control">
+        <input type="text" id="projectTitle" placeholder="Proje..." name="projectTitle" class="form-control" style="width:200px;">
 
         <select class="form-control" id="selectDistrict" style="width:150px;">
             <option value="">İlçe</option>
@@ -54,15 +54,15 @@
             <option value="">Proje Sahibi</option>
         </select>
 
-        <label for="showProjectBorders">Sınırları Göster</label>
-        <input type="checkbox" id="showProjectBorders" placeholder="Sınırları Göster..." name="showProjectBorders" class="form-control">
+        <label for="showProjectBorders"><input type="checkbox" id="showProjectBorders" placeholder="Sınırları Göster..." name="showProjectBorders"> Sınırları Göster</label>
+        
 
         &nbsp;
         <button id="toggleFilter" type="button" class="btn btn-success"><i class="fa fa-filter"></i> Filtrele</button>
-        <button id="closeFilter" type="button" class="btn btn-danger"><i class="fa fa-times-circle"></i></button>
+
 
     </form>
-
+    <span id="closeFilter"><i class="fa fa-times-circle"></i></span>
 </div>
 <div class="floatingFormClosed shadow">
     <form class="form-inline">
