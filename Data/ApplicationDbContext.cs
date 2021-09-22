@@ -158,9 +158,7 @@ namespace IBBPortal.Data
 
         public DbSet<IBBPortal.Models.TransactionLog> TransactionLog { get; set; }
 
-        
-
-
+        public DbSet<IBBPortal.Models.File> File { get; set; }
 
     }
 

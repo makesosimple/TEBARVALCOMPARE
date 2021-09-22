@@ -8,35 +8,51 @@ namespace IBBPortal.Models
 {
 
     [Index(nameof(ProjectID))]
+    [Index(nameof(FileCategoryID))]
+    [Index(nameof(ProjectBiddingID))]
+    [Index(nameof(UserID))]
     public class File
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int FileID { get; set; }
-        public int ProjectID { get; set; }
-        public int FileCategoryID { get; set; }
-        public int BiddingID { get; set; }
 
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
+        public int FileUploadType { get; set; }
 
-        [MaxLength(256)]
+        public int? ProjectID { get; set; }
+        [ForeignKey("ProjectID")]
+        public Project Project { get; set; }
+
+        public int? FileCategoryID { get; set; }
+        [ForeignKey("FileCategoryID")]
+        public FileCategory FileCategory { get; set; }
+
+        public int? ProjectBiddingID { get; set; }
+        [ForeignKey("ProjectBiddingID")]
+        public ProjectBidding ProjectBidding { get; set; }
+
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
+        [MaxLength(512, ErrorMessage = "Bu alana maksimum 512 karakter girebilirsiniz.")]
         public string FileName { get; set; }
 
-        [MaxLength(6)]
-        public string FileType { get; set; }
+        [MaxLength(6, ErrorMessage = "Bu alana maksimum 6 karakter girebilirsiniz.")]
+        public string? FileType { get; set; }
 
-        [MaxLength(512)]
-        public string FilePath { get; set; }
-        [MaxLength(512)]
-        public string FileURL { get; set; }
+        [MaxLength(1024, ErrorMessage = "Bu alana maksimum 1024 karakter girebilirsiniz.")]
+        public string? FilePath { get; set; }
 
-        public int FileStatus { get; set; }
+        [MaxLength(1024, ErrorMessage = "Bu alana maksimum 1024 karakter girebilirsiniz.")]
+        public string? FileURL { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string? UserID { get; set; }
+        [ForeignKey("UserID")]
+        public ApplicationUser User { get; set; }
+
+        [Required]
         public DateTime CreationDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? UpdateDate { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime? DeletionDate { get; set; }
 
     }
