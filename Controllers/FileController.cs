@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using System.Net;
 using System.IO;
+using System.Collections.Generic;
+using System.Text;
 
 namespace IBBPortal.Controllers
 {
@@ -159,6 +161,8 @@ namespace IBBPortal.Controllers
             var reader = new MultipartReader(boundary, HttpContext.Request.Body);
             var section = await reader.ReadNextSectionAsync();
 
+            Dictionary<string, dynamic> formValues = new Dictionary<string, dynamic>();
+
             while (section != null)
             {
                 var hasContentDispositionHeader =
@@ -167,18 +171,27 @@ namespace IBBPortal.Controllers
 
                 if (hasContentDispositionHeader)
                 {
-                    // This check assumes that there's a file
-                    // present without form data. If form data
-                    // is present, this method immediately fails
-                    // and returns the model error.
+
                     if (!MultipartRequestHelper
                         .HasFileContentDisposition(contentDisposition))
                     {
-                        ModelState.AddModelError("File",
-                            $"The request couldn't be processed (Error 2).");
-                        // Log error
+                        var key = HeaderUtilities.RemoveQuotes(contentDisposition.Name).Value;
 
-                        return BadRequest(ModelState);
+                        using (var streamReader = new StreamReader(section.Body,
+                             encoding: Encoding.UTF8,
+                             detectEncodingFromByteOrderMarks: true,
+                             bufferSize: 1024,
+                             leaveOpen: true))
+                        {
+                            var value = await streamReader.ReadToEndAsync();
+                            if (string.Equals(value, "undefined", StringComparison.OrdinalIgnoreCase))
+                            {
+                                value = string.Empty;
+                            }
+
+                            formValues.Add(key, value);
+
+                        }
                     }
                     else
                     {
