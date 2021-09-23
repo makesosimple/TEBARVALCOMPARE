@@ -10,19 +10,43 @@ using IBBPortal.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.Configuration;
+using System.Net;
+using System.IO;
 
 namespace IBBPortal.Controllers
 {
     [Authorize]
+    [GenerateAntiforgeryTokenCookie]
     public class FileController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly long _fileSizeLimit;
+        private readonly ILogger<FileController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
-        public FileController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        private readonly string[] _permittedExtensions = { ".txt" };
+        private readonly string _targetFilePath;
+
+        // Get the default form options so that we can use them to set the default 
+        // limits for request body data.
+        private static readonly FormOptions _defaultFormOptions = new FormOptions();
+
+        public FileController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, 
+            ILogger<FileController> logger, IConfiguration config)
         {
             _context = context;
             _userManager = userManager;
+            _logger = logger;
+
+            _fileSizeLimit = config.GetValue<long>("FileSizeLimit");
+
+            // To save physical files to a path provided by configuration:
+            _targetFilePath = config.GetValue<string>("StoredFilesPath");
+
+            // To save physical files to the temporary files folder, use:
+            //_targetFilePath = Path.GetTempPath();
         }
 
         public IActionResult Index(int id)
@@ -125,7 +149,7 @@ namespace IBBPortal.Controllers
                 ModelState.AddModelError("File",
                     $"The request couldn't be processed (Error 1).");
                 // Log error
-
+                _logger.LogError("An error occured!");
                 return BadRequest(ModelState);
             }
 
@@ -173,7 +197,7 @@ namespace IBBPortal.Controllers
                         // For more information, see the topic that accompanies 
                         // this sample.
 
-                        var streamedFileContent = await FileHelpers.ProcessStreamedFile(
+                        var streamedFileContent = await FileHelper.ProcessStreamedFile(
                             section, contentDisposition, ModelState,
                             _permittedExtensions, _fileSizeLimit);
 
@@ -201,7 +225,7 @@ namespace IBBPortal.Controllers
                 section = await reader.ReadNextSectionAsync();
             }
 
-            return Created(nameof(StreamingController), null);
+            return Created(nameof(FileController), null);
         }
     }
 }

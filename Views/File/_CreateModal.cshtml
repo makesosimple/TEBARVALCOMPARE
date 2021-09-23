@@ -1,9 +1,8 @@
-﻿
-<!-- Modal -->
+﻿<!-- Modal -->
 <div class="modal fade" id="FileCreateModal" tabindex="-1" aria-labelledby="FileCreateModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-            <form asp-controller="File" asp-action="Create" enctype="multipart/form-data" method="post" onsubmit="AJAXSubmit(this); return false;">
+            <form action="/File/Create" enctype="multipart/form-data" method="post" onsubmit="AJAXSubmit(this); return false;">
 
                 <div class="modal-header">
                     <div class="container-fluid">
@@ -19,11 +18,9 @@
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
-                        <!-- Validation Part. Must be still for all views!! -->
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                         <!-- File Upload Type -->
-                        <div class="form-group row">
+                        <!--<div class="form-group row">
                             <label class="col-12 col-xl-4 col-form-label">Yükleme Tipi<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8 d-flex">
                                 <div class="custom-control custom-checkbox small d-flex align-items-center mr-4">
@@ -36,27 +33,27 @@
                                 </div>
                                 <span class="text-danger field-validation-valid" data-valmsg-for="FileUploadType" data-valmsg-replace="true"></span>
                             </div>
-                        </div>
+                        </div>-->
 
                         <!-- File Category ID -->
-                        <div class="form-group row">
+                        <!--<div class="form-group row">
                             <label for="FileCategoryID" class="col-12 col-xl-4 col-form-label">Kategori<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <select name="FileCategoryID" class="form-control" id="selectFileCategory" style="width: 100%;" required>
                                     <option value="">Dosya Kategorisi Seçin</option>
                                 </select>
                             </div>
-                        </div>
+                        </div>-->
 
                         <!-- Project Bidding ID -->
-                        <div class="form-group row">
+                        <!--<div class="form-group row">
                             <label for="ProjectBiddingID" class="col-12 col-xl-4 col-form-label">İhale</label>
                             <div class="col-12 col-xl-8">
                                 <select name="ProjectBiddingID" class="form-control" id="selectProjectBidding" style="width: 100%;">
                                     <option value="">İhale Seçin</option>
                                 </select>
                             </div>
-                        </div>
+                        </div>-->
 
                         <!-- Project File ID -->
                         <div class="form-group row">
@@ -126,7 +123,9 @@
     });
 
     async function AJAXSubmit (oFormElement) {
-      const formData = new FormData(oFormElement);
+        const formData = new FormData(oFormElement);
+        console.log(formData);
+        console.log(getCookie('RequestVerificationToken'));
 
       try {
         const response = await fetch(oFormElement.action, {
@@ -136,8 +135,7 @@
           },
           body: formData
         });
-
-          alert("Kaydettik Aslan Parçası!");
+         
       } catch (error) {
         console.error('Error:', error);
       }
