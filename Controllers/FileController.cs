@@ -2,21 +2,22 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using IBBPortal.Data;
 using IBBPortal.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Linq.Dynamic.Core;
 using IBBPortal.Helpers;
-using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
-using IBBPortal.Static;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Net.Http.Headers;
 
 namespace IBBPortal.Controllers
 {
+    [Authorize]
     public class FileController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly long _fileSizeLimit;
         private readonly UserManager<ApplicationUser> _userManager;
         public FileController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
@@ -114,34 +115,93 @@ namespace IBBPortal.Controllers
         }
 
         // POST: File/Create/ProjectID
+        [HttpPost]
+        [DisableModelBindingHelper]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create()
+        {
+            if (!MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
+            {
+                ModelState.AddModelError("File",
+                    $"The request couldn't be processed (Error 1).");
+                // Log error
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create()
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            projectPerson.CreationDate = DateTime.Now;
-        //            projectPerson.UserID = _userManager.GetUserId(HttpContext.User);
+                return BadRequest(ModelState);
+            }
 
-        //            _context.Add(projectPerson);
-        //            await _context.SaveChangesAsync();
-        //            TransactionLogger.logTransaction(_context, (int)projectPerson.ProjectID, "project-person-added", _userManager.GetUserId(HttpContext.User));
+            var boundary = MultipartRequestHelper.GetBoundary(
+                MediaTypeHeaderValue.Parse(Request.ContentType),
+                _defaultFormOptions.MultipartBoundaryLengthLimit);
+            var reader = new MultipartReader(boundary, HttpContext.Request.Body);
+            var section = await reader.ReadNextSectionAsync();
 
-        //            TempData["SuccessTitle"] = "BAŞARILI";
-        //            TempData["SuccessMessage"] = $"Kayıt başarıyla oluşturuldu.";
-        //            return RedirectToAction(nameof(Index), new { id = projectPerson.ProjectID });
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            TempData["ErrorTitle"] = "HATA";
-        //            TempData["ErrorMessage"] = $"Kayıt oluşturulamadı.";
-        //            return RedirectToAction(nameof(Index), new { id = projectPerson.ProjectID });
-        //        }
-        //    }
-        //    return PartialView("_CreateModal");
-        //}
+            while (section != null)
+            {
+                var hasContentDispositionHeader =
+                    ContentDispositionHeaderValue.TryParse(
+                        section.ContentDisposition, out var contentDisposition);
+
+                if (hasContentDispositionHeader)
+                {
+                    // This check assumes that there's a file
+                    // present without form data. If form data
+                    // is present, this method immediately fails
+                    // and returns the model error.
+                    if (!MultipartRequestHelper
+                        .HasFileContentDisposition(contentDisposition))
+                    {
+                        ModelState.AddModelError("File",
+                            $"The request couldn't be processed (Error 2).");
+                        // Log error
+
+                        return BadRequest(ModelState);
+                    }
+                    else
+                    {
+                        // Don't trust the file name sent by the client. To display
+                        // the file name, HTML-encode the value.
+                        var trustedFileNameForDisplay = WebUtility.HtmlEncode(
+                                contentDisposition.FileName.Value);
+                        var trustedFileNameForFileStorage = Path.GetRandomFileName();
+
+                        // **WARNING!**
+                        // In the following example, the file is saved without
+                        // scanning the file's contents. In most production
+                        // scenarios, an anti-virus/anti-malware scanner API
+                        // is used on the file before making the file available
+                        // for download or for use by other systems. 
+                        // For more information, see the topic that accompanies 
+                        // this sample.
+
+                        var streamedFileContent = await FileHelpers.ProcessStreamedFile(
+                            section, contentDisposition, ModelState,
+                            _permittedExtensions, _fileSizeLimit);
+
+                        if (!ModelState.IsValid)
+                        {
+                            return BadRequest(ModelState);
+                        }
+
+                        using (var targetStream = System.IO.File.Create(
+                            Path.Combine(_targetFilePath, trustedFileNameForFileStorage)))
+                        {
+                            await targetStream.WriteAsync(streamedFileContent);
+
+                            _logger.LogInformation(
+                                "Uploaded file '{TrustedFileNameForDisplay}' saved to " +
+                                "'{TargetFilePath}' as {TrustedFileNameForFileStorage}",
+                                trustedFileNameForDisplay, _targetFilePath,
+                                trustedFileNameForFileStorage);
+                        }
+                    }
+                }
+
+                // Drain any remaining section body that hasn't been consumed and
+                // read the headers for the next section.
+                section = await reader.ReadNextSectionAsync();
+            }
+
+            return Created(nameof(StreamingController), null);
+        }
     }
 }

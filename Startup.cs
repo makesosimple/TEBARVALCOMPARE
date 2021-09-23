@@ -42,6 +42,7 @@ namespace IBBPortal
                 .AddUserStore<ApplicationUserStore>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
             services.AddControllersWithViews();
 
             services.AddRazorPages();

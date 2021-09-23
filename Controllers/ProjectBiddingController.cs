@@ -131,6 +131,51 @@ namespace IBBPortal.Controllers
             }
         }
 
+        [HttpGet]
+        public JsonResult JsonSelectData(string? term, int? projectID)
+        {
+            try
+            {
+
+                var BiddingData = _context.ProjectBidding
+                                    .Select(x => new {
+                                        id = x.ProjectBiddingID.ToString(),
+                                        text = x.BiddingTitle,
+                                        projectID = x.ProjectID
+                                    });
+
+                if (!String.IsNullOrEmpty(term))
+                {
+                    BiddingData = BiddingData.Where(m => m.text.Contains(term)).OrderBy(x => x.text);
+                }
+
+                if (!String.IsNullOrEmpty(projectID.ToString()))
+                {
+                    BiddingData = BiddingData.Where(m => m.projectID == projectID);
+                }
+
+                else
+                {
+                    BiddingData = BiddingData.OrderBy(x => x.text);
+                }
+                //Count 
+                var totalCount = BiddingData.Count();
+
+                //Paging   
+                var passData = BiddingData.Take(10).ToList();
+
+
+                //Returning Json Data  
+                return Json(new { results = passData, totalCount = totalCount });
+
+            }
+
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         // GET: ProjectBidding/Details/5
         public async Task<IActionResult> Details(int? id)
         {

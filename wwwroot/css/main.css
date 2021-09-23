@@ -196,3 +196,7 @@ table, td {
 #showProjectBorders {
     margin:.35rem;
 }
+
+.custom-control-padding-fix {
+    padding-top: 2px;
+}

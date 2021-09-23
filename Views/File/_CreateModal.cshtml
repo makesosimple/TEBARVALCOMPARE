@@ -1,9 +1,9 @@
-﻿@model IBBPortal.ViewModels.FileCreateViewModel
+﻿
 <!-- Modal -->
 <div class="modal fade" id="FileCreateModal" tabindex="-1" aria-labelledby="FileCreateModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-            <form asp-action="Create">
+            <form asp-controller="File" asp-action="Create" enctype="multipart/form-data" method="post" onsubmit="AJAXSubmit(this); return false;">
 
                 <div class="modal-header">
                     <div class="container-fluid">
@@ -27,41 +27,47 @@
                             <label class="col-12 col-xl-4 col-form-label">Yükleme Tipi<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8 d-flex">
                                 <div class="custom-control custom-checkbox small d-flex align-items-center mr-4">
-                                    <input asp-for="FileUploadType" id="fileUploadType_10" class="custom-control-input" type="radio" value="10">
-                                    <label class="custom-control-label" for="fileUploadType_10">Upload</label>
+                                    <input name="FileUploadType" id="FileUploadType_10" class="custom-control-input" type="radio" value="10" data-val="true" data-val-required="Bu alanın doldurulması zorunludur.">
+                                    <label class="custom-control-label custom-control-padding-fix" for="FileUploadType_10">Upload</label>
                                 </div>
                                 <div class="custom-control custom-checkbox small d-flex align-items-center">
-                                    <input asp-for="FileUploadType" id="fileUploadType_20" class="custom-control-input" type="radio" value="20">
-                                    <label class="custom-control-label" for="fileUploadType_20">Dosya Linki</label>
+                                    <input name="FileUploadType" id="FileUploadType_20" class="custom-control-input" type="radio" value="20" data-val="true" data-val-required="Bu alanın doldurulması zorunludur.">
+                                    <label class="custom-control-label custom-control-padding-fix" for="FileUploadType_20">Dosya Linki</label>
                                 </div>
-                                <span asp-validation-for="FileUploadType" class="text-danger"></span>
+                                <span class="text-danger field-validation-valid" data-valmsg-for="FileUploadType" data-valmsg-replace="true"></span>
                             </div>
                         </div>
 
                         <!-- File Category ID -->
                         <div class="form-group row">
-                            <label asp-for="FileCategoryID" class="col-12 col-xl-4 col-form-label">Kategori<span class="text-danger">*</span></label>
+                            <label for="FileCategoryID" class="col-12 col-xl-4 col-form-label">Kategori<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
-                                <select asp-for="FileCategoryID" class="form-control" id="selectFileCategory" style="width: 100%;" required>
+                                <select name="FileCategoryID" class="form-control" id="selectFileCategory" style="width: 100%;" required>
                                     <option value="">Dosya Kategorisi Seçin</option>
                                 </select>
-                                <span asp-validation-for="FileCategoryID" class="text-danger"></span>
                             </div>
                         </div>
 
                         <!-- Project Bidding ID -->
                         <div class="form-group row">
-                            <label asp-for="ProjectBiddingID" class="col-12 col-xl-4 col-form-label">İhale</label>
+                            <label for="ProjectBiddingID" class="col-12 col-xl-4 col-form-label">İhale</label>
                             <div class="col-12 col-xl-8">
-                                <select asp-for="FileCategoryID" class="form-control" id="selectFileCategory" style="width: 100%;">
-                                    <option value="">Dosya Kategorisi Seçin</option>
+                                <select name="ProjectBiddingID" class="form-control" id="selectProjectBidding" style="width: 100%;">
+                                    <option value="">İhale Seçin</option>
                                 </select>
-                                <span asp-validation-for="FileCategoryID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Project File ID -->
+                        <div class="form-group row">
+                            <label for="ProjectFile" class="col-12 col-xl-4 col-form-label">Dosya<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8">
+                                <input type="file" name="ProjectFile" id="ProjectFile" class="form-control" required />
                             </div>
                         </div>
 
                         <!-- Project ID for the Creation -->
-                        <input type="hidden" asp-for="ProjectID" value="@ViewBag.ProjectID" />
+                        <input type="hidden" name="ProjectID" id="ProjectID" value="@ViewBag.ProjectID" />
 
                     </div>
                 </div>
@@ -77,6 +83,8 @@
 </div>
 
 <script>
+    "use strict";
+
     $('#selectFileCategory').select2({
         theme: "ibb",
         language: "tr",
@@ -92,5 +100,53 @@
             }
         }
     });
+
+    $('#selectProjectBidding').select2({
+        theme: "ibb",
+        language: "tr",
+        dropdownParent: $(".modal"),
+        ajax: {
+            url: '/ProjectBidding/JsonSelectData',
+            dataType: 'json',
+            data: function (params) {
+
+                let query = {
+                    projectID: @ViewBag.ProjectID,
+                    term: params.term
+                }
+                return query;
+            },
+            processResults: function (response) {
+
+                return {
+                    results: response.results,
+                };
+            }
+        }
+    });
+
+    async function AJAXSubmit (oFormElement) {
+      const formData = new FormData(oFormElement);
+
+      try {
+        const response = await fetch(oFormElement.action, {
+          method: 'POST',
+          headers: {
+            'RequestVerificationToken': getCookie('RequestVerificationToken')
+          },
+          body: formData
+        });
+
+          alert("Kaydettik Aslan Parçası!");
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    function getCookie(name) {
+      var value = "; " + document.cookie;
+      var parts = value.split("; " + name + "=");
+      if (parts.length == 2) return parts.pop().split(";").shift();
+    }
 </script>
 
