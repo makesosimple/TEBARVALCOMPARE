@@ -3,6 +3,9 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <form action="/File/Create" enctype="multipart/form-data" method="post" onsubmit="AJAXSubmit(this); return false;">
+                
+                <!-- Project ID for the Creation -->
+                <input type="hidden" name="ProjectID" id="ProjectID" value="@ViewBag.ProjectID" />
 
                 <div class="modal-header">
                     <div class="container-fluid">
@@ -18,6 +21,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
+
 
                         <!-- File Upload Type -->
                         <div class="form-group row">
@@ -39,7 +43,7 @@
                         <div class="form-group row">
                             <label for="FileCategoryID" class="col-12 col-xl-4 col-form-label">Kategori<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
-                                <select name="FileCategoryID" class="form-control" id="selectFileCategory" style="width: 100%;" required>
+                                <select name="FileCategoryID" id="FileCategoryID" class="form-control" style="width: 100%;" required>
                                     <option value="">Dosya Kategorisi Seçin</option>
                                 </select>
                             </div>
@@ -49,12 +53,21 @@
                         <div class="form-group row">
                             <label for="ProjectBiddingID" class="col-12 col-xl-4 col-form-label">İhale</label>
                             <div class="col-12 col-xl-8">
-                                <select name="ProjectBiddingID" class="form-control" id="selectProjectBidding" style="width: 100%;">
+                                <select name="ProjectBiddingID" id="ProjectBiddingID" class="form-control" style="width: 100%;">
                                     <option value="">İhale Seçin</option>
                                 </select>
                             </div>
                         </div>
 
+                        <!-- File Name -->
+                        <div class="form-group row">
+                            <label for="FileName" class="col-12 col-xl-4 col-form-label">Dosya Başlığı<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8">
+                                <input type="text" name="FileName" id="FileName" class="form-control" required />
+                            </div>
+                        </div>
+
+                        <!-- Etiketler alanı ekle -->
                         <!-- Project File ID -->
                         <div class="form-group row">
                             <label for="ProjectFile" class="col-12 col-xl-4 col-form-label">Dosya<span class="text-danger">*</span></label>
@@ -62,9 +75,6 @@
                                 <input type="file" name="ProjectFile" id="ProjectFile" class="form-control" required />
                             </div>
                         </div>
-
-                        <!-- Project ID for the Creation -->
-                        <input type="hidden" name="ProjectID" id="ProjectID" value="@ViewBag.ProjectID" />
 
                     </div>
                 </div>
@@ -82,7 +92,7 @@
 <script>
     "use strict";
 
-    $('#selectFileCategory').select2({
+    $('#FileCategoryID').select2({
         theme: "ibb",
         language: "tr",
         dropdownParent: $(".modal"),
@@ -98,7 +108,7 @@
         }
     });
 
-    $('#selectProjectBidding').select2({
+    $('#ProjectBiddingID').select2({
         theme: "ibb",
         language: "tr",
         dropdownParent: $(".modal"),
@@ -123,6 +133,7 @@
     });
 
     async function AJAXSubmit (oFormElement) {
+
         const formData = new FormData(oFormElement);
 
       try {
@@ -133,7 +144,12 @@
           },
           body: formData
         });
-         
+          response.then(function () {
+              const responseBody = response.json();
+              for ({ key, value } in responseBody) {
+                  console.log(key, value);
+              }
+          });
       } catch (error) {
         console.error('Error:', error);
       }

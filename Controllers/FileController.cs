@@ -142,16 +142,26 @@ namespace IBBPortal.Controllers
 
         // POST: File/Create/ProjectID
         [HttpPost]
+        // Two filters are customly created.
+        // We need to disable model binding of ASP.NET Core MVC
+        // in order to upload files with streamming method.
         [DisableModelBindingHelper]
+        // Because we disabled Model Binding, we need to validate Antiforgery Token
+        // ourselves now. To generate it, we generated a cookie filter at the top of the 
+        // controller. See Helpers folder for more information.
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create()
         {
+            // Check to see if the content coming is send in the enctype="multipart/form-data" format
+            // In file transactions, streaming should be used id the files are uploaded frequently.
+            // This method is based on ASP.NET docs -> Advanced Guide.
+            // Check the link for more information: https://docs.microsoft.com/en-us/aspnet/core/mvc/models/file-uploads?view=aspnetcore-5.0#upload-large-files-with-streaming
             if (!MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
             {
                 ModelState.AddModelError("File",
-                    $"The request couldn't be processed (Error 1).");
+                    $"There was an error processing the request!");
                 // Log error
-                _logger.LogError("An error occured!");
+                _logger.LogError("There was an error processing the request!");
                 return BadRequest(ModelState);
             }
 
@@ -161,6 +171,8 @@ namespace IBBPortal.Controllers
             var reader = new MultipartReader(boundary, HttpContext.Request.Body);
             var section = await reader.ReadNextSectionAsync();
 
+            //Dictionary to save non-file fields (text, select, textare etc.)
+            // Don't change this part as it will corrupt the model binding!
             Dictionary<string, dynamic> formValues = new Dictionary<string, dynamic>();
 
             while (section != null)
@@ -224,6 +236,8 @@ namespace IBBPortal.Controllers
                         {
                             await targetStream.WriteAsync(streamedFileContent);
 
+                            formValues.Add("FilePath", Path.Combine(_targetFilePath, trustedFileNameForFileStorage));
+                            
                             _logger.LogInformation(
                                 "Uploaded file '{TrustedFileNameForDisplay}' saved to " +
                                 "'{TargetFilePath}' as {TrustedFileNameForFileStorage}",
@@ -238,7 +252,54 @@ namespace IBBPortal.Controllers
                 section = await reader.ReadNextSectionAsync();
             }
 
-            return Created(nameof(FileController), null);
+            //Create File model to save to the database
+            Models.File file = new Models.File()
+            {
+                FileUploadType = Convert.ToInt32(formValues["FileUploadType"]),
+                ProjectID = Convert.ToInt32(formValues["ProjectID"]),
+                FileCategoryID = Convert.ToInt32(formValues["FileCategoryID"]),
+                ProjectBiddingID = Convert.ToInt32(formValues["ProjectBiddingID"]),
+                FileName = formValues["FileName"],
+                FilePath = formValues["FilePath"],
+                UserID = _userManager.GetUserId(HttpContext.User),
+                CreationDate = DateTime.Now
+            };
+
+            if(ModelState.IsValid)
+            {
+                try
+                {
+                    await _context.AddAsync(file);
+                    await _context.SaveChangesAsync();
+
+                    JsonResult response = new JsonResult(new {});
+
+                    response.StatusCode = 206;
+                    response.Value = new
+                    {
+                        SuccessTitle = "BAŞARILI",
+                        SuccessMessage = "Kayıt başarıyla oluşturuldu.",
+                        RedirectURL = $"/File/Index/{file.ProjectID}"
+                    };
+
+                    return response;
+                }
+
+                catch (Exception)
+                {
+                    JsonResult response = new JsonResult(new {Test = "Test"} );
+
+                    response.StatusCode = 400;
+                    response.Value = new
+                    {
+                        SuccessTitle = "HATA",
+                        SuccessMessage = "Kayıt oluşturulamadı.",
+                        RedirectURL = $"/File/Index/{file.ProjectID}"
+                    };
+                }
+            }
+
+            return View("_CreateModal");
         }
     }
 }
