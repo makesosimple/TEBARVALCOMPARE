@@ -263,6 +263,11 @@ namespace IBBPortal.Controllers
                 section = await reader.ReadNextSectionAsync();
             }
 
+            if (!formValues.ContainsKey("FilePath"))
+            {
+                formValues.Add("FilePath", "");
+            }
+
             //Create File model to save to the database
             Models.File file = new Models.File()
             {
@@ -270,8 +275,9 @@ namespace IBBPortal.Controllers
                 ProjectID = Convert.ToInt32(formValues["ProjectID"]),
                 FileCategoryID = Convert.ToInt32(formValues["FileCategoryID"]),
                 ProjectBiddingID = !String.IsNullOrEmpty(formValues["ProjectBiddingID"]) ? Convert.ToInt32(formValues["ProjectBiddingID"]) : null,
-                FileName = formValues["FileName"],
-                FilePath = formValues["FilePath"],
+                FileName = !String.IsNullOrEmpty(formValues["FileName"]) ? formValues["FileName"] : "",
+                FilePath = !String.IsNullOrEmpty(formValues["FilePath"]) ? formValues["FilePath"] : "",
+                FileURL = !String.IsNullOrEmpty(formValues["FileURL"]) ? formValues["FileURL"] : "",
                 UserID = _userManager.GetUserId(HttpContext.User),
                 CreationDate = DateTime.Now
             };

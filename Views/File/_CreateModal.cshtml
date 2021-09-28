@@ -20,12 +20,20 @@
                     </div>
                 </div>
                 <div class="modal-body">
+                    <div class="alert bg-gradient-warning alert-dismissible fade show border-0" role="alert">
+                        <h5 class="alert-heading text-white">
+                            <i class="fas fa-exclamation-circle"></i>
+                            Dosya Yükleme Kuralları
+                            <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </h5>
+                        <p class="text-white pb-0">
+                            - Maksimum yükleme limiti 5 MB'dir.<br />
+                            - İzin verilen dosya formatları dışında yükleme yapılamaz.
+                        </p>
+                    </div>
                     <div class="container-fluid custom-container-padding">
-
-                        <!--
-                            10: Upload
-                            20: Link
-                        -->
 
                         <!-- File Upload Type -->
                         <div class="form-group row">
@@ -60,18 +68,21 @@
                                 <select name="ProjectBiddingID" id="ProjectBiddingID" class="form-control" style="width: 100%;">
                                     <option value="">İhale Seçin</option>
                                 </select>
+                                <small id="projectBiddingHelp" class="form-text text-muted">
+                                    Zorunlu değildir. İhaleye bağlamak istediğiniz bir dosya varsa seçiniz.
+                                </small>
                             </div>
                         </div>
 
+                        <!-- 10 -->
                         <!-- File Name -->
                         <div class="form-group row" data-dependent-on="FileUploadType" data-dependent-value="10">
-                            <label for="FileName" class="col-12 col-xl-4 col-form-label px-0">Dosya Başlığı<span class="text-danger">*</span></label>
+                            <label for="FileName" class="col-12 col-xl-4 col-form-label px-0">Dosya Başlığı</label>
                             <div class="col-12 col-xl-8 px-0">
-                                <input type="text" name="FileName" id="FileName" class="form-control" required />
+                                <input type="text" name="FileName" id="FileName" class="form-control" />
                             </div>
                         </div>
 
-                        <!-- Etiketler alanı ekle -->
                         <!-- Project File ID -->
                         <div class="form-group row" data-dependent-on="FileUploadType" data-dependent-value="10">
                             <label class="col-12 col-xl-4 col-form-label px-0">Dosya<span class="text-danger">*</span></label>
@@ -80,7 +91,15 @@
                                 <label class="custom-file-label" for="ProjectFile"></label>
                             </div>
                         </div>
-
+                        <!-- End of Option 10 -->
+                        <!-- 20 -->
+                        <div class="form-group row" data-dependent-on="FileUploadType" data-dependent-value="20">
+                            <label for="FileURL" class="col-12 col-xl-4 col-form-label px-0">Dosya Linki</label>
+                            <div class="col-12 col-xl-8 px-0">
+                                <input type="text" name="FileURL" id="FileURL" class="form-control" />
+                            </div>
+                        </div>
+                        <!-- End of Option 20 -->
                     </div>
                 </div>
                 <div class="modal-footer">
