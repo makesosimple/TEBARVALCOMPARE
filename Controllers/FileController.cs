@@ -269,7 +269,7 @@ namespace IBBPortal.Controllers
                 FileUploadType = Convert.ToInt32(formValues["FileUploadType"]),
                 ProjectID = Convert.ToInt32(formValues["ProjectID"]),
                 FileCategoryID = Convert.ToInt32(formValues["FileCategoryID"]),
-                ProjectBiddingID = Convert.ToInt32(formValues["ProjectBiddingID"]),
+                ProjectBiddingID = !String.IsNullOrEmpty(formValues["ProjectBiddingID"]) ? Convert.ToInt32(formValues["ProjectBiddingID"]) : null,
                 FileName = formValues["FileName"],
                 FilePath = formValues["FilePath"],
                 UserID = _userManager.GetUserId(HttpContext.User),

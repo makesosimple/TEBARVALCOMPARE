@@ -8,9 +8,9 @@
                 <input type="hidden" name="ProjectID" id="ProjectID" value="@ViewBag.ProjectID" />
 
                 <div class="modal-header">
-                    <div class="container-fluid">
+                    <div class="container-fluid custom-container-padding">
                         <div class="row">
-                            <div class="col-12 d-flex justify-content-between">
+                            <div class="col-12 d-flex justify-content-between px-0">
                                 <h5 class="modal-title" id="exampleModalLabel">Döküman Ekle</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div class="modal-body">
-                    <div class="container-fluid">
+                    <div class="container-fluid custom-container-padding">
 
                         <!--
                             10: Upload
@@ -29,8 +29,8 @@
 
                         <!-- File Upload Type -->
                         <div class="form-group row">
-                            <label class="col-12 col-xl-4 col-form-label">Yükleme Tipi<span class="text-danger">*</span></label>
-                            <div class="col-12 col-xl-8 d-flex">
+                            <label class="col-12 col-xl-4 col-form-label px-0">Yükleme Tipi<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8 d-flex px-0">
                                 <div class="custom-control custom-checkbox small d-flex align-items-center mr-4">
                                     <input name="FileUploadType" id="FileUploadType_10" class="custom-control-input" type="radio" value="10" data-val="true" data-val-required="Bu alanın doldurulması zorunludur.">
                                     <label class="custom-control-label custom-control-padding-fix" for="FileUploadType_10">Yükleme</label>
@@ -45,8 +45,8 @@
 
                         <!-- File Category ID -->
                         <div class="form-group row" data-dependent-on="FileUploadType">
-                            <label for="FileCategoryID" class="col-12 col-xl-4 col-form-label">Kategori<span class="text-danger">*</span></label>
-                            <div class="col-12 col-xl-8">
+                            <label for="FileCategoryID" class="col-12 col-xl-4 col-form-label px-0">Kategori<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8 px-0">
                                 <select name="FileCategoryID" id="FileCategoryID" class="form-control" style="width: 100%;" required>
                                     <option value="">Dosya Kategorisi Seçin</option>
                                 </select>
@@ -55,8 +55,8 @@
 
                         <!-- Project Bidding ID -->
                         <div class="form-group row" data-dependent-on="FileUploadType">
-                            <label for="ProjectBiddingID" class="col-12 col-xl-4 col-form-label">İhale</label>
-                            <div class="col-12 col-xl-8">
+                            <label for="ProjectBiddingID" class="col-12 col-xl-4 col-form-label px-0">İhale</label>
+                            <div class="col-12 col-xl-8 px-0">
                                 <select name="ProjectBiddingID" id="ProjectBiddingID" class="form-control" style="width: 100%;">
                                     <option value="">İhale Seçin</option>
                                 </select>
@@ -65,8 +65,8 @@
 
                         <!-- File Name -->
                         <div class="form-group row" data-dependent-on="FileUploadType" data-dependent-value="10">
-                            <label for="FileName" class="col-12 col-xl-4 col-form-label">Dosya Başlığı<span class="text-danger">*</span></label>
-                            <div class="col-12 col-xl-8">
+                            <label for="FileName" class="col-12 col-xl-4 col-form-label px-0">Dosya Başlığı<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8 px-0">
                                 <input type="text" name="FileName" id="FileName" class="form-control" required />
                             </div>
                         </div>
@@ -74,9 +74,10 @@
                         <!-- Etiketler alanı ekle -->
                         <!-- Project File ID -->
                         <div class="form-group row" data-dependent-on="FileUploadType" data-dependent-value="10">
-                            <label for="ProjectFile" class="col-12 col-xl-4 col-form-label">Dosya<span class="text-danger">*</span></label>
-                            <div class="col-12 col-xl-8">
-                                <input type="file" name="ProjectFile" id="ProjectFile" class="form-control" required />
+                            <label class="col-12 col-xl-4 col-form-label px-0">Dosya<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8 custom-file px-0">
+                                <input type="file" name="ProjectFile" id="ProjectFile" class="custom-file-input" />
+                                <label class="custom-file-label" for="ProjectFile"></label>
                             </div>
                         </div>
 
@@ -157,7 +158,6 @@
                   queryString += `${key}=${response[key]}&`;
               }
 
-              console.log(queryString);
               if (queryString !== "?") {
                   location.href = "/File/Index/@ViewBag.ProjectID" + queryString;
               }
@@ -175,6 +175,14 @@
       var parts = value.split("; " + name + "=");
       if (parts.length == 2) return parts.pop().split(";").shift();
     }
+
+    // Add file name to html
+    $('#ProjectFile').on('change', function (e) {
+        //get the file name
+        var fileName = e.target.files[0].name;
+        $(this).next('.custom-file-label').html(fileName);
+    })
+
 </script>
 <script>
     /**

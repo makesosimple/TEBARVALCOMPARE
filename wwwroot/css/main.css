@@ -201,7 +201,22 @@ table, td {
     padding-top: 2px;
 }
 
+/* File */
 .custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::before {
     border-color: #b7b9cc;
     background-color: unset;
+}
+
+.custom-container-padding {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}
+
+.custom-file-label {
+    color: #333333;
+}
+
+.custom-file-input:lang(en) ~ .custom-file-label::after {
+    content: "Dosyalar";
+    color: #333333;
 }
