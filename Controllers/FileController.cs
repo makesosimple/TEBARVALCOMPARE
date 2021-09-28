@@ -220,9 +220,14 @@ namespace IBBPortal.Controllers
                     {
                         // Don't trust the file name sent by the client. To display
                         // the file name, HTML-encode the value.
-                        var trustedFileNameForDisplay = WebUtility.HtmlEncode(
-                                contentDisposition.FileName.Value);
-                        var trustedFileNameForFileStorage = Path.GetRandomFileName();
+                        var fileName = "";
+
+                        if (!formValues.ContainsKey("FileName"))
+                        {
+                            fileName = WebUtility.HtmlEncode(formValues["FileName"]);
+                        }
+                        var trustedFileNameForDisplay = WebUtility.HtmlEncode(contentDisposition.FileName.Value);
+                        var trustedFileNameForFileStorage = !String.IsNullOrEmpty(fileName) ? fileName : trustedFileNameForDisplay;  
 
                         // **WARNING!**
                         // In the following example, the file is saved without
