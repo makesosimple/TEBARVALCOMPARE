@@ -31,9 +31,11 @@ namespace IBBPortal.Models
         [ForeignKey("ProjectBiddingID")]
         public ProjectBidding ProjectBidding { get; set; }
 
-        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
+        [MaxLength(4096, ErrorMessage = "Bu alana maksimum 4096 karakter girebilirsiniz.")]
+        public string? FileTags { get; set; }
+
         [MaxLength(512, ErrorMessage = "Bu alana maksimum 512 karakter girebilirsiniz.")]
-        public string FileName { get; set; }
+        public string? FileName { get; set; }
 
         [MaxLength(6, ErrorMessage = "Bu alana maksimum 6 karakter girebilirsiniz.")]
         public string? FileType { get; set; }

@@ -30,7 +30,8 @@
                         </h5>
                         <p class="text-white pb-0">
                             - Maksimum yükleme limiti 5 MB'dir.<br />
-                            - İzin verilen dosya formatları dışında yükleme yapılamaz.
+                            - İzin verilen dosya formatları dışında yükleme yapılamaz.<br />
+                            - İşlemleri gerçekleştirebilmek için Yükleme Tipi seçmek zorunludur.
                         </p>
                     </div>
                     <div class="container-fluid custom-container-padding">
@@ -70,6 +71,17 @@
                                 </select>
                                 <small id="projectBiddingHelp" class="form-text text-muted">
                                     Zorunlu değildir. İhaleye bağlamak istediğiniz bir dosya varsa seçiniz.
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- File Tags -->
+                        <div class="form-group row" data-dependent-on="FileUploadType">
+                            <label for="FileTags" class="col-12 col-xl-4 col-form-label px-0">Etiketler</label>
+                            <div class="col-12 col-xl-8 px-0">
+                                <textarea name="FileTags" id="FileTags" class="form-control"></textarea>
+                                <small id="fileTagsHelp" class="form-text text-muted">
+                                    Her etiket virgül ile ayrılmalıdır.
                                 </small>
                             </div>
                         </div>

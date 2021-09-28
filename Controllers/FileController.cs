@@ -17,6 +17,7 @@ using System.Net;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 
 namespace IBBPortal.Controllers
 {
@@ -35,7 +36,7 @@ namespace IBBPortal.Controllers
         // limits for request body data.
         private static readonly FormOptions _defaultFormOptions = new FormOptions();
 
-        public FileController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, 
+        public FileController(ApplicationDbContext context, UserManager<ApplicationUser> userManager,
             ILogger<FileController> logger, IConfiguration config)
         {
             _context = context;
@@ -222,12 +223,20 @@ namespace IBBPortal.Controllers
                         // the file name, HTML-encode the value.
                         var fileName = "";
 
-                        if (!formValues.ContainsKey("FileName"))
+                        if (formValues.ContainsKey("FileName"))
                         {
                             fileName = WebUtility.HtmlEncode(formValues["FileName"]);
                         }
+
+                        //File Name coming from the Stream. Change it with user input value.
+                        // Dont forget to get File Extension from the stream!
                         var trustedFileNameForDisplay = WebUtility.HtmlEncode(contentDisposition.FileName.Value);
-                        var trustedFileNameForFileStorage = !String.IsNullOrEmpty(fileName) ? fileName : trustedFileNameForDisplay;  
+
+                        var trustedFileExtension = Path.GetExtension(trustedFileNameForDisplay);
+                        var trustedFileNameForFileStorage = !String.IsNullOrEmpty(fileName) ? fileName + trustedFileExtension : trustedFileNameForDisplay;
+
+                        //Add file extension to formValues Dictionary to save to the database.
+                        formValues.Add("FileType", trustedFileExtension);
 
                         // **WARNING!**
                         // In the following example, the file is saved without
@@ -253,7 +262,7 @@ namespace IBBPortal.Controllers
                             await targetStream.WriteAsync(streamedFileContent);
 
                             formValues.Add("FilePath", Path.Combine(_targetFilePath, trustedFileNameForFileStorage));
-                            
+
                             _logger.LogInformation(
                                 "Uploaded file '{TrustedFileNameForDisplay}' saved to " +
                                 "'{TargetFilePath}' as {TrustedFileNameForFileStorage}",
@@ -273,6 +282,11 @@ namespace IBBPortal.Controllers
                 formValues.Add("FilePath", "");
             }
 
+            if (!formValues.ContainsKey("FileType"))
+            {
+                formValues.Add("FileType", "");
+            }
+
             //Create File model to save to the database
             Models.File file = new Models.File()
             {
@@ -280,21 +294,23 @@ namespace IBBPortal.Controllers
                 ProjectID = Convert.ToInt32(formValues["ProjectID"]),
                 FileCategoryID = Convert.ToInt32(formValues["FileCategoryID"]),
                 ProjectBiddingID = !String.IsNullOrEmpty(formValues["ProjectBiddingID"]) ? Convert.ToInt32(formValues["ProjectBiddingID"]) : null,
-                FileName = !String.IsNullOrEmpty(formValues["FileName"]) ? formValues["FileName"] : "",
-                FilePath = !String.IsNullOrEmpty(formValues["FilePath"]) ? formValues["FilePath"] : "",
-                FileURL = !String.IsNullOrEmpty(formValues["FileURL"]) ? formValues["FileURL"] : "",
+                FileTags = !String.IsNullOrEmpty(formValues["FileTags"]) ? formValues["FileTags"] : null,
+                FileName = !String.IsNullOrEmpty(formValues["FileName"]) ? formValues["FileName"] : null,
+                FileType = !String.IsNullOrEmpty(formValues["FileType"]) ? formValues["FileType"] : null,
+                FilePath = !String.IsNullOrEmpty(formValues["FilePath"]) ? formValues["FilePath"] : null,
+                FileURL = !String.IsNullOrEmpty(formValues["FileURL"]) ? formValues["FileURL"] : null,
                 UserID = _userManager.GetUserId(HttpContext.User),
                 CreationDate = DateTime.Now
             };
 
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
                     await _context.AddAsync(file);
                     await _context.SaveChangesAsync();
 
-                    JsonResult response = new JsonResult(new {});
+                    JsonResult response = new JsonResult(new { });
 
                     response.StatusCode = 200;
                     response.Value = new
@@ -308,7 +324,7 @@ namespace IBBPortal.Controllers
 
                 catch (Exception)
                 {
-                    JsonResult response = new JsonResult(new {Test = "Test"} );
+                    JsonResult response = new JsonResult(new { Test = "Test" });
 
                     response.StatusCode = 400;
                     response.Value = new
@@ -322,6 +338,27 @@ namespace IBBPortal.Controllers
             }
 
             return View("_CreateModal");
+        }
+
+        // GET: File/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var file = await _context.File
+                .Include(p => p.ProjectBidding)
+                .Include(p => p.FileCategory)
+                .Include(p => p.User)
+                .FirstOrDefaultAsync(m => m.FileID == id);
+
+            if (file == null)
+            {
+                return NotFound();
+            }
+            return PartialView("_EditModal", file);
         }
     }
 }
