@@ -19,6 +19,7 @@ namespace IBBPortal.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TransactionMessageID { get; set; }
 
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
         public int? TransactionTypeID { get; set; }
         [ForeignKey("TransactionTypeID")]
         public TransactionTypes TransactionType { get; set; }
