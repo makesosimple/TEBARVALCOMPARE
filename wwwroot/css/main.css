@@ -200,3 +200,8 @@ table, td {
 .custom-control-padding-fix {
     padding-top: 2px;
 }
+
+.custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::before {
+    border-color: #b7b9cc;
+    background-color: unset;
+}

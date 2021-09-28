@@ -85,32 +85,34 @@
 <div id="GeneralModal"></div>
 
 <!-- Alert for Exceptions -->
-@if (@TempData["ErrorTitle"] is not null)
+@if (@TempData["ErrorTitle"] is not null || ViewBag.ErrorTitle is not null)
 {
     <div class="alert bg-gradient-danger alert-dismissible fade show border-0" role="alert">
         <h4 class="alert-heading text-white">
             <i class="fas fa-exclamation-circle"></i>
-            @TempData["ErrorTitle"]
+            @TempData["ErrorTitle"] 
+            @ViewBag.ErrorTitle
             <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </h4>
-        <p class="text-white">@TempData["ErrorMessage"]</p>
+        <p class="text-white">@TempData["ErrorMessage"] @ViewBag.ErrorMessage</p>
     </div>
 }
 
 <!-- Alert for Exceptions -->
-@if (@TempData["SuccessTitle"] is not null)
+@if (@TempData["SuccessTitle"] is not null || ViewBag.SuccessTitle is not null)
 {
     <div class="alert bg-gradient-success alert-dismissible fade show border-0" role="alert">
         <h4 class="alert-heading text-white">
             <i class="fas fa-check"></i>
             @TempData["SuccessTitle"]
+            @ViewBag.SuccessTitle
             <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </h4>
-        <p class="text-white">@TempData["SuccessMessage"]</p>
+        <p class="text-white">@TempData["SuccessMessage"] @ViewBag.SuccessMessage</p>
     </div>
 }
 

@@ -53,6 +53,17 @@ namespace IBBPortal.Controllers
 
         public IActionResult Index(int id)
         {
+            //Handle Errors for Files
+            var SuccessTitle = HttpContext.Request.Query["successTitle"].FirstOrDefault();
+            var SuccessMessage = HttpContext.Request.Query["successMessage"].FirstOrDefault();
+            var ErrorTitle = HttpContext.Request.Query["errorTitle"].FirstOrDefault();
+            var ErrorMessage = HttpContext.Request.Query["errorMessage"].FirstOrDefault();
+
+            if (!String.IsNullOrEmpty(SuccessTitle)) { ViewBag.SuccessTitle = SuccessTitle; }
+            if (!String.IsNullOrEmpty(SuccessMessage)) { ViewBag.SuccessMessage = SuccessMessage; }
+            if (!String.IsNullOrEmpty(ErrorTitle)) { ViewBag.ErrorTitle = ErrorTitle; }
+            if (!String.IsNullOrEmpty(ErrorMessage)) { ViewBag.ErrorMessage = ErrorMessage; }
+
             ViewBag.ProjectTitle = _context.Project.Single(m => m.ProjectID == id).ProjectTitle;
             ViewBag.ProjectID = id;
             return View();
@@ -274,12 +285,11 @@ namespace IBBPortal.Controllers
 
                     JsonResult response = new JsonResult(new {});
 
-                    response.StatusCode = 206;
+                    response.StatusCode = 200;
                     response.Value = new
                     {
                         SuccessTitle = "BAŞARILI",
                         SuccessMessage = "Kayıt başarıyla oluşturuldu.",
-                        RedirectURL = $"/File/Index/{file.ProjectID}"
                     };
 
                     return response;
@@ -294,8 +304,9 @@ namespace IBBPortal.Controllers
                     {
                         SuccessTitle = "HATA",
                         SuccessMessage = "Kayıt oluşturulamadı.",
-                        RedirectURL = $"/File/Index/{file.ProjectID}"
                     };
+
+                    return response;
                 }
             }
 

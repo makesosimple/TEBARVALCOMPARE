@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <form action="/File/Create" enctype="multipart/form-data" method="post" onsubmit="AJAXSubmit(this); return false;">
-                
+
                 <!-- Project ID for the Creation -->
                 <input type="hidden" name="ProjectID" id="ProjectID" value="@ViewBag.ProjectID" />
 
@@ -22,6 +22,10 @@
                 <div class="modal-body">
                     <div class="container-fluid">
 
+                        <!--
+                            10: Upload
+                            20: Link
+                        -->
 
                         <!-- File Upload Type -->
                         <div class="form-group row">
@@ -29,7 +33,7 @@
                             <div class="col-12 col-xl-8 d-flex">
                                 <div class="custom-control custom-checkbox small d-flex align-items-center mr-4">
                                     <input name="FileUploadType" id="FileUploadType_10" class="custom-control-input" type="radio" value="10" data-val="true" data-val-required="Bu alanın doldurulması zorunludur.">
-                                    <label class="custom-control-label custom-control-padding-fix" for="FileUploadType_10">Upload</label>
+                                    <label class="custom-control-label custom-control-padding-fix" for="FileUploadType_10">Yükleme</label>
                                 </div>
                                 <div class="custom-control custom-checkbox small d-flex align-items-center">
                                     <input name="FileUploadType" id="FileUploadType_20" class="custom-control-input" type="radio" value="20" data-val="true" data-val-required="Bu alanın doldurulması zorunludur.">
@@ -40,7 +44,7 @@
                         </div>
 
                         <!-- File Category ID -->
-                        <div class="form-group row">
+                        <div class="form-group row" data-dependent-on="FileUploadType">
                             <label for="FileCategoryID" class="col-12 col-xl-4 col-form-label">Kategori<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <select name="FileCategoryID" id="FileCategoryID" class="form-control" style="width: 100%;" required>
@@ -50,7 +54,7 @@
                         </div>
 
                         <!-- Project Bidding ID -->
-                        <div class="form-group row">
+                        <div class="form-group row" data-dependent-on="FileUploadType">
                             <label for="ProjectBiddingID" class="col-12 col-xl-4 col-form-label">İhale</label>
                             <div class="col-12 col-xl-8">
                                 <select name="ProjectBiddingID" id="ProjectBiddingID" class="form-control" style="width: 100%;">
@@ -60,7 +64,7 @@
                         </div>
 
                         <!-- File Name -->
-                        <div class="form-group row">
+                        <div class="form-group row" data-dependent-on="FileUploadType" data-dependent-value="10">
                             <label for="FileName" class="col-12 col-xl-4 col-form-label">Dosya Başlığı<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <input type="text" name="FileName" id="FileName" class="form-control" required />
@@ -69,7 +73,7 @@
 
                         <!-- Etiketler alanı ekle -->
                         <!-- Project File ID -->
-                        <div class="form-group row">
+                        <div class="form-group row" data-dependent-on="FileUploadType" data-dependent-value="10">
                             <label for="ProjectFile" class="col-12 col-xl-4 col-form-label">Dosya<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
                                 <input type="file" name="ProjectFile" id="ProjectFile" class="form-control" required />
@@ -134,22 +138,33 @@
 
     async function AJAXSubmit (oFormElement) {
 
-        const formData = new FormData(oFormElement);
+      const formData = new FormData(oFormElement);
 
       try {
-        const response = await fetch(oFormElement.action, {
-          method: 'POST',
-          headers: {
-            'RequestVerificationToken': getCookie('RequestVerificationToken')
-          },
-          body: formData
-        });
-          response.then(function () {
-              const responseBody = response.json();
-              for ({ key, value } in responseBody) {
-                  console.log(key, value);
+          const response = await fetch(oFormElement.action, {
+              method: 'POST',
+              headers: {
+                  'RequestVerificationToken': getCookie('RequestVerificationToken')
+              },
+              body: formData
+          })
+              .then(response => response.json());
+
+
+          if (response) {
+              let queryString = "?"
+              for (const key in response) {
+                  queryString += `${key}=${response[key]}&`;
               }
-          });
+
+              console.log(queryString);
+              if (queryString !== "?") {
+                  location.href = "/File/Index/@ViewBag.ProjectID" + queryString;
+              }
+              else {
+                  location.href = "/File/Index/@ViewBag.ProjectID";
+              }
+          }
       } catch (error) {
         console.error('Error:', error);
       }
@@ -160,5 +175,34 @@
       var parts = value.split("; " + name + "=");
       if (parts.length == 2) return parts.pop().split(";").shift();
     }
+</script>
+<script>
+    /**
+     * Dependent Fields Functionallity
+     */
+
+    //Close all input fields dependent on a radio button or checkbox.
+    $("[data-dependent-on]").each(function () {
+        const that = $(this)
+        const dependentOn = that.data("dependent-on");
+        const dependentValue = that.data("dependent-value");
+
+        //Hide all dependend fields on start until the user chooses an option.
+        that.hide();
+
+
+        //When User chooses, open dependent fields based on the input value.
+        $(`[name=${dependentOn}]`).on("change", function () {
+            const choice = $(this).val();
+
+            //Open all fields that don't have a data-dependent-value attribute.
+            //This means that they are not dependent on value but must be hidden on the start.
+            //As soon as the user chooses open them up for input.
+            if (dependentValue == undefined || dependentValue == "" || dependentValue == null) that.show();
+            else if (dependentValue == choice) that.show();
+            else that.hide();
+
+        });
+    });
 </script>
 
