@@ -1,16 +1,15 @@
-﻿@model IBBPortal.Models.ProjectSubfunctionFeature
-
+﻿@model IBBPortal.Models.File
 <!-- Modal -->
-<div class="modal fade" id="ProjectSubfunctionFeatureEditModal" tabindex="-1" aria-labelledby="ProjectSubfunctionFeatureEditModalLabel" aria-hidden="true">
+<div class="modal fade" id="FileEditModal" tabindex="-1" aria-labelledby="FileModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-            <form asp-action="Edit">
-                <input type="hidden" asp-for="ProjectSubfunctionFeatureID" />
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="FileID" />
                 <div class="modal-header">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-12 d-flex justify-content-between">
-                                <h5 class="modal-title" id="exampleModalLabel">Alt Fonksiyon Düzenle</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Doküman Düzenle</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -23,79 +22,102 @@
                         <!-- Validation Part. Must be still for all views!! -->
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                        <!-- Subfunction ID -->
-                        <div class="form-group row">
-                            <label asp-for="SubfunctionID" class="col-12 col-xl-4 col-form-label">Alt Fonksiyon<span class="text-danger">*</span></label>
-                            <div class="col-12 col-xl-8">
-                                <select asp-for="SubfunctionID" class="form-control" id="selectSubfunction" style="width: 100%;" required>
-                                    @if (Model.Subfunction is not null)
+                        <!-- File Upload Type -->
+                        <div class="form-group row d-none">
+                            <label class="col-12 col-xl-4 col-form-label px-0">Yükleme Tipi<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8 d-flex px-0">
+                                <div class="custom-control custom-checkbox small d-flex align-items-center mr-4">
+                                    <input asp-for="FileUploadType" id="FileUploadType_10" class="custom-control-input" type="radio" value="10">
+                                    <label class="custom-control-label custom-control-padding-fix" for="FileUploadType_10">Yükleme</label>
+                                </div>
+                                <div class="custom-control custom-checkbox small d-flex align-items-center">
+                                    <input asp-for="FileUploadType" id="FileUploadType_20" class="custom-control-input" type="radio" value="20">
+                                    <label class="custom-control-label custom-control-padding-fix" for="FileUploadType_20">Dosya Linki</label>
+                                </div>
+                                <span asp-validation-for="FileUploadType" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- File Category ID -->
+                        <div class="form-group row" data-dependent-on="FileUploadType">
+                            <label asp-for="FileCategoryID" class="col-12 col-xl-4 col-form-label px-0">Kategori<span class="text-danger">*</span></label>
+                            <div class="col-12 col-xl-8 px-0">
+                                <select asp-for="FileCategoryID" class="form-control" style="width: 100%;" required>
+                                    @if (Model.FileCategory is not null)
                                     {
-                                        <option value="@Model.Subfunction.SubfunctionID">@Model.Subfunction.SubfunctionTitle</option>
+                                        <option value="@Model.FileCategory.FileCategoryID">@Model.FileCategory.FileCategoryTitle</option>
                                     }
 
                                     else
                                     {
-                                        <option value="">Alt Fonksiyon Seçin</option>
+                                        <option value="">Dosya Kategorisi Seçin</option>
                                     }
                                 </select>
-                                <span asp-validation-for="SubfunctionID" class="text-danger"></span>
+                                <span asp-validation-for="FileCategoryID" class="text-danger"></span>
                             </div>
                         </div>
 
-                        <!-- Subfunction Feature ID -->
-                        <div class="form-group row">
-                            <label asp-for="SubfunctionFeatureID" class="col-12 col-xl-4 col-form-label">Özellik<span class="text-danger">*</span></label>
-                            <div class="col-12 col-xl-8">
-                                <select asp-for="SubfunctionFeatureID" class="form-control" id="selectSubfunctionFeature" style="width: 100%;" required>
-                                    @if (Model.SubfunctionFeature is not null)
+                        <!-- Project Bidding ID -->
+                        <div class="form-group row" data-dependent-on="FileUploadType">
+                            <label asp-for="ProjectBiddingID" class="col-12 col-xl-4 col-form-label px-0">İhale</label>
+                            <div class="col-12 col-xl-8 px-0">
+                                <select asp-for="ProjectBiddingID" class="form-control" style="width: 100%;">
+                                    @if (Model.ProjectBidding is not null)
                                     {
-                                        <option value="@Model.SubfunctionFeature.SubfunctionFeatureID">@Model.SubfunctionFeature.SubfunctionFeatureTitle</option>
+                                        <option value="@Model.ProjectBidding.ProjectBiddingID">@Model.ProjectBidding.BiddingTitle</option>
                                     }
 
                                     else
                                     {
-                                        <option value="">Özellik Seçin</option>
+                                        <option value="">İhale Seçin</option>
                                     }
                                 </select>
-                                <span asp-validation-for="SubfunctionFeatureID" class="text-danger"></span>
+                                <small id="projectBiddingHelp" class="form-text text-muted">
+                                    Zorunlu değildir. İhaleye bağlamak istediğiniz bir dosya varsa seçiniz.
+                                </small>
+                                <span asp-validation-for="FileCategoryID" class="text-danger"></span>
                             </div>
                         </div>
 
-                        <!-- Subfunction Feature Value -->
-                        <div class="form-group row">
-                            <label asp-for="SubfunctionFeatureValue" class="col-12 col-xl-4 col-form-label">Değer<span class="text-danger">*</span></label>
-                            <div class="col-12 col-xl-8">
-                                <input asp-for="SubfunctionFeatureValue" type="text" class="form-control" required>
-                                <span asp-validation-for="SubfunctionFeatureValue" class="text-danger"></span>
+                        <!-- File Tags -->
+                        <div class="form-group row" data-dependent-on="FileUploadType">
+                            <label asp-for="FileTags" class="col-12 col-xl-4 col-form-label px-0">Etiketler</label>
+                            <div class="col-12 col-xl-8 px-0">
+                                <textarea asp-for="FileTags" class="form-control"></textarea>
+                                <small id="fileTagsHelp" class="form-text text-muted">
+                                    Her etiket virgül ile ayrılmalıdır.
+                                </small>
+                            </div>
+                            <span asp-validation-for="FileCategoryID" class="text-danger"></span>
+                        </div>
+
+                        <!-- 10 -->
+                        <!-- File Name -->
+                        <div class="form-group row" data-dependent-on="FileUploadType" data-dependent-value="10">
+                            <label asp-for="FileName" class="col-12 col-xl-4 col-form-label px-0">Dosya Başlığı</label>
+                            <div class="col-12 col-xl-8 px-0">
+                                <input type="text" asp-for="FileName" class="form-control" />
+                                <span asp-validation-for="FileName" class="text-danger"></span>
                             </div>
                         </div>
 
-                        <!-- Subfunction Feature Value Description -->
-                        <div class="form-group row">
-                            <label asp-for="SubfunctionFeatureValueDescription" class="col-12 col-xl-4 col-form-label">Açıklama</label>
-                            <div class="col-12 col-xl-8">
-                                <textarea asp-for="SubfunctionFeatureValueDescription" class="form-control"></textarea>
-                                <span asp-validation-for="SubfunctionFeatureValueDescription" class="text-danger"></span>
+                        <!-- End of Option 10 -->
+                        <!-- 20 -->
+                        <div class="form-group row" data-dependent-on="FileUploadType" data-dependent-value="20">
+                            <label asp-for="FileURL" class="col-12 col-xl-4 col-form-label px-0">Dosya Linki</label>
+                            <div class="col-12 col-xl-8 px-0">
+                                <input type="text" asp-for="FileURL" class="form-control" />
+                                <span asp-validation-for="FileURL" class="text-danger"></span>
                             </div>
                         </div>
-
-
-                        <!-- Default Values for the Database Date Part -->
-                        <input type="hidden" asp-for="CreationDate" />
-                        <input type="hidden" asp-for="UpdateDate" />
-
-                        <!-- User ID for the Update -->
-                        <input type="hidden" asp-for="UserID" />
-
-                        <!-- Project ID for the Update -->
-                        <input type="hidden" asp-for="ProjectID" />
+                        <!-- End of Option 20 -->
 
                     </div>
                 </div>
                 <div class="modal-footer">
                     <div class="buttons">
                         <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
-                        <a asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
+                        <a asp-route="Index/@Model.ProjectID" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
                     </div>
                 </div>
             </form>
@@ -104,12 +126,12 @@
 </div>
 
 <script>
-    $('#selectSubfunction').select2({
+    $('#FileCategoryID').select2({
         theme: "ibb",
         language: "tr",
         dropdownParent: $(".modal"),
         ajax: {
-            url: '/Subfunction/JsonSelectData',
+            url: '/FileCategory/JsonSelectData',
             dataType: 'json',
             processResults: function (response) {
 
@@ -120,13 +142,21 @@
         }
     });
 
-    $('#selectSubfunctionFeature').select2({
+    $('#ProjectBiddingID').select2({
         theme: "ibb",
         language: "tr",
         dropdownParent: $(".modal"),
         ajax: {
-            url: '/SubfunctionFeature/JsonSelectData',
+            url: '/ProjectBidding/JsonSelectData',
             dataType: 'json',
+            data: function (params) {
+
+                let query = {
+                    projectID: @Model.ProjectID,
+                    term: params.term
+                }
+                return query;
+            },
             processResults: function (response) {
 
                 return {
@@ -134,6 +164,45 @@
                 };
             }
         }
+    });
+</script>
+
+<script>
+    /**
+     * Dependent Fields Functionallity
+     */
+    function isEmpty(value) {
+        return value == undefined || value == null || value == "";
+    }
+
+    //Close all input fields dependent on a radio button or checkbox.
+    $("[data-dependent-on]").each(function () {
+        const that = $(this)
+        const dependentOn = that.data("dependent-on");
+        const dependentValue = that.data("dependent-value");
+        const initialChoice = $(`[name="${dependentOn}"]:checked`).val();
+
+
+        //Hide all dependend fields on start until the user chooses an option.
+        if (!isEmpty(initialChoice)) {
+            if (isEmpty(dependentValue)) that.show();
+            else if (dependentValue == initialChoice) that.show();
+            else that.hide();
+        }
+
+
+        //When User chooses, open dependent fields based on the input value.
+        $(`[name=${dependentOn}]`).on("change", function () {
+            const choice = $(this).val();
+
+            //Open all fields that don't have a data-dependent-value attribute.
+            //This means that they are not dependent on value but must be hidden on the start.
+            //As soon as the user chooses open them up for input.
+            if (isEmpty(dependentValue)) that.show();
+            else if (dependentValue == choice) that.show();
+            else that.hide();
+
+        });
     });
 </script>
 

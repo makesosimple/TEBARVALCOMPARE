@@ -145,6 +145,28 @@ namespace IBBPortal.Controllers
             }
         }
 
+        // GET: File/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var file = await _context.File
+                .Include(p => p.ProjectBidding)
+                .Include(p => p.FileCategory)
+                .Include(p => p.User)
+                .FirstOrDefaultAsync(m => m.FileID == id);
+
+            if (file == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("_DetailsModal", file);
+        }
+
         // GET: File/Create/ProjectID
         public IActionResult Create(int id)
         {
@@ -359,6 +381,56 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
             return PartialView("_EditModal", file);
+        }
+
+        // POST: File/Edit/5
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditFile(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var fileToUpdate = _context.File.Find(id);
+
+            fileToUpdate.UpdateDate = DateTime.Now;
+
+            if (await TryUpdateModelAsync<Models.File>(fileToUpdate, "",
+                x => x.FileCategoryID,
+                x => x.ProjectBiddingID, x => x.FileTags,
+                x => x.FileName, x => x.FileURL,
+                x => x.UpdateDate))
+            {
+                try
+                {
+
+                    await _context.SaveChangesAsync();
+
+                    TempData["SuccessTitle"] = "BAŞARILI";
+                    TempData["SuccessMessage"] = $"Kayıt başarıyla düzenlendi.";
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!FileExists(fileToUpdate.FileID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        TempData["ErrorTitle"] = "HATA";
+                        TempData["ErrorMessage"] = $"Kayıt oluşturulamadı.";
+                    }
+                }
+                return RedirectToAction(nameof(Index), new { id = fileToUpdate.ProjectID });
+            }
+            return View(fileToUpdate);
+        }
+
+        private bool FileExists(int id)
+        {
+            return _context.File.Any(e => e.FileID == id);
         }
     }
 }

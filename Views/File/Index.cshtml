@@ -30,6 +30,22 @@
                     {
                         "data": "fileUploadType",
                         "autoWidth": true,
+                        "render": function (data, type, row) {
+                            let uploadType = "";
+                            switch (row.fileUploadType){
+                                case 10:
+                                    uploadType = "Yükleme";
+                                    break;
+                                case 20:
+                                    uploadType = "Dosya Linki"
+                                    break;
+                                default:
+                                    uploadType = "Belirtilmemiş";
+                                    break;
+                            }
+                            
+                            return `<div class="btn btn-info btn-sm text-xs">${uploadType}</div>`;
+                        }
                     },
                     {
                         "data": "fileCategoryID",
@@ -55,8 +71,8 @@
                         "render": function (data, type, full, meta, row) {
                             return `<div class="d-flex align-items-center justify-content-end">\
                                                     <button type="button" class="btn btn-circle bg-turqoise text-white mr-1" onclick="modalScript(this)" data-url="/File/Edit/${full.fileID}"><i class="fas fa-edit"></i></a>\
-                                                    <button type="button" class="btn btn-circle bg-warning text-white mr-1" onclick="modalScript(this)" data-url="/ProjectSubfunctionFeature/Details/${full.fileID}"><i class="fas fa-info-circle"></i></button>\
-                                                    <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/ProjectSubfunctionFeature/Delete/${full.fileID}"><i class="fas fa-trash-alt"></i></button>
+                                                    <button type="button" class="btn btn-circle bg-warning text-white mr-1" onclick="modalScript(this)" data-url="/File/Details/${full.fileID}"><i class="fas fa-info-circle"></i></button>\
+                                                    <button type="button" class="btn btn-circle bg-danger text-white" onclick="modalScript(this)" data-url="/File/Delete/${full.fileID}"><i class="fas fa-trash-alt"></i></button>
                                                 </div>`;
                         }
                     },

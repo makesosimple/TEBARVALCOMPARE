@@ -225,13 +225,17 @@
         const that = $(this)
         const dependentOn = that.data("dependent-on");
         const dependentValue = that.data("dependent-value");
+        const isChosen = $(`[name="${dependentOn}"]:checked`).val();
 
+        console.log(isChosen);
         //Hide all dependend fields on start until the user chooses an option.
-        that.hide();
+        if (isChosen == null || isChosen == undefined || isChosen == "") {
+            that.hide();
+        }
 
 
         //When User chooses, open dependent fields based on the input value.
-        $(`[name=${dependentOn}]`).on("change", function () {
+        $(`[name="${dependentOn}"]`).on("change", function () {
             const choice = $(this).val();
 
             //Open all fields that don't have a data-dependent-value attribute.
