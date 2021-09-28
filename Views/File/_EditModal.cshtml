@@ -1,10 +1,10 @@
 ﻿@model IBBPortal.Models.File
 <!-- Modal -->
 <div class="modal fade" id="FileEditModal" tabindex="-1" aria-labelledby="FileModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form asp-action="Edit" method="post">
-                <input type="hidden" asp-for="FileID" />
+
                 <div class="modal-header">
                     <div class="container-fluid">
                         <div class="row">
@@ -19,6 +19,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid">
+                        <input type="hidden" asp-for="FileID" />
                         <!-- Validation Part. Must be still for all views!! -->
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 

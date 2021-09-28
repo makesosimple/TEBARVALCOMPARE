@@ -1,7 +1,7 @@
-﻿@model IBBPortal.Models.ProjectSubfunctionFeature
+﻿@model IBBPortal.Models.File
 
 <!-- Modal -->
-<div class="modal fade" id="ProjectSubfunctionFeatureDeletionModal" tabindex="-1" aria-labelledby="ProjectSubfunctionFeatureDeletionModalLabel" aria-hidden="true">
+<div class="modal fade" id="FileDeletionModal" tabindex="-1" aria-labelledby="FileDeletionModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
@@ -25,7 +25,7 @@
             </div>
             <div class="modal-footer">
                 <form asp-action="Delete">
-                    <input type="hidden" asp-for="ProjectSubfunctionFeatureID" />
+                    <input type="hidden" asp-for="FileID" />
                     <div class="buttons">
                         <button type="submit" value="Delete" class="btn bg-success text-white"><i class="fas fa-trash-alt mr-2"></i> Sil</button>
                         <a asp-action="Index" class="btn btn-danger"><i class="fas fa-ban"></i> Vazgeç</a>

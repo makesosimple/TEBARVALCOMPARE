@@ -102,9 +102,10 @@ namespace IBBPortal.Controllers
                         FileType = c.FileType != null ? c.FileType : "",
                         FilePath = c.FilePath != null ? c.FilePath : "",
                         FileURL = c.FileURL != null ? c.FileURL : "",
-                        FileUploadType = c.FileUploadType
+                        FileUploadType = c.FileUploadType,
+                        c.DeletionDate
                     })
-                    .Where(c => c.ProjectID == projectID);
+                    .Where(c => c.ProjectID == projectID && c.DeletionDate == null);
 
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
@@ -426,6 +427,47 @@ namespace IBBPortal.Controllers
                 return RedirectToAction(nameof(Index), new { id = fileToUpdate.ProjectID });
             }
             return View(fileToUpdate);
+        }
+
+        // GET: ProjectPhase/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var file = await _context.File.FindAsync(id);
+
+            if (file == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("_DeleteModal", file);
+        }
+
+        // POST: ProjectPhase/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var file = await _context.File.FindAsync(id);
+
+            try
+            {
+                file.DeletionDate = DateTime.Now;
+                await _context.SaveChangesAsync();
+                TempData["SuccessTitle"] = "BAŞARILI";
+                TempData["SuccessMessage"] = $"Kayıt başarıyla silindi.";
+                return RedirectToAction(nameof(Index), new { id = file.ProjectID });
+            }
+            catch (DbUpdateException ex)
+            {
+                TempData["ErrorTitle"] = "HATA";
+                TempData["ErrorMessage"] = $"Bu değer, başka alanlarda kullanımda olduğu için silemezsiniz. Lütfen sistem yöneticinizle görüşün.";
+                return RedirectToAction(nameof(Index), new { id = file.ProjectID });
+            }
         }
 
         private bool FileExists(int id)
