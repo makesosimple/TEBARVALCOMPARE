@@ -20,51 +20,11 @@
     </div>
 </div>
 <div class="card shadow mb-4">
-    <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
-        <ul class="nav nav-pills" role="tablist">
-            <li class="nav-item d-none d-md-block" role="presentation">
-                <a class="nav-link" id="tag-tab" data-toggle="tab" href="/Project/@Model.ProjectID" role="tab" aria-controls="tag" aria-selected="false">Künye</a>
-            </li>
-            <li class="nav-item d-none d-md-block" role="presentation">
-                <a class="nav-link" id="feasibility-tab" href="/ProjectFeasibility/Form/@Model.ProjectID">Fizibilite</a>
-            </li>
-            <li class="nav-item d-none d-md-block" role="presentation">
-                <a class="nav-link" id="associates-tab" href="/ProjectPerson/Index/@Model.ProjectID">Kişiler</a>
-            </li>
-            <li class="nav-item d-none d-md-block" role="presentation">
-                <a class="nav-link" id="project-relation-tab" href="/ProjectRelation/Index/@Model.ProjectID">İlişkili Projeler</a>
-            </li>
-            <li class="nav-item d-none d-md-block" role="presentation">
-                <a class="nav-link" id="project-field-tab" href="/Project/EditProjectField/@Model.ProjectID">Proje Alanı</a>
-            </li>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="project-field-tab" href="/ProjectMap/ProjectDetail/@Model.ProjectID">Proje Haritası</a>
-            </li>
-            <li class="nav-item d-none d-md-block" role="presentation">
-                <a class="nav-link" id="subfunction-tab" href="/ProjectSubfunctionFeature/Index/@Model.ProjectID">Fonksiyon</a>
-            </li>
-            <li class="nav-item d-none d-md-block" role="presentation">
-                <a class="nav-link" id="schedule-tab" href="/ProjectPhase/Index/@Model.ProjectID">Takvim/Süreç</a>
-            </li>
-            <li class="nav-item d-none d-md-block" role="presentation">
-                <a class="nav-link" id="schedule-tab" href="/ProjectBidding/Index/@Model.ProjectID">Maliyet</a>
-            </li>
-            <li class="nav-item dropdown d-md-none" role="presentation">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="other-tab" href="#" aria-expanded="false">Diğer İşlemler</a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/Project/Edit/@Model.ProjectID">Künye</a></li>
-                    <li><a class="dropdown-item" href="/ProjectFeasibility/Form/@Model.ProjectID">Fizibilite</a></li>
-                    <li><a class="dropdown-item" href="/ProjectPerson/Index/@Model.ProjectID">Kişiler</a></li>
-                    <li><a class="dropdown-item" href="/ProjectRelation/Index/@Model.ProjectID">İlişkili Projeler</a></li>
-                    <li><a class="dropdown-item" href="/ProjectMap/EditProjectField/@Model.ProjectID">Proje Alanı</a></li>
-                    <!--<li><a class="dropdown-item" href="/Project/ProjectDetail/@Model.ProjectID">Proje Haritası</a></li>-->
-                    <li><a class="dropdown-item" href="/ProjectSubfunctionFeature/Index/@Model.ProjectID">Fonksiyon</a></li>
-                    <li><a class="dropdown-item" href="/ProjectPhase/Index/@Model.ProjectID ">Takvim/Süreç</a></li>
-                    <li><a class="dropdown-item" href="/ProjectBidding/Index/@Model.ProjectID">Maliyet</a></li>
-                </ul>
-            </li>
-        </ul>
-    </div>
+    @await Html.PartialAsync("~/Views/Project/_ManageNavigation.cshtml",
+    new ViewDataDictionary(ViewData)
+    {
+        { "Id", Model.ProjectID }
+    })
     <div class="card-body" style="padding:0px;">
         <div class="tab-content" id="formContent">
             <div class="tab-pane fade active show" id="tag" role="tabpanel" aria-labelledby="tag-tab">
@@ -77,22 +37,22 @@
                     <div class="loadingIcon">
                         <svg version="1.1" id="L2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                              viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">
-                            <circle fill="none" stroke="#0a1a33" stroke-width="4" stroke-miterlimit="10" cx="50" cy="50" r="48" />
-                            <line fill="none" stroke-linecap="round" stroke="#0a1a33" stroke-width="4" stroke-miterlimit="10" x1="50" y1="50" x2="85" y2="50.5">
-                                                    <animateTransform attributeName="transform"
-                                                                      dur="2s"
-                                                                      type="rotate"
-                                                                      from="0 50 50"
-                                                                      to="360 50 50"
-                                                                      repeatCount="indefinite" />
+                        <circle fill="none" stroke="#0a1a33" stroke-width="4" stroke-miterlimit="10" cx="50" cy="50" r="48" />
+                        <line fill="none" stroke-linecap="round" stroke="#0a1a33" stroke-width="4" stroke-miterlimit="10" x1="50" y1="50" x2="85" y2="50.5">
+                        <animateTransform attributeName="transform"
+                                          dur="2s"
+                                          type="rotate"
+                                          from="0 50 50"
+                                          to="360 50 50"
+                                          repeatCount="indefinite" />
                             </line>
-                            <line fill="none" stroke-linecap="round" stroke="#0a1a33" stroke-width="4" stroke-miterlimit="10" x1="50" y1="50" x2="49.5" y2="74">
-                                                    <animateTransform attributeName="transform"
-                                                                      dur="15s"
-                                                                      type="rotate"
-                                                                      from="0 50 50"
-                                                                      to="360 50 50"
-                                                                      repeatCount="indefinite" />
+                        <line fill="none" stroke-linecap="round" stroke="#0a1a33" stroke-width="4" stroke-miterlimit="10" x1="50" y1="50" x2="49.5" y2="74">
+                        <animateTransform attributeName="transform"
+                                          dur="15s"
+                                          type="rotate"
+                                          from="0 50 50"
+                                          to="360 50 50"
+                                          repeatCount="indefinite" />
                             </line>
                             </svg>
                     </div>
@@ -105,13 +65,13 @@
                         <input type="text" id="projectTitle" placeholder="Proje ara..." name="projectTitle" class="form-control">
 
                         <label for="showIntersectingProjects"><input type="checkbox" id="showIntersectingProjects" placeholder="Çakışanlar" name="showProjectBorders"> Çakışanlar</label>
-                        
+
 
                         <label for="closeProjectsKM">Yakındakiler (m)</label>
                         <input type="range" id="closeProjectsKM" class="form-range" min="100" max="10000" oninput="this.nextElementSibling.value = this.value+'m'" value="250"><output>250m</output>
                         &nbsp;
                         <button id="toggleFilter" type="button" class="btn btn-success"><i class="fa fa-filter"></i> Göster</button>
-                        
+
                         <input name="projectTitle" id="projectTitle" type="hidden" value="@Model.ProjectTitle" />
                         <input name="projectID" id="projectID" type="hidden" value="@Model.ProjectID" />
                     </form>
@@ -122,7 +82,7 @@
                         <button id="openFilter" type="button" class="btn btn-success"><i class="fa fa-filter"></i></button>
                     </form>
                 </div>
-                
+
             </div>
         </div>
     </div>

@@ -45,50 +45,11 @@
     </div>
 </div>
 <div class="card shadow mb-4">
-    <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
-        <ul class="nav nav-pills" role="tablist">
-            <li class="nav-item  d-none d-md-block" role="presentation">
-                <a class="nav-link d-none d-md-block" id="tag-tab" href="/Project/Edit/@ViewBag.ProjectID">Künye</a>
-            </li>
-            <li class="nav-item  d-none d-md-block" role="presentation">
-                <a class="nav-link d-none d-md-block" id="feasibility-tab" href="/ProjectFeasibility/Form/@ViewBag.ProjectID">Fizibilite</a>
-            </li>
-            <li class="nav-item  d-none d-md-block" role="presentation">
-                <a class="nav-link d-none d-md-block" id="person-tab" href="/ProjectPerson/Index/@ViewBag.ProjectID">Kişiler</a>
-            </li>
-            <li class="nav-item  d-none d-md-block" role="presentation">
-                <a class="nav-link d-none d-md-block" id="associates-tab" href="/ProjectRelation/Index/@ViewBag.ProjectID">İlişkili Projeler</a>
-            </li>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="project-field-tab" data-toggle="tab" href="#project-field" role="tab" aria-controls="project-field" aria-selected="false">Proje Alanı</a>
-            </li>
-            <li class="nav-item  d-none d-md-block" role="presentation">
-                <a class="nav-link d-none d-md-block" id="project-field-tab" href="/ProjectMap/ProjectDetail/@ViewBag.ProjectID">Proje Haritası</a>
-            </li>
-            <li class="nav-item  d-none d-md-block" role="presentation">
-                <a class="nav-link" id="subfunction-tab" href="/ProjectSubfunctionFeature/Index/@ViewBag.ProjectID">Fonksiyon</a>
-            </li>
-            <li class="nav-item  d-none d-md-block" role="presentation">
-                <a class="nav-link" id="schedule-tab" href="/ProjectPhase/Index/@ViewBag.ProjectID ">Takvim/Süreç</a>
-            </li>
-            <li class="nav-item  d-none d-md-block" role="presentation">
-                <a class="nav-link d-none d-md-block" id="cost-tab" href="/ProjectBidding/Index/@ViewBag.ProjectID">Maliyet</a>
-            </li>
-            <li class="nav-item dropdown d-md-none" role="presentation">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="other-tab" href="#" aria-expanded="false">Diğer İşlemler</a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/Project/Edit/@ViewBag.ProjectID">Künye</a></li>
-                    <li><a class="dropdown-item" href="/ProjectFeasibility/Form/@ViewBag.ProjectID">Fizibilite</a></li>
-                    <li><a class="dropdown-item" href="/ProjectPerson/Index/@ViewBag.ProjectID">Kişiler</a></li>
-                    <li><a class="dropdown-item" href="/ProjectRelation/Index/@ViewBag.ProjectID">İlişkili Projeler</a></li>
-                    <li><a class="dropdown-item" href="/ProjectMap/ProjectDetail/@ViewBag.ProjectID">Proje Haritası</a></li>
-                    <li><a class="dropdown-item" href="/ProjectSubfunctionFeature/Index/@ViewBag.ProjectID">Fonksiyon</a></li>
-                    <li><a class="dropdown-item" href="/ProjectPhase/Index/@ViewBag.ProjectID ">Takvim/Süreç</a></li>
-                    <li><a class="dropdown-item" href="/ProjectBidding/Index/@ViewBag.ProjectID">Maliyet</a></li>
-                </ul>
-            </li>
-        </ul>
-    </div>
+    @await Html.PartialAsync("~/Views/Project/_ManageNavigation.cshtml",
+    new ViewDataDictionary(ViewData)
+    {
+        { "Id", ViewBag.ProjectID }
+    })
     <div class="card-body">
         <div class="tab-content my-3" id="formContent">
             <div class="tab-pane fade active show" id="project-field" role="tabpanel" aria-labelledby="project-field-tab">

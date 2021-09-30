@@ -26,13 +26,20 @@
     </div>
 </div>
 <div class="card shadow mb-4">
+
+    @await Html.PartialAsync("~/Views/Project/_ManageNavigation.cshtml",
+    new ViewDataDictionary(ViewData)
+    {
+        { "Id", @ProjectID }
+    })
+
     <div class="card-body">
         <div class="tab-content my-3" id="formContent">
             <div class="tab-pane fade active show" id="project-feasibility" role="tabpanel" aria-labelledby="project-feasibility-tab">
                 <div class="row">
                     <div class="col-12 col-xl-6">
                         <form asp-action="Form">
-                            <input type="hidden" asp-for="ProjectFeasibilityID"/>
+                            <input type="hidden" asp-for="ProjectFeasibilityID" />
                             <input type="hidden" asp-for="ProjectID" value="@ProjectID" />
                             <!-- Validation Part. Must be still for all views!! -->
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
