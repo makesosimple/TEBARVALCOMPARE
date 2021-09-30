@@ -26,51 +26,6 @@
     </div>
 </div>
 <div class="card shadow mb-4">
-    <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
-        <ul class="nav nav-pills" role="tablist">
-            <li class="nav-item d-none d-md-block" role="presentation">
-                <a class="nav-link" id="tag-tab" href="/Project/Edit/@ProjectID">Künye</a>
-            </li>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="project-feasibility-tab" data-toggle="tab" href="#project-feasibility" role="tab" aria-controls="project-feasibility" aria-selected="false">Fizibilite</a>
-            </li>
-            <li class="nav-item d-none d-md-block" role="presentation">
-                <a class="nav-link" id="associates-tab" href="/ProjectPerson/Index/@ProjectID">Kişiler</a>
-            </li>
-            <li class="nav-item d-none d-md-block" role="presentation">
-                <a class="nav-link" id="associates-tab" href="/ProjectRelation/Index/@ProjectID">İlişkili Projeler</a>
-            </li>
-            <li class="nav-item d-none d-md-block" role="presentation">
-                <a class="nav-link" id="project-field-tab" href="/Project/EditProjectField/@ProjectID">Proje Alanı</a>
-            </li>
-            <li class="nav-item d-none d-md-block" role="presentation">
-                <a class="nav-link" id="project-field-tab" href="/ProjectMap/ProjectDetail/@ProjectID">Proje Haritası</a>
-            </li>
-            <li class="nav-item d-none d-md-block" role="presentation">
-                <a class="nav-link" id="subfunction-tab" href="/ProjectSubfunctionFeature/Index/@ProjectID">Fonksiyon</a>
-            </li>
-            <li class="nav-item d-none d-md-block" role="presentation">
-                <a class="nav-link" id="schedule-tab" href="/ProjectPhase/Index/@ProjectID ">Takvim/Süreç</a>
-            </li>
-            <li class="nav-item d-none d-md-block" role="presentation">
-                <a class="nav-link" id="schedule-tab" href="/ProjectBidding/Index/@ProjectID">Maliyet</a>
-            </li>
-            <li class="nav-item dropdown d-md-none" role="presentation">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="other-tab" href="#" aria-expanded="false">Diğer İşlemler</a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/Project/Edit/@Model.ProjectID">Künye</a></li>
-                    <!--<li><a class="dropdown-item" href="/ProjectFeasibility/Form/@Model.ProjectID">Fizibilite</a></li>-->
-                    <li><a class="dropdown-item" href="/ProjectPerson/Index/@Model.ProjectID">Kişiler</a></li>
-                    <li><a class="dropdown-item" href="/ProjectRelation/Index/@Model.ProjectID">İlişkili Projeler</a></li>
-                    <li><a class="dropdown-item" href="/Project/EditProjectField/@Model.ProjectID">Proje Alanı</a></li>
-                    <li><a class="dropdown-item" href="/ProjectMap/ProjectDetail/@Model.ProjectID">Proje Haritası</a></li>
-                    <li><a class="dropdown-item" href="/ProjectSubfunctionFeature/Index/@Model.ProjectID">Fonksiyon</a></li>
-                    <li><a class="dropdown-item" href="/ProjectPhase/Index/@Model.ProjectID ">Takvim/Süreç</a></li>
-                    <li><a class="dropdown-item" href="/ProjectBidding/Index/@Model.ProjectID">Maliyet</a></li>
-                </ul>
-            </li>
-        </ul>
-    </div>
     <div class="card-body">
         <div class="tab-content my-3" id="formContent">
             <div class="tab-pane fade active show" id="project-feasibility" role="tabpanel" aria-labelledby="project-feasibility-tab">
@@ -84,8 +39,8 @@
 
                             <!-- Is Feasibility Needed ? -->
                             <div class="form-group row">
-                                <label asp-for="IsFeasibilityNeeded" class="col-form-label col-12 col-xl-4">Fizibilite Gerekli mi?<span class="text-danger">*</span></label>
-                                <div class="col-12 col-xl-8">
+                                <label asp-for="IsFeasibilityNeeded" class="col-form-label col-12 col-lg-4">Fizibilite Gerekli mi?<span class="text-danger">*</span></label>
+                                <div class="col-12 col-lg-8">
                                     <div class="text-center d-inline-block col-form-label">
                                         <div class="vc-toggle-container">
                                             <label class="vc-switch">
@@ -101,8 +56,8 @@
 
                             <!-- Contractor ID -->
                             <div class="form-group row" data-dependent-on="#IsFeasibilityNeeded" data-dependent-value="checked">
-                                <label asp-for="ContractorID" class="col-12 col-xl-4 col-form-label">Fizibiliteyi Hazırlayacak Yüklenici</label>
-                                <div class="col-12 col-xl-8">
+                                <label asp-for="ContractorID" class="col-12 col-lg-4 col-form-label">Fizibiliteyi Hazırlayacak Yüklenici</label>
+                                <div class="col-12 col-lg-8">
                                     <select asp-for="ContractorID" class="form-control" id="selectContractor" style="width: 100%;">
                                         @if (@Model.Contractor is not null)
                                         {
@@ -120,8 +75,8 @@
 
                             <!-- Person ID -->
                             <div class="form-group row" data-dependent-on="#IsFeasibilityNeeded" data-dependent-value="checked">
-                                <label asp-for="PersonID" class="col-12 col-xl-4 col-form-label">Fizibiliteyi Hazırlayacak Kişi</label>
-                                <div class="col-12 col-xl-8">
+                                <label asp-for="PersonID" class="col-12 col-lg-4 col-form-label">Fizibiliteyi Hazırlayacak Kişi</label>
+                                <div class="col-12 col-lg-8">
                                     <select asp-for="PersonID" class="form-control" id="selectPerson" style="width: 100%;" required>
                                         @if (@Model.Person is not null)
                                         {
@@ -139,8 +94,8 @@
 
                             <!-- Project Feasibility Outsource -->
                             <div class="form-group row" data-dependent-on="#IsFeasibilityNeeded" data-dependent-value="checked">
-                                <label asp-for="ProjectFeasibilityOutsource" class="col-12 col-xl-4 col-form-label">Fizibilite Dış Kaynak<span class="text-danger">*</span></label>
-                                <div class="col-12 col-xl-8">
+                                <label asp-for="ProjectFeasibilityOutsource" class="col-12 col-lg-4 col-form-label">Fizibilite Dış Kaynak<span class="text-danger">*</span></label>
+                                <div class="col-12 col-lg-8">
                                     <input asp-for="ProjectFeasibilityOutsource" class="form-control" required />
                                     <span asp-validation-for="ProjectFeasibilityOutsource" class="text-danger"></span>
                                 </div>
@@ -148,8 +103,8 @@
 
                             <!-- Project Feasibility Date -->
                             <div class="form-group row" data-dependent-on="#IsFeasibilityNeeded" data-dependent-value="checked">
-                                <label asp-for="ProjectFeasibilityDate" class="col-12 col-xl-4 col-form-label">Fizibilite Tarihi</label>
-                                <div class="col-12 col-xl-8">
+                                <label asp-for="ProjectFeasibilityDate" class="col-12 col-lg-4 col-form-label">Fizibilite Tarihi</label>
+                                <div class="col-12 col-lg-8">
                                     <input asp-for="ProjectFeasibilityDate" type="text" class="form-control datepicker">
                                     <i class="fas fa-calendar-alt"></i>
                                     <span asp-validation-for="ProjectFeasibilityDate" class="text-danger"></span>
@@ -158,8 +113,8 @@
 
                             <!-- Project Feasibility Cost -->
                             <div class="form-group row" data-dependent-on="#IsFeasibilityNeeded" data-dependent-value="checked">
-                                <label asp-for="ProjectFeasibilityCost" class="col-12 col-xl-4 col-form-label">Fizibilite Bedeli</label>
-                                <div class="col-12 col-xl-8">
+                                <label asp-for="ProjectFeasibilityCost" class="col-12 col-lg-4 col-form-label">Fizibilite Bedeli</label>
+                                <div class="col-12 col-lg-8">
                                     <input asp-for="ProjectFeasibilityCost" type="text" class="form-control" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-input-type="length" data-val="false">
                                     <i class="fas fa-coins"></i>
                                     <span asp-validation-for="ProjectFeasibilityCost" class="text-danger"></span>
