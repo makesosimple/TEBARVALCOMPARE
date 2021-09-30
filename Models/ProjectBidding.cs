@@ -19,7 +19,7 @@ namespace IBBPortal.Models
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProjectBiddingID { get; set; }
-
+            
         public int? ProjectID { get; set; }
         [ForeignKey("ProjectID")]
         public Project Project { get; set; }
@@ -32,7 +32,7 @@ namespace IBBPortal.Models
         [ForeignKey("ProjectPhaseID")]
         public ProjectPhase ProjectPhase { get; set; }
 
-        public int DepartmentID { get; set; }
+        public int? DepartmentID { get; set; }
         [ForeignKey("DepartmentID")]
         public Department Department { get; set; }
 

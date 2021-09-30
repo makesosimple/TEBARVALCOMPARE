@@ -28,7 +28,7 @@
                     {
                         "data": "relationType",
                         "render": function (data) {
-                            return `<div class="btn btn-info text-sm">${data}</div>`;
+                            return `<div class="btn btn-info text-xs">${data}</div>`;
                         },
                         "autoWidth": true
                     },
@@ -115,7 +115,7 @@
 
                         <div class="row">
                             <div class="justify-content-between col-12 d-flex border-bottom tabTitle">
-                                <h4 class="text-primary">İlişkili Proje</h4>
+                                <h4 class="text-primary">İlişkili Projeler</h4>
                                 <button type="button" class="btn btn-success d-block" onclick="modalScript(this)" data-url="/ProjectRelation/Create/@ViewBag.ProjectID">
                                     <i class="fas fa-plus mr-2"></i> EKLE
                                 </button>
@@ -128,11 +128,7 @@
                                         <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="relatedProjectTitle" name="relatedProjectTitle" value="" /></th>
                                         <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="relatedProjectIBBCode" name="relatedProjectIBBCode" value="" /></th>
                                         <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="relationType" name="relationType" value="" /></th>
-                                        <th scope="col">
-                                            <button type="button" class="btn btn-success d-block w-100" onclick="modalScript(this)" data-url="/ProjectRelation/Create/@ViewBag.ProjectID">
-                                                <i class="fas fa-plus mr-2"></i> EKLE
-                                            </button>
-                                        </th>
+                                        <th scope="col"></th>
                                     </tr>
                                     <tr id="tableLabels">
                                         <th scope="col" class="text-white text-sm">İlişkili Proje</th>

@@ -29,7 +29,13 @@
                 },
                 "columns": [
                     { "data": "biddingTitle", "autoWidth": true },
-                    { "data": "phaseTitle", "autoWidth": true },
+                    {
+                        "data": "phaseTitle",
+                        "autoWidth": true,
+                        "render": function (data) {
+                            return `<div class="btn btn-warning text-xs">${data}</div>`;
+                        }
+                    },
                     { "data": "departmentTitle", "autoWidth": true },
                     { "data": "contractorTitle", "autoWidth": true },
                     {
@@ -145,7 +151,7 @@
                             <!-- Estimated Project Cost -->
                             <div class="form-group" style="margin-bottom:0px;">
                                 <label asp-for="EstimatedProjectCost" class="col-form-label">Tahmini Yapım Bedeli</label>
-                                <input asp-for="EstimatedProjectCost" type="text" class="form-control" data-input-type="length" data-val="false" value="@EstimatedProjectCost">
+                                <input asp-for="EstimatedProjectCost" type="text" class="form-control" data-input-type="length" required data-val="false" value="@EstimatedProjectCost">
                             </div>
 
                             <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i>Kaydet</button>
@@ -169,11 +175,7 @@
                                         <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="contractorTitle" name="contractorTitle" value="" /></th>
                                         <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="biddingContractCost" name="biddingContractCost" value="" /></th>
                                         <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="biddingProgressPayment" name="biddingProgressPayment" value="" /></th>
-                                        <th scope="col">
-                                            <button type="button" class="btn btn-success d-block w-100" onclick="modalScript(this)" data-url="/ProjectBidding/Create/@ViewBag.ProjectID">
-                                                <i class="fas fa-plus mr-2"></i> EKLE
-                                            </button>
-                                        </th>
+                                        <th scope="col"></th>
                                     </tr>
                                     <tr id="tableLabels">
                                         <th scope="col" class="text-white text-sm">İhale İsmi</th>

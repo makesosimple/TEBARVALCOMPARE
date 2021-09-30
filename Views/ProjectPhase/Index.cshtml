@@ -27,7 +27,7 @@
                     {
                         "data": "phaseStatusTitle",
                         "render": function (data) {
-                            return `<div class="btn btn-warning text-sm">${data}</div>`;
+                            return `<div class="btn btn-warning text-xs">${data}</div>`;
                         },
                         "autoWidth": true
                     },
@@ -180,11 +180,7 @@
                                         <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="projectPhaseFinishDate" name="projectPhaseFinishDate" value="" /></th>
                                         <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="projectPhaseRecordedStartDate" name="projectPhaseRecordedStartDate" value="" /></th>
                                         <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="projectPhaseRecordedFinishDate" name="projectPhaseRecordedFinishDate" value="" /></th>
-                                        <th scope="col">
-                                            <button type="button" class="btn btn-success d-block w-100" onclick="modalScript(this)" data-url="/ProjectPhase/Create/@ViewBag.ProjectID">
-                                                <i class="fas fa-plus mr-2"></i> EKLE
-                                            </button>
-                                        </th>
+                                        <th scope="col"></th>
                                     </tr>
                                     <tr id="tableLabels">
                                         <th scope="col" class="text-white text-sm">Faz</th>

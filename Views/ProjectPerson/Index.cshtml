@@ -33,10 +33,10 @@
                             let itemToRender;
                             switch (data) {
                                 case true:
-                                    itemToRender = `<a href="#" class="btn btn-success text-sm">Kurumiçi</a>`;
+                                    itemToRender = `<a href="#" class="btn btn-success text-xs">Kurumiçi</a>`;
                                     break;
                                 case false:
-                                    itemToRender = `<a href="#" class="btn btn-danger text-sm">Kurumdışı</a>`;
+                                    itemToRender = `<a href="#" class="btn btn-danger text-xs">Kurumdışı</a>`;
                                     break;
                             }
                             return itemToRender;
@@ -143,11 +143,7 @@
                                         <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="organization" name="organization" value="" /></th>
                                         <th scope="col"><input class="form-control w-100 searchInput" data-index="3" type="text" placeholder="Ara..." id="organization" name="organization" value="" /></th>
                                         <th scope="col"><input class="form-control w-100 searchInput" data-index="4" type="text" placeholder="Ara..." id="organization" name="organization" value="" /></th>
-                                        <th scope="col">
-                                            <button type="button" class="btn btn-success d-block w-100" onclick="modalScript(this)" data-url="/ProjectPerson/Create/@ViewBag.ProjectID">
-                                                <i class="fas fa-plus mr-2"></i> EKLE
-                                            </button>
-                                        </th>
+                                        <th scope="col"></th>
                                     </tr>
                                     <tr id="tableLabels">
                                         <th scope="col" class="text-white text-sm">Kişi</th>
