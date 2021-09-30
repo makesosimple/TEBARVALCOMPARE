@@ -1,11 +1,10 @@
 ﻿@model IBBPortal.Models.ProjectPerson
-
 <!-- Modal -->
-<div class="modal fade" id="ProjectPersonEditModal" tabindex="-1" aria-labelledby="ProjectPersonEditModalLabel" aria-hidden="true">
+<div class="modal fade" id="ProjectPersonEditModal" tabindex="-1" aria-labelledby="ProjectPersonEditModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <form asp-action="Edit">
-                <input type="hidden" asp-for="ProjectPersonID"/>
+                <input type="hidden" asp-for="ProjectPersonID" />
                 <div class="modal-header">
                     <div class="container-fluid">
                         <div class="row">
@@ -47,7 +46,7 @@
                                 <select asp-for="PersonID" class="form-control" id="selectProjectPerson" style="width: 100%;">
                                     @if (Model.Person is not null)
                                     {
-                                    <option value="@Model.Person.PersonID">@Model.Person.PersonName.Trim() @Model.Person.PersonSurname.Trim()</option>
+                                        <option value="@Model.Person.PersonID">@Model.Person.PersonName.Trim() @Model.Person.PersonSurname.Trim()</option>
                                     }
 
                                     else
@@ -102,7 +101,7 @@
                             <label asp-for="ContractorID" class="col-12 col-xl-4 col-form-label">Yüklenici</label>
                             <div class="col-12 col-xl-8">
                                 <select asp-for="ContractorID" class="form-control" id="selectProjectPersonContractor" style="width: 100%;">
-                                    @if (Model.JobField is not null)
+                                    @if (Model.Contractor is not null)
                                     {
                                         <option value="@Model.Contractor.ContractorID">@Model.Contractor.Title</option>
                                     }
@@ -148,6 +147,8 @@
         </div>
     </div>
 </div>
+
+<partial name="/Views/Shared/_ValidationScriptsPartial.cshtml" />
 
 <script>
     $('#selectProjectPerson').select2({
@@ -217,7 +218,7 @@
         //Hide all dependent fields by default until user makes a choice.
         $(this).hide();
 
-        //Get the object, object's target and desired value. 
+        //Get the object, object's target and desired value.
         let field = $(this);
         let target = $(this).data("dependent-on");
         let desiredValue = $(this).data("dependent-value");

@@ -1,5 +1,5 @@
 ﻿@model IBBPortal.Models.ProjectPerson
-<!-- Modal -->
+
 <div class="modal fade" id="ProjectPersonCreateModal" tabindex="-1" aria-labelledby="ProjectPersonCreateModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -26,16 +26,17 @@
                         <div class="form-group row">
                             <label asp-for="IsInternal" class="col-form-label col-12 col-xl-4">Kurumiçi mi?<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
-                                <div class="text-center d-inline-block col-form-label">
+                                <div class="text-center col-form-label d-flex flex-colum align-items-center">
                                     <div class="vc-toggle-container">
                                         <label class="vc-switch">
                                             <input type="checkbox" class="vc-switch-input" asp-for="IsInternal">
                                             <span data-on="Evet" data-off="Hayır" class="vc-switch-label"></span>
                                             <span class="vc-handle"></span>
-                                            <span asp-validation-for="IsInternal" class="text-danger"></span>
                                         </label>
                                     </div>
                                 </div>
+                                <span asp-validation-for="IsInternal" class="text-danger"></span>
+
                             </div>
                         </div>
 
@@ -43,7 +44,7 @@
                         <div class="form-group row">
                             <label asp-for="PersonID" class="col-12 col-xl-4 col-form-label">Kişi<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
-                                <select asp-for="PersonID" class="form-control" id="selectProjectPerson" style="width: 100%;">
+                                <select asp-for="PersonID" class="form-control" id="selectProjectPerson" style="width: 100%;" required>
                                     <option value="">Kişi Seçin</option>
                                 </select>
                                 <span asp-validation-for="PersonID" class="text-danger"></span>
@@ -62,7 +63,7 @@
                         </div>
 
                         <!-- Project Person Job Field ID -->
-                        <div class="form-group row"  data-dependent-on="#IsInternal" data-dependent-value="checked">
+                        <div class="form-group row" data-dependent-on="#IsInternal" data-dependent-value="checked">
                             <label asp-for="JobFieldID" class="col-12 col-xl-4 col-form-label">Alan</label>
                             <div class="col-12 col-xl-8">
                                 <select asp-for="JobFieldID" class="form-control" id="selectProjectPersonJobField" style="width: 100%;">
@@ -107,6 +108,8 @@
         </div>
     </div>
 </div>
+
+<partial name="/Views/Shared/_ValidationScriptsPartial.cshtml" />
 
 <script>
     $('#selectProjectPerson').select2({
@@ -176,7 +179,7 @@
         //Hide all dependent fields by default until user makes a choice.
         $(this).hide();
 
-        //Get the object, object's target and desired value. 
+        //Get the object, object's target and desired value.
         let field = $(this);
         let target = $(this).data("dependent-on");
         let desiredValue = $(this).data("dependent-value");
