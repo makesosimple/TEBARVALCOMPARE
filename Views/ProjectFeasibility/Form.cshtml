@@ -82,7 +82,7 @@
 
                             <!-- Person ID -->
                             <div class="form-group row" data-dependent-on="#IsFeasibilityNeeded" data-dependent-value="checked">
-                                <label asp-for="PersonID" class="col-12 col-lg-4 col-form-label">Fizibiliteyi Hazırlayacak Kişi</label>
+                                <label asp-for="PersonID" class="col-12 col-lg-4 col-form-label">Fizibiliteyi Hazırlayacak Kişi<span class="text-danger">*</span></label>
                                 <div class="col-12 col-lg-8">
                                     <select asp-for="PersonID" class="form-control" id="selectPerson" style="width: 100%;" required>
                                         @if (@Model.Person is not null)
