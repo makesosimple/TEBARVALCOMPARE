@@ -1,9 +1,13 @@
-﻿@model IBBPortal.Models.Project
+﻿@model IBBPortal.ViewModels.ProjectSummaryViewModel
 
 @{
     ViewData["Title"] = @Model.ProjectTitle;
 }
-
+<style>
+    .col-form-label {
+        padding-top: 0px;
+    }
+</style>
 <!-- Alert for Exceptions -->
 @if (@TempData["SuccessTitle"] is not null)
 {
@@ -22,6 +26,11 @@
 <div class="row">
     <div class="justify-content-between py-2 col-12 d-flex">
         <h1 class="h3">@ViewData["Title"]</h1>
+        <a href="/Project/Edit/@Model.ProjectID">
+            <button class="btn btn-success shadow" style="vertical-align: middle; height: 100%;">
+                <i class="fas fa-plus mr-2"></i> Düzenle
+            </button>
+        </a>
     </div>
 </div>
 <div class="card shadow mb-4">
@@ -30,10 +39,9 @@
             <li class="nav-item" role="presentation">
                 <a class="nav-link active" id="tag-tab" data-toggle="tab" href="#tag" role="tab" aria-controls="tag" aria-selected="false">Proje Özeti</a>
             </li>
-            <li class="nav-item" role="presentation">
-                <a href="/Project/Edit/@Model.ProjectID" class="nav-link">Düzenle</a>
+            <li class="nav-item  d-none d-md-block" role="presentation">
+                <a class="nav-link" id="project-field-tab" href="/ProjectMap/ProjectDetail/@Model.ProjectID">Proje Haritası</a>
             </li>
-            
         </ul>
     </div>
     <div class="card-body">
@@ -41,7 +49,10 @@
             <div class="tab-pane fade active show" id="tag" role="tabpanel" aria-labelledby="tag-tab">
                 <div class="tab-pane fade active show" id="summary" role="tabpanel" aria-labelledby="summary-tab">
                     <div class="row">
-                        <div class="col-md-4  col-sm-12">
+                        <div class="col-md-6  col-sm-12">
+
+                            <h4 class="text-primary mb-4">Proje Özet Bilgileri</h4>
+
                             <form id="tag-form">
                                 <!-- Example Input Text -->
                                 <div class="form-group form-horizontal row">
@@ -59,133 +70,115 @@
                                 <div class="form-group form-horizontal row">
                                     <label for="project-name" class="col-12 col-lg-3 col-form-label vertically-aligned-label"><b>Alanı</b></label>
                                     <div class="col-12 col-lg-9">
-                                        <span>800/40/25</span>
+                                        <span>@Model.ProjectPaftaAdaParsel</span>
                                     </div>
                                 </div>
                                 <div class="form-group form-horizontal row">
                                     <label for="project-name" class="col-12 col-lg-3 col-form-label vertically-aligned-label"><b>Sorumlu Müdürlük</b></label>
                                     <div class="col-12 col-lg-9">
-                                        <span>Üstyapı Müdürlüğü</span>
+                                        <span>@Model.ResponsibleDepartmentTitle</span>
                                     </div>
                                 </div>
                                 <div class="form-group form-horizontal row">
                                     <label for="project-name" class="col-12 col-lg-3 col-form-label vertically-aligned-label"><b>Proje Sahibi</b></label>
                                     <div class="col-12 col-lg-9">
-                                        <span>Süleyman Selçuk Orhan</span>
-                                    </div>
-                                </div>
-                                <div class="form-group form-horizontal row">
-                                    <label for="project-name" class="col-12 col-lg-3 col-form-label vertically-aligned-label"><b>Müdür Yardımcısı</b></label>
-                                    <div class="col-12 col-lg-9">
-                                        <span>Ömer Kıvanç</span>
-                                    </div>
-                                </div>
-                                <div class="form-group form-horizontal row">
-                                    <label for="project-name" class="col-12 col-lg-3 col-form-label vertically-aligned-label"><b>Müdür Yardımcısı</b></label>
-                                    <div class="col-12 col-lg-9">
-                                        <span>Ömer Kıvanç</span>
-                                    </div>
-                                </div>
-                                <div class="form-group form-horizontal row">
-                                    <label for="project-name" class="col-12 col-lg-3 col-form-label vertically-aligned-label"><b>Şef</b></label>
-                                    <div class="col-12 col-lg-9">
-                                        <span>Ömer Kıvanç</span>
-                                    </div>
-                                </div>
-                                <div class="form-group form-horizontal row">
-                                    <label for="project-name" class="col-12 col-lg-3 col-form-label vertically-aligned-label"><b>Temel Alan</b></label>
-                                    <div class="col-12 col-lg-9">
-                                        <span>Vizyon</span>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-md-4 col-sm-12">
-                            <form id="tag-form">
-                                <!-- Example Input Text -->
-                                <div class="form-group form-horizontal row">
-                                    <label for="project-name" class="col-12 col-lg-3 col-form-label vertically-aligned-label"><b>İhale Adı</b></label>
-                                    <div class="col-12 col-lg-9">
-                                        <span>Bağdat Caddesi Cephe Rehabilitasyonu Kentsel...</span>
-                                    </div>
-                                </div>
-                                <div class="form-group form-horizontal row">
-                                    <label for="project-name" class="col-12 col-lg-3 col-form-label vertically-aligned-label"><b>Tasarımcı Firma</b></label>
-                                    <div class="col-12 col-lg-9">
-                                        <span>KAD21FEN02</span>
-                                    </div>
-                                </div>
-                                <div class="form-group form-horizontal row">
-                                    <label for="project-name" class="col-12 col-lg-3 col-form-label vertically-aligned-label"><b>Yüklenici</b></label>
-                                    <div class="col-12 col-lg-9">
-                                        <span>800/40/25</span>
-                                    </div>
-                                </div>
-                                <div class="form-group form-horizontal row">
-                                    <label for="project-name" class="col-12 col-lg-3 col-form-label vertically-aligned-label"><b>Fizibilite</b></label>
-                                    <div class="col-12 col-lg-9">
-                                        <span>Üstyapı Müdürlüğü</span>
-                                    </div>
-                                </div>
-                                <div class="form-group form-horizontal row">
-                                    <label for="project-name" class="col-12 col-lg-3 col-form-label vertically-aligned-label"><b>Kurul Onayı</b></label>
-                                    <div class="col-12 col-lg-9">
-                                        <span>Süleyman Selçuk Orhan</span>
-                                    </div>
-                                </div>
-                                <div class="form-group form-horizontal row">
-                                    <label for="project-name" class="col-12 col-lg-3 col-form-label vertically-aligned-label"><b>Plan Tadilatı</b></label>
-                                    <div class="col-12 col-lg-9">
-                                        <span>Ömer Kıvanç</span>
-                                    </div>
-                                </div>
-                                <div class="form-group form-horizontal row">
-                                    <label for="project-name" class="col-12 col-lg-3 col-form-label vertically-aligned-label"><b>Kamulaştırma</b></label>
-                                    <div class="col-12 col-lg-9">
-                                        <span>Ömer Kıvanç</span>
-                                    </div>
-                                </div>
-                                <div class="form-group form-horizontal row">
-                                    <label for="project-name" class="col-12 col-lg-3 col-form-label vertically-aligned-label"><b>Ruhsat</b></label>
-                                    <div class="col-12 col-lg-9">
-                                        <span>Ömer Kıvanç</span>
+                                        <span>@Model.ProjectOwnerName</span>
                                     </div>
                                 </div>
 
                             </form>
                         </div>
-                        <div class="col-md-4  col-sm-12">
+
+                        <div class="col-md-6  col-sm-12">
+
+                            <h4 class="text-primary mb-4">&nbsp;</h4>
+
                             <div class="row justify-content-center">
                                 <div class="col-md-12">
-                                    <div class="row">
-                                        <a href="https://unsplash.it/1200/768.jpg?image=251" data-toggle="lightbox" data-gallery="example-gallery" class="col-sm-4">
-                                            <img src="https://unsplash.it/600.jpg?image=251" class="img-fluid">
+                                    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                        <div class="carousel-inner">
+                                            <div class="carousel-item active">
+                                                <img src="/images/demo-gallery/01.jpg" class="d-block w-100" alt="İstanbul Büyükşehir Belediyesi">
+                                            </div>
+                                            <div class="carousel-item">
+                                                <img src="/images/demo-gallery/02.jpg" class="d-block w-100" alt="Galata Kulesi">
+                                            </div>
+                                            <div class="carousel-item">
+                                                <img src="/images/demo-gallery/03.jpg" class="d-block w-100" alt="Galata Kulesi">
+                                            </div>
+                                            <div class="carousel-item">
+                                                <img src="/images/demo-gallery/04.jpg" class="d-block w-100" alt="Galata Kulesi">
+                                            </div>
+                                        </div>
+                                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Önceki</span>
                                         </a>
-                                        <a href="https://unsplash.it/1200/768.jpg?image=252" data-toggle="lightbox" data-gallery="example-gallery" class="col-sm-4">
-                                            <img src="https://unsplash.it/600.jpg?image=252" class="img-fluid">
-                                        </a>
-                                        <a href="https://unsplash.it/1200/768.jpg?image=253" data-toggle="lightbox" data-gallery="example-gallery" class="col-sm-4">
-                                            <img src="https://unsplash.it/600.jpg?image=253" class="img-fluid">
-                                        </a>
-                                    </div>
-                                    <div class="row">
-                                        <a href="https://unsplash.it/1200/768.jpg?image=254" data-toggle="lightbox" data-gallery="example-gallery" class="col-sm-4">
-                                            <img src="https://unsplash.it/600.jpg?image=254" class="img-fluid">
-                                        </a>
-                                        <a href="https://unsplash.it/1200/768.jpg?image=255" data-toggle="lightbox" data-gallery="example-gallery" class="col-sm-4">
-                                            <img src="https://unsplash.it/600.jpg?image=255" class="img-fluid">
-                                        </a>
-                                        <a href="https://unsplash.it/1200/768.jpg?image=256" data-toggle="lightbox" data-gallery="example-gallery" class="col-sm-4">
-                                            <img src="https://unsplash.it/600.jpg?image=256" class="img-fluid">
+                                        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Sonraki</span>
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <hr class="solid" />
+                    <div class="row mt-2">
+
+                        <div class="col-6">
+
+                            <h4 class="text-primary mb-4">Diğer Proje Bilgileri</h4>
+
+                            <form id="tag-form">
+                                <!-- Example Input Text -->
+                                <div class="form-group form-horizontal row">
+                                    <label for="project-name" class="col-12 col-lg-3 col-form-label vertically-aligned-label"><b>Proje Yöneticisi</b></label>
+                                    <div class="col-12 col-lg-9">
+                                        <span>@Model.ProjectManager</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group form-horizontal row">
+                                    <label for="project-name" class="col-12 col-lg-3 col-form-label vertically-aligned-label"><b>Hizmet Alanı</b></label>
+                                    <div class="col-12 col-lg-9">
+                                        <span>@Model.ServiceAreaTitle</span>
+                                    </div>
+                                </div>
+                                <div class="form-group form-horizontal row">
+                                    <label for="project-name" class="col-12 col-lg-3 col-form-label vertically-aligned-label"><b>Proje Adresi</b></label>
+                                    <div class="col-12 col-lg-9">
+                                        <span>@Model.ProjectAddress</span>
+                                    </div>
+                                </div>
+                                <div class="form-group form-horizontal row">
+                                    <label for="project-name" class="col-12 col-lg-3 col-form-label vertically-aligned-label"><b>İhale Adı</b></label>
+                                    <div class="col-12 col-lg-9">
+                                        <span>@Model.BiddingTitle</span>
+                                    </div>
+                                </div>
+                                <div class="form-group form-horizontal row">
+                                    <label for="project-name" class="col-12 col-lg-3 col-form-label vertically-aligned-label"><b>Talep Eden Makam</b></label>
+                                    <div class="col-12 col-lg-9">
+                                        <span>@Model.RequestingAuthorityTitle</span>
+                                    </div>
+                                </div>
+
+
+
+                            </form>
+
+                        </div>
+                        <div class="col-6">
+                            &nbsp;
+                        </div>
+                    </div>
+                    <hr class="solid" />
+
                     <div class="row mt-2">
                         <div class="col-12">
-                            <h4 class="text-primary">Proje Takvimi</h4>
+                            <h4 class="text-primary mb-4">Proje Takvimi</h4>
                         </div>
                         <div class="col-12">
                             <svg id="ganttChart" /></svg>
@@ -200,5 +193,50 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-    
+    <script>
+
+        function ajaxCall(callback) {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: '/ProjectPhase/JsonDataForGantt',
+                    dataType: 'json',
+                    data: {id: @Model.ProjectID},
+                    type: 'GET',
+                    contentType: 'application/json',
+                    success: resolve,
+                    error: reject
+                });
+            });
+        }
+
+        ajaxCall()
+            .then(result => {
+                let gantt = new Gantt("#ganttChart", result.tasks, {
+                    header_height: 50,
+                    language: 'tr',
+                    column_width: 30,
+                    step: 24,
+                    view_modes: ['Quarter Day', 'Half Day', 'Day', 'Week', 'Month'],
+                    bar_height: 20,
+                    bar_corner_radius: 3,
+                    arrow_curve: 5,
+                    padding: 18,
+                    view_mode: 'Month',
+                    date_format: 'YYYY-MM-DD',
+                    custom_popup_html: null
+                });
+            })
+            .catch(err => {
+                console.error("Error! =>", err);
+            });
+
+        //const startDate = gantt.gantt_start.getTime();
+        //gantt.gantt_start = startDate;
+        //gantt.options.focus = startDate;
+        //gantt.set_scroll_position();
+
+
+
+
+    </script>
 }

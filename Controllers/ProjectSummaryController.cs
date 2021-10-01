@@ -9,6 +9,7 @@ using IBBPortal.Data;
 using System.Threading.Tasks;
 using IBBPortal.ViewModels;
 using System;
+using System.Linq;
 
 namespace IBBPortal.Controllers
 {
@@ -32,8 +33,27 @@ namespace IBBPortal.Controllers
                 return NotFound();
             }
 
-            var project = await _context.Project
-                .FirstOrDefaultAsync(m => m.ProjectID == id);
+            var project = await _context.Project.Select(m => new ProjectSummaryViewModel
+            {
+                ProjectTitle = m.ProjectTitle,
+                ProjectID = m.ProjectID,
+                ProjectLatitude = _context.ProjectField.FirstOrDefault(b => b.ProjectID == m.ProjectID).ProjectLatitude,
+                ProjectLongitude = _context.ProjectField.FirstOrDefault(b => b.ProjectID == m.ProjectID).ProjectLongitude,
+                coordinates = _context.ProjectField.FirstOrDefault(b => b.ProjectID == m.ProjectID).coordinates,
+                ServiceAreaTitle = m.ProjectServiceArea.ServiceAreaTitle,
+                ResponsibleDepartmentTitle = m.ResponsibleDepartment.DepartmentTitle,
+                ProjectImportanceTitle = m.ProjectImportance.ProjectImportanceTitle,
+                MapIcon = m.ResponsibleDepartment.MapIcon,
+                ProjectAddress = _context.ProjectField.FirstOrDefault(b => b.ProjectID == m.ProjectID).ProjectAddress,
+                ProjectPaftaAdaParsel = _context.ProjectField.FirstOrDefault(b => b.ProjectID == m.ProjectID).ProjectPaftaAdaParsel,
+                ProjectOwnerName = m.ProjectOwnerPerson.PersonName + " " + m.ProjectOwnerPerson.PersonSurname,
+                ProjectManager = m.ProjectManager.PersonName + " " + m.ProjectManager.PersonSurname,
+                BiddingTitle = _context.ProjectBidding.FirstOrDefault(b => b.ProjectID == m.ProjectID).BiddingTitle,
+                RequestingAuthorityTitle = m.RequestingAuthority.AuthorityTitle,
+                ProjectIBBCode = m.ProjectIBBCode,
+
+            }).FirstOrDefaultAsync(m => m.ProjectID == id);
+
             if (project == null)
             {
                 return NotFound();
