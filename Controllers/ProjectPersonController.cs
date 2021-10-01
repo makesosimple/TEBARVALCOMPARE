@@ -25,8 +25,13 @@ namespace IBBPortal.Controllers
         }
 
         // GET: ProjectPerson
-        public IActionResult Index(int id)
+        public IActionResult Index(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
             ViewBag.ProjectTitle = _context.Project.Single(m => m.ProjectID == id).ProjectTitle;
             ViewBag.ProjectID = id;
             return View();

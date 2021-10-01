@@ -11,3 +11,10 @@ function toggleShortCuts(ProjectID) {
         console.log("status", status);
     });
 }
+
+/* Select2 Validation */
+$('select').on('change', function () {
+    $(this).removeClass("is-invalid");
+    $(this).addClass("is-valid");
+    $(this).valid();
+});

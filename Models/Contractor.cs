@@ -34,6 +34,7 @@ namespace IBBPortal.Models
         [ForeignKey("DistrictID")]
         public District District { get; set; }
 
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
         public int ContractorTypeID { get; set; }
         [ForeignKey("ContractorTypeID")]
 

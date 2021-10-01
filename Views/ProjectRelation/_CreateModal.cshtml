@@ -60,13 +60,15 @@
                 <div class="modal-footer">
                     <div class="buttons">
                         <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
-                        <a asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
+                        <a data-dismiss="modal" aria-label="Close" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+<partial name="/Views/Shared/_ValidationScriptsPartial.cshtml" />
 
 <script>
     $('#selectRelatedProject').select2({

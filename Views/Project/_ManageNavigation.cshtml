@@ -1,0 +1,53 @@
+﻿@using static IBBPortal.Helpers.NavigationHelper;
+
+<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+    <ul class="nav nav-pills" role="tablist">
+        <li class="nav-item @ProjectEditNavClass(ViewContext, "display")" role="presentation">
+            <a class="nav-link @ProjectEditNavClass(ViewContext)" id="tag-tab" href="/Project/Edit/@ViewData["Id"]">Künye</a>
+        </li>
+        <li class="nav-item @ProjectFeasibilityNavClass(ViewContext, "display")" role="presentation">
+            <a class="nav-link @ProjectFeasibilityNavClass(ViewContext)" id="feasibility-tab" href="/ProjectFeasibility/Form/@ViewData["Id"]">Fizibilite</a>
+        </li>
+        <li class="nav-item @ProjectPersonNavClass(ViewContext, "display")" role="presentation">
+            <a class="nav-link @ProjectPersonNavClass(ViewContext)" id="associates-tab" href="/ProjectPerson/Index/@ViewData["Id"]">Kişiler</a>
+        </li>
+        <li class="nav-item @ProjectRelationNavClass(ViewContext, "display")" role="presentation">
+            <a class="nav-link @ProjectRelationNavClass(ViewContext)" id="project-relation-tab" href="/ProjectRelation/Index/@ViewData["Id"]">İlişkili Projeler</a>
+        </li>
+        <li class="nav-item @ProjectFieldNavClass(ViewContext, "display")" role="presentation">
+            <a class="nav-link @ProjectFieldNavClass(ViewContext)" id="project-field-tab" href="/Project/EditProjectField/@ViewData["Id"]">Proje Alanı</a>
+        </li>
+        <li class="nav-item @ProjectMapNavClass(ViewContext, "display")" role="presentation">
+            <a class="nav-link @ProjectMapNavClass(ViewContext)" id="project-field-tab" href="/ProjectMap/ProjectDetail/@ViewData["Id"]">Proje Haritası</a>
+        </li>
+        <li class="nav-item @ProjectSubfunctionFeatureNavClass(ViewContext, "display")" role="presentation">
+            <a class="nav-link @ProjectSubfunctionFeatureNavClass(ViewContext)" id="subfunction-tab" href="/ProjectSubfunctionFeature/Index/@ViewData["Id"]">Fonksiyon</a>
+        </li>
+        <li class="nav-item @ProjectPhaseNavClass(ViewContext, "display")" role="presentation">
+            <a class="nav-link @ProjectPhaseNavClass(ViewContext)" id="schedule-tab" href="/ProjectPhase/Index/@ViewData["Id"]">Takvim/Süreç</a>
+        </li>
+        <li class="nav-item  @ProjectBiddingNavClass(ViewContext, "display")" role="presentation">
+            <a class="nav-link @ProjectBiddingNavClass(ViewContext)" id="bidding-tab" href="/ProjectBidding/Index/@ViewData["Id"]">Maliyet</a>
+        </li>
+        <li class="nav-item @FileNavClass(ViewContext, "display")" role="presentation">
+            <a class="nav-link @FileNavClass(ViewContext)" id="file-tab" href="/File/Index/@ViewData["Id"]">Dokümanlar</a>
+        </li>
+    </ul>
+    <div class="dropdown no-arrow d-block d-xl-none">
+        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v fa-sm fa-fw text-primary"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+            <a class="dropdown-item" href="/Project/Edit/@ViewData["Id"]">Künye</a>
+            <a class="dropdown-item" href="/ProjectFeasibility/Form/@ViewData["Id"]">Fizibilite</a>
+            <a class="dropdown-item" href="/ProjectPerson/Index/@ViewData["Id"]">Kişiler</a>
+            <a class="dropdown-item" href="/ProjectRelation/Index/@ViewData["Id"]">İlişkili Projeler</a>
+            <a class="dropdown-item" href="/Project/EditProjectField/@ViewData["Id"]">Proje Alanı</a>
+            <a class="dropdown-item" href="/ProjectMap/ProjectDetail/@ViewData["Id"]">Proje Haritası</a>
+            <a class="dropdown-item" href="/ProjectSubfunctionFeature/Index/@ViewData["Id"]">Fonksiyon</a>
+            <a class="dropdown-item" href="/ProjectPhase/Index/@ViewData["Id"]">Takvim/Süreç</a>
+            <a class="dropdown-item" href="/ProjectBidding/Index/@ViewData["Id"]">Maliyet</a>
+            <a class="dropdown-item" href="/File/Index/@ViewData["Id"]">Dokümanlar</a>
+        </div>
+    </div>
+</div>

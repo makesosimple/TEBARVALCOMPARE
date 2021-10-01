@@ -66,7 +66,6 @@
                             <label asp-for="BiddingDate" class="col-12 col-xl-4 col-form-label">İhale Tarihi</label>
                             <div class="col-12 col-xl-8">
                                 <input asp-for="BiddingDate" type="text" class="form-control datepicker">
-                                <i class="fas fa-calendar-alt"></i>
                                 <span asp-validation-for="BiddingDate" class="text-danger"></span>
                             </div>
                         </div>
@@ -77,8 +76,7 @@
                         <div class="form-group row">
                             <label asp-for="BiddingContractCost" class="col-12 col-xl-4 col-form-label">Sözleşme Bedeli<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
-                                <input asp-for="BiddingContractCost" type="text" class="form-control" data-input-type="length" data-val="false">
-                                <i class="fas fa-coins"></i>
+                                <input asp-for="BiddingContractCost" type="text" class="form-control" data-input-type="length">
                                 <span asp-validation-for="BiddingContractCost" class="text-danger"></span>
                             </div>
                         </div>
@@ -87,8 +85,7 @@
                         <div class="form-group row">
                             <label asp-for="BiddingProgressPayment" class="col-12 col-xl-4 col-form-label">Hakediş Bedeli<span class="text-danger">*</span></label>
                             <div class="col-12 col-xl-8">
-                                <input asp-for="BiddingProgressPayment" type="text" class="form-control" data-input-type="length" data-val="false">
-                                <i class="fas fa-coins"></i>
+                                <input asp-for="BiddingProgressPayment" type="text" class="form-control" data-input-type="length">
                                 <span asp-validation-for="BiddingProgressPayment" class="text-danger"></span>
                             </div>
                         </div>
@@ -123,7 +120,7 @@
                 <div class="modal-footer">
                     <div class="buttons">
                         <button type="submit" value="Save" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
-                        <a asp-action="Index" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
+                        <a data-dismiss="modal" aria-label="Close" class="btn btn-danger"><i class="fas fa-trash-alt mr-2"></i> Vazgeç</a>
                     </div>
                 </div>
             </form>
@@ -191,4 +188,7 @@
         });
     });
 </script>
+
+<partial name="/Views/Shared/_ValidationScriptsPartial.cshtml" />
+
 

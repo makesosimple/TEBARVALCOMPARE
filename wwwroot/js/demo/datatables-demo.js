@@ -1,11 +1,17 @@
-/* Modal Scripts */
+﻿/* Modal Scripts */
 
-function modalScript(requestedItem) {
+async function modalScript(requestedItem) {
 
-    let detailsModal = $("#GeneralModal");
-    let url = $(requestedItem).data("url");
-    $.get(url).done(function (data) {
-        detailsModal.html(data);
-        detailsModal.find(".modal").modal("show");
-    });
+    const detailsModal = $("#GeneralModal");
+    const url = $(requestedItem).data("url");
+    const response = await fetch(url, {
+        method: 'GET'
+    })
+        .then(response => response.text())
+        .catch(function (error) {
+            alert("Sayfa bulunamadı.");
+            console.warn("Error: ", error);
+        });
+    detailsModal.html(response);
+    detailsModal.find(".modal").modal("show");
 }

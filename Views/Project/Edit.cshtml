@@ -25,51 +25,55 @@
     </div>
 </div>
 <div class="card shadow mb-4">
-    <div class="card-header py-3 d-flex flex-column flex-md-row align-items-center justify-content-between">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <ul class="nav nav-pills" role="tablist">
             <li class="nav-item" role="presentation">
                 <a class="nav-link active" id="tag-tab" data-toggle="tab" href="#tag" role="tab" aria-controls="tag" aria-selected="false">Künye</a>
             </li>
-            <li class="nav-item d-none d-md-block" role="presentation">
+            <li class="nav-item d-none d-xl-block" role="presentation">
                 <a class="nav-link" id="feasibility-tab" href="/ProjectFeasibility/Form/@Model.ProjectID">Fizibilite</a>
             </li>
-            <li class="nav-item d-none d-md-block" role="presentation">
+            <li class="nav-item d-none d-xl-block" role="presentation">
                 <a class="nav-link" id="associates-tab" href="/ProjectPerson/Index/@Model.ProjectID">Kişiler</a>
             </li>
-            <li class="nav-item d-none d-md-block" role="presentation">
+            <li class="nav-item d-none d-xl-block" role="presentation">
                 <a class="nav-link" id="project-relation-tab" href="/ProjectRelation/Index/@Model.ProjectID">İlişkili Projeler</a>
             </li>
-            <li class="nav-item d-none d-md-block" role="presentation">
+            <li class="nav-item d-none d-xl-block" role="presentation">
                 <a class="nav-link" id="project-field-tab" href="/Project/EditProjectField/@Model.ProjectID">Proje Alanı</a>
             </li>
-            <li class="nav-item d-none d-md-block" role="presentation">
+            <li class="nav-item d-none d-xl-block" role="presentation">
                 <a class="nav-link" id="project-field-tab" href="/ProjectMap/ProjectDetail/@Model.ProjectID">Proje Haritası</a>
             </li>
-            <li class="nav-item d-none d-md-block" role="presentation">
+            <li class="nav-item d-none d-xl-block" role="presentation">
                 <a class="nav-link" id="subfunction-tab" href="/ProjectSubfunctionFeature/Index/@Model.ProjectID">Fonksiyon</a>
             </li>
-            <li class="nav-item d-none d-md-block" role="presentation">
+            <li class="nav-item d-none d-xl-block" role="presentation">
                 <a class="nav-link" id="schedule-tab" href="/ProjectPhase/Index/@Model.ProjectID">Takvim/Süreç</a>
             </li>
-            <li class="nav-item  d-none d-md-block" role="presentation">
-                <a class="nav-link" id="schedule-tab" href="/ProjectBidding/Index/@Model.ProjectID">Maliyet</a>
+            <li class="nav-item  d-none d-xl-block" role="presentation">
+                <a class="nav-link" id="bidding-tab" href="/ProjectBidding/Index/@Model.ProjectID">Maliyet</a>
             </li>
-            <li class="nav-item dropdown d-md-none" role="presentation">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="other-tab" href="#" aria-expanded="false">Diğer İşlemler</a>
-                <ul class="dropdown-menu">
-                    <!--<li><a class="dropdown-item" href="/Project/Edit/@Model.ProjectID">Künye</a></li>-->
-                    <li><a class="dropdown-item" href="/ProjectFeasibility/Form/@Model.ProjectID">Fizibilite</a></li>
-                    <li><a class="dropdown-item" href="/ProjectPerson/Index/@Model.ProjectID">Kişiler</a></li>
-                    <li><a class="dropdown-item" href="/ProjectRelation/Index/@Model.ProjectID">İlişkili Projeler</a></li>
-                    
-                    <li><a class="dropdown-item" href="/Project/EditProjectField/@Model.ProjectID">Proje Alanı</a></li>
-                    <li><a class="dropdown-item" href="/ProjectMap/ProjectDetail/@Model.ProjectID">Proje Haritası</a></li>
-                    <li><a class="dropdown-item" href="/ProjectSubfunctionFeature/Index/@Model.ProjectID">Fonksiyon</a></li>
-                    <li><a class="dropdown-item" href="/ProjectPhase/Index/@Model.ProjectID ">Takvim/Süreç</a></li>
-                    <li><a class="dropdown-item" href="/ProjectBidding/Index/@Model.ProjectID">Maliyet</a></li>
-                </ul>
+            <li class="nav-item  d-none d-xl-block" role="presentation">
+                <a class="nav-link" id="file-tab" href="/File/Index/@Model.ProjectID">Dokümanlar</a>
             </li>
         </ul>
+        <div class="dropdown no-arrow d-block d-xl-none">
+            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-ellipsis-v fa-sm fa-fw text-primary"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" href="/ProjectFeasibility/Form/@Model.ProjectID">Fizibilite</a>
+                <a class="dropdown-item" href="/ProjectPerson/Index/@Model.ProjectID">Kişiler</a>
+                <a class="dropdown-item" href="/ProjectRelation/Index/@Model.ProjectID">İlişkili Projeler</a>
+                <a class="dropdown-item" href="/Project/EditProjectField/@Model.ProjectID">Proje Alanı</a>
+                <a class="dropdown-item" href="/ProjectMap/ProjectDetail/@Model.ProjectID">Proje Haritası</a>
+                <a class="dropdown-item" href="/ProjectSubfunctionFeature/Index/@Model.ProjectID">Fonksiyon</a>
+                <a class="dropdown-item" href="/ProjectPhase/Index/@Model.ProjectID">Takvim/Süreç</a>
+                <a class="dropdown-item" href="/ProjectBidding/Index/@Model.ProjectID">Maliyet</a>
+                <a class="dropdown-item" href="/File/Index/@Model.ProjectID">Dokümanlar</a>
+            </div>
+        </div>
     </div>
     <div class="card-body">
         <div class="tab-content my-3" id="formContent">
@@ -109,8 +113,8 @@
 
                             <!-- Project End Time -->
                             <div class="form-group row">
-                                <label asp-for="ProjectEndTime" class="col-12 col-xl-4 col-form-label">Proje Bitiş Tarihi</label>
-                                <div class="col-12 col-xl-8">
+                                <label asp-for="ProjectEndTime" class="col-12 col-lg-4 col-form-label">Proje Bitiş Tarihi</label>
+                                <div class="col-12 col-lg-8">
                                     <input asp-for="ProjectEndTime" type="text" class="form-control datepicker">
                                     <i class="fas fa-calendar-alt"></i>
                                     <span asp-validation-for="ProjectEndTime" class="text-danger"></span>
@@ -130,8 +134,8 @@
 
                             <!-- Requesting Management ID -->
                             <div class="form-group row">
-                                <label asp-for="RequestingDepartmentID" class="col-12 col-xl-4 col-form-label">Talep Eden Müdürlük</label>
-                                <div class="col-12 col-xl-8">
+                                <label asp-for="RequestingDepartmentID" class="col-12 col-lg-4 col-form-label">Talep Eden Müdürlük</label>
+                                <div class="col-12 col-lg-8">
                                     <select asp-for="RequestingDepartmentID" class="form-control" id="selectRequestingDepartment" style="width: 100%;">
                                         @if (@Model.RequestingDepartment is not null)
                                         {
@@ -149,8 +153,8 @@
 
                             <!-- Requesting Authority ID -->
                             <div class="form-group row">
-                                <label asp-for="RequestingAuthorityID" class="col-12 col-xl-4 col-form-label">Talep Eden Makam</label>
-                                <div class="col-12 col-xl-8">
+                                <label asp-for="RequestingAuthorityID" class="col-12 col-lg-4 col-form-label">Talep Eden Makam</label>
+                                <div class="col-12 col-lg-8">
                                     <select asp-for="RequestingAuthorityID" class="form-control" id="selectRequestingAuthority" style="width: 100%;">
                                         @if (@Model.RequestingAuthority is not null)
                                         {
@@ -168,8 +172,8 @@
 
                             <!-- Responsible Management ID -->
                             <div class="form-group row">
-                                <label asp-for="ResponsibleDepartmentID" class="col-12 col-xl-4 col-form-label">Sorumlu Müdürlük</label>
-                                <div class="col-12 col-xl-8">
+                                <label asp-for="ResponsibleDepartmentID" class="col-12 col-lg-4 col-form-label">Sorumlu Müdürlük</label>
+                                <div class="col-12 col-lg-8">
                                     <select asp-for="ResponsibleDepartmentID" class="form-control" id="selectResponsibleDepartment" style="width: 100%;">
                                         @if (@Model.ResponsibleDepartment is not null)
                                         {
@@ -187,8 +191,8 @@
 
                             <!-- Project Owner Person ID -->
                             <div class="form-group row">
-                                <label asp-for="ProjectOwnerPersonID" class="col-12 col-xl-4 col-form-label">Proje Sahibi<span class="text-danger">*</span></label>
-                                <div class="col-12 col-xl-8">
+                                <label asp-for="ProjectOwnerPersonID" class="col-12 col-lg-4 col-form-label">Proje Sahibi<span class="text-danger">*</span></label>
+                                <div class="col-12 col-lg-8">
                                     <select asp-for="ProjectOwnerPersonID" class="form-control" id="selectProjectOwner" style="width: 100%;" required>
                                         @if (@Model.ProjectOwnerPerson is not null)
                                         {
@@ -206,8 +210,8 @@
 
                             <!-- Project Manager ID -->
                             <div class="form-group row">
-                                <label asp-for="ProjectManagerID" class="col-12 col-xl-4 col-form-label">Proje Müdürü</label>
-                                <div class="col-12 col-xl-8">
+                                <label asp-for="ProjectManagerID" class="col-12 col-lg-4 col-form-label">Proje Müdürü</label>
+                                <div class="col-12 col-lg-8">
                                     <select asp-for="ProjectManagerID" class="form-control" id="selectProjectManager" style="width: 100%;">
                                         @if (@Model.ProjectManager is not null)
                                         {
@@ -225,8 +229,8 @@
 
                             <!-- Project Service Area ID -->
                             <div class="form-group row">
-                                <label asp-for="ProjectServiceAreaID" class="col-12 col-xl-4 col-form-label">Proje Hizmet Alanı<span class="text-danger">*</span></label>
-                                <div class="col-12 col-xl-8">
+                                <label asp-for="ProjectServiceAreaID" class="col-12 col-lg-4 col-form-label">Proje Hizmet Alanı<span class="text-danger">*</span></label>
+                                <div class="col-12 col-lg-8">
                                     <select asp-for="ProjectServiceAreaID" class="form-control" id="selectServiceArea" style="width: 100%;" required>
                                         @if (@Model.ProjectServiceArea is not null)
                                         {
@@ -244,8 +248,8 @@
 
                             <!-- Project Importance ID -->
                             <div class="form-group row">
-                                <label asp-for="ProjectImportanceID" class="col-12 col-xl-4 col-form-label">Proje Önemi</label>
-                                <div class="col-12 col-xl-8">
+                                <label asp-for="ProjectImportanceID" class="col-12 col-lg-4 col-form-label">Proje Önemi</label>
+                                <div class="col-12 col-lg-8">
                                     <select asp-for="ProjectImportanceID" class="form-control" id="selectProjectImportance" style="width: 100%;">
                                         @if (@Model.ProjectImportance is not null)
                                         {
@@ -265,8 +269,8 @@
 
                             <!-- Project Status ID -->
                             <div class="form-group row">
-                                <label asp-for="ProjectStatusID" class="col-12 col-xl-4 col-form-label">Proje Durumu<span class="text-danger">*</span></label>
-                                <div class="col-12 col-xl-8">
+                                <label asp-for="ProjectStatusID" class="col-12 col-lg-4 col-form-label">Proje Durumu<span class="text-danger">*</span></label>
+                                <div class="col-12 col-lg-8">
                                     <select asp-for="ProjectStatusID" class="form-control" id="selectProjectStatus" style="width: 100%;" required>
                                         @if (@Model.ProjectStatus is not null)
                                         {
@@ -284,8 +288,8 @@
 
                             <!-- Project Status Description -->
                             <div class="form-group row">
-                                <label asp-for="ProjectStatusDescription" class="col-12 col-xl-4 col-form-label">Proje Durumu Açıklaması</label>
-                                <div class="col-12 col-xl-8">
+                                <label asp-for="ProjectStatusDescription" class="col-12 col-lg-4 col-form-label">Proje Durumu Açıklaması</label>
+                                <div class="col-12 col-lg-8">
                                     <textarea asp-for="ProjectStatusDescription" class="form-control"></textarea>
                                     <span asp-validation-for="ProjectStatusDescription" class="text-danger"></span>
                                 </div>
@@ -293,8 +297,8 @@
 
                             <!-- Project Status Description Date -->
                             <div class="form-group row">
-                                <label asp-for="ProjectStatusDescriptionDate" class="col-12 col-xl-4 col-form-label">Proje Durumu Açıklaması Tarihi</label>
-                                <div class="col-12 col-xl-8">
+                                <label asp-for="ProjectStatusDescriptionDate" class="col-12 col-lg-4 col-form-label">Proje Durumu Açıklaması Tarihi</label>
+                                <div class="col-12 col-lg-8">
                                     <input asp-for="ProjectStatusDescriptionDate" type="text" class="form-control datepicker">
                                     <i class="fas fa-calendar-alt"></i>
                                     <span asp-validation-for="ProjectStatusDescriptionDate" class="text-danger"></span>
@@ -321,8 +325,8 @@
 
                             <!-- Project Status Description Date -->
                             <div class="form-group row">
-                                <label asp-for="ProjectProductionEndTime" class="col-12 col-xl-4 col-form-label">Proje Bitiş Tarihi (Yapım)</label>
-                                <div class="col-12 col-xl-8">
+                                <label asp-for="ProjectProductionEndTime" class="col-12 col-lg-4 col-form-label">Proje Bitiş Tarihi (Yapım)</label>
+                                <div class="col-12 col-lg-8">
                                     <input asp-for="ProjectProductionEndTime" type="text" class="form-control datepicker">
                                     <i class="fas fa-calendar-alt"></i>
                                     <span asp-validation-for="ProjectProductionEndTime" class="text-danger"></span>
@@ -331,8 +335,8 @@
 
                             <!-- Production Responsible Department ID -->
                             <div class="form-group row">
-                                <label asp-for="ProjectProductionRespDepartmentID" class="col-12 col-xl-4 col-form-label">Sorumlu Müdürlük (Yapım)</label>
-                                <div class="col-12 col-xl-8">
+                                <label asp-for="ProjectProductionRespDepartmentID" class="col-12 col-lg-4 col-form-label">Sorumlu Müdürlük (Yapım)</label>
+                                <div class="col-12 col-lg-8">
                                     <select asp-for="ProjectProductionRespDepartmentID" class="form-control" id="selectProductionResponsibleDepartment" style="width: 100%;">
                                         @if (@Model.ProjectProductionRespDepartment is not null)
                                         {
