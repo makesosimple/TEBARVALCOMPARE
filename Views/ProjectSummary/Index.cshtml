@@ -24,12 +24,10 @@
 }
 
 <div class="row">
-    <div class="justify-content-between py-2 col-12 d-flex">
+    <div class="justify-content-between align-items-center py-2 col-12 d-flex">
         <h1 class="h3">@ViewData["Title"]</h1>
-        <a href="/Project/Edit/@Model.ProjectID">
-            <button class="btn btn-success shadow" style="vertical-align: middle; height: 100%;">
-                <i class="fas fa-plus mr-2"></i> Düzenle
-            </button>
+        <a href="/Project/Edit/@Model.ProjectID" class="btn btn-success shadow">
+            <i class="fas fa-plus mr-2"></i> Düzenle
         </a>
     </div>
 </div>
