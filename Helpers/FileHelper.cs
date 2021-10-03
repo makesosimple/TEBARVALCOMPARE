@@ -74,22 +74,21 @@ namespace IBBPortal.Helpers
                     // Check if the file is empty or exceeds the size limit.
                     if (memoryStream.Length == 0)
                     {
-                        modelState.AddModelError("File", "The file is empty.");
+                        modelState.AddModelError("File", "Yüklemeye çalıştığınız dosyanın içeriği boştur.");
                     }
                     else if (memoryStream.Length > sizeLimit)
                     {
                         var megabyteSizeLimit = sizeLimit / 1048576;
                         modelState.AddModelError("File",
-                        $"The file exceeds {megabyteSizeLimit:N1} MB.");
+                        $"Dosya boyutu {megabyteSizeLimit:N1} MB'yi aşmaktadır.");
                     }
-                    //else if (!IsValidFileExtensionAndSignature(
-                    //    contentDisposition.FileName.Value, memoryStream,
-                    //    permittedExtensions))
-                    //{
-                    //    modelState.AddModelError("File",
-                    //        "The file type isn't permitted or the file's " +
-                    //        "signature doesn't match the file's extension.");
-                    //}
+                    else if (!IsValidFileExtension(
+                        contentDisposition.FileName.Value, memoryStream,
+                        permittedExtensions))
+                    {
+                        modelState.AddModelError("File",
+                            "Bu dosya formatına izin verilmemektedir.");
+                    }
                     else
                     {
                         return memoryStream.ToArray();
@@ -99,15 +98,14 @@ namespace IBBPortal.Helpers
             catch (Exception ex)
             {
                 modelState.AddModelError("File",
-                    "The upload failed. Please contact the Help Desk " +
-                    $" for support. Error: {ex.HResult}");
+                    $"Dosya yükleme başarısız. Lütfen sistem yöneticinizle iletişime geçin. Error: {ex.HResult}");
                 // Log the exception
             }
 
             return Array.Empty<byte>();
         }
 
-        private static bool IsValidFileExtensionAndSignature(string fileName, Stream data, string[] permittedExtensions)
+        private static bool IsValidFileExtension(string fileName, Stream data, string[] permittedExtensions)
         {
             if (string.IsNullOrEmpty(fileName) || data == null || data.Length == 0)
             {
@@ -120,6 +118,18 @@ namespace IBBPortal.Helpers
             {
                 return false;
             }
+
+            return true;
+        }
+
+        private static bool IsValidSignature(string fileName, Stream data, string[] permittedExtensions)
+        {
+            if (string.IsNullOrEmpty(fileName) || data == null || data.Length == 0)
+            {
+                return false;
+            }
+
+            var ext = Path.GetExtension(fileName).ToLowerInvariant();
 
             data.Position = 0;
 

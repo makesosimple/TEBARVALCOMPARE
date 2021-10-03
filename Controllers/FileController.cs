@@ -29,7 +29,7 @@ namespace IBBPortal.Controllers
         private readonly long _fileSizeLimit;
         private readonly ILogger<FileController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly string[] _permittedExtensions = { ".txt" };
+        private readonly string[] _permittedExtensions = { ".txt", ".png", ".jpg", ".pdf", ".jpeg", ".webp" };
         private readonly string _targetFilePath;
 
         // Get the default form options so that we can use them to set the default 
@@ -194,7 +194,7 @@ namespace IBBPortal.Controllers
             if (!MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
             {
                 ModelState.AddModelError("File",
-                    $"There was an error processing the request!");
+                    $"Bir hata oluştu! Lütfen daha sonra tekrar deneyin.");
                 // Log error
                 _logger.LogError("There was an error processing the request!");
                 return BadRequest(ModelState);
@@ -255,7 +255,7 @@ namespace IBBPortal.Controllers
                         // Dont forget to get File Extension from the stream!
                         var trustedFileNameForDisplay = WebUtility.HtmlEncode(contentDisposition.FileName.Value);
 
-                        var trustedFileExtension = Path.GetExtension(trustedFileNameForDisplay);
+                        var trustedFileExtension = Path.GetExtension(trustedFileNameForDisplay).ToLower();
                         var trustedFileNameForFileStorage = !String.IsNullOrEmpty(fileName) ? fileName + trustedFileExtension : trustedFileNameForDisplay;
 
                         //Add file extension to formValues Dictionary to save to the database.
