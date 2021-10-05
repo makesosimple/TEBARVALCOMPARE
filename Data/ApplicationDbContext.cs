@@ -160,6 +160,8 @@ namespace IBBPortal.Data
 
         public DbSet<IBBPortal.Models.File> File { get; set; }
 
+        public DbSet<IBBPortal.Models.ProjectType> ProjectType { get; set; }
+
     }
 
 
