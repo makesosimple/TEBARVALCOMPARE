@@ -52,7 +52,9 @@ namespace IBBPortal.Controllers
 
                 var data = _context.ProjectType.Select(c => new { 
                     c.Id, 
-                    c.Title }).AsQueryable();
+                    c.Title,
+                    UserName = c.User.UserName 
+                }).AsQueryable();
 
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
@@ -158,15 +160,30 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,UserID,CreationDate")] ProjectType projectType)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(projectType);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    projectType.CreationDate = DateTime.Now;
+                    projectType.UserID = _userManager.GetUserId(HttpContext.User);
+
+                    _context.Add(projectType);
+                    await _context.SaveChangesAsync();
+
+                    TempData["SuccessTitle"] = "BAŞARILI";
+                    TempData["SuccessMessage"] = $"Kayıt başarıyla oluşturuldu.";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                catch(Exception)
+                {
+                    TempData["ErrorTitle"] = "HATA";
+                    TempData["ErrorMessage"] = $"Kayıt oluşturulamadı.";
+                    return RedirectToAction(nameof(Index));
+                }
             }
-            ViewData["UserID"] = new SelectList(_context.Users, "Id", "Id", projectType.UserID);
             return View(projectType);
         }
 
@@ -179,48 +196,53 @@ namespace IBBPortal.Controllers
             }
 
             var projectType = await _context.ProjectType.FindAsync(id);
+
             if (projectType == null)
             {
                 return NotFound();
             }
-            ViewData["UserID"] = new SelectList(_context.Users, "Id", "Id", projectType.UserID);
+
             return View(projectType);
         }
 
         // POST: ProjectType/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProjectTypeID,Title,Description,UserID,CreationDate,UpdateDate,DeletionDate")] ProjectType projectType)
+        public async Task<IActionResult> EditProjectType(int? id)
         {
-            if (id != projectType.ProjectTypeID)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var projectTypeToUpdate = await _context.ProjectType.FindAsync(id);
+
+            if (projectTypeToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            projectTypeToUpdate.UpdateDate = DateTime.Now;
+
+            if (await TryUpdateModelAsync<ProjectType>(projectTypeToUpdate, "",
+                x => x.Title, x => x.Description,
+                x => x.UpdateDate))
             {
                 try
                 {
-                    _context.Update(projectType);
+                    _context.Update(projectTypeToUpdate);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProjectTypeExists(projectType.ProjectTypeID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    TempData["ErrorTitle"] = "HATA";
+                    TempData["ErrorMessage"] = $"Kayıt oluşturulamadı.";
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserID"] = new SelectList(_context.Users, "Id", "Id", projectType.UserID);
-            return View(projectType);
+            return View(projectTypeToUpdate);
         }
 
         // GET: ProjectType/Delete/5
@@ -233,13 +255,13 @@ namespace IBBPortal.Controllers
 
             var projectType = await _context.ProjectType
                 .Include(p => p.User)
-                .FirstOrDefaultAsync(m => m.ProjectTypeID == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (projectType == null)
             {
                 return NotFound();
             }
 
-            return View(projectType);
+            return PartialView("_DeleteModal", projectType);
         }
 
         // POST: ProjectType/Delete/5
@@ -248,14 +270,33 @@ namespace IBBPortal.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var projectType = await _context.ProjectType.FindAsync(id);
-            _context.ProjectType.Remove(projectType);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            if (!ProjectTypeExists(id))
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                _context.ProjectType.Remove(projectType);
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessTitle"] = "BAŞARILI";
+                TempData["SuccessMessage"] = $"Kayıt başarıyla silindi.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            catch (DbUpdateException)
+            {
+                TempData["ErrorTitle"] = "HATA";
+                TempData["ErrorMessage"] = $"Bu değer, başka alanlarda kullanımda olduğu için silemezsiniz. Lütfen sistem yöneticinizle görüşün.";
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         private bool ProjectTypeExists(int id)
         {
-            return _context.ProjectType.Any(e => e.ProjectTypeID == id);
+            return _context.ProjectType.Any(e => e.Id == id);
         }
     }
 }
