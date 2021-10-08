@@ -16,7 +16,7 @@ namespace IBBPortal.Helpers
 
         public static string ProjectRelation => "ProjectRelation/Index";
 
-        public static string ProjectField => "Project/EditProjectField";
+        public static string ProjectField => "ProjectField/Edit";
 
         public static string ProjectMap => "ProjectMap/ProjectDetail";
 

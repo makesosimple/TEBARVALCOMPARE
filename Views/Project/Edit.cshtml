@@ -25,56 +25,11 @@
     </div>
 </div>
 <div class="card shadow mb-4">
-    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <ul class="nav nav-pills" role="tablist">
-            <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="tag-tab" data-toggle="tab" href="#tag" role="tab" aria-controls="tag" aria-selected="false">Künye</a>
-            </li>
-            <li class="nav-item d-none d-xl-block" role="presentation">
-                <a class="nav-link" id="feasibility-tab" href="/ProjectFeasibility/Form/@Model.ProjectID">Fizibilite</a>
-            </li>
-            <li class="nav-item d-none d-xl-block" role="presentation">
-                <a class="nav-link" id="associates-tab" href="/ProjectPerson/Index/@Model.ProjectID">Kişiler</a>
-            </li>
-            <li class="nav-item d-none d-xl-block" role="presentation">
-                <a class="nav-link" id="project-relation-tab" href="/ProjectRelation/Index/@Model.ProjectID">İlişkili Projeler</a>
-            </li>
-            <li class="nav-item d-none d-xl-block" role="presentation">
-                <a class="nav-link" id="project-field-tab" href="/Project/EditProjectField/@Model.ProjectID">Proje Alanı</a>
-            </li>
-            <li class="nav-item d-none d-xl-block" role="presentation">
-                <a class="nav-link" id="project-field-tab" href="/ProjectMap/ProjectDetail/@Model.ProjectID">Proje Haritası</a>
-            </li>
-            <li class="nav-item d-none d-xl-block" role="presentation">
-                <a class="nav-link" id="subfunction-tab" href="/ProjectSubfunctionFeature/Index/@Model.ProjectID">Fonksiyon</a>
-            </li>
-            <li class="nav-item d-none d-xl-block" role="presentation">
-                <a class="nav-link" id="schedule-tab" href="/ProjectPhase/Index/@Model.ProjectID">Takvim/Süreç</a>
-            </li>
-            <li class="nav-item  d-none d-xl-block" role="presentation">
-                <a class="nav-link" id="bidding-tab" href="/ProjectBidding/Index/@Model.ProjectID">Maliyet</a>
-            </li>
-            <li class="nav-item  d-none d-xl-block" role="presentation">
-                <a class="nav-link" id="file-tab" href="/File/Index/@Model.ProjectID">Dokümanlar</a>
-            </li>
-        </ul>
-        <div class="dropdown no-arrow d-block d-xl-none">
-            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-ellipsis-v fa-sm fa-fw text-primary"></i>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" href="/ProjectFeasibility/Form/@Model.ProjectID">Fizibilite</a>
-                <a class="dropdown-item" href="/ProjectPerson/Index/@Model.ProjectID">Kişiler</a>
-                <a class="dropdown-item" href="/ProjectRelation/Index/@Model.ProjectID">İlişkili Projeler</a>
-                <a class="dropdown-item" href="/Project/EditProjectField/@Model.ProjectID">Proje Alanı</a>
-                <a class="dropdown-item" href="/ProjectMap/ProjectDetail/@Model.ProjectID">Proje Haritası</a>
-                <a class="dropdown-item" href="/ProjectSubfunctionFeature/Index/@Model.ProjectID">Fonksiyon</a>
-                <a class="dropdown-item" href="/ProjectPhase/Index/@Model.ProjectID">Takvim/Süreç</a>
-                <a class="dropdown-item" href="/ProjectBidding/Index/@Model.ProjectID">Maliyet</a>
-                <a class="dropdown-item" href="/File/Index/@Model.ProjectID">Dokümanlar</a>
-            </div>
-        </div>
-    </div>
+    @await Html.PartialAsync("~/Views/Project/_ManageNavigation.cshtml",
+    new ViewDataDictionary(ViewData)
+    {
+        { "Id", @Model.ProjectID }
+    })
     <div class="card-body">
         <div class="tab-content my-3" id="formContent">
             <div class="tab-pane fade active show" id="tag" role="tabpanel" aria-labelledby="tag-tab">
@@ -130,6 +85,25 @@
                                 </div>
                             </div>
 
+                            <!-- Project Type ID -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectTypeID" class="col-12 col-xl-4 col-form-label">Proje Türü</label>
+                                <div class="col-12 col-xl-8">
+                                    <select asp-for="ProjectTypeID" class="form-control" id="selectProjectType" style="width: 100%;">
+                                        @if (@Model.ProjectType is not null)
+                                        {
+                                            <option value="@Model.ProjectType.Id">@Model.ProjectType.Title</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="">Proje Türü Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ProjectTypeID" class="text-danger"></span>
+                                </div>
+                            </div>
+
                             <hr />
 
                             <!-- Requesting Management ID -->
@@ -151,6 +125,27 @@
                                 </div>
                             </div>
 
+                            <!-- Responsible Management ID -->
+                            <div class="form-group row">
+                                <label asp-for="ResponsibleDepartmentID" class="col-12 col-lg-4 col-form-label">Sorumlu Müdürlük</label>
+                                <div class="col-12 col-lg-8">
+                                    <select asp-for="ResponsibleDepartmentID" class="form-control" id="selectResponsibleDepartment" style="width: 100%;">
+                                        @if (@Model.ResponsibleDepartment is not null)
+                                        {
+                                            <option value="@Model.ResponsibleDepartment.DepartmentID">@Model.ResponsibleDepartment.DepartmentTitle</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="">Sorumlu Müdürlük Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ResponsibleDepartmentID" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <hr />
+
                             <!-- Requesting Authority ID -->
                             <div class="form-group row">
                                 <label asp-for="RequestingAuthorityID" class="col-12 col-lg-4 col-form-label">Talep Eden Makam</label>
@@ -170,24 +165,16 @@
                                 </div>
                             </div>
 
-                            <!-- Responsible Management ID -->
+                            <!-- Requesting Authority Description -->
                             <div class="form-group row">
-                                <label asp-for="ResponsibleDepartmentID" class="col-12 col-lg-4 col-form-label">Sorumlu Müdürlük</label>
-                                <div class="col-12 col-lg-8">
-                                    <select asp-for="ResponsibleDepartmentID" class="form-control" id="selectResponsibleDepartment" style="width: 100%;">
-                                        @if (@Model.ResponsibleDepartment is not null)
-                                        {
-                                            <option value="@Model.ResponsibleDepartment.DepartmentID">@Model.ResponsibleDepartment.DepartmentTitle</option>
-                                        }
-
-                                        else
-                                        {
-                                            <option value="">Sorumlu Müdürlük Seçin</option>
-                                        }
-                                    </select>
-                                    <span asp-validation-for="ResponsibleDepartmentID" class="text-danger"></span>
+                                <label asp-for="RequestingAuthorityDescription" class="col-12 col-xl-4 col-form-label">Talep Açıklaması</label>
+                                <div class="col-12 col-xl-8">
+                                    <textarea asp-for="RequestingAuthorityDescription" class="form-control"></textarea>
+                                    <span asp-validation-for="RequestingAuthorityDescription" class="text-danger"></span>
                                 </div>
                             </div>
+
+                            <hr />
 
                             <!-- Project Owner Person ID -->
                             <div class="form-group row">
@@ -243,6 +230,25 @@
                                         }
                                     </select>
                                     <span asp-validation-for="ProjectServiceAreaID" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Project Additional Service Area ID -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectAdditionalServiceAreaID" class="col-12 col-xl-4 col-form-label">Ek Hizmet Alanı</label>
+                                <div class="col-12 col-xl-8">
+                                    <select asp-for="ProjectAdditionalServiceAreaID" class="form-control" id="selectAdditionalServiceArea" style="width: 100%;">
+                                        @if (@Model.ProjectAdditionalServiceArea is not null)
+                                        {
+                                            <option value="@Model.ProjectAdditionalServiceArea.ServiceAreaID">@Model.ProjectAdditionalServiceArea.ServiceAreaTitle</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="">Ek Hizmet Alanı Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ProjectAdditionalServiceAreaID" class="text-danger"></span>
                                 </div>
                             </div>
 
@@ -352,6 +358,46 @@
                                 </div>
                             </div>
 
+                            <!-- Project Status Description Date -->
+                            <div class="form-group row">
+                                <label asp-for="RespDepartmentTransferDate" class="col-12 col-xl-4 col-form-label">Sorumlu Müdürlüğe Gönderim Tarihi (Yapım)</label>
+                                <div class="col-12 col-xl-8">
+                                    <input asp-for="RespDepartmentTransferDate" type="text" class="form-control datepicker">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span asp-validation-for="RespDepartmentTransferDate" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <hr />
+
+                            <!-- Production Production Status ID -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectProductionStatusID" class="col-12 col-xl-4 col-form-label">Yapım İşinin Durumu</label>
+                                <div class="col-12 col-xl-8">
+                                    <select asp-for="ProjectProductionStatusID" class="form-control" id="selectProjectProductionStatus" style="width: 100%;">
+                                        @if (@Model.ProjectProductionStatus is not null)
+                                        {
+                                            <option value="@Model.ProjectProductionStatus.ProjectStatusID">@Model.ProjectProductionStatus.ProjectStatusTitle</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="">Durum Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ProjectProductionStatusID" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Project Production Status Description -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectProductionStatusDescription" class="col-12 col-xl-4 col-form-label">Yapım İşinin Durum Açıklaması</label>
+                                <div class="col-12 col-xl-8">
+                                    <textarea asp-for="ProjectProductionStatusDescription" class="form-control"></textarea>
+                                    <span asp-validation-for="ProjectProductionStatusDescription" class="text-danger"></span>
+                                </div>
+                            </div>
+
                             <hr />
 
                             <!-- Project Object ID -->
@@ -416,110 +462,125 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-    <script>
-        $('#selectRequestingDepartment').select2({
-            theme: "ibb",
-            language: "tr",
-            ajax: {
-                url: '/Department/JsonSelectData',
-                dataType: 'json',
-                processResults: function (response) {
+<script>
+    $('#selectRequestingDepartment').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/Department/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
 
-                    return {
-                        results: response.results,
-                    };
-                }
+                return {
+                    results: response.results,
+                };
             }
-        });
+        }
+    });
 
-        $('#selectResponsibleDepartment, #selectProductionResponsibleDepartment').select2({
-            theme: "ibb",
-            language: "tr",
-            ajax: {
-                url: '/Department/JsonSelectData',
-                dataType: 'json',
-                processResults: function (response) {
+    $('#selectResponsibleDepartment, #selectProductionResponsibleDepartment').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/Department/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
 
-                    return {
-                        results: response.results,
-                    };
-                }
+                return {
+                    results: response.results,
+                };
             }
-        });
+        }
+    });
 
-        $('#selectProjectOwner, #selectProjectManager').select2({
-            theme: "ibb",
-            language: "tr",
-            ajax: {
-                url: '/Person/JsonSelectData',
-                dataType: 'json',
-                processResults: function (response) {
+    $('#selectProjectOwner, #selectProjectManager').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/Person/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
 
-                    return {
-                        results: response.results,
-                    };
-                }
+                return {
+                    results: response.results,
+                };
             }
-        });
+        }
+    });
 
-        $('#selectRequestingAuthority').select2({
-            theme: "ibb",
-            language: "tr",
-            ajax: {
-                url: '/Authority/JsonSelectData',
-                dataType: 'json',
-                processResults: function (response) {
+    $('#selectRequestingAuthority').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/Authority/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
 
-                    return {
-                        results: response.results,
-                    };
-                }
+                return {
+                    results: response.results,
+                };
             }
-        });
+        }
+    });
 
-        $('#selectServiceArea').select2({
-            theme: "ibb",
-            language: "tr",
-            ajax: {
-                url: '/ServiceArea/JsonSelectData',
-                dataType: 'json',
-                processResults: function (response) {
+    $('#selectServiceArea, #selectAdditionalServiceArea').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/ServiceArea/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
 
-                    return {
-                        results: response.results,
-                    };
-                }
+                return {
+                    results: response.results,
+                };
             }
-        });
+        }
+    });
 
-        $('#selectProjectImportance').select2({
-            theme: "ibb",
-            language: "tr",
-            ajax: {
-                url: '/ProjectImportance/JsonSelectData',
-                dataType: 'json',
-                processResults: function (response) {
+    $('#selectProjectImportance').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/ProjectImportance/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
 
-                    return {
-                        results: response.results,
-                    };
-                }
+                return {
+                    results: response.results,
+                };
             }
-        });
+        }
+    });
 
-        $('#selectProjectStatus').select2({
-            theme: "ibb",
-            language: "tr",
-            ajax: {
-                url: '/ProjectStatus/JsonSelectData',
-                dataType: 'json',
-                processResults: function (response) {
+    $('#selectProjectType').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/ProjectType/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
 
-                    return {
-                        results: response.results,
-                    };
-                }
+                return {
+                    results: response.results,
+                };
             }
-        });
-    </script>
+        }
+    });
+
+    $('#selectProjectStatus, #selectProjectProductionStatus').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/ProjectStatus/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
+
+                return {
+                    results: response.results,
+                };
+            }
+        }
+    });
+</script>
 }

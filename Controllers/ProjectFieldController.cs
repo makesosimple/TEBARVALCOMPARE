@@ -1,0 +1,402 @@
+﻿using IBBPortal.Data;
+using IBBPortal.Models;
+using IBBPortal.Static;
+using IBBPortal.ViewModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using NetTopologySuite.Geometries;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace IBBPortal.Controllers
+{
+    public class ProjectFieldController : Controller
+    {
+        private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        public ProjectFieldController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        {
+            _context = context;
+            _userManager = userManager;
+        }
+
+        // GET: Project/EditProjectField/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            //Define ViewModel for Project Field
+            EditProjectFieldViewModel model = new EditProjectFieldViewModel();
+
+            //Attach Desired Entities to ViewModel
+            model.ProjectTitle = _context.Project.Single(m => m.ProjectID == id).ProjectTitle;
+
+            model.ProjectField = await _context.ProjectField
+                .Include(p => p.District)
+                .Include(p => p.City)
+                .FirstOrDefaultAsync(m => m.ProjectID == id);
+
+            model.ProjectBoardApproval = await _context.ProjectBoardApproval
+                .Include(p => p.Board)
+                .FirstOrDefaultAsync(m => m.Project.ProjectID == id);
+
+            model.ProjectZoningPlan = await _context.ProjectZoningPlan
+                .Include(p => p.ZoningPlanModificationStatus)
+                .Include(p => p.ZoningPlanResponsiblePerson)
+                .Include(p => p.ZoningPlanStatus1000)
+                .Include(p => p.ZoningPlanStatus5000)
+                .FirstOrDefaultAsync(m => m.Project.ProjectID == id);
+
+            model.ProjectExpropriation = await _context.ProjectExpropriation
+                .Include(c => c.PropertyStatus)
+                .Include(c => c.ExpropriationStatus)
+                .FirstOrDefaultAsync(m => m.Project.ProjectID == id);
+
+            model.ProjectPermission = await _context.ProjectPermission
+                .Include(m => m.Organization)
+                .FirstOrDefaultAsync(m => m.Project.ProjectID == id);
+
+            ViewBag.ProjectID = id;
+            return View(model);
+        }
+
+        // POST: Project/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProjectField(int? id, EditProjectFieldViewModel model)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            //Current Date
+            var CurrentDate = DateTime.Now;
+
+            //Log User for Activity LOG
+            var CurrentUser = _userManager.GetUserId(HttpContext.User);
+
+            var projectFieldToUpdate = await _context.ProjectField.FirstOrDefaultAsync(c => c.ProjectID == id);
+            var projectBoardApprovalToUpdate = await _context.ProjectBoardApproval.FirstOrDefaultAsync(c => c.ProjectID == id);
+            var projectZoningPlanToUpdate = await _context.ProjectZoningPlan.FirstOrDefaultAsync(c => c.ProjectID == id);
+            var projectExpropriationToUpdate = await _context.ProjectExpropriation.FirstOrDefaultAsync(c => c.ProjectID == id);
+            var projectPermissionToUpdate = await _context.ProjectPermission.FirstOrDefaultAsync(c => c.ProjectID == id);
+
+            //ProjectField
+            if (projectFieldToUpdate == null)
+            {
+                ProjectField projectField = new ProjectField();
+
+
+                double projectLongitude = Convert.ToDouble(Request.Form["ProjectLongitude"].FirstOrDefault());
+                double projectLatitude = Convert.ToDouble(Request.Form["ProjectLatitude"].FirstOrDefault());
+
+                projectField.ProjectPoint = new Point(projectLatitude, projectLongitude) { SRID = 4326 };
+
+                projectField.ProjectID = id;
+                projectField.IsProjectInIstanbul = model.ProjectField.IsProjectInIstanbul;
+                projectField.DistrictID = model.ProjectField.DistrictID;
+                projectField.CityID = model.ProjectField.CityID;
+                projectField.ProjectAddress = model.ProjectField.ProjectAddress;
+                projectField.ProjectArea = model.ProjectField.ProjectArea;
+                projectField.ProjectConstructionArea = model.ProjectField.ProjectConstructionArea;
+                projectField.ProjectPaysageArea = model.ProjectField.ProjectPaysageArea;
+                projectField.ProjectPaftaAdaParsel = model.ProjectField.ProjectPaftaAdaParsel;
+                projectField.ProjectLongitude = model.ProjectField.ProjectLongitude;
+                projectField.ProjectLatitude = model.ProjectField.ProjectLatitude;
+                projectField.KML = model.ProjectField.KML;
+                TransactionLogger.logTransaction(_context, (int)id, "created-project-field", _userManager.GetUserId(HttpContext.User));
+                string coordinates = null;
+
+                if (model.ProjectField.KML != null)
+                {
+                    try
+                    {
+                        var rx_coordinates = new Regex("<coordinates>(.|\n)*?</coordinates>");
+                        coordinates = rx_coordinates.Match(model.ProjectField.KML).Groups[0].Value;
+                        coordinates = coordinates.Replace("<coordinates>", "");
+                        coordinates = coordinates.Replace("</coordinates>", "");
+                        Debug.WriteLine("model.ProjectField.KML = " + model.ProjectField.KML);
+                        //coordinates = v.Groups[1].Value;
+                        coordinates = coordinates.Replace("\n", "").Replace("\r", "");
+                        coordinates = coordinates.Replace(",0", " ");
+                        coordinates = Regex.Replace(coordinates, @"\s+", " ");
+                        coordinates = coordinates.Trim();
+                        Debug.WriteLine("coordinates = " + coordinates);
+                    }
+                    catch
+                    {
+                        coordinates = null;
+                    }
+
+                }
+
+                //projectField.ProjectPolygon = 
+                // Read: https://csharp.hotexamples.com/examples/NetTopologySuite.Geometries/Polygon/-/php-polygon-class-examples.html
+                // Read: https://www.csharpcodi.com/csharp-examples/NetTopologySuite.IO.WKTReader.Read(System.IO.TextReader)/
+                if (coordinates != null)
+                {
+                    var formattedCoordinates = coordinates.Replace(",", ";").Replace(" ", ",").Replace(";", " ");
+                    Console.WriteLine(formattedCoordinates);
+                    var reader = new NetTopologySuite.IO.WKTReader();
+                    //var geom = reader.Read(@"SRID=4326;POLYGON((" + formattedCoordinates + "))");
+                    var geomls = reader.Read(@"SRID=4326;LINESTRING(" + formattedCoordinates + ")");
+                    //var polygon = new Polygon(null) { SRID = 4326 };
+                    //var polygon = (Polygon)geom;
+                    var linestring = (LineString)geomls;
+                    //projectField.ProjectPolygon = polygon;
+                    projectField.ProjectLineString = linestring;
+                }
+
+                //projectField.ProjectPolygon = new Polygon(new LinearRing(new LineString()
+                projectField.coordinates = coordinates; // model.ProjectField.KML;
+                projectField.CreationDate = CurrentDate;
+                projectField.UserID = CurrentUser;
+
+                _context.Add(projectField);
+                projectFieldToUpdate = projectField;
+
+            }
+            else
+            {
+                double projectLongitude = Convert.ToDouble(Request.Form["ProjectLongitude"].FirstOrDefault());
+                double projectLatitude = Convert.ToDouble(Request.Form["ProjectLatitude"].FirstOrDefault());
+
+                projectFieldToUpdate.ProjectPoint = new Point(projectLatitude, projectLongitude) { SRID = 4326 };
+
+                projectFieldToUpdate.ProjectID = id;
+                projectFieldToUpdate.IsProjectInIstanbul = model.ProjectField.IsProjectInIstanbul;
+                projectFieldToUpdate.DistrictID = model.ProjectField.DistrictID;
+                projectFieldToUpdate.CityID = model.ProjectField.CityID;
+                projectFieldToUpdate.ProjectAddress = model.ProjectField.ProjectAddress;
+                projectFieldToUpdate.ProjectArea = model.ProjectField.ProjectArea;
+                projectFieldToUpdate.ProjectConstructionArea = model.ProjectField.ProjectConstructionArea;
+                projectFieldToUpdate.ProjectPaysageArea = model.ProjectField.ProjectPaysageArea;
+                projectFieldToUpdate.ProjectPaftaAdaParsel = model.ProjectField.ProjectPaftaAdaParsel;
+                projectFieldToUpdate.ProjectLongitude = model.ProjectField.ProjectLongitude;
+                projectFieldToUpdate.ProjectLatitude = model.ProjectField.ProjectLatitude;
+                //XDocument doc = XDocument.Parse(model.ProjectField.KML);
+                //string coordinates = null;
+                projectFieldToUpdate.KML = model.ProjectField.KML;
+                string coordinates = null;
+                TransactionLogger.logTransaction(_context, (int)id, "updated-project-field", _userManager.GetUserId(HttpContext.User));
+
+                if (model.ProjectField.KML != null)
+                {
+                    try
+                    {
+                        var rx_coordinates = new Regex("<coordinates>(.|\n)*?</coordinates>");
+                        coordinates = rx_coordinates.Match(model.ProjectField.KML).Groups[0].Value;
+                        coordinates = coordinates.Replace("<coordinates>", "");
+                        coordinates = coordinates.Replace("</coordinates>", "");
+                        Debug.WriteLine("model.ProjectField.KML = " + model.ProjectField.KML);
+                        //coordinates = v.Groups[1].Value;
+                        coordinates = coordinates.Replace("\n", "").Replace("\r", "");
+                        coordinates = coordinates.Replace(",0", " ");
+                        coordinates = Regex.Replace(coordinates, @"\s+", " ");
+                        coordinates = coordinates.Trim();
+                        Debug.WriteLine("coordinates = " + coordinates);
+                    }
+                    catch
+                    {
+                        coordinates = null;
+                    }
+
+                }
+
+                projectFieldToUpdate.coordinates = coordinates; // model.ProjectField.KML;
+                projectFieldToUpdate.UpdateDate = CurrentDate;
+
+                if (coordinates != null)
+                {
+                    var formattedCoordinates = coordinates.Replace(",", ";").Replace(" ", ",").Replace(";", " ");
+                    Debug.WriteLine("formattedCoordinates=" + formattedCoordinates);
+                    var reader = new NetTopologySuite.IO.WKTReader();
+                    //var geom = reader.Read(@"SRID=4326;POLYGON((" + formattedCoordinates + "))");
+                    var geomls = reader.Read(@"SRID=4326;LINESTRING(" + formattedCoordinates + ")");
+                    //var polygon = new Polygon(null) { SRID = 4326 };
+                    //var polygon = (Polygon)geom;
+                    var linestring = (LineString)geomls;
+                    //projectFieldToUpdate.ProjectPolygon = polygon;
+                    projectFieldToUpdate.ProjectLineString = linestring;
+                }
+            }
+
+            //Project Board Approval
+            if (projectBoardApprovalToUpdate == null)
+            {
+                var projectBoardApproval = new Handler<ProjectBoardApproval>();
+
+                projectBoardApproval.ProjectID = id;
+                projectBoardApproval.UserID = CurrentUser;
+                projectBoardApproval.CreationDate = CurrentDate;
+
+                _context.Add(projectBoardApproval);
+            }
+            else
+            {
+                projectBoardApprovalToUpdate.ProjectID = id;
+                projectBoardApprovalToUpdate.IsBoardApprovalNeeded = model.ProjectBoardApproval.IsBoardApprovalNeeded;
+                projectBoardApprovalToUpdate.BoardID = model.ProjectBoardApproval.BoardID;
+                projectBoardApprovalToUpdate.ProjectBoardApprovalDate = model.ProjectBoardApproval.ProjectBoardApprovalDate;
+                projectBoardApprovalToUpdate.ProjectBoardApprovalReason = model.ProjectBoardApproval.ProjectBoardApprovalReason;
+                projectBoardApprovalToUpdate.UpdateDate = CurrentDate;
+            }
+
+            //Project Zoning Plan
+            if (projectZoningPlanToUpdate == null)
+            {
+                //For creation we need a Model that is connected to a Database.
+                ProjectZoningPlan projectZoningPlan = new ProjectZoningPlan();
+
+                projectZoningPlan.ProjectID = id;
+                projectZoningPlan.ZoningPlanStatusID1000 = model.ProjectZoningPlan.ZoningPlanStatusID1000;
+                projectZoningPlan.ZoningPlanDate1000 = model.ProjectZoningPlan.ZoningPlanDate1000;
+                projectZoningPlan.ZoningPlanStatusID5000 = model.ProjectZoningPlan.ZoningPlanStatusID5000;
+                projectZoningPlan.ZoningPlanDate5000 = model.ProjectZoningPlan.ZoningPlanDate5000;
+                projectZoningPlan.ZoningPlanModificationNeeded = model.ProjectZoningPlan.ZoningPlanModificationNeeded;
+                projectZoningPlan.ZoningPlanModificationReason = model.ProjectZoningPlan.ZoningPlanModificationReason;
+                projectZoningPlan.ModificationApprovalDate = model.ProjectZoningPlan.ModificationApprovalDate;
+                projectZoningPlan.ModificationProposalDate = model.ProjectZoningPlan.ModificationProposalDate;
+                projectZoningPlan.ZoningPlanModificationStatusID = model.ProjectZoningPlan.ZoningPlanModificationStatusID;
+                projectZoningPlan.ZoningPlanResponsiblePersonID = model.ProjectZoningPlan.ZoningPlanResponsiblePersonID;
+                projectZoningPlan.UserID = CurrentUser;
+                projectZoningPlan.CreationDate = CurrentDate;
+                TransactionLogger.logTransaction(_context, (int)id, "zoning-plan-created", _userManager.GetUserId(HttpContext.User));
+                _context.Add(projectZoningPlan);
+            }
+
+            else
+            {
+                projectZoningPlanToUpdate.ProjectID = id;
+                projectZoningPlanToUpdate.ZoningPlanStatusID1000 = model.ProjectZoningPlan.ZoningPlanStatusID1000;
+                projectZoningPlanToUpdate.ZoningPlanDate1000 = model.ProjectZoningPlan.ZoningPlanDate1000;
+                projectZoningPlanToUpdate.ZoningPlanStatusID5000 = model.ProjectZoningPlan.ZoningPlanStatusID5000;
+                projectZoningPlanToUpdate.ZoningPlanDate5000 = model.ProjectZoningPlan.ZoningPlanDate5000;
+                projectZoningPlanToUpdate.ZoningPlanModificationNeeded = model.ProjectZoningPlan.ZoningPlanModificationNeeded;
+                projectZoningPlanToUpdate.ZoningPlanModificationReason = model.ProjectZoningPlan.ZoningPlanModificationReason;
+                projectZoningPlanToUpdate.ModificationApprovalDate = model.ProjectZoningPlan.ModificationApprovalDate;
+                projectZoningPlanToUpdate.ModificationProposalDate = model.ProjectZoningPlan.ModificationProposalDate;
+                projectZoningPlanToUpdate.ZoningPlanModificationStatusID = model.ProjectZoningPlan.ZoningPlanModificationStatusID;
+                projectZoningPlanToUpdate.ZoningPlanResponsiblePersonID = model.ProjectZoningPlan.ZoningPlanResponsiblePersonID;
+                TransactionLogger.logTransaction(_context, (int)id, "zoning-plan-updated", _userManager.GetUserId(HttpContext.User));
+                projectZoningPlanToUpdate.UpdateDate = CurrentDate;
+            }
+
+            //Project Expropriation
+            if (projectExpropriationToUpdate == null)
+            {
+                //For creation we need a Model that is connected to a Database.
+                ProjectExpropriation projectExpropriation = new ProjectExpropriation();
+
+                projectExpropriation.ProjectID = id;
+                projectExpropriation.PropertyStatusID = model.ProjectExpropriation.PropertyStatusID;
+                projectExpropriation.PropertyStatusDescription = model.ProjectExpropriation.PropertyStatusDescription;
+                projectExpropriation.ProjectExpropriationDescription = model.ProjectExpropriation.ProjectExpropriationDescription;
+                projectExpropriation.ProjectNeedsExpropriation = model.ProjectExpropriation.ProjectNeedsExpropriation;
+                projectExpropriation.ProjectExpropriationDate = model.ProjectExpropriation.ProjectExpropriationDate;
+                projectExpropriation.ProjectExpropriationCost = model.ProjectExpropriation.ProjectExpropriationCost;
+                projectExpropriation.ProjectExpropriationCost = model.ProjectExpropriation.ProjectExpropriationCost;
+                projectExpropriation.ExpropriationStatusID = model.ProjectExpropriation.ExpropriationStatusID;
+                projectExpropriation.ProjectExpropriationStatusDesc = model.ProjectExpropriation.ProjectExpropriationStatusDesc;
+                projectExpropriation.UserID = CurrentUser;
+                projectExpropriation.CreationDate = CurrentDate;
+                TransactionLogger.logTransaction(_context, (int)id, "expropriation-created", _userManager.GetUserId(HttpContext.User));
+                _context.Add(projectExpropriation);
+            }
+
+            else
+            {
+                projectExpropriationToUpdate.ProjectID = id;
+                projectExpropriationToUpdate.PropertyStatusID = model.ProjectExpropriation.PropertyStatusID;
+                projectExpropriationToUpdate.PropertyStatusDescription = model.ProjectExpropriation.PropertyStatusDescription;
+                projectExpropriationToUpdate.ProjectExpropriationDescription = model.ProjectExpropriation.ProjectExpropriationDescription;
+                projectExpropriationToUpdate.ProjectNeedsExpropriation = model.ProjectExpropriation.ProjectNeedsExpropriation;
+                projectExpropriationToUpdate.ProjectExpropriationDate = model.ProjectExpropriation.ProjectExpropriationDate;
+                projectExpropriationToUpdate.ProjectExpropriationCost = model.ProjectExpropriation.ProjectExpropriationCost;
+                projectExpropriationToUpdate.ProjectExpropriationCost = model.ProjectExpropriation.ProjectExpropriationCost;
+                projectExpropriationToUpdate.ExpropriationStatusID = model.ProjectExpropriation.ExpropriationStatusID;
+                projectExpropriationToUpdate.ProjectExpropriationStatusDesc = model.ProjectExpropriation.ProjectExpropriationStatusDesc;
+                projectExpropriationToUpdate.UpdateDate = CurrentDate;
+                TransactionLogger.logTransaction(_context, (int)id, "expropriation-updated", _userManager.GetUserId(HttpContext.User));
+            }
+
+            //Project Permission
+            if (projectPermissionToUpdate == null)
+            {
+                //For creation we need a Model that is connected to a Database.
+                ProjectPermission projectPermission = new ProjectPermission();
+
+                projectPermission.ProjectID = id;
+                projectPermission.OrganizationID = model.ProjectPermission.OrganizationID;
+                projectPermission.IsPermissionNeeded = model.ProjectPermission.IsPermissionNeeded;
+                projectPermission.ProjectPermissionDate = model.ProjectPermission.ProjectPermissionDate;
+                projectPermission.ProjectPermissionReason = model.ProjectPermission.ProjectPermissionReason;
+                projectPermission.UserID = CurrentUser;
+                projectPermission.CreationDate = CurrentDate;
+                TransactionLogger.logTransaction(_context, (int)id, "permission-created", _userManager.GetUserId(HttpContext.User));
+                _context.Add(projectPermission);
+            }
+
+            else
+            {
+                projectPermissionToUpdate.ProjectID = id;
+                projectPermissionToUpdate.OrganizationID = model.ProjectPermission.OrganizationID;
+                projectPermissionToUpdate.IsPermissionNeeded = model.ProjectPermission.IsPermissionNeeded;
+                projectPermissionToUpdate.ProjectPermissionDate = model.ProjectPermission.ProjectPermissionDate;
+                projectPermissionToUpdate.ProjectPermissionReason = model.ProjectPermission.ProjectPermissionReason;
+                projectPermissionToUpdate.UpdateDate = CurrentDate;
+                TransactionLogger.logTransaction(_context, (int)id, "permission-updated", _userManager.GetUserId(HttpContext.User));
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+
+                TempData["SuccessTitle"] = "BAŞARILI";
+                TempData["SuccessMessage"] = $"{projectFieldToUpdate.ProjectID} numaralı kayıt başarıyla düzenlendi.";
+            }
+            catch (Exception)
+            {
+                TempData["ErrorTitle"] = "HATA";
+                TempData["ErrorMessage"] = $"Kayıt düzenlenirken bir hata oluştu. Lütfen sistem yöneticinizle görüşün.";
+            }
+
+            return RedirectToAction(nameof(Edit), new { id = projectFieldToUpdate.ProjectID.ToString() });
+        }
+    }
+
+
+    internal class Handler<TEntity> where TEntity : class, new()
+    {
+        public int? ProjectID { get; internal set; }
+
+        public static TEntity CreateOrUpdate(TEntity viewModel, TEntity? model, string currentUserID)
+        {
+            if (model == null)
+            {
+                TEntity creationModel = new TEntity();
+                creationModel = viewModel;
+
+                return creationModel;
+            }
+
+            else
+            {
+                model = viewModel;
+                return model;
+            }
+
+        }
+    }
+}

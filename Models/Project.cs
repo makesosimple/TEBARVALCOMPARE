@@ -17,13 +17,13 @@ namespace IBBPortal.Models
     [Index(nameof(ProjectStatusID))]
     [Index(nameof(UserID))]
     [Index(nameof(ProjectProductionRespDepartmentID))]
+    [Index(nameof(ProjectTypeID))]
+    [Index(nameof(ProjectAdditionalServiceAreaID))]
     public class Project
     {   
-        //Primary Key. Common on all tables
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProjectID { get; set; }
 
-        //Sample Porject Title Easy. Not sure if that must be 256 characters long.
         [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
         [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
         public string ProjectTitle { get; set; }
@@ -32,11 +32,9 @@ namespace IBBPortal.Models
         [MaxLength(32, ErrorMessage = "Bu alana maksimum 32 karakter girebilirsiniz.")]
         public string? ProjectCode { get; set; }
 
-        //Input field. Value will come from the end-user.
         [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
         public string ProjectIBBCode { get; set; }
 
-        //Requesting Department. Bind to Department Model.
         public int? RequestingDepartmentID { get; set; }
         [ForeignKey("RequestingDepartmentID")]
         public Department RequestingDepartment { get; set; }
@@ -45,36 +43,29 @@ namespace IBBPortal.Models
         [ForeignKey("RequestingAuthorityID")]
         public Authority RequestingAuthority { get; set; }
 
-        //Responsible Department. Bind to Department Model.
         public int? ResponsibleDepartmentID { get; set; }
         [ForeignKey("ResponsibleDepartmentID")]
         public Department ResponsibleDepartment { get; set; }
 
-        //Project Owner. Bind to Person Model.
         public int? ProjectOwnerPersonID { get; set; }
         [ForeignKey("ProjectOwnerPersonID")]
         public Person ProjectOwnerPerson { get; set; }
 
-        //Project Service Area. Bind to Service Area Model.
         public int? ProjectServiceAreaID { get; set; }
         [ForeignKey("ProjectServiceAreaID")]
         public ServiceArea ProjectServiceArea { get; set; }
 
-        //Project Importance. Bind to Project Importance Model.
         public int? ProjectImportanceID { get; set; }
         [ForeignKey("ProjectImportanceID")]
         public ProjectImportance ProjectImportance { get; set; }
 
-        //Project Status. Bind To Project Status Model
         public int? ProjectStatusID { get; set; }
         [ForeignKey("ProjectStatusID")]
         public ProjectStatus ProjectStatus { get; set; }
 
-        //Project Status Description. Not needed by the user but keep information just in case.
-        [MaxLength(512)]
+        [MaxLength(512, ErrorMessage = "Bu alana maksimum 512 karakter girebilirsiniz.")]
         public string? ProjectStatusDescription { get; set; }
 
-        //Project Status Description Date. Not needed by the user but keep information just in case.
         public DateTime? ProjectStatusDescriptionDate { get; set; }
 
         //This Value will come from the Bidding tab!
@@ -114,6 +105,28 @@ namespace IBBPortal.Models
         public DateTime? ProjectProductionEndTime { get; set; }
         //End of Project Right Column Section
 
+        //Latest Updates
+        public int? ProjectAdditionalServiceAreaID { get; set; }
+        [ForeignKey("ProjectAdditionalServiceAreaID")]
+        public ServiceArea ProjectAdditionalServiceArea { get; set; }
+
+        public int? ProjectProductionStatusID { get; set; }
+        [ForeignKey("ProjectProductionStatusID")]
+        public ProjectStatus ProjectProductionStatus { get; set; }
+
+        [MaxLength(2048, ErrorMessage = "Bu alana maksimum 2048 karakter girebilirsiniz.")]
+        public string? ProjectProductionStatusDescription { get; set; }
+
+        public int? ProjectTypeID { get; set; }
+        [ForeignKey("ProjectTypeID")]
+        public ProjectType ProjectType { get; set; }
+
+        public DateTime? RespDepartmentTransferDate { get; set; }
+
+        [MaxLength(2048, ErrorMessage = "Bu alana maksimum 2048 karakter girebilirsiniz.")]
+        public string? RequestingAuthorityDescription { get; set; }
+        //End of Latest Updates
+
         public string UserID { get; set; }
         [ForeignKey("UserID")]
         public ApplicationUser User { get; set; }
@@ -124,16 +137,6 @@ namespace IBBPortal.Models
         public DateTime? UpdateDate { get; set; }
 
         public DateTime? DeletionDate { get; set; }
-        
-
-        //public int ProjectCoordinatorPersonID { get; set; }
-
-        //public int ProjectFeasibilityID { get; set; }
-        //public int ProjectExpropriationID { get; set; }
-        //public int ProjectZoningPlanID { get; set; }
-        //public int ProjectPermissionID { get; set; }
-
-        //public int ProjectBoardApprovalID { get; set; }
 
     }
 }

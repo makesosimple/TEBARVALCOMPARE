@@ -62,6 +62,17 @@
                             </div>
                         </div>
 
+                        <!-- Project Type ID -->
+                        <div class="form-group row">
+                            <label asp-for="ProjectTypeID" class="col-12 col-xl-4 col-form-label">Proje Türü</label>
+                            <div class="col-12 col-xl-8">
+                                <select asp-for="ProjectTypeID" class="form-control" id="selectProjectType" style="width: 100%;">
+                                    <option value="">Proje Türü Seçin</option>
+                                </select>
+                                <span asp-validation-for="ProjectTypeID" class="text-danger"></span>
+                            </div>
+                        </div>
+
                         <hr />
 
                         <!-- Requesting Department ID -->
@@ -75,6 +86,19 @@
                             </div>
                         </div>
 
+                        <!-- Responsible Department ID -->
+                        <div class="form-group row">
+                            <label asp-for="ResponsibleDepartmentID" class="col-12 col-xl-4 col-form-label">Sorumlu Müdürlük</label>
+                            <div class="col-12 col-xl-8">
+                                <select asp-for="ResponsibleDepartmentID" class="form-control" id="selectResponsibleDepartment" style="width: 100%;">
+                                    <option value="">Sorumlu Müdürlük Seçin</option>
+                                </select>
+                                <span asp-validation-for="ResponsibleDepartmentID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <hr />
+
                         <!-- Requesting Authority ID -->
                         <div class="form-group row">
                             <label asp-for="RequestingAuthorityID" class="col-12 col-xl-4 col-form-label">Talep Eden Makam</label>
@@ -86,16 +110,16 @@
                             </div>
                         </div>
 
-                        <!-- Responsible Department ID -->
+                        <!-- Requesting Authority Description -->
                         <div class="form-group row">
-                            <label asp-for="ResponsibleDepartmentID" class="col-12 col-xl-4 col-form-label">Sorumlu Müdürlük</label>
+                            <label asp-for="RequestingAuthorityDescription" class="col-12 col-xl-4 col-form-label">Talep Açıklaması</label>
                             <div class="col-12 col-xl-8">
-                                <select asp-for="ResponsibleDepartmentID" class="form-control" id="selectResponsibleDepartment" style="width: 100%;">
-                                    <option value="">Sorumlu Müdürlük Seçin</option>
-                                </select>
-                                <span asp-validation-for="ResponsibleDepartmentID" class="text-danger"></span>
+                                <textarea asp-for="RequestingAuthorityDescription" class="form-control"></textarea>
+                                <span asp-validation-for="RequestingAuthorityDescription" class="text-danger"></span>
                             </div>
                         </div>
+
+                        <hr />
 
                         <!-- Project Owner Person ID -->
                         <div class="form-group row">
@@ -127,6 +151,17 @@
                                     <option value="">Hizmet Alanı Seçin</option>
                                 </select>
                                 <span asp-validation-for="ProjectServiceAreaID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Project Additional Service Area ID -->
+                        <div class="form-group row">
+                            <label asp-for="ProjectAdditionalServiceAreaID" class="col-12 col-xl-4 col-form-label">Ek Hizmet Alanı</label>
+                            <div class="col-12 col-xl-8">
+                                <select asp-for="ProjectAdditionalServiceAreaID" class="form-control" id="selectAdditionalServiceArea" style="width: 100%;">
+                                    <option value="">Ek Hizmet Alanı Seçin</option>
+                                </select>
+                                <span asp-validation-for="ProjectAdditionalServiceAreaID" class="text-danger"></span>
                             </div>
                         </div>
 
@@ -202,6 +237,38 @@
                                     <option value="">Sorumlu Müdürlük Seçin</option>
                                 </select>
                                 <span asp-validation-for="ProjectProductionRespDepartmentID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Project Status Description Date -->
+                        <div class="form-group row">
+                            <label asp-for="RespDepartmentTransferDate" class="col-12 col-xl-4 col-form-label">Sorumlu Müdürlüğe Gönderim Tarihi (Yapım)</label>
+                            <div class="col-12 col-xl-8">
+                                <input asp-for="RespDepartmentTransferDate" type="text" class="form-control datepicker">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span asp-validation-for="RespDepartmentTransferDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <!-- Production Production Status ID -->
+                        <div class="form-group row">
+                            <label asp-for="ProjectProductionStatusID" class="col-12 col-xl-4 col-form-label">Yapım İşinin Durumu</label>
+                            <div class="col-12 col-xl-8">
+                                <select asp-for="ProjectProductionStatusID" class="form-control" id="selectProjectProductionStatus" style="width: 100%;">
+                                    <option value="">Durum Seçin</option>
+                                </select>
+                                <span asp-validation-for="ProjectProductionStatusID" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Project Production Status Description -->
+                        <div class="form-group row">
+                            <label asp-for="ProjectProductionStatusDescription" class="col-12 col-xl-4 col-form-label">Yapım İşinin Durum Açıklaması</label>
+                            <div class="col-12 col-xl-8">
+                                <textarea asp-for="ProjectProductionStatusDescription" class="form-control"></textarea>
+                                <span asp-validation-for="ProjectProductionStatusDescription" class="text-danger"></span>
                             </div>
                         </div>
 
@@ -329,7 +396,7 @@
             }
         });
 
-        $('#selectServiceArea').select2({
+        $('#selectServiceArea, #selectAdditionalServiceArea').select2({
             theme: "ibb",
             language: "tr",
             ajax: {
@@ -359,7 +426,22 @@
             }
         });
 
-        $('#selectProjectStatus').select2({
+        $('#selectProjectType').select2({
+            theme: "ibb",
+            language: "tr",
+            ajax: {
+                url: '/ProjectType/JsonSelectData',
+                dataType: 'json',
+                processResults: function (response) {
+
+                    return {
+                        results: response.results,
+                    };
+                }
+            }
+        });
+
+        $('#selectProjectStatus, #selectProjectProductionStatus').select2({
             theme: "ibb",
             language: "tr",
             ajax: {

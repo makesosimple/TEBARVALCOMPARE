@@ -28,8 +28,6 @@ namespace IBBPortal.Models
         [ForeignKey("ParentServiceAreaID")]
         public ServiceArea ParentServiceArea { get; set; }
 
-        public List<Project> RelatedProjects { get; set; }
-
         public string UserID { get; set; }
         [ForeignKey("UserID")]
 
