@@ -6,12 +6,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using IndexAttribute = Microsoft.EntityFrameworkCore.IndexAttribute;
+using IBBPortal.Static;
 
 namespace IBBPortal.Models
 {
 
     [Index(nameof(ProjectID))]
-    public class ProjectBoardApproval
+    public class ProjectBoardApproval : TProjectField
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProjectBoardApprovalID { get; set; }

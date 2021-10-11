@@ -224,6 +224,9 @@ namespace IBBPortal.Controllers
 
                     _context.Add(projectBidding);
                     await _context.SaveChangesAsync();
+
+                    ProjectHelper.UpdatedProject(projectBidding.ProjectID.Value, _context);
+
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $"Kayıt başarıyla oluşturuldu.";
                     TransactionLogger.logTransaction(_context, (int)projectBidding.ProjectID, "project-bidding-created", _userManager.GetUserId(HttpContext.User));

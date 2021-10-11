@@ -150,6 +150,9 @@ namespace IBBPortal.Controllers
 
                     _context.Add(projectRelation);
                     await _context.SaveChangesAsync();
+
+                    ProjectHelper.UpdatedProject(projectRelation.ProjectID.Value, _context);
+
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $"Kayıt başarıyla oluşturuldu.";
                     return RedirectToAction(nameof(Index), new { id = projectRelation.ProjectID });
@@ -206,6 +209,9 @@ namespace IBBPortal.Controllers
 
                     _context.Update(projectRelation);
                     await _context.SaveChangesAsync();
+
+                    ProjectHelper.UpdatedProject(projectRelation.ProjectID.Value, _context);
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {

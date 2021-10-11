@@ -2,19 +2,15 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using IBBPortal.Static;
 using IndexAttribute = Microsoft.EntityFrameworkCore.IndexAttribute;
 
 namespace IBBPortal.Models
 {
-    //Property Status / Property Status Descriptipon
     [Index(nameof(ProjectID))]
-    [Index(nameof(PropertyStatusID))]
     [Index(nameof(ExpropriationStatusID))]
     [Index(nameof(UserID))]
-    public class ProjectExpropriation
+    public class ProjectExpropriation : TProjectField
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProjectExpropriationID { get; set; }
@@ -23,11 +19,6 @@ namespace IBBPortal.Models
         public int? ProjectID { get; set; }
         [ForeignKey("ProjectID")]
         public Project Project { get; set; }
-
-        //Related Property Status ID. All projects can have only one Property Status
-        public int? PropertyStatusID { get; set; }
-        [ForeignKey("PropertyStatusID")]
-        public PropertyStatus PropertyStatus { get; set; }
 
         [MaxLength(256)]
         public string? PropertyStatusDescription { get; set; }

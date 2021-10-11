@@ -50,7 +50,7 @@ namespace IBBPortal.Controllers
                 int skip = start != null ? Convert.ToInt32(start) : 0;
                 int recordsTotal = 0;
 
-                var data = _context.Organization.Select(c => new { c.OrganizationID, c.OrganizationTitle, UserName = c.User.UserName }).AsQueryable();
+                var data = _context.Organization.Select(c => new { c.OrganizationID, c.OrganizationTitle, c.IsExternal, UserName = c.User.UserName }).AsQueryable();
 
                 //Sorting
                 if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
@@ -64,7 +64,7 @@ namespace IBBPortal.Controllers
                 //If control checks out, search. If not, loop goes on until the end.
                 string columnName, searchValue;
 
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     columnName = Request.Query[$"columns[{i}][data]"].FirstOrDefault();
                     searchValue = Request.Query[$"columns[{i}][search][value]"].FirstOrDefault();
@@ -92,20 +92,25 @@ namespace IBBPortal.Controllers
         }
 
         [HttpGet]
-        public JsonResult JsonSelectData(string term)
+        public JsonResult JsonSelectData(string term, bool getExternals = false)
         {
             try
             {
-
                 var OrganizationData = _context.Organization
                                     .Select(x => new {
                                         id = x.OrganizationID.ToString(),
-                                        text = x.OrganizationTitle
+                                        text = x.OrganizationTitle,
+                                        isExternal = x.IsExternal
                                     });
 
                 if (!String.IsNullOrEmpty(term))
                 {
                     OrganizationData = OrganizationData.Where(m => m.text.Contains(term));
+                }
+
+                if (getExternals)
+                {
+                    OrganizationData = OrganizationData.Where(m => m.isExternal == true);
                 }
 
                 //Count 
@@ -156,7 +161,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OrganizationID,OrganizationTitle,OrganizationDescription,UserID,CreationDate,UpdateDate,DeletionDate")] Organization organization)
+        public async Task<IActionResult> Create([Bind("OrganizationID,OrganizationTitle,OrganizationDescription,IsExternal,UserID,CreationDate,UpdateDate,DeletionDate")] Organization organization)
         {
             if (ModelState.IsValid)
             {
@@ -202,7 +207,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OrganizationID,OrganizationTitle,OrganizationDescription,UserID,CreationDate,UpdateDate,DeletionDate")] Organization organization)
+        public async Task<IActionResult> Edit(int id, [Bind("OrganizationID,OrganizationTitle,OrganizationDescription,IsExternal,UserID,CreationDate,UpdateDate,DeletionDate")] Organization organization)
         {
             if (id != organization.OrganizationID)
             {

@@ -1,4 +1,5 @@
 ﻿using IBBPortal.Data;
+using IBBPortal.Helpers;
 using IBBPortal.Models;
 using IBBPortal.Static;
 using IBBPortal.ViewModels;
@@ -56,9 +57,18 @@ namespace IBBPortal.Controllers
                 .FirstOrDefaultAsync(m => m.Project.ProjectID == id);
 
             model.ProjectExpropriation = await _context.ProjectExpropriation
-                .Include(c => c.PropertyStatus)
                 .Include(c => c.ExpropriationStatus)
                 .FirstOrDefaultAsync(m => m.Project.ProjectID == id);
+
+            model.ChosenPropertyStatus = await _context.RelProjectPropertyStatus
+                .Include(c => c.PropertyStatus)
+                .Select( c => new ProjectPropertyStatusViewModel { 
+                    ProjectID = c.ProjectID,
+                    PropertyStatusID = c.PropertyStatus.PropertyStatusID,
+                    PropertyStatusTitle = c.PropertyStatus.PropertyStatusTitle
+                })
+                .Where(c => c.ProjectID == id)
+                .ToListAsync();
 
             model.ProjectPermission = await _context.ProjectPermission
                 .Include(m => m.Organization)
@@ -235,14 +245,10 @@ namespace IBBPortal.Controllers
             //Project Board Approval
             if (projectBoardApprovalToUpdate == null)
             {
-                var projectBoardApproval = new Handler<ProjectBoardApproval>();
-
-                projectBoardApproval.ProjectID = id;
-                projectBoardApproval.UserID = CurrentUser;
-                projectBoardApproval.CreationDate = CurrentDate;
-
-                _context.Add(projectBoardApproval);
+                projectBoardApprovalToUpdate.Create<ProjectBoardApproval>(_context, model.ProjectBoardApproval, (int)id, CurrentUser);
+                TransactionLogger.logTransaction(_context, (int)id, "zoning-plan-created", _userManager.GetUserId(HttpContext.User));
             }
+
             else
             {
                 projectBoardApprovalToUpdate.ProjectID = id;
@@ -256,24 +262,8 @@ namespace IBBPortal.Controllers
             //Project Zoning Plan
             if (projectZoningPlanToUpdate == null)
             {
-                //For creation we need a Model that is connected to a Database.
-                ProjectZoningPlan projectZoningPlan = new ProjectZoningPlan();
-
-                projectZoningPlan.ProjectID = id;
-                projectZoningPlan.ZoningPlanStatusID1000 = model.ProjectZoningPlan.ZoningPlanStatusID1000;
-                projectZoningPlan.ZoningPlanDate1000 = model.ProjectZoningPlan.ZoningPlanDate1000;
-                projectZoningPlan.ZoningPlanStatusID5000 = model.ProjectZoningPlan.ZoningPlanStatusID5000;
-                projectZoningPlan.ZoningPlanDate5000 = model.ProjectZoningPlan.ZoningPlanDate5000;
-                projectZoningPlan.ZoningPlanModificationNeeded = model.ProjectZoningPlan.ZoningPlanModificationNeeded;
-                projectZoningPlan.ZoningPlanModificationReason = model.ProjectZoningPlan.ZoningPlanModificationReason;
-                projectZoningPlan.ModificationApprovalDate = model.ProjectZoningPlan.ModificationApprovalDate;
-                projectZoningPlan.ModificationProposalDate = model.ProjectZoningPlan.ModificationProposalDate;
-                projectZoningPlan.ZoningPlanModificationStatusID = model.ProjectZoningPlan.ZoningPlanModificationStatusID;
-                projectZoningPlan.ZoningPlanResponsiblePersonID = model.ProjectZoningPlan.ZoningPlanResponsiblePersonID;
-                projectZoningPlan.UserID = CurrentUser;
-                projectZoningPlan.CreationDate = CurrentDate;
+                projectZoningPlanToUpdate.Create<ProjectZoningPlan>(_context, model.ProjectZoningPlan, (int)id, CurrentUser);
                 TransactionLogger.logTransaction(_context, (int)id, "zoning-plan-created", _userManager.GetUserId(HttpContext.User));
-                _context.Add(projectZoningPlan);
             }
 
             else
@@ -296,29 +286,13 @@ namespace IBBPortal.Controllers
             //Project Expropriation
             if (projectExpropriationToUpdate == null)
             {
-                //For creation we need a Model that is connected to a Database.
-                ProjectExpropriation projectExpropriation = new ProjectExpropriation();
-
-                projectExpropriation.ProjectID = id;
-                projectExpropriation.PropertyStatusID = model.ProjectExpropriation.PropertyStatusID;
-                projectExpropriation.PropertyStatusDescription = model.ProjectExpropriation.PropertyStatusDescription;
-                projectExpropriation.ProjectExpropriationDescription = model.ProjectExpropriation.ProjectExpropriationDescription;
-                projectExpropriation.ProjectNeedsExpropriation = model.ProjectExpropriation.ProjectNeedsExpropriation;
-                projectExpropriation.ProjectExpropriationDate = model.ProjectExpropriation.ProjectExpropriationDate;
-                projectExpropriation.ProjectExpropriationCost = model.ProjectExpropriation.ProjectExpropriationCost;
-                projectExpropriation.ProjectExpropriationCost = model.ProjectExpropriation.ProjectExpropriationCost;
-                projectExpropriation.ExpropriationStatusID = model.ProjectExpropriation.ExpropriationStatusID;
-                projectExpropriation.ProjectExpropriationStatusDesc = model.ProjectExpropriation.ProjectExpropriationStatusDesc;
-                projectExpropriation.UserID = CurrentUser;
-                projectExpropriation.CreationDate = CurrentDate;
+                projectExpropriationToUpdate.Create<ProjectExpropriation>(_context, model.ProjectExpropriation, (int)id, CurrentUser);
                 TransactionLogger.logTransaction(_context, (int)id, "expropriation-created", _userManager.GetUserId(HttpContext.User));
-                _context.Add(projectExpropriation);
             }
 
             else
             {
                 projectExpropriationToUpdate.ProjectID = id;
-                projectExpropriationToUpdate.PropertyStatusID = model.ProjectExpropriation.PropertyStatusID;
                 projectExpropriationToUpdate.PropertyStatusDescription = model.ProjectExpropriation.PropertyStatusDescription;
                 projectExpropriationToUpdate.ProjectExpropriationDescription = model.ProjectExpropriation.ProjectExpropriationDescription;
                 projectExpropriationToUpdate.ProjectNeedsExpropriation = model.ProjectExpropriation.ProjectNeedsExpropriation;
@@ -331,21 +305,31 @@ namespace IBBPortal.Controllers
                 TransactionLogger.logTransaction(_context, (int)id, "expropriation-updated", _userManager.GetUserId(HttpContext.User));
             }
 
+            if (model.PropertyStatus.Length > 0)
+            {
+                //Until better option for multiple select, drop everything then update the field on every request.
+                //hours_spent = 16. Increment the counter until a solution is found
+                var relatedPropertyStatus = await _context.RelProjectPropertyStatus.Where(x => x.ProjectID == id).ToListAsync();
+                _context.RelProjectPropertyStatus.RemoveRange(relatedPropertyStatus);
+
+                foreach(var propertyID in model.PropertyStatus)
+                {
+                    RelProjectPropertyStatus relatedPropertyStatusToAdd = new RelProjectPropertyStatus()
+                    {
+                        ProjectExpropriationID = projectExpropriationToUpdate.ProjectExpropriationID,
+                        ProjectID = id,
+                        PropertyStatusID = propertyID
+                    };
+
+                    await _context.AddAsync(relatedPropertyStatusToAdd);
+                }
+            }
+
             //Project Permission
             if (projectPermissionToUpdate == null)
             {
-                //For creation we need a Model that is connected to a Database.
-                ProjectPermission projectPermission = new ProjectPermission();
-
-                projectPermission.ProjectID = id;
-                projectPermission.OrganizationID = model.ProjectPermission.OrganizationID;
-                projectPermission.IsPermissionNeeded = model.ProjectPermission.IsPermissionNeeded;
-                projectPermission.ProjectPermissionDate = model.ProjectPermission.ProjectPermissionDate;
-                projectPermission.ProjectPermissionReason = model.ProjectPermission.ProjectPermissionReason;
-                projectPermission.UserID = CurrentUser;
-                projectPermission.CreationDate = CurrentDate;
+                projectPermissionToUpdate.Create<ProjectPermission>(_context, model.ProjectPermission, (int)id, CurrentUser);
                 TransactionLogger.logTransaction(_context, (int)id, "permission-created", _userManager.GetUserId(HttpContext.User));
-                _context.Add(projectPermission);
             }
 
             else
@@ -373,30 +357,6 @@ namespace IBBPortal.Controllers
             }
 
             return RedirectToAction(nameof(Edit), new { id = projectFieldToUpdate.ProjectID.ToString() });
-        }
-    }
-
-
-    internal class Handler<TEntity> where TEntity : class, new()
-    {
-        public int? ProjectID { get; internal set; }
-
-        public static TEntity CreateOrUpdate(TEntity viewModel, TEntity? model, string currentUserID)
-        {
-            if (model == null)
-            {
-                TEntity creationModel = new TEntity();
-                creationModel = viewModel;
-
-                return creationModel;
-            }
-
-            else
-            {
-                model = viewModel;
-                return model;
-            }
-
         }
     }
 }

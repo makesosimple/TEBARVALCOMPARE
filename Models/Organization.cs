@@ -19,6 +19,9 @@ namespace IBBPortal.Models
         [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
         public string? OrganizationDescription { get; set; }
 
+        [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
+        public bool IsExternal { get; set; }
+
         public string UserID { get; set; }
         [ForeignKey("UserID")]
         public ApplicationUser User { get; set; }

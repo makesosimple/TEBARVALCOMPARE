@@ -59,7 +59,6 @@ namespace IBBPortal.Data
             //modelBuilder.Ignore<ShortcutListModel>();
             builder.Entity<Project>().HasQueryFilter(p => p.DeletionDate == null);
 
-
         }
 
         public DbSet<IBBPortal.Models.Board> Board { get; set; }
@@ -162,6 +161,11 @@ namespace IBBPortal.Data
 
         public DbSet<IBBPortal.Models.ProjectType> ProjectType { get; set; }
 
+        public DbSet<IBBPortal.Models.RelProjectPropertyStatus> RelProjectPropertyStatus{ get; set; }
+
+        public DbSet<IBBPortal.Models.ProjectProduction> ProjectProduction { get; set; }
+
+        public DbSet<IBBPortal.Models.ProjectSettings> ProjectSettings { get; set; }
     }
 
 

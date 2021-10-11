@@ -58,7 +58,7 @@ namespace IBBPortal.Controllers
                 var data = _context.Project.Select(c => new
                 {
                     c.ProjectID,
-                    c.ProjectIBBCode,
+                    ProjectIBBCode = c.ProjectIBBCode != null ? c.ProjectIBBCode.ToString() : "",
                     c.ProjectTitle,
                     EstimatedProjectCost = c.EstimatedProjectCost != null ? c.EstimatedProjectCost.ToString() + " TL" : "",
                     RequestingAuthorityID = c.RequestingAuthority != null ? c.RequestingAuthority.AuthorityID : 0,
@@ -425,7 +425,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProjectID,ProjectTitle,ProjectIBBCode,RequestingDepartmentID,ResponsibleDepartmentID,RequestingAuthorityID,ProjectOwnerPersonID,ProjectServiceAreaID,ProjectImportanceID,ProjectStatusID,ProjectStatusDescription,ProjectStatusDescriptionDate,ProjectObjectID,ProjectUID,ProjectGlobalID,ProjectYear,ProjectProductionRespDepartmentID,RequestingAuthorityDescription,RespDepartmentTransferDate,ProjectTypeID,ProjectProductionStatusDescription,ProjectProductionStatusID,ProjectAdditionalServiceAreaID,ProjectFileNumber,ProjectPackageNumber,ProjectManagerID,ProjectProductionName,ProjectEndTime,ProjectProductionEndTime,UserID,CreationDate,UpdateDate,DeletionDate")] Project project)
+        public async Task<IActionResult> Create([Bind("ProjectID,ProjectTitle,ProjectIBBCode,IsDoneByIBB,ProjectCost,ExternalOrganizationID,RequestingDepartmentID,ResponsibleDepartmentID,RequestingAuthorityID,ProjectOwnerPersonID,ProjectServiceAreaID,ProjectImportanceID,ProjectStatusID,ProjectStatusDescription,ProjectStatusDescriptionDate,ProjectYear,ProjectProductionRespDepartmentID,RequestingAuthorityDescription,RespDepartmentTransferDate,ProjectTypeID,ProjectProductionStatusDescription,ProjectProductionStatusID,ProjectAdditionalServiceAreaID,ProjectManagerID,ProjectProductionName,ProjectEndTime,ProjectProductionEndTime,UserID,CreationDate,UpdateDate,DeletionDate")] Project project)
         {
             if (ModelState.IsValid)
             {
@@ -477,6 +477,7 @@ namespace IBBPortal.Controllers
                 .Include(p => p.ProjectType)
                 .Include(p => p.ProjectAdditionalServiceArea)
                 .Include(p => p.ProjectProductionStatus)
+                .Include(p => p.ExternalOrganization)
                 .Include(p => p.User)
                 .FirstOrDefaultAsync(m => m.ProjectID == id);
             if (project == null)
@@ -491,7 +492,7 @@ namespace IBBPortal.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProjectID,ProjectTitle,ProjectIBBCode,RequestingDepartmentID,ResponsibleDepartmentID,RequestingAuthorityID,ProjectOwnerPersonID,ProjectServiceAreaID,ProjectImportanceID,ProjectStatusID,ProjectStatusDescription,ProjectStatusDescriptionDate,ProjectObjectID,ProjectUID,ProjectGlobalID,ProjectYear,ProjectProductionRespDepartmentID,RequestingAuthorityDescription,RespDepartmentTransferDate,ProjectTypeID,ProjectProductionStatusDescription,ProjectProductionStatusID,ProjectAdditionalServiceAreaID,ProjectFileNumber,ProjectPackageNumber,ProjectManagerID,ProjectProductionName,ProjectEndTime,ProjectProductionEndTime,UserID,CreationDate,UpdateDate,DeletionDate")] Project project)
+        public async Task<IActionResult> Edit(int id, [Bind("ProjectID,ProjectTitle,ProjectIBBCode,IsDoneByIBB,ExternalOrganizationID,ProjectCost,RequestingDepartmentID,ResponsibleDepartmentID,RequestingAuthorityID,ProjectOwnerPersonID,ProjectServiceAreaID,ProjectImportanceID,ProjectStatusID,ProjectStatusDescription,ProjectStatusDescriptionDate,ProjectYear,ProjectProductionRespDepartmentID,RequestingAuthorityDescription,RespDepartmentTransferDate,ProjectTypeID,ProjectProductionStatusDescription,ProjectProductionStatusID,ProjectAdditionalServiceAreaID,ProjectManagerID,ProjectProductionName,ProjectEndTime,ProjectProductionEndTime,UserID,CreationDate,UpdateDate,DeletionDate")] Project project)
         {
             if (id != project.ProjectID)
             {

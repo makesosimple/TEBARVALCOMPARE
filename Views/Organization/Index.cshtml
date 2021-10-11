@@ -23,6 +23,23 @@
                 },
                 "columns": [
                     { "data": "organizationTitle", "autoWidth": true },
+                    {
+                        "data": "isExternal",
+                        "render": function (data) {
+
+                            let itemToRender;
+                            switch (data) {
+                                case true:
+                                    itemToRender = `<a href="#" class="btn btn-success text-xs">EVET</a>`;
+                                    break;
+                                case false:
+                                    itemToRender = `<a href="#" class="btn btn-danger text-xs">HAYIR</a>`;
+                                    break;
+                            }
+                            return itemToRender;
+                        },
+                        "autoWidth": true
+                    },
                     { "data": "userName", "autoWidth": true },
                     {
                         "data": null,
@@ -109,11 +126,13 @@
                 <thead class="bg-navy-blue">
                     <tr class="filter h-100 bg-white">
                         <th scope="col"><input class="form-control w-100 searchInput" data-index="0" type="text" placeholder="Ara..." id="organizationTitle" name="organizationTitle" value="" /></th>
-                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="userName" name="userName" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Ara..." id="isExternal" name="isExternal" value="" /></th>
+                        <th scope="col"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Ara..." id="userName" name="userName" value="" /></th>
                         <th scope="col"></th>
                     </tr>
                     <tr id="tableLabels">
                         <th scope="col" class="text-white text-sm">Kurum İsmi</th>
+                        <th scope="col" class="text-white text-sm">İBB Dışı mı?</th>
                         <th scope="col" class="text-white text-sm">Oluşturan</th>
                         <th scope="col"></th>
                     </tr>

@@ -9,7 +9,7 @@
     background-color: white;
     border-radius: 5px;
     margin: 15px;
-    width:90%;
+    width: 90%;
     z-index: 100;
 }
 
@@ -41,7 +41,7 @@
 
 .loadingIcon {
     width: 100px;
-    height:100px;
+    height: 100px;
     position: absolute;
     top: 45%;
 }
@@ -91,21 +91,19 @@
         margin: 5px 10px 5px 0;
         padding: 10px;
         background-color: #fff;
-        
-        margin-right:20px;
+        margin-right: 20px;
     }
 
     .form-inline select {
-        margin-right:20px;
-        
+        margin-right: 20px;
     }
 
     /* Style the submit button */
-        .form-inline button {
-            /*padding: 10px 20px;*/
-            /*background-color: dodgerblue;*/
-            /*border: 1px solid #ddd;*/
-        }
+    .form-inline button {
+        /*padding: 10px 20px;*/
+        /*background-color: dodgerblue;*/
+        /*border: 1px solid #ddd;*/
+    }
 
 #closeFilter {
     /*position: absolute;
@@ -121,9 +119,9 @@
     right: 15px;*/
 }
 
-        .form-inline button:hover {
-            /*background-color: dodgerblue;*/
-        }
+.form-inline button:hover {
+    /*background-color: dodgerblue;*/
+}
 
 .form-inline .select2 {
     margin-bottom: 0px;
@@ -134,18 +132,17 @@
 @media (max-width: 800px) {
     .form-inline input {
         margin: 5px 0;
-        margin-bottom:10px;
+        margin-bottom: 10px;
     }
 
     .form-inline .select2 {
         margin-bottom: 10px;
-        margin-right:0px;
-        min-width:100px;
+        margin-right: 0px;
+        min-width: 100px;
     }
 
     .form-inline select {
         margin: 5px 0;
-       
     }
 
     .form-inline button {
@@ -156,14 +153,12 @@
         flex-direction: column;
         align-items: stretch;
     }
-
-   
 }
 
 h5.firstHeading {
     font-size: 1rem;
     width: 20rem;
-    word-wrap:normal;
+    word-wrap: normal;
 }
 
 
@@ -190,11 +185,11 @@ table, td {
 }
 
 .dataTables_scrollBody {
-    min-height:50rem;
+    min-height: 50rem;
 }
 
 #showProjectBorders {
-    margin:.35rem;
+    margin: .35rem;
 }
 
 .custom-control-padding-fix {
@@ -221,7 +216,7 @@ table, td {
     color: #333333;
 }
 
-/* Form Validation Validation */
+/* Form Validation */
 select.is-invalid + .select2.select2-container.select2-container--ibb span.select2-selection {
     border-color: #e74a3b;
 }
@@ -245,3 +240,15 @@ select.is-valid + .select2.select2-container.select2-container--ibb.select2-cont
 select.is-valid + .select2-container--ibb .select2-selection::after {
     color: #1cc88a;
 }
+
+.datepicker.is-valid, .datepicker.is-invalid, [data-input-type].is-valid, [data-input-type].is-invalid {
+    background: none;
+}
+
+    .datepicker.is-valid ~ i, [data-input-type].is-valid ~ i {
+        color: #1cc88a;
+    }
+
+    .datepicker.is-invalid ~ i, [data-input-type].is-invalid ~ i {
+        color: #e74a3b;
+    }

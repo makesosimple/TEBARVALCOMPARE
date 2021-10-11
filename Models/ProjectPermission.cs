@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using IBBPortal.Static;
 using IndexAttribute = Microsoft.EntityFrameworkCore.IndexAttribute;
 
 namespace IBBPortal.Models
@@ -12,7 +9,7 @@ namespace IBBPortal.Models
     [Index(nameof(ProjectID))]
     [Index(nameof(OrganizationID))]
     [Index(nameof(UserID))]
-    public class ProjectPermission
+    public class ProjectPermission : TProjectField
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProjectPermissionID { get; set; }

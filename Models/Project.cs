@@ -32,8 +32,18 @@ namespace IBBPortal.Models
         [MaxLength(32, ErrorMessage = "Bu alana maksimum 32 karakter girebilirsiniz.")]
         public string? ProjectCode { get; set; }
 
+        [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
+        public string? ProjectIBBCode { get; set; }
+
         [Required(ErrorMessage = "Bu alanın doldurulması zorunludur.")]
-        public string ProjectIBBCode { get; set; }
+        public bool IsDoneByIBB { get; set; } = true;
+
+        public int? ExternalOrganizationID { get; set; }
+        [ForeignKey("ExternalOrganizationID")]
+        public Organization ExternalOrganization { get; set; }
+
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal? ProjectCost { get; set; }
 
         public int? RequestingDepartmentID { get; set; }
         [ForeignKey("RequestingDepartmentID")]
@@ -73,25 +83,11 @@ namespace IBBPortal.Models
         public decimal? EstimatedProjectCost { get; set; }
 
         //Project Right Column Section
-        public int? ProjectObjectID { get; set; }
-
-        [MaxLength(64, ErrorMessage = "Bu alana maksimum 64 karakter girebilirsiniz.")]
-        public string? ProjectUID { get; set; }
-
-        [MaxLength(64, ErrorMessage = "Bu alana maksimum 64 karakter girebilirsiniz.")]
-        public string? ProjectGlobalID { get; set; }
-
         public int? ProjectYear { get; set; }
 
         public int? ProjectProductionRespDepartmentID { get; set; }
         [ForeignKey("ProjectProductionRespDepartmentID")]
         public Department ProjectProductionRespDepartment { get; set; }
-
-        [MaxLength(64, ErrorMessage = "Bu alana maksimum 64 karakter girebilirsiniz.")]
-        public string? ProjectFileNumber { get; set; }
-
-        [MaxLength(64, ErrorMessage = "Bu alana maksimum 64 karakter girebilirsiniz.")]
-        public string? ProjectPackageNumber { get; set; }
 
         public int? ProjectManagerID { get; set; }
         [ForeignKey("ProjectManagerID")]

@@ -8,6 +8,9 @@
         <li class="nav-item @ProjectFeasibilityNavClass(ViewContext, "display")" role="presentation">
             <a class="nav-link @ProjectFeasibilityNavClass(ViewContext)" id="feasibility-tab" href="/ProjectFeasibility/Form/@ViewData["Id"]">Fizibilite</a>
         </li>
+        <li class="nav-item @ProjectProductionNavClass(ViewContext, "display")" role="presentation">
+            <a class="nav-link @ProjectProductionNavClass(ViewContext)" id="feasibility-tab" href="/ProjectProduction/Index/@ViewData["Id"]">Yapım</a>
+        </li>
         <li class="nav-item @ProjectPersonNavClass(ViewContext, "display")" role="presentation">
             <a class="nav-link @ProjectPersonNavClass(ViewContext)" id="associates-tab" href="/ProjectPerson/Index/@ViewData["Id"]">Kişiler</a>
         </li>
@@ -32,6 +35,9 @@
         <li class="nav-item @FileNavClass(ViewContext, "display")" role="presentation">
             <a class="nav-link @FileNavClass(ViewContext)" id="file-tab" href="/File/Index/@ViewData["Id"]">Dokümanlar</a>
         </li>
+        <li class="nav-item @ProjectSettingsNavClass(ViewContext, "display")" role="presentation">
+            <a class="nav-link @ProjectSettingsNavClass(ViewContext)" id="file-tab" href="/ProjectSettings/Index/@ViewData["Id"]">Ayarlar</a>
+        </li>
     </ul>
     <div class="dropdown no-arrow d-block d-xl-none">
         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -40,6 +46,7 @@
         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
             <a class="dropdown-item" href="/Project/Edit/@ViewData["Id"]">Künye</a>
             <a class="dropdown-item" href="/ProjectFeasibility/Form/@ViewData["Id"]">Fizibilite</a>
+            <a class="dropdown-item" href="/ProjectProduction/Index/@ViewData["Id"]">Yapım</a>
             <a class="dropdown-item" href="/ProjectPerson/Index/@ViewData["Id"]">Kişiler</a>
             <a class="dropdown-item" href="/ProjectRelation/Index/@ViewData["Id"]">İlişkili Projeler</a>
             <a class="dropdown-item" href="/Project/Edit/@ViewData["Id"]">Proje Alanı</a>
@@ -48,6 +55,7 @@
             <a class="dropdown-item" href="/ProjectPhase/Index/@ViewData["Id"]">Takvim/Süreç</a>
             <a class="dropdown-item" href="/ProjectBidding/Index/@ViewData["Id"]">Maliyet</a>
             <a class="dropdown-item" href="/File/Index/@ViewData["Id"]">Dokümanlar</a>
+            <a class="dropdown-item" href="/ProjectSettings/Index/@ViewData["Id"]">Ayarlar</a>
         </div>
     </div>
 </div>

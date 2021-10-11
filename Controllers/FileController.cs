@@ -330,8 +330,10 @@ namespace IBBPortal.Controllers
             {
                 try
                 {
-                    await _context.AddAsync(file);
+                    await _context.AddAsync(file);                    
                     await _context.SaveChangesAsync();
+
+                    ProjectHelper.UpdatedProject(formValues["ProjectID"], _context);
 
                     JsonResult response = new JsonResult(new { });
 

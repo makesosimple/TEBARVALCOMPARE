@@ -148,6 +148,9 @@ namespace IBBPortal.Controllers
 
                     _context.Add(projectSubfunctionFeature);
                     await _context.SaveChangesAsync();
+
+                    ProjectHelper.UpdatedProject(projectSubfunctionFeature.ProjectID.Value, _context);
+
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $"Kayıt başarıyla oluşturuldu.";
                     return RedirectToAction(nameof(Index), new { id = projectSubfunctionFeature.ProjectID });
@@ -204,6 +207,9 @@ namespace IBBPortal.Controllers
 
                     _context.Update(projectSubfunctionFeature);
                     await _context.SaveChangesAsync();
+
+                    ProjectHelper.UpdatedProject(projectSubfunctionFeature.ProjectID.Value, _context);
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -254,6 +260,9 @@ namespace IBBPortal.Controllers
             {
                 _context.ProjectSubfunctionFeature.Remove(projectSubfunctionFeature);
                 await _context.SaveChangesAsync();
+
+                ProjectHelper.UpdatedProject(projectSubfunctionFeature.ProjectID.Value, _context);
+
                 TempData["SuccessTitle"] = "BAŞARILI";
                 TempData["SuccessMessage"] = $"{projectSubfunctionFeature.ProjectSubfunctionFeatureID} numaralı kayıt başarıyla silindi.";
                 return RedirectToAction(nameof(Index), new { id = projectSubfunctionFeature.ProjectID });
