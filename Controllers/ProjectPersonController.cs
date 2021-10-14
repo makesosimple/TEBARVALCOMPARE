@@ -157,6 +157,8 @@ namespace IBBPortal.Controllers
 
                     _context.Add(projectPerson);
                     await _context.SaveChangesAsync();
+
+                    ProjectHelper.UpdatedProject(projectPerson.ProjectID.Value, _context);
                     TransactionLogger.logTransaction(_context, (int)projectPerson.ProjectID, "project-person-added", _userManager.GetUserId(HttpContext.User));
 
                     TempData["SuccessTitle"] = "BAŞARILI";
@@ -218,6 +220,8 @@ namespace IBBPortal.Controllers
 
                     _context.Update(projectPerson);
                     await _context.SaveChangesAsync();
+
+                    ProjectHelper.UpdatedProject(projectPerson.ProjectID.Value, _context);
                     TransactionLogger.logTransaction(_context, (int)projectPerson.ProjectID, "project-person-changed", _userManager.GetUserId(HttpContext.User));
                 }
                 catch (DbUpdateConcurrencyException)
@@ -273,6 +277,8 @@ namespace IBBPortal.Controllers
                 await _context.SaveChangesAsync();
                 TempData["SuccessTitle"] = "BAŞARILI";
                 TempData["SuccessMessage"] = $"{projectPerson.ProjectPersonID} numaralı kayıt başarıyla silindi.";
+
+                ProjectHelper.UpdatedProject(projectPerson.ProjectID.Value, _context);
                 return RedirectToAction(nameof(Index), new { id = projectPerson.ProjectID});
             }
             catch (DbUpdateException ex)

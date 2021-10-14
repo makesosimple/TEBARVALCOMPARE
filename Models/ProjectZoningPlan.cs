@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+using IBBPortal.Static;
 using IndexAttribute = Microsoft.EntityFrameworkCore.IndexAttribute;
 
 namespace IBBPortal.Models
@@ -12,7 +12,7 @@ namespace IBBPortal.Models
     [Index(nameof(ZoningPlanStatusID5000))]
     [Index(nameof(ZoningPlanModificationStatusID))]
     [Index(nameof(ZoningPlanResponsiblePersonID))]
-    public class ProjectZoningPlan
+    public class ProjectZoningPlan : TProjectField
     {   
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProjectZoningPlanID { get; set; }

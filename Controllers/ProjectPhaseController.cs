@@ -222,6 +222,9 @@ namespace IBBPortal.Controllers
 
                     _context.Add(projectPhase);
                     await _context.SaveChangesAsync();
+
+                    ProjectHelper.UpdatedProject(projectPhase.ProjectID.Value, _context);
+
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $"Kayıt başarıyla oluşturuldu.";
                     return RedirectToAction(nameof(Index), new { id = projectPhase.ProjectID });
@@ -300,6 +303,9 @@ namespace IBBPortal.Controllers
 
                     await _context.SaveChangesAsync();
 
+                    ProjectHelper.UpdatedProject(projectPhaseToUpdate.ProjectID.Value, _context);
+
+
                     TempData["SuccessTitle"] = "BAŞARILI";
                     TempData["SuccessMessage"] = $"Kayıt başarıyla düzenlendi.";
                 }
@@ -351,6 +357,9 @@ namespace IBBPortal.Controllers
             {
                 _context.ProjectPhase.Remove(projectPhase);
                 await _context.SaveChangesAsync();
+
+                ProjectHelper.UpdatedProject(projectPhase.ProjectID.Value, _context);
+
                 TempData["SuccessTitle"] = "BAŞARILI";
                 TempData["SuccessMessage"] = $"{projectPhase.ProjectPhaseID} numaralı kayıt başarıyla silindi.";
                 return RedirectToAction(nameof(Index), new { id = projectPhase.ProjectID });

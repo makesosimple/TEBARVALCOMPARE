@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = @Model.ProjectTitle;
+    var cultureInfo = CultureInfo.CreateSpecificCulture("tr-TR");
+    var ProjectCost = Model.ProjectCost.HasValue ? Model.ProjectCost.Value.ToString("N2", cultureInfo) : "";
 }
 
 <!-- Alert for Exceptions -->
@@ -25,56 +27,11 @@
     </div>
 </div>
 <div class="card shadow mb-4">
-    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <ul class="nav nav-pills" role="tablist">
-            <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="tag-tab" data-toggle="tab" href="#tag" role="tab" aria-controls="tag" aria-selected="false">Künye</a>
-            </li>
-            <li class="nav-item d-none d-xl-block" role="presentation">
-                <a class="nav-link" id="feasibility-tab" href="/ProjectFeasibility/Form/@Model.ProjectID">Fizibilite</a>
-            </li>
-            <li class="nav-item d-none d-xl-block" role="presentation">
-                <a class="nav-link" id="associates-tab" href="/ProjectPerson/Index/@Model.ProjectID">Kişiler</a>
-            </li>
-            <li class="nav-item d-none d-xl-block" role="presentation">
-                <a class="nav-link" id="project-relation-tab" href="/ProjectRelation/Index/@Model.ProjectID">İlişkili Projeler</a>
-            </li>
-            <li class="nav-item d-none d-xl-block" role="presentation">
-                <a class="nav-link" id="project-field-tab" href="/Project/EditProjectField/@Model.ProjectID">Proje Alanı</a>
-            </li>
-            <li class="nav-item d-none d-xl-block" role="presentation">
-                <a class="nav-link" id="project-field-tab" href="/ProjectMap/ProjectDetail/@Model.ProjectID">Proje Haritası</a>
-            </li>
-            <li class="nav-item d-none d-xl-block" role="presentation">
-                <a class="nav-link" id="subfunction-tab" href="/ProjectSubfunctionFeature/Index/@Model.ProjectID">Fonksiyon</a>
-            </li>
-            <li class="nav-item d-none d-xl-block" role="presentation">
-                <a class="nav-link" id="schedule-tab" href="/ProjectPhase/Index/@Model.ProjectID">Takvim/Süreç</a>
-            </li>
-            <li class="nav-item  d-none d-xl-block" role="presentation">
-                <a class="nav-link" id="bidding-tab" href="/ProjectBidding/Index/@Model.ProjectID">Maliyet</a>
-            </li>
-            <li class="nav-item  d-none d-xl-block" role="presentation">
-                <a class="nav-link" id="file-tab" href="/File/Index/@Model.ProjectID">Dokümanlar</a>
-            </li>
-        </ul>
-        <div class="dropdown no-arrow d-block d-xl-none">
-            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-ellipsis-v fa-sm fa-fw text-primary"></i>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" href="/ProjectFeasibility/Form/@Model.ProjectID">Fizibilite</a>
-                <a class="dropdown-item" href="/ProjectPerson/Index/@Model.ProjectID">Kişiler</a>
-                <a class="dropdown-item" href="/ProjectRelation/Index/@Model.ProjectID">İlişkili Projeler</a>
-                <a class="dropdown-item" href="/Project/EditProjectField/@Model.ProjectID">Proje Alanı</a>
-                <a class="dropdown-item" href="/ProjectMap/ProjectDetail/@Model.ProjectID">Proje Haritası</a>
-                <a class="dropdown-item" href="/ProjectSubfunctionFeature/Index/@Model.ProjectID">Fonksiyon</a>
-                <a class="dropdown-item" href="/ProjectPhase/Index/@Model.ProjectID">Takvim/Süreç</a>
-                <a class="dropdown-item" href="/ProjectBidding/Index/@Model.ProjectID">Maliyet</a>
-                <a class="dropdown-item" href="/File/Index/@Model.ProjectID">Dokümanlar</a>
-            </div>
-        </div>
-    </div>
+    @await Html.PartialAsync("~/Views/Project/_ManageNavigation.cshtml",
+    new ViewDataDictionary(ViewData)
+    {
+        { "Id", @Model.ProjectID }
+    })
     <div class="card-body">
         <div class="tab-content my-3" id="formContent">
             <div class="tab-pane fade active show" id="tag" role="tabpanel" aria-labelledby="tag-tab">
@@ -104,9 +61,9 @@
 
                             <!-- Project IBB Code -->
                             <div class="form-group row">
-                                <label asp-for="ProjectIBBCode" class="col-12 col-lg-4 col-form-label">Proje İBB Kodu<span class="text-danger">*</span></label>
+                                <label asp-for="ProjectIBBCode" class="col-12 col-lg-4 col-form-label">Proje İBB Kodu</label>
                                 <div class="col-12 col-lg-8">
-                                    <input asp-for="ProjectIBBCode" class="form-control" required>
+                                    <input asp-for="ProjectIBBCode" class="form-control">
                                     <span asp-validation-for="ProjectIBBCode" class="text-danger"></span>
                                 </div>
                             </div>
@@ -127,6 +84,71 @@
                                 <div class="col-12 col-lg-8">
                                     <input asp-for="ProjectYear" type="number" class="form-control">
                                     <span asp-validation-for="ProjectYear" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Project Cost -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectCost" class="col-12 col-lg-4 col-form-label">Proje Bedeli</label>
+                                <div class="col-12 col-lg-8">
+                                    <input asp-for="ProjectCost" type="text" class="form-control" value="@ProjectCost" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-input-type="length" data-val="false">
+                                    <i class="fas fa-coins"></i>
+                                    <span asp-validation-for="ProjectCost" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Project Type ID -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectTypeID" class="col-12 col-xl-4 col-form-label">Proje Türü</label>
+                                <div class="col-12 col-xl-8">
+                                    <select asp-for="ProjectTypeID" class="form-control" id="selectProjectType" style="width: 100%;">
+                                        @if (@Model.ProjectType is not null)
+                                        {
+                                            <option value="@Model.ProjectType.Id">@Model.ProjectType.Title</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="">Proje Türü Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ProjectTypeID" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Is Done by IBB ? -->
+                            <div class="form-group row">
+                                <label asp-for="IsDoneByIBB" class="col-form-label col-12 col-xl-4">Proje İBB tarafından yapılmamaktadır.<span class="text-danger">*</span></label>
+                                <div class="col-12 col-xl-8">
+                                    <div class="text-center d-inline-block col-form-label">
+                                        <div class="vc-toggle-container">
+                                            <label class="vc-switch">
+                                                <input type="checkbox" class="vc-switch-input" asp-for="IsDoneByIBB">
+                                                <span data-on="Evet" data-off="Hayır" class="vc-switch-label"></span>
+                                                <span class="vc-handle"></span>
+                                                <span asp-validation-for="IsDoneByIBB" class="text-danger"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- External Organization ID -->
+                            <div class="form-group row" data-dependent-on="#IsDoneByIBB" data-dependent-value="checked">
+                                <label asp-for="ExternalOrganizationID" class="col-12 col-xl-4 col-form-label">Projeyi Yöneten Kurum</label>
+                                <div class="col-12 col-xl-8">
+                                    <select asp-for="ExternalOrganizationID" class="form-control" id="selectExternalOrganization" style="width: 100%;">
+                                        @if (@Model.ExternalOrganization is not null)
+                                        {
+                                            <option value="@Model.ExternalOrganization.OrganizationID">@Model.ExternalOrganization.OrganizationTitle</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="">Kurum Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ExternalOrganizationID" class="text-danger"></span>
                                 </div>
                             </div>
 
@@ -151,6 +173,27 @@
                                 </div>
                             </div>
 
+                            <!-- Responsible Management ID -->
+                            <div class="form-group row">
+                                <label asp-for="ResponsibleDepartmentID" class="col-12 col-lg-4 col-form-label">Sorumlu Müdürlük</label>
+                                <div class="col-12 col-lg-8">
+                                    <select asp-for="ResponsibleDepartmentID" class="form-control" id="selectResponsibleDepartment" style="width: 100%;">
+                                        @if (@Model.ResponsibleDepartment is not null)
+                                        {
+                                            <option value="@Model.ResponsibleDepartment.DepartmentID">@Model.ResponsibleDepartment.DepartmentTitle</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="">Sorumlu Müdürlük Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ResponsibleDepartmentID" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <hr />
+
                             <!-- Requesting Authority ID -->
                             <div class="form-group row">
                                 <label asp-for="RequestingAuthorityID" class="col-12 col-lg-4 col-form-label">Talep Eden Makam</label>
@@ -170,24 +213,16 @@
                                 </div>
                             </div>
 
-                            <!-- Responsible Management ID -->
+                            <!-- Requesting Authority Description -->
                             <div class="form-group row">
-                                <label asp-for="ResponsibleDepartmentID" class="col-12 col-lg-4 col-form-label">Sorumlu Müdürlük</label>
-                                <div class="col-12 col-lg-8">
-                                    <select asp-for="ResponsibleDepartmentID" class="form-control" id="selectResponsibleDepartment" style="width: 100%;">
-                                        @if (@Model.ResponsibleDepartment is not null)
-                                        {
-                                            <option value="@Model.ResponsibleDepartment.DepartmentID">@Model.ResponsibleDepartment.DepartmentTitle</option>
-                                        }
-
-                                        else
-                                        {
-                                            <option value="">Sorumlu Müdürlük Seçin</option>
-                                        }
-                                    </select>
-                                    <span asp-validation-for="ResponsibleDepartmentID" class="text-danger"></span>
+                                <label asp-for="RequestingAuthorityDescription" class="col-12 col-xl-4 col-form-label">Talep Açıklaması</label>
+                                <div class="col-12 col-xl-8">
+                                    <textarea asp-for="RequestingAuthorityDescription" class="form-control"></textarea>
+                                    <span asp-validation-for="RequestingAuthorityDescription" class="text-danger"></span>
                                 </div>
                             </div>
+
+                            <hr />
 
                             <!-- Project Owner Person ID -->
                             <div class="form-group row">
@@ -246,6 +281,25 @@
                                 </div>
                             </div>
 
+                            <!-- Project Additional Service Area ID -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectAdditionalServiceAreaID" class="col-12 col-xl-4 col-form-label">Ek Hizmet Alanı</label>
+                                <div class="col-12 col-xl-8">
+                                    <select asp-for="ProjectAdditionalServiceAreaID" class="form-control" id="selectAdditionalServiceArea" style="width: 100%;">
+                                        @if (@Model.ProjectAdditionalServiceArea is not null)
+                                        {
+                                            <option value="@Model.ProjectAdditionalServiceArea.ServiceAreaID">@Model.ProjectAdditionalServiceArea.ServiceAreaTitle</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="">Ek Hizmet Alanı Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ProjectAdditionalServiceAreaID" class="text-danger"></span>
+                                </div>
+                            </div>
+
                             <!-- Project Importance ID -->
                             <div class="form-group row">
                                 <label asp-for="ProjectImportanceID" class="col-12 col-lg-4 col-form-label">Proje Önemi</label>
@@ -262,6 +316,86 @@
                                         }
                                     </select>
                                     <span asp-validation-for="ProjectImportanceID" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-12 col-xl-6">
+                            <!-- Project Title (Production) -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectProductionName" class="col-12 col-lg-4 col-form-label">Proje Başlığı (Yapım)</label>
+                                <div class="col-12 col-lg-8">
+                                    <input asp-for="ProjectProductionName" type="text" class="form-control">
+                                    <span asp-validation-for="ProjectProductionName" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Project Status Description Date -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectProductionEndTime" class="col-12 col-lg-4 col-form-label">Proje Bitiş Tarihi (Yapım)</label>
+                                <div class="col-12 col-lg-8">
+                                    <input asp-for="ProjectProductionEndTime" type="text" class="form-control datepicker">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span asp-validation-for="ProjectProductionEndTime" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Production Responsible Department ID -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectProductionRespDepartmentID" class="col-12 col-lg-4 col-form-label">Sorumlu Müdürlük (Yapım)</label>
+                                <div class="col-12 col-lg-8">
+                                    <select asp-for="ProjectProductionRespDepartmentID" class="form-control" id="selectProductionResponsibleDepartment" style="width: 100%;">
+                                        @if (@Model.ProjectProductionRespDepartment is not null)
+                                        {
+                                            <option value="@Model.ProjectProductionRespDepartment.DepartmentID">@Model.ProjectProductionRespDepartment.DepartmentTitle</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="">Sorumlu Müdürlük Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ProjectProductionRespDepartmentID" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Project Status Description Date -->
+                            <div class="form-group row">
+                                <label asp-for="RespDepartmentTransferDate" class="col-12 col-xl-4 col-form-label">Sorumlu Müdürlüğe Gönderim Tarihi (Yapım)</label>
+                                <div class="col-12 col-xl-8">
+                                    <input asp-for="RespDepartmentTransferDate" type="text" class="form-control datepicker">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span asp-validation-for="RespDepartmentTransferDate" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <hr />
+
+                            <!-- Production Production Status ID -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectProductionStatusID" class="col-12 col-xl-4 col-form-label">Yapım İşinin Durumu</label>
+                                <div class="col-12 col-xl-8">
+                                    <select asp-for="ProjectProductionStatusID" class="form-control" id="selectProjectProductionStatus" style="width: 100%;">
+                                        @if (@Model.ProjectProductionStatus is not null)
+                                        {
+                                            <option value="@Model.ProjectProductionStatus.ProjectStatusID">@Model.ProjectProductionStatus.ProjectStatusTitle</option>
+                                        }
+
+                                        else
+                                        {
+                                            <option value="">Durum Seçin</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="ProjectProductionStatusID" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Project Production Status Description -->
+                            <div class="form-group row">
+                                <label asp-for="ProjectProductionStatusDescription" class="col-12 col-xl-4 col-form-label">Yapım İşinin Durum Açıklaması</label>
+                                <div class="col-12 col-xl-8">
+                                    <textarea asp-for="ProjectProductionStatusDescription" class="form-control"></textarea>
+                                    <span asp-validation-for="ProjectProductionStatusDescription" class="text-danger"></span>
                                 </div>
                             </div>
 
@@ -305,101 +439,15 @@
                                 </div>
                             </div>
 
-                            <!-- Default Values for the Database Date Part -->
-                            <input type="hidden" asp-for="CreationDate" />
-                            <input type="hidden" asp-for="UpdateDate" />
-
-                            <!-- User ID for the Update -->
-                            <input type="hidden" asp-for="UserID" />
-
                         </div>
-                        <div class="col-12 col-xl-6">
-                            <!-- Project Title (Production) -->
-                            <div class="form-group row">
-                                <label asp-for="ProjectProductionName" class="col-12 col-lg-4 col-form-label">Proje Başlığı (Yapım)</label>
-                                <div class="col-12 col-lg-8">
-                                    <input asp-for="ProjectProductionName" type="text" class="form-control">
-                                    <span asp-validation-for="ProjectProductionName" class="text-danger"></span>
-                                </div>
-                            </div>
 
-                            <!-- Project Status Description Date -->
-                            <div class="form-group row">
-                                <label asp-for="ProjectProductionEndTime" class="col-12 col-lg-4 col-form-label">Proje Bitiş Tarihi (Yapım)</label>
-                                <div class="col-12 col-lg-8">
-                                    <input asp-for="ProjectProductionEndTime" type="text" class="form-control datepicker">
-                                    <i class="fas fa-calendar-alt"></i>
-                                    <span asp-validation-for="ProjectProductionEndTime" class="text-danger"></span>
-                                </div>
-                            </div>
+                        <!-- Default Values for the Database Date Part -->
+                        <input type="hidden" asp-for="CreationDate" />
+                        <input type="hidden" asp-for="UpdateDate" />
 
-                            <!-- Production Responsible Department ID -->
-                            <div class="form-group row">
-                                <label asp-for="ProjectProductionRespDepartmentID" class="col-12 col-lg-4 col-form-label">Sorumlu Müdürlük (Yapım)</label>
-                                <div class="col-12 col-lg-8">
-                                    <select asp-for="ProjectProductionRespDepartmentID" class="form-control" id="selectProductionResponsibleDepartment" style="width: 100%;">
-                                        @if (@Model.ProjectProductionRespDepartment is not null)
-                                        {
-                                            <option value="@Model.ProjectProductionRespDepartment.DepartmentID">@Model.ProjectProductionRespDepartment.DepartmentTitle</option>
-                                        }
+                        <!-- User ID for the Update -->
+                        <input type="hidden" asp-for="UserID" />
 
-                                        else
-                                        {
-                                            <option value="">Sorumlu Müdürlük Seçin</option>
-                                        }
-                                    </select>
-                                    <span asp-validation-for="ProjectProductionRespDepartmentID" class="text-danger"></span>
-                                </div>
-                            </div>
-
-                            <hr />
-
-                            <!-- Project Object ID -->
-                            <div class="form-group row">
-                                <label asp-for="ProjectObjectID" class="col-12 col-lg-4 col-form-label">Nesne No.</label>
-                                <div class="col-12 col-lg-8">
-                                    <input asp-for="ProjectObjectID" type="number" class="form-control">
-                                    <span asp-validation-for="ProjectObjectID" class="text-danger"></span>
-                                </div>
-                            </div>
-
-                            <!-- Project UID -->
-                            <div class="form-group row">
-                                <label asp-for="ProjectUID" class="col-12 col-lg-4 col-form-label">UID</label>
-                                <div class="col-12 col-lg-8">
-                                    <input asp-for="ProjectUID" type="text" class="form-control">
-                                    <span asp-validation-for="ProjectUID" class="text-danger"></span>
-                                </div>
-                            </div>
-
-                            <!-- Project Global ID -->
-                            <div class="form-group row">
-                                <label asp-for="ProjectGlobalID" class="col-12 col-lg-4 col-form-label">Global Proje No.</label>
-                                <div class="col-12 col-lg-8">
-                                    <input asp-for="ProjectGlobalID" type="text" class="form-control">
-                                    <span asp-validation-for="ProjectGlobalID" class="text-danger"></span>
-                                </div>
-                            </div>
-
-                            <!-- Project File Number -->
-                            <div class="form-group row">
-                                <label asp-for="ProjectFileNumber" class="col-12 col-lg-4 col-form-label">Proje Dosya No.</label>
-                                <div class="col-12 col-lg-8">
-                                    <input asp-for="ProjectFileNumber" type="text" class="form-control">
-                                    <span asp-validation-for="ProjectFileNumber" class="text-danger"></span>
-                                </div>
-                            </div>
-
-                            <!-- Project Package Number -->
-                            <div class="form-group row">
-                                <label asp-for="ProjectPackageNumber" class="col-12 col-lg-4 col-form-label">Proje Paket No.</label>
-                                <div class="col-12 col-lg-8">
-                                    <input asp-for="ProjectPackageNumber" type="text" class="form-control">
-                                    <span asp-validation-for="ProjectPackageNumber" class="text-danger"></span>
-                                </div>
-                            </div>
-
-                        </div>
                         <div class="col-12">
                             <div class="buttons mt-3 my-md-0">
                                 <button type="submit" class="btn bg-success text-white"><i class="fas fa-save mr-2"></i> Kaydet</button>
@@ -416,110 +464,171 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-    <script>
-        $('#selectRequestingDepartment').select2({
-            theme: "ibb",
-            language: "tr",
-            ajax: {
-                url: '/Department/JsonSelectData',
-                dataType: 'json',
-                processResults: function (response) {
+<script>
+    $('#selectRequestingDepartment').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/Department/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
 
-                    return {
-                        results: response.results,
-                    };
-                }
+                return {
+                    results: response.results,
+                };
             }
+        }
+    });
+
+    $('#selectResponsibleDepartment, #selectProductionResponsibleDepartment').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/Department/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
+
+                return {
+                    results: response.results,
+                };
+            }
+        }
+    });
+
+    $('#selectProjectOwner, #selectProjectManager').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/Person/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
+
+                return {
+                    results: response.results,
+                };
+            }
+        }
+    });
+
+    $('#selectRequestingAuthority').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/Authority/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
+
+                return {
+                    results: response.results,
+                };
+            }
+        }
+    });
+
+    $('#selectServiceArea, #selectAdditionalServiceArea').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/ServiceArea/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
+
+                return {
+                    results: response.results,
+                };
+            }
+        }
+    });
+
+    $('#selectProjectImportance').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/ProjectImportance/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
+
+                return {
+                    results: response.results,
+                };
+            }
+        }
+    });
+
+    $('#selectProjectType').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/ProjectType/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
+
+                return {
+                    results: response.results,
+                };
+            }
+        }
+    });
+
+    $('#selectProjectStatus, #selectProjectProductionStatus').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/ProjectStatus/JsonSelectData',
+            dataType: 'json',
+            processResults: function (response) {
+
+                return {
+                    results: response.results,
+                };
+            }
+        }
+    });
+
+    $('#selectExternalOrganization').select2({
+        theme: "ibb",
+        language: "tr",
+        ajax: {
+            url: '/Organization/JsonSelectData',
+            data: function (params) {
+
+                let query = {
+                    getExternals: true,
+                    term: params.term
+                }
+                return query;
+            },
+            dataType: 'json',
+            processResults: function (response) {
+
+                return {
+                    results: response.results,
+                };
+            }
+        }
+    });
+
+    //Dependent Fields Management
+    $("[data-dependent-on]").each(function () {
+        //Hide all dependent fields by default until user makes a choice.
+        $(this).hide();
+
+        //Get the object, object's target and desired value.
+        let field = $(this);
+        let target = $(this).data("dependent-on");
+        let desiredValue = $(this).data("dependent-value");
+        let status = $(target).is(':checked') ? 'checked' : 'unchecked';
+
+        //Let's check initial state first for UX.
+        if (status == desiredValue) field.show();
+
+        //Now every time user changes the input value of the target, certain fields will open or close on DOM.
+        $(target).on("change", function () {
+            status = $(this).is(':checked') ? 'checked' : 'unchecked';
+            if (status == desiredValue) field.show();
+            else field.hide();
         });
 
-        $('#selectResponsibleDepartment, #selectProductionResponsibleDepartment').select2({
-            theme: "ibb",
-            language: "tr",
-            ajax: {
-                url: '/Department/JsonSelectData',
-                dataType: 'json',
-                processResults: function (response) {
-
-                    return {
-                        results: response.results,
-                    };
-                }
-            }
-        });
-
-        $('#selectProjectOwner, #selectProjectManager').select2({
-            theme: "ibb",
-            language: "tr",
-            ajax: {
-                url: '/Person/JsonSelectData',
-                dataType: 'json',
-                processResults: function (response) {
-
-                    return {
-                        results: response.results,
-                    };
-                }
-            }
-        });
-
-        $('#selectRequestingAuthority').select2({
-            theme: "ibb",
-            language: "tr",
-            ajax: {
-                url: '/Authority/JsonSelectData',
-                dataType: 'json',
-                processResults: function (response) {
-
-                    return {
-                        results: response.results,
-                    };
-                }
-            }
-        });
-
-        $('#selectServiceArea').select2({
-            theme: "ibb",
-            language: "tr",
-            ajax: {
-                url: '/ServiceArea/JsonSelectData',
-                dataType: 'json',
-                processResults: function (response) {
-
-                    return {
-                        results: response.results,
-                    };
-                }
-            }
-        });
-
-        $('#selectProjectImportance').select2({
-            theme: "ibb",
-            language: "tr",
-            ajax: {
-                url: '/ProjectImportance/JsonSelectData',
-                dataType: 'json',
-                processResults: function (response) {
-
-                    return {
-                        results: response.results,
-                    };
-                }
-            }
-        });
-
-        $('#selectProjectStatus').select2({
-            theme: "ibb",
-            language: "tr",
-            ajax: {
-                url: '/ProjectStatus/JsonSelectData',
-                dataType: 'json',
-                processResults: function (response) {
-
-                    return {
-                        results: response.results,
-                    };
-                }
-            }
-        });
-    </script>
+    });
+</script>
 }

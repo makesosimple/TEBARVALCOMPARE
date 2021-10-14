@@ -20,8 +20,6 @@ namespace IBBPortal.Models
         [MaxLength(256, ErrorMessage = "Bu alana maksimum 256 karakter girebilirsiniz.")]
         public string? ProjectStatusDescription { get; set; }
 
-        public List<Project> RelatedProjects { get; set; }
-
         public string UserID { get; set; }
         [ForeignKey("UserID")]
         public ApplicationUser User { get; set; }

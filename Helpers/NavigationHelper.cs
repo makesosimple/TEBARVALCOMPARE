@@ -16,7 +16,7 @@ namespace IBBPortal.Helpers
 
         public static string ProjectRelation => "ProjectRelation/Index";
 
-        public static string ProjectField => "Project/EditProjectField";
+        public static string ProjectField => "ProjectField/Edit";
 
         public static string ProjectMap => "ProjectMap/ProjectDetail";
 
@@ -25,8 +25,12 @@ namespace IBBPortal.Helpers
         public static string ProjectPhase => "ProjectPhase/Index";
         
         public static string ProjectBidding => "ProjectBidding/Index";
-        
+
+        public static string ProjectProduction => "ProjectProduction/Index";
+
         public static string File => "File/Index";
+
+        public static string ProjectSettings => "ProjectSettings/Index";
 
         public static string ProjectEditNavClass(ViewContext viewContext, string mod = "default") => PageNavClass(viewContext, ProjectEdit, mod);
 
@@ -47,6 +51,10 @@ namespace IBBPortal.Helpers
         public static string ProjectBiddingNavClass(ViewContext viewContext, string mod = "default") => PageNavClass(viewContext, ProjectBidding, mod);
         
         public static string FileNavClass(ViewContext viewContext, string mod = "default") => PageNavClass(viewContext, File, mod);
+
+        public static string ProjectProductionNavClass(ViewContext viewContext, string mod = "default") => PageNavClass(viewContext, ProjectProduction, mod);
+
+        public static string ProjectSettingsNavClass(ViewContext viewContext, string mod = "default") => PageNavClass(viewContext, ProjectSettings, mod);
 
         private static string PageNavClass(ViewContext viewContext, string page, string mod)
         {

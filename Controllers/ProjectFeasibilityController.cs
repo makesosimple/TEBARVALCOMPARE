@@ -83,6 +83,8 @@ namespace IBBPortal.Controllers
                     }
 
                     await _context.SaveChangesAsync();
+
+                    ProjectHelper.UpdatedProject(projectFeasibility.ProjectID.Value, _context);
                     return RedirectToAction(nameof(Form), new { id = projectFeasibility.ProjectID });
                 }
                 catch (DbUpdateConcurrencyException)

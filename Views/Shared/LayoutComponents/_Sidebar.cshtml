@@ -183,14 +183,6 @@
             </a>
         </li>
 
-        <!-- Relation Type Management-->
-        <li class="nav-item">
-            <a class="nav-link" asp-controller="RelationType" asp-action="Index">
-                <i class="fas fa-network-wired"></i>
-                <span>İlişki Tipi Yönetimi</span>
-            </a>
-        </li>
-
         <!-- Service Area Management-->
         <li class="nav-item">
             <a class="nav-link" asp-controller="ServiceArea" asp-action="Index">
@@ -211,6 +203,22 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" asp-controller="Subfunction" asp-action="Index">Fonksiyonlar</a>
                     <a class="collapse-item" asp-controller="SubfunctionFeature" asp-action="Index">Fonksiyon Özellikleri</a>
+                </div>
+            </div>
+        </li>
+
+        <!-- Type Management-->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseType"
+               aria-expanded="true" aria-controls="collapseType">
+                <i class="fas fa-network-wired"></i>
+                <span>Tip Yönetimi</span>
+            </a>
+            <div id="collapseType" class="collapse" aria-labelledby="headingType"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" asp-controller="RelationType" asp-action="Index">İlişki Tipleri</a>
+                    <a class="collapse-item" asp-controller="ProjectType" asp-action="Index">Proje Tipleri</a>
                 </div>
             </div>
         </li>

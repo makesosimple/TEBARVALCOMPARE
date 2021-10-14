@@ -40,10 +40,6 @@ namespace IBBPortal.Models
         [MaxLength(256)]
         public string? ProjectAddress { get; set; }
 
-        //Project Cost. I don't know if this field is required. Ask tomorrow.
-        [Column(TypeName = "decimal(18, 2)")]
-        public decimal? ProjectCost { get; set; }
-
         public double? ProjectArea { get; set; }
 
         public double? ProjectConstructionArea { get; set; }

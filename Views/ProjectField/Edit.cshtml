@@ -55,7 +55,7 @@
             <div class="tab-pane fade active show" id="project-field" role="tabpanel" aria-labelledby="project-field-tab">
                 <div class="row">
                     <div class="col-12 col-xl-6">
-                        <form asp-action="EditProjectField">
+                        <form asp-action="Edit">
                             <!-- Validation Part. Must be still for all views!! -->
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -469,29 +469,23 @@
 
                             <!-- Property Status ID -->
                             <div class="form-group row">
-                                <label asp-for="ProjectExpropriation.PropertyStatusID" class="col-12 col-xl-4 col-form-label">Mülkiyet Durumu</label>
+                                <label asp-for="PropertyStatus" class="col-12 col-xl-4 col-form-label">Mülkiyet Durumu</label>
                                 <div class="col-12 col-xl-8">
-                                    <select asp-for="ProjectExpropriation.PropertyStatusID" class="form-control" id="selectPropertyStatus" style="width: 100%;">
-                                        @if (Model.ProjectExpropriation is not null)
+                                    <select asp-for="PropertyStatus" class="form-control" id="selectPropertyStatus" name="PropertyStatus[]" multiple="multiple" style="width: 100%;">
+                                        @if (Model.ChosenPropertyStatus is not null)
                                         {
-                                            if (Model.ProjectExpropriation.PropertyStatus is not null)
+                                            foreach (var property in Model.ChosenPropertyStatus)
                                             {
-                                                <option value="@Model.ProjectExpropriation.PropertyStatus.PropertyStatusID">@Model.ProjectExpropriation.PropertyStatus.PropertyStatusTitle</option>
+                                                <option selected value="@property.PropertyStatusID">@property.PropertyStatusTitle</option>
                                             }
-
-                                            else
-                                            {
-                                                <option selected value="">Mülkiyet Durumu Seçin</option>
-                                            }
-
                                         }
 
                                         else
                                         {
-                                            <option selected value="">Mülkiyet Durumu Seçin</option>
+                                            <option value="">Mülkiyet Durumu Seçin</option>
                                         }
                                     </select>
-                                    <span asp-validation-for="ProjectExpropriation.PropertyStatusID" class="text-danger"></span>
+                                    <span asp-validation-for="PropertyStatus" class="text-danger"></span>
                                 </div>
                             </div>
 
@@ -564,7 +558,7 @@
                                             <option selected value="">Kamulaştırma Durumu Seçin</option>
                                         }
                                     </select>
-                                    <span asp-validation-for="ProjectExpropriation.PropertyStatusID" class="text-danger"></span>
+                                    <span asp-validation-for="ProjectExpropriation.ExpropriationStatusID" class="text-danger"></span>
                                 </div>
                             </div>
 
@@ -633,7 +627,7 @@
                                             <option selected value="">Kurum Seçin</option>
                                         }
                                     </select>
-                                    <span asp-validation-for="ProjectExpropriation.PropertyStatusID" class="text-danger"></span>
+                                    <span asp-validation-for="ProjectPermission.OrganizationID" class="text-danger"></span>
                                 </div>
                             </div>
 

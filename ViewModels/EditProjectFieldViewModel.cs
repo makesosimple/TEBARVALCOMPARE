@@ -18,6 +18,11 @@ namespace IBBPortal.ViewModels
 
         public ProjectExpropriation? ProjectExpropriation { get; set; }
 
+        //Send Multiple Select Property Status
+        public List<ProjectPropertyStatusViewModel> ChosenPropertyStatus { get; set; }
+
+        //Recieve Multiple Select Property Status
+        public int[] PropertyStatus { get; set; }
         public ProjectPermission? ProjectPermission { get; set; }
     }
 }

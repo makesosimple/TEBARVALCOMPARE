@@ -95,7 +95,6 @@ namespace IBBPortal.Controllers
         {
             try
             {
-
                 var DepartmentData = _context.Department
                                     .Select(x => new {
                                         id = x.DepartmentID.ToString(),
@@ -116,7 +115,6 @@ namespace IBBPortal.Controllers
 
                 //Returning Json Data  
                 return Json(new { results = passData, totalCount = totalCount });
-
             }
 
             catch (Exception)
