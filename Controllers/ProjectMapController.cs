@@ -27,6 +27,11 @@ namespace IBBPortal.Controllers
             return View();
         }
 
+        public IActionResult Executive()
+        {
+            return View();
+        }
+
         // GET: https://localhost:44360/ProjectMap/ProjectDetail/?projectID=168
         public async Task<IActionResult> ProjectDetail(int? id)
         {

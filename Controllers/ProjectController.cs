@@ -202,6 +202,110 @@ namespace IBBPortal.Controllers
             return Json(new { data = data.Take(250).ToList(), districtID = selectedDistrictInt, ProjectKeyword = projectKeyword });
         }
 
+
+        [HttpGet]
+        public JsonResult MapDataExecutive()
+        {
+            string projectKeyword = HttpContext.Request.Query["projectTitle"];
+            var selectedDistrict = HttpContext.Request.Query["selectDistrict"];
+            var selectedFunction = HttpContext.Request.Query["selectFunction"];
+
+            var selectedDepartment = HttpContext.Request.Query["selectedDepartment"];
+            var selectedProjectStatus = HttpContext.Request.Query["selectProjectStatus"];
+            var selectedProjectOwner = HttpContext.Request.Query["selectProjectOwner"];
+
+            var yearSelected = HttpContext.Request.Query["yearSelected"];
+
+            var data = _context.ProjectField.Select(c => new
+            {
+                c.ProjectID,
+                ProjectStatus = c.Project.ProjectStatus.ProjectStatusTitle,
+                ProjectStatusID = c.Project.ProjectStatusID,
+                ProjectTitle = c.Project.ProjectTitle,
+                
+                DistrictName = c.District.DistrictName,
+                Longitude = c.ProjectLongitude,
+                Latitude = c.ProjectLatitude,
+                Coordinates = c.coordinates,
+                RequestingDepartmentTitle = c.Project.RequestingDepartment.DepartmentTitle,
+                ResponsibleDepartmentTitle = c.Project.ResponsibleDepartment.DepartmentTitle,
+                OwnerFullName = c.Project.ProjectOwnerPerson.PersonName.Trim(), // + " " + c.Project.ProjectOwnerPerson.PersonSurname.Trim(),
+                ServiceAreaTitle = c.Project.ProjectServiceArea.ServiceAreaTitle,
+                ProjectImportanceTitle = c.Project.ProjectImportance.ProjectImportanceTitle,
+                RequestingDepartmentID = c.Project.RequestingDepartmentID == null ? 0 : c.Project.RequestingDepartmentID,
+                ResponsibleDepartmentID = c.Project.ResponsibleDepartmentID == null ? 0 : c.Project.ResponsibleDepartmentID,
+                DistrictID = c.DistrictID == null ? 0 : c.DistrictID,
+                ProjectOwnerID = c.Project.ProjectOwnerPersonID == null ? 0 : c.Project.ProjectOwnerPersonID,
+                ProjectYear = c.Project.ProjectYear,
+                MapIcon = c.Project.ResponsibleDepartment.MapIcon,
+            });
+
+            if (Int32.TryParse(selectedDistrict, out int selectedDistrictInt))
+            {
+                if (selectedDistrictInt != 0)
+                {
+                    data = data.Where(c => c.DistrictID == selectedDistrictInt);
+                }
+
+            }
+            else
+            {
+                selectedDistrictInt = -1;
+            }
+
+            if (Int32.TryParse(yearSelected, out int yearSelectedInt))
+            {
+                if (selectedDistrictInt != 0)
+                {
+                    data = data.Where(c => c.ProjectYear == yearSelectedInt);
+                }
+
+            }
+            else
+            {
+                yearSelectedInt = -1;
+            }
+
+            if (Int32.TryParse(selectedDepartment, out int respDepartmentIDInt))
+            {
+                data = data.Where(c => c.ResponsibleDepartmentID == respDepartmentIDInt);
+            }
+            else
+            {
+                respDepartmentIDInt = -1;
+            }
+
+            if (Int32.TryParse(selectedProjectStatus, out int selectedProjectStatusInt))
+            {
+                data = data.Where(c => c.ProjectStatusID == selectedProjectStatusInt);
+            }
+            else
+            {
+                selectedProjectStatusInt = -1;
+            }
+
+            if (Int32.TryParse(selectedProjectOwner, out int projectOwnerIDint))
+            {
+                data = data.Where(c => c.ProjectOwnerID == projectOwnerIDint);
+            }
+            else
+            {
+                projectOwnerIDint = -1;
+            }
+
+            if (projectKeyword == null)
+            {
+                projectKeyword = "";
+            }
+
+            if (projectKeyword.Length > 1)
+            {
+                data = data.Where(c => c.ProjectTitle.Contains(projectKeyword));
+            }
+
+            return Json(new { data = data.Take(100).ToList(), districtID = selectedDistrictInt, ProjectKeyword = projectKeyword });
+        }
+
         [HttpGet]
         public JsonResult MapDetail()
         {
