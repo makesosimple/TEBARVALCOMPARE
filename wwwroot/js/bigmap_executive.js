@@ -69,7 +69,7 @@ function buildMap() {
             imagePath:
                 "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
         });
-
+        
         $('.loadingDiv').hide();
 
     }).fail(function () {
@@ -145,6 +145,7 @@ function showMarker(m) {
         'Proje Önemi: ' + m.projectImportanceTitle + '<br/>' +
         '</p>' +
         '<p><a class="link" href="/Project/Edit/' + m.projectID + '"><b>Proje</b> <i class="fas fa-arrow-circle-right"></i></a></p>' +
+        '<a href="#loadPanel('+m.projectID+')" onClick="loadPanel('+m.projectID+')" class="-js-cd-panel-trigger" data-panel="main">Proje Ayrıntıları <i class="fas fa-arrow-circle-right"></i></a>' +
         "</div>" +
         "</div>";
     const infowindow = new google.maps.InfoWindow({
@@ -157,6 +158,7 @@ function showMarker(m) {
             map,
             shouldFocus: false,
         });
+       
     });
 
     return marker;
@@ -278,7 +280,9 @@ $(document).ready(function () {
 
     $('#toggleFilter').click(function () {
         buildMap();
+        activatePanel();
     })
 
     buildMap();
+    activatePanel();
 });

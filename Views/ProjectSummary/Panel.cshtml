@@ -1,0 +1,45 @@
+﻿@model IBBPortal.ViewModels.ProjectSummaryViewModel
+
+@{
+    ViewData["Title"] = @Model.ProjectTitle;
+    Layout = "~/Views/Shared/Layouts/_LayoutMapPanel.cshtml";
+}
+<div class="container">
+    <h5>Proje Bilgileri <a href="# " onclick="unloadPanel()" style="float:right;"><i class="fas fa-backspace"></i></a> </h5>
+    <p><b>@Model.ProjectTitle</b><br />(@Model.ProjectIBBCode)</p>
+    <p>
+        <table class="table-panel" width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+                <td>Yıl: </td>
+                <td><b>@Model.ProjectYear</b></td>
+            </tr>
+            <tr>
+                <td>Pafta/Ada/Parsel: </td>
+                <td><b>@Model.ProjectPaftaAdaParsel</b></td>
+            </tr>
+            <tr>
+                <td>Sorumlu Müdürlük</td>
+                <td><b>@Model.ResponsibleDepartmentTitle</b></td>
+            </tr>
+            <tr>
+                <td>Proje Sahibi</td>
+                <td><b>@Model.ProjectOwnerName</b></td>
+            </tr>
+            <tr>
+                <td>Proje Durumu</td>
+                <td><b>@Model.ProjectStatus</b></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    Proje Durumu Açıklaması
+                    <br />
+                    @Model.ProjectStatusDescription
+                </td>
+                
+            </tr>
+        </table>
+        
+    </p>
+</div>
+
+
