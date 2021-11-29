@@ -37,16 +37,16 @@
 .cd-panel {
   position: fixed;
   top: 0;
-  left: 0;
+  right: 0;
   height: 100%;
-  width: 100%;
+  width: 50;
   visibility: hidden;
   -webkit-transition: visibility 0s 0.6s;
   transition: visibility 0s 0.6s;
 }
 
-.cd-panel::after {
-  /* overlay layer */
+/*.cd-panel::after {
+  
   content: '';
   position: absolute;
   top: 0;
@@ -58,11 +58,12 @@
   -webkit-transition: background 0.3s 0.3s;
   transition: background 0.3s 0.3s;
 }
+*/
 
 .cd-panel.cd-panel--is-visible {
-  visibility: visible;
-  -webkit-transition: visibility 0s 0s;
-  transition: visibility 0s 0s;
+    visibility: visible;
+    -webkit-transition: visibility 0s 0s;
+    transition: visibility 0s 0s;
 }
 
 .cd-panel.cd-panel--is-visible::after {
@@ -289,7 +290,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 50%;
   height: 100%;
   padding: 70px 5%;
   overflow: auto;
@@ -313,4 +314,23 @@
     font-size: 1.6rem;
     line-height: 1.6;
   }
+}
+
+#projectDetailPanel {
+    background-color:white;
+    padding:1rem;
+    z-index:999;
+    max-width:75%;
+}
+
+.table-panel td {
+    padding-right: .75rem;
+    padding-bottom: .5rem;
+    padding-top: .5rem;
+    white-space: normal;
+    text-overflow: unset;
+}
+
+.table-panel tr {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }

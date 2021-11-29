@@ -11,6 +11,10 @@ namespace IBBPortal.ViewModels
         
 
         public string ProjectTitle { get; set; }
+
+        public int? ProjectYear { get; set; }
+        public string ProjectStatus { get; set; }
+        public string ProjectStatusDescription { get; set; }
         public int ProjectID { get; set; }
         public decimal? ProjectLatitude { get; set; }
         public decimal? ProjectLongitude { get; set; }
