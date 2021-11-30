@@ -18,6 +18,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace IBBPortal.Controllers
 {
@@ -205,7 +206,7 @@ namespace IBBPortal.Controllers
                 _defaultFormOptions.MultipartBoundaryLengthLimit);
             var reader = new MultipartReader(boundary, HttpContext.Request.Body);
             var section = await reader.ReadNextSectionAsync();
-
+            
             //Dictionary to save non-file fields (text, select, textare etc.)
             // Don't change this part as it will corrupt the model binding!
             Dictionary<string, dynamic> formValues = new Dictionary<string, dynamic>();
@@ -242,6 +243,8 @@ namespace IBBPortal.Controllers
                     }
                     else
                     {
+                        //Project ID. Must Have!
+                        int projectID = Convert.ToInt32(formValues["ProjectID"]);
                         // Don't trust the file name sent by the client. To display
                         // the file name, HTML-encode the value.
                         var fileName = "";
@@ -279,19 +282,26 @@ namespace IBBPortal.Controllers
                             return BadRequest(ModelState);
                         }
 
+                        
+                        string folderName = CreateFolderNameFromProjectInfo(projectID);
+
+                        var createFolder = System.IO.Directory.CreateDirectory(_targetFilePath + "\\" + folderName);
+
+                        //This "using" is coming from IDisposable. Removing it will cause this to run synchronously and
+                        // throw an "The streamed file is used by another instance" Exception!
                         using (var targetStream = System.IO.File.Create(
-                            Path.Combine(_targetFilePath, trustedFileNameForFileStorage)))
+                            Path.Combine(createFolder.FullName, trustedFileNameForFileStorage)))
                         {
                             await targetStream.WriteAsync(streamedFileContent);
-
-                            formValues.Add("FilePath", Path.Combine(_targetFilePath, trustedFileNameForFileStorage));
-
-                            _logger.LogInformation(
-                                "Uploaded file '{TrustedFileNameForDisplay}' saved to " +
-                                "'{TargetFilePath}' as {TrustedFileNameForFileStorage}",
-                                trustedFileNameForDisplay, _targetFilePath,
-                                trustedFileNameForFileStorage);
                         }
+
+                        formValues.Add("FilePath", Path.Combine(createFolder.FullName, trustedFileNameForFileStorage));
+
+                        _logger.LogInformation(
+                            "Uploaded file '{TrustedFileNameForDisplay}' saved to " +
+                            "'{TargetFilePath}' as {TrustedFileNameForFileStorage}",
+                            trustedFileNameForDisplay, _targetFilePath,
+                            trustedFileNameForFileStorage);
                     }
                 }
 
@@ -333,7 +343,7 @@ namespace IBBPortal.Controllers
                     await _context.AddAsync(file);                    
                     await _context.SaveChangesAsync();
 
-                    ProjectHelper.UpdatedProject(formValues["ProjectID"], _context);
+                    ProjectHelper.UpdatedProject(Convert.ToInt32(formValues["ProjectID"]), _context);
 
                     JsonResult response = new JsonResult(new { });
 
@@ -357,6 +367,8 @@ namespace IBBPortal.Controllers
                         SuccessTitle = "HATA",
                         SuccessMessage = "Kayıt oluşturulamadı.",
                     };
+
+                    throw;
 
                     return response;
                 }
@@ -475,6 +487,18 @@ namespace IBBPortal.Controllers
         private bool FileExists(int id)
         {
             return _context.File.Any(e => e.FileID == id);
+        }
+
+        private string CreateFolderNameFromProjectInfo(int projectId)
+        {
+            var project = _context.Project.FirstOrDefault(x => x.ProjectID == projectId);
+
+            Regex pattern = new Regex("[ -(),]");
+
+            string projectName = project.ProjectTitle.Replace(' ', '_').Replace('-', '_');
+            string folderName = project.ProjectIBBCode.ToString() + "-" + pattern.Replace(projectName, "_");
+
+            return folderName;
         }
     }
 }
