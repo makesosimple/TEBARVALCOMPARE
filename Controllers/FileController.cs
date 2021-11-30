@@ -285,7 +285,7 @@ namespace IBBPortal.Controllers
                         
                         string folderName = CreateFolderNameFromProjectInfo(projectID);
 
-                        var createFolder = System.IO.Directory.CreateDirectory(_targetFilePath + "\\" + folderName);
+                        var createFolder = Directory.CreateDirectory(_targetFilePath + "\\" + folderName);
 
                         //This "using" is coming from IDisposable. Removing it will cause this to run synchronously and
                         // throw an "The streamed file is used by another instance" Exception!
