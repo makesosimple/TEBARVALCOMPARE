@@ -38,7 +38,6 @@ namespace IBBPortal
             
 
             services.AddIdentity<ApplicationUser, ApplicationRole>(options => options.SignIn.RequireConfirmedAccount = false)
-                .AddErrorDescriber<LocalizedIdentityErrorDescriber>()
                 .AddUserStore<ApplicationUserStore>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
