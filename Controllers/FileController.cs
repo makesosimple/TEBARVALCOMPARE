@@ -101,7 +101,7 @@ namespace IBBPortal.Controllers
                         c.FileCategory.FileCategoryTitle,
                         FileName = c.FileName,
                         FileType = c.FileType != null ? c.FileType : "",
-                        FilePath = c.FilePath != null ? c.FilePath : "",
+                        FilePath = c.FilePath != null ? c.FilePath.Substring(0, 25) + "..." : "",
                         FileURL = c.FileURL != null ? c.FileURL : "",
                         FileUploadType = c.FileUploadType,
                         c.DeletionDate
@@ -245,6 +245,10 @@ namespace IBBPortal.Controllers
                     {
                         //Project ID. Must Have!
                         int projectID = Convert.ToInt32(formValues["ProjectID"]);
+
+                        //FileCategory. May Have!
+                        int fileCateogryID = Convert.ToInt32(formValues["FileCategoryID"]);
+
                         // Don't trust the file name sent by the client. To display
                         // the file name, HTML-encode the value.
                         var fileName = "";
@@ -285,7 +289,9 @@ namespace IBBPortal.Controllers
                         
                         string folderName = CreateFolderNameFromProjectInfo(projectID);
 
-                        var createFolder = Directory.CreateDirectory(_targetFilePath + "\\" + folderName);
+                        string subFolderName = CreateFolderNameFromFileCategory(fileCateogryID);
+
+                        var createFolder = Directory.CreateDirectory(_targetFilePath + "\\" + folderName + "\\" + subFolderName);
 
                         //This "using" is coming from IDisposable. Removing it will cause this to run synchronously and
                         // throw an "The streamed file is used by another instance" Exception!
@@ -367,8 +373,6 @@ namespace IBBPortal.Controllers
                         SuccessTitle = "HATA",
                         SuccessMessage = "Kayıt oluşturulamadı.",
                     };
-
-                    throw;
 
                     return response;
                 }
@@ -500,5 +504,17 @@ namespace IBBPortal.Controllers
 
             return folderName;
         }
+        private string CreateFolderNameFromFileCategory(int folderCategoryID)
+        {
+            var fileCategory = _context.FileCategory.FirstOrDefault(x => x.FileCategoryID == folderCategoryID);
+
+            Regex pattern = new Regex("[ -(),]");
+
+            string fileCategoryName = fileCategory.FileCategoryTitle.Replace(' ', '_').Replace('-', '_');
+            string folderName = pattern.Replace(fileCategoryName, "_");
+
+            return folderName;
+        }
+
     }
 }

@@ -136,7 +136,7 @@ namespace IBBPortal.Controllers
                         coordinates = rx_coordinates.Match(model.ProjectField.KML).Groups[0].Value;
                         coordinates = coordinates.Replace("<coordinates>", "");
                         coordinates = coordinates.Replace("</coordinates>", "");
-                        Debug.WriteLine("model.ProjectField.KML = " + model.ProjectField.KML);
+                        //Debug.WriteLine("model.ProjectField.KML = " + model.ProjectField.KML);
                         //coordinates = v.Groups[1].Value;
                         coordinates = coordinates.Replace("\n", "").Replace("\r", "");
                         coordinates = coordinates.Replace(",0", " ");
