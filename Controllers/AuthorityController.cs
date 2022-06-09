@@ -31,7 +31,7 @@ namespace IBBPortal.Controllers
         {
             return View();
         }
-        
+
         [HttpPost]
         public JsonResult JSONData()
         {
@@ -99,7 +99,7 @@ namespace IBBPortal.Controllers
         }
 
         [HttpGet]
-        public JsonResult JsonSelectData(string term)
+        public async Task<JsonResult> JsonSelectData(string term)
         {
             try
             {
@@ -119,7 +119,7 @@ namespace IBBPortal.Controllers
                 var totalCount = AuthorityData.Count();
 
                 //Paging   
-                var passData = AuthorityData.Take(10).ToList();
+                var passData = await AuthorityData.Take(10).ToListAsync();
 
 
                 //Returning Json Data  

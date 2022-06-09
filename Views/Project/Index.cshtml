@@ -143,7 +143,8 @@
                         "data": "projectStatusID",
                         "autoWidth": false,
                         "render": function (data, type, row) {
-                            return `<div class="btn btn-info btn-sm text-xs">${row.projectStatusTitle}</div>`;
+
+                            return row.projectStatusTitle ? `<div class="btn btn-info btn-sm text-xs">${row.projectStatusTitle}</div>` : "";
                         },
                         
                     },
@@ -151,7 +152,7 @@
                         "data": "projectImportanceID",
                         "autoWidth": false,
                         "render": function (data, type, row) {
-                            return `<div class="btn btn-info btn-sm text-xs">${row.projectImportanceTitle}</div>`;
+                            return row.projectImportanceTitle ? `<div class="btn btn-info btn-sm text-xs">${row.projectImportanceTitle}</div>` : "";
                         },
                         
                     },
@@ -461,86 +462,60 @@
 
             <table class="table table-hover display" id="dataTable" width="100%">
                 <thead>
-                    <!--<tr class="filter h-100 bg-white">
-        <th><span class="w-100">&nbsp;</span></th>
-        <th scope="col">
-            <input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Kod..." id="projectTitle" name="projectTitle" value="" />
-        </th>
-        <th scope="col">
-            <input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Proje..." id="projectIBBCode" name="projectIBBCode" value="" />
-        </th>
-        <th scope="col">
-            <select class="form-control searchInput" data-index="3" id="selectRequestingAuthority" name="selectRequestingAuthority" style="width: 100%;">
-                <option value="" selected>Makam...</option>
-            </select>
-        </th>
-        <th scope="col">
-            <select class="form-control searchInput" data-index="4" id="selectResponsibleDepartment" name="selectResponsibleDepartment" style="width: 100%;">
-                <option value="" selected>Müdürlük...</option>
-            </select>
-        </th>
-        <th scope="col">
-            <select class="form-control searchInput" data-index="5" id="selectOwner" name="selectOwner" style="width: 100%;">
-                <option value="" selected>Sahibi...</option>
-            </select>
-        </th>
-        <th scope="col">
-            <input class="form-control w-100 searchInput" data-index="6" type="text" placeholder="Ara..." id="estimatedProjectCost" name="estimatedProjectCost" value="" />
-        </th>
-        <th scope="col">
-            <select class="form-control searchInput" data-index="7" id="selectServiceArea" name="selectServiceArea" style="width: 100%;">
-                <option value="" selected>Hizmet Alanı...</option>
-            </select>
-        </th>
-        <th scope="col">
-            <select class="form-control searchInput" data-index="8" id="selectProjectStatus" name="selectProjectStatus" style="width: 100%;">
-                <option value="" selected>Durumu...</option>
-            </select>
-        </th>
-        <th scope="col">
-            <select class="form-control searchInput" data-index="9" id="selectProjectImportance" name="selectProjectImportance" style="width: 100%;">
-                <option value="" selected>Önemi...</option>
-            </select>
-        </th>
-        <th scope="col"></th>
-    </tr>-->
-                    <tr id="tableLabels">
-                        <th class="text-white text-sm bg-navy-blue"><span>&nbsp;</span></th>
-                        <th scope="col" class="text-white text-sm bg-navy-blue"><input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Proje başlığı..." id="projectTitle" name="projectTitle" value="" /></th>
-                        <th scope="col" class="text-white text-sm bg-navy-blue"><input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Kod..." id="projectIBBCode" name="projectIBBCode" value="" /></th>
-                        <th scope="col" class="text-white text-sm bg-navy-blue">
+                    <tr class="filter h-100 bg-white">
+                        <th><span class="w-100">&nbsp;</span></th>
+                        <th scope="col">
+                            <input class="form-control w-100 searchInput" data-index="1" type="text" placeholder="Proje..." id="projectTitle" name="projectTitle" value="" />
+                        </th>
+                        <th scope="col">
+                            <input class="form-control w-100 searchInput" data-index="2" type="text" placeholder="Kod..." id="projectIBBCode" name="projectIBBCode" value="" />
+                        </th>
+                        <th scope="col">
                             <select class="form-control searchInput" data-index="3" id="selectRequestingAuthority" name="selectRequestingAuthority" style="width: 100%;">
                                 <option value="" selected>Makam...</option>
                             </select>
                         </th>
-                        <th scope="col" class="text-white text-sm bg-navy-blue">
+                        <th scope="col">
                             <select class="form-control searchInput" data-index="4" id="selectResponsibleDepartment" name="selectResponsibleDepartment" style="width: 100%;">
                                 <option value="" selected>Müdürlük...</option>
                             </select>
                         </th>
-                        <th scope="col" class="text-white text-sm bg-navy-blue">
+                        <th scope="col">
                             <select class="form-control searchInput" data-index="5" id="selectOwner" name="selectOwner" style="width: 100%;">
                                 <option value="" selected>Sahibi...</option>
                             </select>
                         </th>
-                        <th scope="col" class="text-white text-sm bg-navy-blue">
+                        <th scope="col">
                             <input class="form-control w-100 searchInput" data-index="6" type="text" placeholder="Ara..." id="estimatedProjectCost" name="estimatedProjectCost" value="" />
                         </th>
-                        <th scope="col" class="text-white text-sm bg-navy-blue">
+                        <th scope="col">
                             <select class="form-control searchInput" data-index="7" id="selectServiceArea" name="selectServiceArea" style="width: 100%;">
                                 <option value="" selected>Hizmet Alanı...</option>
                             </select>
                         </th>
-                        <th scope="col" class="text-white text-sm bg-navy-blue">
+                        <th scope="col">
                             <select class="form-control searchInput" data-index="8" id="selectProjectStatus" name="selectProjectStatus" style="width: 100%;">
                                 <option value="" selected>Durumu...</option>
                             </select>
                         </th>
-                        <th scope="col" class="text-white text-sm bg-navy-blue">
+                        <th scope="col">
                             <select class="form-control searchInput" data-index="9" id="selectProjectImportance" name="selectProjectImportance" style="width: 100%;">
                                 <option value="" selected>Önemi...</option>
                             </select>
                         </th>
+                        <th scope="col"></th>
+                    </tr>          
+                    <tr id="tableLabels">
+                        <th class="text-white text-sm bg-navy-blue"><span>&nbsp;</span></th>
+                        <th scope="col" class="text-white text-sm bg-navy-blue">Proje İsmi</th>
+                        <th scope="col" class="text-white text-sm bg-navy-blue">Proje IBB Kodu</th>
+                        <th scope="col" class="text-white text-sm bg-navy-blue">Talep Eden Müdürlük</th>
+                        <th scope="col" class="text-white text-sm bg-navy-blue">Sorumlu Müdürlük</th>
+                        <th scope="col" class="text-white text-sm bg-navy-blue">Proje Sahibi</th>
+                        <th scope="col" class="text-white text-sm bg-navy-blue">Proje Tutarı</th>
+                        <th scope="col" class="text-white text-sm bg-navy-blue">Hizmet Alanı</th>
+                        <th scope="col" class="text-white text-sm bg-navy-blue">Proje Durumu</th>
+                        <th scope="col" class="text-white text-sm bg-navy-blue">Proje Önemi</th>
                         <th scope="col" class="text-white text-sm bg-navy-blue"></th>
                     </tr>
                 </thead>
