@@ -58,7 +58,7 @@ namespace IBBPortal.Controllers
                 var data = _context.Project.Select(c => new
                 {
                     c.ProjectID,
-                    ProjectIBBCode = c.ProjectIBBCode != null ? c.ProjectIBBCode.ToString() : "",
+                    ProjectIBBCode = c.ProjectIBBCode != null ? c.ProjectIBBCode : "",
                     c.ProjectTitle,
                     EstimatedProjectCost = c.EstimatedProjectCost != null ? c.EstimatedProjectCost.ToString() + " TL" : "",
                     RequestingAuthorityID = c.RequestingAuthority != null ? c.RequestingAuthority.AuthorityID : 0,
@@ -626,10 +626,8 @@ namespace IBBPortal.Controllers
                     }
                     else
                     {
-                        throw;
+                        TransactionLogger.logTransaction(_context, project.ProjectID, "error-updating-project", _userManager.GetUserId(HttpContext.User));
                     }
-
-                    var unused = TransactionLogger.logTransaction(_context, project.ProjectID, "error-updating-project", _userManager.GetUserId(HttpContext.User));
                 }
                 return RedirectToAction(nameof(Edit));
             }
