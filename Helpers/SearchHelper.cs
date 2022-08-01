@@ -5,7 +5,7 @@ using System.Linq.Dynamic.Core;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace IBBPortal.Helpers
+namespace TEBARVALCOMPARE.Helpers
 {
     public static class SearchHelper
     {

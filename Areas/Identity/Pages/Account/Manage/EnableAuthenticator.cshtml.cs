@@ -10,9 +10,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using IBBPortal.Models;
+using TEBARVALCOMPARE.Models;
 
-namespace IBBPortal.Areas.Identity.Pages.Account.Manage
+namespace TEBARVALCOMPARE.Areas.Identity.Pages.Account.Manage
 {
     public class EnableAuthenticatorModel : PageModel
     {

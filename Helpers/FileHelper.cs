@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
 
-namespace IBBPortal.Helpers
+namespace TEBARVALCOMPARE.Helpers
 {
     public static class FileHelper
     {

@@ -2,7 +2,7 @@
 using System.IO;
 using Microsoft.Net.Http.Headers;
 
-namespace IBBPortal.Helpers
+namespace TEBARVALCOMPARE.Helpers
 {
     public class MultipartRequestHelper
     {

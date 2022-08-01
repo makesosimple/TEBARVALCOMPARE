@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace IBBPortal.Helpers
+namespace TEBARVALCOMPARE.Helpers
 {
     public class GenerateAntiforgeryTokenCookieAttribute : ResultFilterAttribute
     {

@@ -10,9 +10,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using IBBPortal.Models;
+using TEBARVALCOMPARE.Models;
 
-namespace IBBPortal.Areas.Identity.Pages.Account.Manage
+namespace TEBARVALCOMPARE.Areas.Identity.Pages.Account.Manage
 {
     public partial class EmailModel : PageModel
     {

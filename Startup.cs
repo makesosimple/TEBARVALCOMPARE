@@ -1,6 +1,6 @@
-using IBBPortal.Data;
-using IBBPortal.Helpers;
-using IBBPortal.Models;
+using TEBARVALCOMPARE.Data;
+using TEBARVALCOMPARE.Helpers;
+using TEBARVALCOMPARE.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,7 +12,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
 
-namespace IBBPortal
+namespace TEBARVALCOMPARE
 {
     public class Startup
     {

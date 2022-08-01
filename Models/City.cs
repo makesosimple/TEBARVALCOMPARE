@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using IndexAttribute = Microsoft.EntityFrameworkCore.IndexAttribute;
 
 
-namespace IBBPortal.Models
+namespace TEBARVALCOMPARE.Models
 {
 
     [Index(nameof(CityCode))]
@@ -24,8 +24,6 @@ namespace IBBPortal.Models
         public string CityName { get; set; }
 
         public List<District> RelatedDistricts { get; set; }
-
-        public List<Contractor> RelatedContractors { get; set; }
 
         public string UserID { get; set; }
         [ForeignKey("UserID")]

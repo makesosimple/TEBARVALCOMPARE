@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IBBPortal.Models
+namespace TEBARVALCOMPARE.Models
 {
     [Index(nameof(UserID))]
     public class ApplicationUser : IdentityUser

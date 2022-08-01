@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using IBBPortal.Data;
-using IBBPortal.Models;
+using TEBARVALCOMPARE.Data;
+using TEBARVALCOMPARE.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace IBBPortal.Helpers
+namespace TEBARVALCOMPARE.Helpers
 {
     /*
      * User and Role Seeder.

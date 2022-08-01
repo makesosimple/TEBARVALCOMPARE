@@ -3,14 +3,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using IBBPortal.Data;
-using IBBPortal.Models;
+using TEBARVALCOMPARE.Data;
+using TEBARVALCOMPARE.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Linq.Dynamic.Core;
-using IBBPortal.Helpers;
+using TEBARVALCOMPARE.Helpers;
 using Microsoft.AspNetCore.Authorization;
 
-namespace IBBPortal.Controllers
+namespace TEBARVALCOMPARE.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class DistrictController : Controller

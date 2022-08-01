@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
-namespace IBBPortal.Models
+namespace TEBARVALCOMPARE.Models
 {
     [Index(nameof(UserID))]
     public class ApplicationRole : IdentityRole

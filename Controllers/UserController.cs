@@ -4,15 +4,15 @@ using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using IBBPortal.Data;
-using IBBPortal.Models;
+using TEBARVALCOMPARE.Data;
+using TEBARVALCOMPARE.Models;
 using Microsoft.AspNetCore.Identity;
-using IBBPortal.Helpers;
-using IBBPortal.ViewModels;
+using TEBARVALCOMPARE.Helpers;
+using TEBARVALCOMPARE.ViewModels;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 
-namespace IBBPortal.Controllers
+namespace TEBARVALCOMPARE.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class UserController : Controller

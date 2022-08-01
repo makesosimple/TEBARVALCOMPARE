@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using IBBPortal.Models;
-using IBBPortal.ViewModels;
+using TEBARVALCOMPARE.Models;
+using TEBARVALCOMPARE.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace IBBPortal.Data
+namespace TEBARVALCOMPARE.Data
 {
     public class SecondaryDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 
-namespace IBBPortal
+namespace TEBARVALCOMPARE
 {
     public class Program
     {

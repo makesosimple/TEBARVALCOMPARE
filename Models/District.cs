@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using IndexAttribute = Microsoft.EntityFrameworkCore.IndexAttribute;
 
-namespace IBBPortal.Models
+namespace TEBARVALCOMPARE.Models
 {
 
     [Index(nameof(CityID))]
@@ -25,8 +25,6 @@ namespace IBBPortal.Models
         public int CityID { get; set; }
         [ForeignKey("CityID")]
         public City City { get; set; }
-
-        public List<Contractor> RelatedContractors { get; set; }
 
         public string UserID { get; set; }
         [ForeignKey("UserID")]

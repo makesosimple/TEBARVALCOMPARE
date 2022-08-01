@@ -10,9 +10,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using IBBPortal.Models;
+using TEBARVALCOMPARE.Models;
 
-namespace IBBPortal.Areas.Identity.Pages.Account
+namespace TEBARVALCOMPARE.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ForgotPasswordModel : PageModel
